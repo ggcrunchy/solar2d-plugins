@@ -2,7 +2,7 @@
 	path = ByteReader
 	url = https://github.com/ggcrunchy/ByteReader
 	branch = master
-[submodule "corona_enterprise_utils"]
-	path = corona_enterprise_utils
-	url = https://github.com/ggcrunchy/corona_enterprise_utils
+[submodule "solar2d_native_utils"]
+	path = solar2d_native_utils
+	url = https://github.com/ggcrunchy/solar2d_native_utils
 	branch = master
