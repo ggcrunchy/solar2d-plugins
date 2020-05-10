@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\shared\plugin.eigen.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\shared\config.h" />
+    <ClInclude Include="..\shared\utils.h" />
+    <ClInclude Include="..\shared\types.h" />
+    <ClInclude Include="..\shared\bool_matrix.h" />
+    <ClInclude Include="..\shared\macros.h" />
+    <ClInclude Include="..\shared\implementation.h" />
+    <ClInclude Include="..\shared\matrix.h">
+      <Filter>objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\solvers.h">
+      <Filter>objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\views.h">
+      <Filter>objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\xprs.h">
+      <Filter>objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\write_ops.h">
+      <Filter>methods</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\xpr_ops.h">
+      <Filter>methods</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\arith_ops.h">
+      <Filter>methods</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\solver_base.h">
+      <Filter>objects\solvers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\eigen_solver.h">
+      <Filter>objects\solvers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\cholesky.h">
+      <Filter>objects\solvers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\lu.h">
+      <Filter>objects\solvers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\qr.h">
+      <Filter>objects\solvers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\misc.h">
+      <Filter>objects\solvers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\svd.h">
+      <Filter>objects\solvers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\stock_ops.h">
+      <Filter>methods</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\vectorwise.h">
+      <Filter>objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\solver_ops.h">
+      <Filter>methods</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\real_ops.h">
+      <Filter>methods</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\self_adjoint_view.h">
+      <Filter>objects\views</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\triangular_view.h">
+      <Filter>objects\views</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\unary_view.h">
+      <Filter>objects\views</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\stdafx.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="methods">
+      <UniqueIdentifier>{087ae250-5482-474e-a735-20abefde1b6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="objects">
+      <UniqueIdentifier>{bdf647c8-21db-4396-a79f-ddb0f8d39f25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="objects\solvers">
+      <UniqueIdentifier>{9532cc2c-8331-4500-8fa4-f58def24c46f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="objects\views">
+      <UniqueIdentifier>{8f457642-b5b3-41f7-afc6-0060e0a3f598}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

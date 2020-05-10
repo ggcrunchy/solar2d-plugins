@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\shared\plugin.chips.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="systems">
+      <UniqueIdentifier>{2dd19b27-2299-4914-aaaf-b258decf70a0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\shared\systems\c64.h">
+      <Filter>systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\systems\cpc.h">
+      <Filter>systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\systems\zx.h">
+      <Filter>systems</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

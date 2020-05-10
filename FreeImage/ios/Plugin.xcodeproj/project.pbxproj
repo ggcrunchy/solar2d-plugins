@@ -1,0 +1,273 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CE51A1C11CDDABF100F115D7 /* Enums.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE51A1B41CDDABF100F115D7 /* Enums.cpp */; };
+		CE51A1C21CDDABF100F115D7 /* Flags.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE51A1B61CDDABF100F115D7 /* Flags.cpp */; };
+		CE51A1C31CDDABF100F115D7 /* Image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE51A1B81CDDABF100F115D7 /* Image.cpp */; };
+		CE51A1C41CDDABF100F115D7 /* MemoryIO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE51A1B91CDDABF100F115D7 /* MemoryIO.cpp */; };
+		CE51A1C51CDDABF100F115D7 /* MetadataFind.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE51A1BA1CDDABF100F115D7 /* MetadataFind.cpp */; };
+		CE51A1C61CDDABF100F115D7 /* MultiPage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE51A1BB1CDDABF100F115D7 /* MultiPage.cpp */; };
+		CE51A1C71CDDABF100F115D7 /* plugin.freeimage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE51A1BC1CDDABF100F115D7 /* plugin.freeimage.cpp */; };
+		CE51A1C81CDDABF100F115D7 /* Tag.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE51A1BE1CDDABF100F115D7 /* Tag.cpp */; };
+		CE51A1C91CDDABF100F115D7 /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE51A1BF1CDDABF100F115D7 /* Texture.cpp */; };
+		CE51A1CA1CDDABF100F115D7 /* WinImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE51A1C01CDDABF100F115D7 /* WinImage.cpp */; };
+		CE51A1CC1CE149A100F115D7 /* freeimage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE51A1CB1CE149A100F115D7 /* freeimage.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A4E253B4166D6FB300DCDC2C /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/${PRODUCT_NAME}";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		A4E253B6166D6FB300DCDC2C /* libplugin_luaproc.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libplugin_luaproc.a; path = libplugin_freeimage.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE51A1B31CDDABF100F115D7 /* classes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = classes.h; path = ../shared/classes.h; sourceTree = "<group>"; };
+		CE51A1B41CDDABF100F115D7 /* Enums.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Enums.cpp; path = ../shared/Enums.cpp; sourceTree = "<group>"; };
+		CE51A1B51CDDABF100F115D7 /* enums.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = enums.h; path = ../shared/enums.h; sourceTree = "<group>"; };
+		CE51A1B61CDDABF100F115D7 /* Flags.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Flags.cpp; path = ../shared/Flags.cpp; sourceTree = "<group>"; };
+		CE51A1B71CDDABF100F115D7 /* FreeImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FreeImage.h; path = ../shared/FreeImage.h; sourceTree = "<group>"; };
+		CE51A1B81CDDABF100F115D7 /* Image.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Image.cpp; path = ../shared/Image.cpp; sourceTree = "<group>"; };
+		CE51A1B91CDDABF100F115D7 /* MemoryIO.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MemoryIO.cpp; path = ../shared/MemoryIO.cpp; sourceTree = "<group>"; };
+		CE51A1BA1CDDABF100F115D7 /* MetadataFind.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MetadataFind.cpp; path = ../shared/MetadataFind.cpp; sourceTree = "<group>"; };
+		CE51A1BB1CDDABF100F115D7 /* MultiPage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MultiPage.cpp; path = ../shared/MultiPage.cpp; sourceTree = "<group>"; };
+		CE51A1BC1CDDABF100F115D7 /* plugin.freeimage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = plugin.freeimage.cpp; path = ../shared/plugin.freeimage.cpp; sourceTree = "<group>"; };
+		CE51A1BD1CDDABF100F115D7 /* stdafx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stdafx.h; path = ../shared/stdafx.h; sourceTree = "<group>"; };
+		CE51A1BE1CDDABF100F115D7 /* Tag.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Tag.cpp; path = ../shared/Tag.cpp; sourceTree = "<group>"; };
+		CE51A1BF1CDDABF100F115D7 /* Texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Texture.cpp; path = ../shared/Texture.cpp; sourceTree = "<group>"; };
+		CE51A1C01CDDABF100F115D7 /* WinImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = WinImage.cpp; path = ../shared/WinImage.cpp; sourceTree = "<group>"; };
+		CE51A1CB1CE149A100F115D7 /* freeimage.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = freeimage.a; path = ../libs/ios/freeimage.a; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A4E253B3166D6FB300DCDC2C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE51A1CC1CE149A100F115D7 /* freeimage.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A447B609165D72A6009EA762 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				CE51A1B31CDDABF100F115D7 /* classes.h */,
+				CE51A1B41CDDABF100F115D7 /* Enums.cpp */,
+				CE51A1B51CDDABF100F115D7 /* enums.h */,
+				CE51A1B61CDDABF100F115D7 /* Flags.cpp */,
+				CE51A1B71CDDABF100F115D7 /* FreeImage.h */,
+				CE51A1B81CDDABF100F115D7 /* Image.cpp */,
+				CE51A1B91CDDABF100F115D7 /* MemoryIO.cpp */,
+				CE51A1BA1CDDABF100F115D7 /* MetadataFind.cpp */,
+				CE51A1BB1CDDABF100F115D7 /* MultiPage.cpp */,
+				CE51A1BC1CDDABF100F115D7 /* plugin.freeimage.cpp */,
+				CE51A1BD1CDDABF100F115D7 /* stdafx.h */,
+				CE51A1BE1CDDABF100F115D7 /* Tag.cpp */,
+				CE51A1BF1CDDABF100F115D7 /* Texture.cpp */,
+				CE51A1C01CDDABF100F115D7 /* WinImage.cpp */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		A484110E15114F700074BD57 = {
+			isa = PBXGroup;
+			children = (
+				CE51A1CB1CE149A100F115D7 /* freeimage.a */,
+				A447B609165D72A6009EA762 /* Source */,
+				A484111A15114F700074BD57 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A484111A15114F700074BD57 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A4E253B6166D6FB300DCDC2C /* libplugin_luaproc.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A4E253B5166D6FB300DCDC2C /* plugin_freeimage */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A4E253BF166D6FB300DCDC2C /* Build configuration list for PBXNativeTarget "plugin_freeimage" */;
+			buildPhases = (
+				A4E253B2166D6FB300DCDC2C /* Sources */,
+				A4E253B3166D6FB300DCDC2C /* Frameworks */,
+				A4E253B4166D6FB300DCDC2C /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = plugin_freeimage;
+			productName = plugin_library;
+			productReference = A4E253B6166D6FB300DCDC2C /* libplugin_luaproc.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A484111015114F700074BD57 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = A484111315114F700074BD57 /* Build configuration list for PBXProject "Plugin" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = A484110E15114F700074BD57;
+			productRefGroup = A484111A15114F700074BD57 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A4E253B5166D6FB300DCDC2C /* plugin_freeimage */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A4E253B2166D6FB300DCDC2C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE51A1CA1CDDABF100F115D7 /* WinImage.cpp in Sources */,
+				CE51A1C31CDDABF100F115D7 /* Image.cpp in Sources */,
+				CE51A1C11CDDABF100F115D7 /* Enums.cpp in Sources */,
+				CE51A1C61CDDABF100F115D7 /* MultiPage.cpp in Sources */,
+				CE51A1C91CDDABF100F115D7 /* Texture.cpp in Sources */,
+				CE51A1C41CDDABF100F115D7 /* MemoryIO.cpp in Sources */,
+				CE51A1C81CDDABF100F115D7 /* Tag.cpp in Sources */,
+				CE51A1C21CDDABF100F115D7 /* Flags.cpp in Sources */,
+				CE51A1C71CDDABF100F115D7 /* plugin.freeimage.cpp in Sources */,
+				CE51A1C51CDDABF100F115D7 /* MetadataFind.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A484114015114F700074BD57 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/CoronaEnterprise/Corona/shared/include/Corona ${SRCROOT}/CoronaEnterprise/Corona/shared/include/lua ${SRCROOT}/CoronaEnterprise/Corona/ios/include/Corona";
+			};
+			name = Debug;
+		};
+		A484114115114F700074BD57 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/CoronaEnterprise/Corona/shared/include/Corona ${SRCROOT}/CoronaEnterprise/Corona/shared/include/lua ${SRCROOT}/CoronaEnterprise/Corona/ios/include/Corona";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A4E253C0166D6FB300DCDC2C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				DSTROOT = /tmp/plugin_library.dst;
+				ENABLE_BITCODE = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		A4E253C1166D6FB300DCDC2C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				DSTROOT = /tmp/plugin_library.dst;
+				ENABLE_BITCODE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				"HEADER_SEARCH_PATHS[arch=*]" = /Applications/CoronaEnterprise/Corona/shared/include/lua;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A484111315114F700074BD57 /* Build configuration list for PBXProject "Plugin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A484114015114F700074BD57 /* Debug */,
+				A484114115114F700074BD57 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A4E253BF166D6FB300DCDC2C /* Build configuration list for PBXNativeTarget "plugin_freeimage" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A4E253C0166D6FB300DCDC2C /* Debug */,
+				A4E253C1166D6FB300DCDC2C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A484111015114F700074BD57 /* Project object */;
+}

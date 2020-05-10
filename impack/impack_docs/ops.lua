@@ -1,0 +1,361 @@
+--- An assortment of useful image operations.
+--
+-- Most image resize logic comes courtesy of Jorge L Rodriguez (@VinoBS), via Sean Barrett's [stb](https://github.com/nothings/stb).
+--
+-- The **Bytes** type&mdash;specified below&mdash;may be any object that implements [ByteReader](https://ggcrunchy.github.io/corona-plugin-docs/DOCS/ByteReader/policy.html),
+-- including strings.
+--
+-- Various routines build upon the [Accelerate framework](https://developer.apple.com/reference/accelerate), [Project Ne10](https://projectne10.github.io/Ne10/),
+-- [DirectXMath](https://github.com/Microsoft/DirectXMath), and [XMath](https://github.com/Napoleon314/XMath).
+--
+-- ========================================================================
+--
+-- **(The comments that follow were adapted from [stb\_image\_resize.h](https://raw.githubusercontent.com/nothings/stb/master/stb_image_resize.h).)**
+--
+-- Written with emphasis on usability, portability, and efficiency. (No
+-- SIMD or threads, so it's easily outperformed by libs that use those.)
+-- Only scaling and translation is supported, no rotations or shears.
+-- By default, the API downsamples with Mitchell filter, upsamples with
+-- cubic interpolation.
+--
+-- **QUICKSTART**
+--
+--      output_pixels = impack.ops.resize_custom(input_pixels, in_w, in_h,
+--                               out_w, out_h, num_channels)
+--      output_pixels = impack.ops.resize_custom(input_pixels, in_w, in_h,
+--                               out_w, out_h, num_channels, { datatype = "FLOAT" })
+--      output_pixels = impack.ops.resize_custom(input_pixels, in_w, in_h,
+--                               out_w, out_h, num_channels, { has_alpha = alpha_chan, space = "SRGB" })
+--      output_pixels = impack.ops.resize_custom(input_pixels, in_w, in_h, 
+--                               out_w, out_h, num_channels, {
+--									has_alpha = alpha_chan, space = "SRGB",
+--									wrap = "CLAMP" -- or "WRAP", "REFLECT", "ZERO"
+--								})
+--
+-- **Additional documentation:**
+--
+-- **SRGB & FLOATING POINT REPRESENTATION**
+--
+-- The sRGB functions presume IEEE floating point.
+--
+-- **ALPHA CHANNEL**
+--
+-- Most of the resizing functions provide the ability to control how
+-- the alpha channel of an image is processed. The important things
+-- to know about this:
+--
+-- **1.** The best mathematically-behaved version of alpha to use is
+-- called "premultiplied alpha", in which the other color channels
+-- have had the alpha value multiplied in. If you use premultiplied
+-- alpha, linear filtering (such as image resampling done by this
+-- library, or performed in texture units on GPUs) does the "right
+-- thing". While premultiplied alpha is standard in the movie CGI
+-- industry, it is still uncommon in the videogame / real-time world.
+--
+-- If you linearly filter non-premultiplied alpha, strange effects
+-- occur. (For example, the average of 1% opaque bright green
+-- and 99% opaque black produces 50% transparent dark green when
+-- non-premultiplied, whereas premultiplied it produces 50%
+-- transparent near-black. The former introduces green energy
+-- that doesn't exist in the source image.)
+--
+-- **2.** Artists should not edit premultiplied-alpha images; artists
+-- want non-premultiplied alpha images. Thus, art tools generally output
+-- non-premultiplied alpha images.
+--
+-- **3.** You will get best results in most cases by converting images
+-- to premultiplied alpha before processing them mathematically.
+--
+-- **4.** If you pass the flag **"ALPHA_PREMULTIPLIED"**, the
+-- resizer does not do anything special for the alpha channel;
+-- it is resampled identically to other channels. This produces
+-- the correct results for premultiplied-alpha images, but produces
+-- less-than-ideal results for non-premultiplied-alpha images.
+--
+-- **5.** If you do not pass the flag **"ALPHA_PREMULTIPLIED"**,
+-- then the resizer weights the contribution of input pixels
+-- based on their alpha values, or, equivalently, it multiplies
+-- the alpha value into the color channels, resamples, then divides
+-- by the resultant alpha value. Input pixels which have alpha = 0 do
+-- not contribute at all to output pixels unless _all_ of the input
+-- pixels affecting that output pixel have alpha = 0, in which case
+-- the result for that pixel is the same as it would be without
+-- **"ALPHA_PREMULTIPLIED"**. However, this is only true for
+-- input images in integer formats. For input images in float format,
+-- input pixels with alpha = 0 have no effect, and output pixels
+-- which have alpha = 0 will be 0 in all channels. (For float images,
+-- you can manually achieve the same result by adding a tiny epsilon
+-- value to the alpha channel of every image, and then subtracting
+-- or clamping it at the end.)
+--
+-- **6.** You can separately control whether the alpha channel is
+-- interpreted as linear or affected by the colorspace. By default
+-- it is linear; you almost never want to apply the colorspace.
+-- (For example, graphics hardware does not apply sRGB conversion
+-- to the alpha channel.)
+--
+-- **ADDITIONAL CONTRIBUTORS**
+--
+-- Sean Barrett: API design, optimizations
+--
+-- ========================================================================
+--
+-- **From stb's project page:**
+--
+-- This software is dual-licensed to the public domain and under the following
+-- license: you are granted a perpetual, irrevocable license to copy, modify,
+-- publish, and distribute this file as you see fit.
+--
+-- ========================================================================
+--
+-- **From [NE10's license](https://raw.githubusercontent.com/projectNe10/Ne10/master/LICENSE):**
+--
+-- Copyright 2012-15 ARM Limited and Contributors.
+-- All rights reserved.
+--
+-- Redistribution and use in source and binary forms, with or without
+-- modification, are permitted provided that the following conditions are met:
+--
+-- * Redistributions of source code must retain the above copyright
+--   notice, this list of conditions and the following disclaimer.
+--
+-- * Redistributions in binary form must reproduce the above copyright
+--   notice, this list of conditions and the following disclaimer in the
+--   documentation and/or other materials provided with the distribution.
+--
+-- * Neither the name of ARM Limited nor the
+--   names of its contributors may be used to endorse or promote products
+--   derived from this software without specific prior written permission.
+--
+-- THIS SOFTWARE IS PROVIDED BY ARM LIMITED AND CONTRIBUTORS "AS IS" AND
+-- ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+-- WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+-- DISCLAIMED. IN NO EVENT SHALL ARM LIMITED AND CONTRIBUTORS BE LIABLE FOR ANY
+-- DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+-- (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+-- LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+-- ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+-- (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+-- SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+--
+-- See: [BSD-3-Clause](http://opensource.org/licenses/BSD-3-Clause) for template
+--
+-- ========================================================================
+
+--
+-- Permission is hereby granted, free of charge, to any person obtaining
+-- a copy of this software and associated documentation files (the
+-- "Software"), to deal in the Software without restriction, including
+-- without limitation the rights to use, copy, modify, merge, publish,
+-- distribute, sublicense, and/or sell copies of the Software, and to
+-- permit persons to whom the Software is furnished to do so, subject to
+-- the following conditions:
+--
+-- The above copyright notice and this permission notice shall be
+-- included in all copies or substantial portions of the Software.
+--
+-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+-- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+-- MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+-- IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+-- CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+-- TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+-- SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+--
+-- [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
+--
+
+--- Given some image data, find the results of applying a box filter to it.
+--
+-- On iPhone and capable Android devices, this will use a [NEON-optimized routine](https://projectne10.github.io/Ne10/doc/group__IMG__BOXFILTER.html#gac9ffee47cb54608ada3cf82a6c589924)
+-- when both kernel dimensions are between 2 and 127, inclusive. Mac and tvOS use an [Accelerate framework routine](https://developer.apple.com/reference/accelerate/1515923-vimageconvolve_argb8888).
+-- @function M.box_filter
+-- @tparam Bytes input Input image, in RGBA form.
+-- @uint input_w Width of _input_...
+-- @uint input_h ...and height.
+-- @uint kernel_w Width of kernel, from 1 to _input\_w_... (The Accelerate technique will adjust this, if necessary.)
+-- @uint kernel_h ...and height, from 1 to _input\_h_. (Ditto.)
+-- @tparam ?table opts Filter options, which include:
+--
+-- * **in\_stride**: Bytes per row on input image (_w_ * 4 by default, the minimum)...
+-- * **out\_stride**: ...and on output image (again, defaults to _w_ * 4).
+-- * **as\_userdata**: Affects how the image data is returned.
+-- @treturn[1] Bytes On success, output of the box filter, in RGBA form.
+--
+-- If _opts.as\_userdata_ was true, the data is returned as a userdata that implements **ByteReader**,
+-- rather than being converted to a more friendly string. Under some circumstances, this might be worth
+-- doing for performance reasons.
+-- @return[2] **nil**, indicating an error.
+-- @treturn[2] string Error message.
+
+--- Converts an image from to floating-point to normalized unsigned 8-bit form, i.e. floats in [0, 1] are
+-- remapped to [0, 255].
+-- @function M.floats_to_unorm8s
+-- @tparam Bytes input Input image, in floating-point form.
+-- @uint w Width of _input_...
+-- @uint h ...and height.
+-- @tparam ?table opts Conversion options. At the moment, the only option is **channels**, describing the
+-- number of channels per pixel (by default 4, in keeping with RGBA).
+-- @treturn[1] Bytes On success, the converted result, in normalized unsigned 8-bit form.
+-- @return[2] **nil**, indicating an error.
+-- @treturn[2] string Error message.
+-- @see unorm8s_to_floats
+
+--- Generalized variant of @{resize_rgb} and @{resize_rgba}.
+-- @function M.resize_custom
+-- @tparam Bytes input Input image, in _nchannels_-per-pixel form, according to _datatype_.
+-- @uint iw Input image width...
+-- @uint ih ...and height.
+-- @uint ow Output image width...
+-- @uint oh ...and height.
+-- @uint nchannels Number of color channels.
+-- @tparam ?table opts Resize options. These include all the options from @{box_filter}, though the strides
+-- default to _w_ * _nchannels_ * **bytes\_per\_component**(_datatype_).
+--
+-- Additionally, the following are available:
+--
+-- * **flags**: May be a string or array of strings, consisting of entries from @{ResizeFlags}. If unsure
+-- what these mean, leaving them blank will probably do the right thing.
+-- * **has\_alpha**: If true, the image has an alpha channel. This may be an integer between 1 and _nchannels_, inclusive,
+-- indicating which channel to treat as alpha. Otherwise, the index is assumed to be _nchannels_. (No alpha is the default.)
+-- * **datatype**: May be one of the @{DataType} entries (a string), indicating the component data type. Defaults to
+-- **"UINT8"**.
+-- * **wrap**: May be one of the @{EdgeMode} entries (a string), indicating the edge-sampling behavior. Defaults to
+-- **"CLAMP"**.
+-- * **hwrap**: If present, an @{EdgeMode} entry (that overrides **wrap**) describing horizontal behavior...
+-- * **vwrap**: ...likewise, for vertical edge-sampling.
+-- * **filter**:  May be one of the @{Filter} entries (a string), indicating the color filtering behavior. Naturally,
+-- **"DEFAULT"** is the default.
+-- * **hfilter**: If present, a @{Filter} entry (that overrides **filter**) describing horizontal behavior...
+-- * **vfilter**: ...likewise, for vertical filtering.
+-- * **space**: May be one of the @{ColorSpace} entries (a string), describing how colors are understood. By default,
+-- **"LINEAR"**.
+-- @treturn[1] Bytes On success, as per @{box_filter}; will match _input_ in form.
+-- @return[2] **nil**, indicating an error.
+-- @treturn[2] string Error message.
+
+--- Variant of @{resize_custom} that allows you to specify the image source tile using texture coordinates, i.e.
+-- (_s0_, _t0_) and (_s1_, _t1_) are the top-left and bottom-right corner (uv addressing style: [0, 1] &times; [0, 1])
+-- of a region of the input image to use.
+-- @function M.resize_region
+-- @tparam Bytes input As per @{resize_custom}.
+-- @uint iw Input image width...
+-- @uint ih ...and height.
+-- @uint ow Output image width...
+-- @uint oh ...and height.
+-- @uint nchannels Number of color channels.
+-- @number s0 Upper-left coordinate, u-component...
+-- @number t0 ...and v-component.
+-- @number s1 Bottom-right coordinate, u-component...
+-- @number t1 ...and v-component.
+-- @tparam ?table opts  As per @{resize_custom}.
+-- @treturn[1] Bytes On success, as per @{box_filter}; will match _input_ in form.
+-- @return[2] **nil**, indicating an error.
+-- @treturn[2] string Error message.
+
+--- Given some image data, find the results of performing a resize, using the default filter.
+-- @function M.resize_rgb
+-- @tparam Bytes input Input image, in RGB form.
+-- @uint iw Input image width...
+-- @uint ih ...and height.
+-- @uint ow Output image width...
+-- @uint oh ...and height.
+-- @uint nchannels Number of color channels.
+-- @tparam ?table opts Resize options, as per @{box_filter} (although strides default to _w_ * 3, instead).
+-- @treturn[1] Bytes On success, as per @{box_filter}; output will be in RGB form.
+-- @return[2] **nil**, indicating an error.
+-- @treturn[2] string Error message.
+
+--- Given some image data, find the results of performing a resize, using bilinear filtering.
+-- @function M.resize_rgba
+-- @tparam Bytes input Input image, in RGBA form.
+-- @uint iw Input image width...
+-- @uint ih ...and height.
+-- @uint ow Output image width...
+-- @uint oh ...and height.
+-- @tparam ?table opts Resize options, as per @{box_filter}.
+-- @treturn[1] Bytes On success, as per @{box_filter}; output will be in RGBA form.
+-- @return[2] **nil**, indicating an error.
+-- @treturn[2] string Error message.
+
+--- Variant of @{resize_custom} that takes an explicit scale for subpixel correctness.
+-- @function M.resize_subpixel
+-- @tparam Bytes input As per @{resize_custom}.
+-- @uint iw Input image width...
+-- @uint ih ...and height.
+-- @uint ow Output image width...
+-- @uint oh ...and height.
+-- @uint nchannels Number of color channels.
+-- @number xscale Scale factor along x-axis... (For some sense of the numbers, @{resize_region}
+-- could be emulated by setting this to `(ow / iw) / (s1 - s0)`...)
+-- @number yscale ...and y-axis. (...this to `(oh / ih) / (t1 - t0)`...)
+-- @number xoff Offset along x-axis, to upper-left corner... (...this to `s0 * ow / (s1 - s0)`...)
+-- @number yoff ...and y-axis. (...and this to `t0 * oh / (t1 - t0)`.)
+-- @tparam ?table opts As per @{resize_custom}.
+-- @treturn[1] Bytes On success, as per @{box_filter}; will match _input_ in form.
+-- @return[2] **nil**, indicating an error.
+-- @treturn[2] string Error message.
+
+--- Given some image data, find the results of performing rotation.
+--
+-- Any non-trivial rotation will leave gaps. Unwritten pixels will be transparent.
+-- @function M.rotate
+-- @tparam Bytes input Input image, in RGBA form.
+-- @uint w Width of _input_...
+-- @uint h ...and height.
+-- @number angle Rotation angle, in radians.
+-- @tparam ?table opts Rotate options, as per @{box_filter}.
+-- @treturn[1] Bytes On success, as per @{box_filter}.
+-- @treturn[1] uint Width, after rotation...
+-- @treturn[1] uint ...and height.
+-- @return[2] **nil**, indicating an error.
+-- @treturn[2] string Error message.
+
+--- Converts an image from normalized unsigned 8-bit to floating-point form, i.e. unsigned bytes in
+-- [0, 255] are remapped to [0, 1].
+-- @function M.unorm8s_to_floats
+-- @tparam Bytes input Input image, in RGBA form (or according to _channels_).
+-- @uint w Width of _input_...
+-- @uint h ...and height.
+-- @tparam ?table opts Conversion options. At the moment, the only option is **channels**, describing the
+-- number of channels per pixel (by default 4, in keeping with RGBA).
+-- @treturn[1] Bytes On success, the converted result, in floating-point form.
+-- @return[2] **nil**, indicating an error.
+-- @treturn[2] string Error message.
+-- @see floats_to_unorm8s
+
+--- Data representations in the resize APIs.
+-- @field UINT8 Components are 8-bit unsigned integers, i.e. 0 to 255 (typical for images)...
+-- @field UINT16 ...are 16-bit unsigned integers...
+-- @field UINT32 ...or are 32-bit unsigned integers.
+-- @field FLOAT Components are single-precision (32-bit) floating point numbers.
+-- @table DataType
+
+--- How resizes handle sampling outside the image.
+-- @field CLAMP Samples are clamped to the nearest edge value, e.g. position `0` snaps to `1` and
+-- _n_ + 1 to _n_.
+-- @field REFLECT Samples reflect back across the image, e.g. position _n_ + 3 maps to _n_ - 3.
+-- @field WRAP Samples wrap around to the other side of the image, e.g. position _n_ + 1 maps to `1`.
+-- @field ZERO Samples are read back as values of `0`.
+-- @table EdgeMode
+
+--- How pixels are filtered during resizes.
+-- @field DEFAULT Use the appropriate default filter for an operation, cf. the summary above.
+-- @field BOX A trapezoid with one-pixel-wide ramps; same result as box for integer scale ratios.
+-- @field TRIANGLE On upsampling, produces same results as bilinear texture filtering.
+-- @field CUBICBSPLINE The cubic B-spline (aka Mitchell-Netrevali with **B** = 1, **C** = 0). Gaussian-esque.
+-- @field CATMULLROM An interpolating cubic spline.
+-- @field MITCHELL Mitchell-Netrevali filter with **B** = **C** = &#8531;.
+-- @table Filter
+
+--- How to interpret colors.
+-- @field LINEAR Colors map linearly from [0, 255] to [0, 1].
+-- @field SRGB Colors follow an [sRGB](https://en.wikipedia.org/wiki/SRGB) gamma ramp.
+-- @table ColorSpace
+
+--- Optional flags to apply to resize operation.
+-- @field ALPHA_PREMULTIPLIED Set this flag if your texture has premultiplied alpha. Otherwise, alpha-weighted
+-- resampling will be used (effectively premultiplying, resampling, then unpremultiplying).
+-- @field ALPHA_USES_COLORSPACE The specified alpha channel should be handled as gamma-corrected value even
+-- when doing sRGB operations.
+-- @table ResizeFlags

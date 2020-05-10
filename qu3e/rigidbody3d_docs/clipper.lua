@@ -1,0 +1,173 @@
+--- [An encapsulation](http://www.angusj.com/delphi/clipper/documentation/Docs/Units/ClipperLib/Classes/Clipper/_Body.htm)
+-- of various boolean operations on polygons.
+--
+-- Input polygons, both _subject_ and _clip_ sets, are passed to a **Clipper** object by its @{Clipper:AddPath|AddPath} and
+-- @{Clipper:AddPaths|AddPaths} methods, and the clipping operation is performed by calling its @{Clipper:Execute|Execute}
+-- method. Multiple boolean operations can be performed on the same input polygon sets by repeat calls to **Execute**.
+-- @classmod Clipper
+
+--
+-- Permission is hereby granted, free of charge, to any person obtaining
+-- a copy of this software and associated documentation files (the
+-- "Software"), to deal in the Software without restriction, including
+-- without limitation the rights to use, copy, modify, merge, publish,
+-- distribute, sublicense, and/or sell copies of the Software, and to
+-- permit persons to whom the Software is furnished to do so, subject to
+-- the following conditions:
+--
+-- The above copyright notice and this permission notice shall be
+-- included in all copies or substantial portions of the Software.
+--
+-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+-- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+-- MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+-- IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+-- CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+-- TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+-- SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+--
+-- [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
+--
+
+--- Any number of subject and clip paths can be added to a clipping task, either individually via this method, as groups via @{Clipper:AddPaths|AddPaths},
+-- or even using both methods.
+--
+-- 'Subject' paths may be either _open_ (lines) or _closed_ (polygons) or even a mixture of both, but **'clipping' paths will always be _closed_**.
+-- Clipper allows polygons to clip both lines and other polygons, but doesn't allow lines to clip either lines or polygons.
+--
+-- With closed paths, @{core.Orientation|orientation} should conform with the @{PolyFillType|filling rule} that will be passed via @{Clipper:Execute}.
+--
+-- **Path Coordinate range**:
+--
+-- Path coordinates must be between ±4.6e+18 (`2^62`), otherwise a range error will be thrown when attempting to add the path to the Clipper object. If
+-- coordinates can be kept between ±1.0e+9, large integer math can be avoided, for a modest increase in performance (approx. 15-20%) over the larger range
+-- @function Clipper:AddPath
+-- @tparam Path path
+-- @string poly_type One of **"Subject"**, **"SubjectClosed"**, or **"Clip"**.
+--
+-- Boolean (clipping) operations are mostly applied to two sets of Polygons, represented in this library as _subject_ and _clip_ polygons. Whenever
+-- polygons are added to the Clipper object, they must be assigned to either subject or clip polygons.
+--
+-- UNION operations can be performed on one set or both sets of polygons, but all other boolean operations require both sets of polygons to derive
+-- meaningful solutions.
+-- @treturn boolean Was the path valid? A path is invalid for clipping when:
+--
+-- * it has less than 2 vertices
+-- * it has 2 vertices but is not an open path
+-- * the vertices are all co-linear and it is not an open path
+
+--- Like @{Clipper:AddPath}, but allows adding paths as a group.
+-- @function Clipper:AddPaths
+-- @tparam Paths paths
+-- @string poly_type As per @{Clipper:AddPath}.
+-- @treturn boolean As per @{Clipper:AddPath}.
+
+--- Removes any existing subject and clip polygons allowing the Clipper object to be reused for clipping operations on _different_ polygon sets.
+-- @function Clipper:Clear
+
+--- Once _subject_ and _clip_ paths have been assigned (via @{Clipper:AddPath|AddPath} and / or
+-- @{Clipper:AddPaths|AddPaths}), @{Clipper:Execute|Execute} can then perform the clipping operation
+-- (intersection, union, difference or XOR) specified by the @{ClipType|clip_type} parameter.
+--
+-- The **solution** can be either a @{Paths} or @{PolyTree}. 1The Paths structure is simpler than the PolyTree stucture.`
+-- Because of this it is quicker to populate and hence clipping performance is a little better (it's roughly 10% faster).
+-- However, the PolyTree data structure provides more information about the returned paths which may be important to users.
+-- Firstly, `the PolyTree structure preserves nested parent-child polygon relationships` (i.e. outer polygons owning /
+-- containing _holes_ and holes owning / containing other outer polygons etc). Also, **only the PolyTree structure can
+-- differentiate between open and closed paths** since each PolyNode has an @{PolyNode:IsOpen|IsOpen} property. (The @{Path}
+-- structure has no member indicating whether it's open or closed.) **For this reason, when _open_ paths are passed to a
+-- Clipper object, the user must use a PolyTree object as the solution**, otherwise an error is thrown.
+--
+-- When a PolyTree object is used in a clipping operation on **open** paths, two ancillary functions have been provided
+-- to quickly separate out _open_ and _closed_ paths from the solution - @{core.OpenPathsFromPolyTree|OpenPathsFromPolyTree}
+-- and @{core.ClosedPathsFromPolyTree|ClosedPathsFromPolyTree}. @{core.PolyTreeToPaths|PolyTreeToPaths} is also available
+-- to convert path data to a Paths structure (irrespective of whether they're _open_ or _closed_).
+--
+-- There are several things to note about the solution paths returned:
+--
+-- * they aren't in any specific order
+-- * they should never overlap or be self-intersecting (but see notes on [rounding](http://www.angusj.com/delphi/clipper/documentation/Docs/Overview/Rounding.htm))
+-- * holes will be oriented opposite outer polygons
+-- * the **solution fill type** can be considered either _EvenOdd_ or _NonZero_ since it will comply with either filling rule
+-- * polygons may rarely share a common edge (though this is now _very rare_ as of version 6)
+--
+-- The **subject** and **clip** fill type parameters define the polygon @{PolyFillType|fill rule} to be applied to the polygons
+-- (i.e. closed paths) in the subject and clip paths respectively. (It's usual though obviously not essential that both sets of
+-- polygons use the same fill rule.)
+--
+-- **Execute** can be called multiple times without reassigning subject and clip polygons (i.e. when different clipping
+-- operations are required on the same polygon sets).
+--
+-- See [here](http://www.angusj.com/delphi/clipper/documentation/Docs/Units/ClipperLib/Classes/Clipper/Methods/Execute.htm) for
+-- a visual example of the results.
+-- @function Clipper:Execute
+-- @tparam ClipType clip_type
+-- @ptable[opt] opts Options, which may include:
+--
+-- * **fill\_type**: The common @{PolyFillType|fill rule} applied to both sets. (Default **"EvenOdd"**)
+-- * **out**: If this is a **Paths** or **PolyTree**, it will be populated and used as the return value.
+-- @treturn ?|PolyTree|Paths|nil Solution, or **nil** if there was a problem.
+
+--- Alternative signature.
+-- @function Clipper:Execute
+-- @tparam ClipType clip_type
+-- @tparam PolyFillType subject Fill rule for subject set...
+-- @tparam PolyFillType clip ...and for clip set.
+-- @ptable[opt] opts Options, which may contain **out** as per the other overload.
+-- @treturn ?|PolyTree|Paths|nil Solution, or **nil** if there was a problem.
+
+---
+-- @function Clipper:GetBounds
+-- @ptable[opt] bounds If present, this is populated and used as the return value.
+-- @treturn table Bounds table with **left**, **right**, **top**, and **bottom** @{cInt} members, describing the axis-aligned bounding rectangle of all
+-- polygons that have been added to the Clipper object.
+
+---
+-- @function Clipper:GetPreserveCollinear
+-- @treturn boolean Is collinear preservation enabled?
+-- @see Clipper:SetPreserveCollinear
+
+---
+-- @function Clipper:GetReverseSolution
+-- @treturn boolean Is reversal enabled?
+-- @see Clipper:SetReverseSolution
+
+---
+-- @function Clipper:GetStrictlySimple
+-- @treturn boolean Are simple polygons strictly simple?
+-- @see Clipper:SetStrictlySimple
+
+--- By default, when three or more vertices are collinear in input polygons (subject or clip), the Clipper object
+-- removes the 'inner' vertices before clipping. When enabled the PreserveCollinear property prevents this default
+-- behavior to allow these inner vertices to appear in the solution.
+-- @function Clipper:SetPreserveCollinear
+-- @bool enable Enable this state? (Disable it with **false**.)
+-- @see Clipper:GetPreserveCollinear
+
+--- When this property is enabled, polygons returned in the **solution** parameter of @{Clipper:Execute} will have
+-- orientations opposite to their normal orientations.
+-- @function Clipper:SetReverseSolution
+-- @bool enable Enable this state? (Disable it with **false**.)
+-- @see Clipper:GetReverseSolution
+
+--- **Terminology**:
+--
+-- * A simple polygon is one that does not self-intersect.
+-- * A weakly simple polygon is a simple polygon that contains 'touching' vertices, or 'touching' edges.
+-- * A strictly simple polygon is a simple polygon that does not contain 'touching' vertices, or 'touching' edges.
+--
+-- Vertices 'touch' if they share the same coordinates (and are not adjacent). An edge touches another if one of its
+-- end vertices touches another edge excluding its adjacent edges, or if they are co-linear and overlapping (including
+-- adjacent edges).
+--
+-- Polygons returned by clipping operations (see @{Clipper:Execute}) should always be simple polygons. When the **StrictlySimple**
+-- property is enabled, polygons returned will be strictly simple, otherwise they may be _weakly simple_. It's **computationally
+-- expensive** ensuring polygons are _strictly simple_ and so this property is disabled by default.
+--
+-- _Note: There's currently no guarantee that polygons will be strictly simple since 'simplifying' is still a work in progress._
+--
+-- (See [here](http://www.angusj.com/delphi/clipper/documentation/Docs/Units/ClipperLib/Classes/Clipper/Properties/StrictlySimple.htm)
+-- for a nice visual example.)
+-- @function Clipper:SetStrictlySimple
+-- @bool enable Enable this state? (Disable it with **false**.)
+-- @see Clipper:GetStrictlySimple

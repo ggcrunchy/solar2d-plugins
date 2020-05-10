@@ -1,0 +1,292 @@
+--- Utilities for writing images to files and memory.
+--
+-- The (single-frame) image writers come from Sean Barrett's [stb](https://github.com/nothings/stb).
+--
+-- Jon Olick's [GIF](http://www.jonolick.com/home/gif-writer) and [MPEG](http://www.jonolick.com/home/mpeg-video-writer)
+-- writers are used to save GIFs and MPEGs, respectively.
+--
+-- The **Bytes** type&mdash;specified below&mdash;may be any object that implements [ByteReader](https://ggcrunchy.github.io/corona-plugin-docs/DOCS/ByteReader/policy.html),
+-- including strings.
+--
+-- ==============================================
+--
+-- **(The comments that follow were adapted from [stb\_image\_write.h](https://raw.githubusercontent.com/nothings/stb/master/stb_image_write.h).)**
+--
+-- This is a library for writing images to files or memory.
+--
+-- The PNG output is not optimal; it is 20-50% larger than the file
+-- written by a decent optimizing implementation. This library is designed
+-- for source code compactness and simplicity, not optimal image file size
+-- or run-time performance.
+--
+-- **USAGE:**
+--
+-- There are four functions for single-frame images, one per file format:
+--
+--    ok = impack.write.bmp(filename, w, h, comp, data)
+--    ok = impack.write.hdr(filename, w, h, comp, data)
+--    ok = impack.write.png(filename, w, h, comp, data, opts)
+--    ok = impack.write.tga(filename, w, h, comp, data)
+--
+-- Each function returns **true** to indicate success and **false** for failure.
+--
+-- (This module also provides `gif` and `mpeg` writers.)
+--
+-- The functions create an image file defined by the parameters. The image
+-- is a rectangle of pixels stored from left-to-right, top-to-bottom.
+-- Each pixel contains _comp_ channels of data stored interleaved with 8-bits
+-- per channel, in the following order:
+--
+--    1 = Y
+--    2 = YA
+--    3 = RGB
+--    4 = RGBA
+--
+-- (**Y** is monochrome color.) The rectangle is _w_ pixels wide and _h_ pixels tall.
+-- _data_ points to the first byte of the top-left-most pixel.
+-- For PNG, _opts.stride\_in\_bytes_ is the distance in bytes from the first byte of
+-- a row of pixels to the first byte of the next row of pixels.
+--
+-- PNG creates output files with the same number of components as the input.
+-- The BMP format expands **Y** to **RGB** in the file format and does not
+-- output alpha.
+--
+-- PNG supports writing rectangles of data even when the bytes storing rows of
+-- data are not consecutive in memory (e.g. sub-rectangles of a larger image),
+-- by supplying the stride between the beginning of adjacent rows. The other
+-- formats do not. (Thus you cannot write a native-format BMP through the BMP
+-- writer, both because it is in BGR order and because it may have padding
+-- at the end of the line.)
+--
+-- HDR expects linear float data. Since the format is always 32-bit [rgb(e)](https://en.wikipedia.org/wiki/RGBE_image_format)
+-- data, alpha (if provided) is discarded, and for monochrome data it is
+-- replicated across all three channels.
+--
+-- TGAs are written with RLE compression. (This could be made optional down the road.)
+--
+-- ==============================================
+--
+-- **From stb's project page:**
+--
+-- This software is dual-licensed to the public domain and under the following
+-- license: you are granted a perpetual, irrevocable license to copy, modify,
+-- publish, and distribute this file as you see fit.
+--
+-- Jon Olick's GIF and MPEG writers are likewise public domain.
+--
+-- ===============================================
+
+--
+-- Permission is hereby granted, free of charge, to any person obtaining
+-- a copy of this software and associated documentation files (the
+-- "Software"), to deal in the Software without restriction, including
+-- without limitation the rights to use, copy, modify, merge, publish,
+-- distribute, sublicense, and/or sell copies of the Software, and to
+-- permit persons to whom the Software is furnished to do so, subject to
+-- the following conditions:
+--
+-- The above copyright notice and this permission notice shall be
+-- included in all copies or substantial portions of the Software.
+--
+-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+-- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+-- MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+-- IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+-- CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+-- TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+-- SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+--
+-- [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
+--
+
+--- Save an image as a **BMP** file.
+-- @function bmp
+-- @string filename Name of file.
+-- @param[opt=system.DocumentsDirectory] baseDir Directory to which the file will be added, as per
+-- [system.pathForFile](https://docs.coronalabs.com/api/library/system/pathForFile.html).
+-- @uint w Width of _data_, in pixels...
+-- @uint h ...and height.
+-- @uint comp Number of components per pixel.
+-- @tparam Bytes data The image data, cf. the summary above.
+--
+-- If _data_ is insufficient, it will be padded with `0` bytes.
+-- @tparam ?table opts Currently unused.
+-- @return[1] **true**, indicating success.
+-- @return[2] **false**, meaning failure.
+-- @treturn[2] string Error message.
+
+--- Variant of @{bmp} that saves the image as a stream of bytes.
+-- @function bmp_to_memory
+-- @uint w Width of _data_, in pixels...
+-- @uint h ...and height.
+-- @uint comp Number of components per pixel.
+-- @tparam Bytes data As per @{bmp}.
+-- @tparam ?table opts Write options. Currently, only **as\_userdata** is available, cf. the
+-- note for the return value. (Support for [blobs](https://ggcrunchy.github.io/corona-plugin-docs/DOCS/MemoryBlob/api.html)
+-- is planned and would be exposed via _opts_.)
+-- @treturn[1] Bytes On success, data encoded as a **BMP**, byte-compatible with the contents of
+-- an undecoded file. This can be reloaded via @{image.load_from_memory}.
+--
+-- If _opts.as\_userdata_ was true, the data is returned as a userdata that implements **ByteReader**,
+-- rather than being converted to a more friendly string. Under some circumstances, this might be worth
+-- doing for performance reasons.
+-- @return[2] **nil**, meaning failure.
+-- @treturn[2] string Error message.
+
+--- Saves a series of images as a GIF.
+-- @function gif
+-- @string filename Name of file.
+-- @param[opt=system.DocumentsDirectory] baseDir Directory to which the file will be added, as per
+-- [system.pathForFile](https://docs.coronalabs.com/api/library/system/pathForFile.html).
+-- @uint w Width of each frame, in pixels...
+-- @uint h ...and height.
+-- @tparam {image.GifFrame,...} frames GIF frames, with image data in RGBA form.
+--
+-- If a given frame's **image** is insufficient, it will be padded with `0` bytes. An absent **delay**
+-- (or one with value 0) indicates that the frame has no delay.
+--
+-- A **has\_local\_palette** field may also be added to a given frame. If true, the frame will have
+-- its own palette and use that in lieu of the GIF-wide one.
+--
+-- Alternatively, the array may contain **Bytes** entries. These are interpreted like frames with
+-- said bytes as their **image** field, without delay or local palette.
+-- @tparam ?table opts Save options, which include:
+--
+-- * **append**: **NYI** As with @{mpeg}.
+-- * **repeat**: Number of times the animation should repeat. By default, 0 (repeat forever).
+-- * **palette\_depth**: Palette depth _d_, from 1 to 8 (the default); the palette will have 2<sup>d</sup> - 1 colors.
+-- @return[1] **true**, indicating success.
+-- @return[2] **false**, meaning failure.
+-- @treturn[2] string Error message.
+
+--- Variant of @{gif} that saves the images as a stream of bytes.
+-- @function gif_to_memory
+-- @uint w Width of each frame, in pixels...
+-- @uint h ...and height.
+-- @tparam {image.GifFrame,...} frames As per @{gif}.
+-- @tparam ?table opts As per @{gif}.
+-- @treturn[1] Bytes On success, data encoded as a **GIF**, byte-compatible with the contents of
+-- an undecoded file. This can be reloaded via @{image.xload_from_memory}. (At the moment,
+-- this is always a string.)
+-- @return[2] **nil**, meaning failure.
+-- @treturn[2] string Error message.
+
+--- Saves an image as a Radiance RGBE HDR file.
+-- @function hdr
+-- @string filename Name of file.
+-- @param[opt=system.DocumentsDirectory] baseDir Directory to which the file will be added, as per
+-- [system.pathForFile](https://docs.coronalabs.com/api/library/system/pathForFile.html).
+-- @uint w Width of _data_, in pixels...
+-- @uint h ...and height.
+-- @uint comp Number of components per pixel.
+-- @tparam Bytes data As per @{bmp}, with the caveat that the memory consist of single-precision
+-- floats, rather than bytes, per component.
+-- @tparam ?table opts Currently unused.
+-- @return[1] **true**, indicating success.
+-- @return[2] **false**, meaning failure.
+-- @treturn[2] string Error message.
+
+--- Variant of @{hdr} that saves the image as a stream of bytes.
+--
+-- This can be reloaded via @{image.loadf_from_memory}.
+-- @function hdr_to_memory
+-- @uint w Width of _data_, in pixels...
+-- @uint h ...and height.
+-- @uint comp Number of components per pixel
+-- @tparam Bytes data As per @{hdr}.
+-- @tparam ?table opts As per @{bmp_to_memory}.
+-- @treturn[1] Bytes On success, as per @{bmp_to_memory}, but in **HDR** form.
+-- @return[2] **nil**, meaning failure.
+-- @treturn[2] string Error message.
+
+--- Saves a series of images as an MPEG.
+-- @function mpeg
+-- @string filename Name of file.
+-- @param[opt=system.DocumentsDirectory] baseDir Directory to which the file will be added, as per
+-- [system.pathForFile](https://docs.coronalabs.com/api/library/system/pathForFile.html).
+-- @uint w Width of each frame, in pixels...
+-- @uint h ...and height.
+-- @tparam {Bytes,...} frames MPEG frames, in RGBA form. If a given frame is insufficient, it will be padded
+-- with `0` bytes.
+-- @tparam ?table opts Save options, which include:
+--
+-- * **append**: (**WIP**) If true and the MPEG already exists, the video is extended with the new frames. The default is to make a new MPEG.
+-- <br><br>When appending, _w_ and _h_ are ignored; the first frame's dimensions are used instead.
+-- * **fps**: The video's frames-per-second rate (default 30).
+-- @return[1] **true**, indicating success.
+-- @return[2] **false**, meaning failure.
+-- @treturn[2] string Error message.
+
+--- Alternate overload. This is tailored toward appending frames, where the frame dimensions are ignored.
+-- @function mpeg
+-- @string filename Name of file.
+-- @param[opt=system.DocumentsDirectory] baseDir As per the other overload.
+-- @tparam {Bytes,...} frames As per the other overload.
+-- @tparam ?table opts As per the other overload.
+-- @return[1] **true**, indicating success.
+-- @return[2] **false**, meaning failure.
+-- @treturn[2] string Error message.
+
+--- Variant of @{mpeg} that saves the images as a stream of bytes.
+-- @function mpeg_to_memory
+-- @uint w Width of each frame, in pixels...
+-- @uint h ...and height.
+-- @tparam {Bytes,...} frames As per @{mpeg}.
+-- @tparam ?table opts As per @{mpeg}.
+-- @treturn[1] Bytes On success, data encoded as an **MPEG**, byte-compatible with the contents of
+-- an undecoded file. (At the moment, this is always a string.)
+-- @return[2] **nil**, meaning failure.
+-- @treturn[2] string Error message.
+
+--- Saves an image as a PNG file.
+-- @function png
+-- @string filename Name of file.
+-- @param[opt=system.DocumentsDirectory] baseDir Directory to which the file will be added, as per
+-- [system.pathForFile](https://docs.coronalabs.com/api/library/system/pathForFile.html).
+-- @uint w Width of _data_, in pixels...
+-- @uint h ...and height.
+-- @uint comp Number of components per pixel
+-- @tparam Bytes data As per @{bmp}.
+-- @tparam ?table opts Write options.
+--
+-- Currently, only **stride** is available. If present (and non-0), this will be the stride in bytes, as
+-- described in the summary above.
+-- @return[1] **true**, indicating success.
+-- @return[2] **false**, meaning failure.
+-- @treturn[2] string Error message.
+
+--- Variant of @{png} that saves the image as a stream of bytes.
+-- @function png_to_memory
+-- @uint w Width of _data_, in pixels...
+-- @uint h ...and height.
+-- @uint comp Number of components per pixel
+-- @tparam Bytes data As per @{png}.
+-- @tparam ?table opts As per the combined choices in @{bmp_to_memory} and @{png}.
+-- @treturn[1] Bytes On success, as per @{bmp_to_memory}, but in **PNG** form.
+-- @return[2] **nil**, meaning failure.
+-- @treturn[2] string Error message.
+
+--- Saves an image as a Truevision TGA file.
+-- @function tga
+-- @string filename Name of file.
+-- @param[opt=system.DocumentsDirectory] baseDir Directory to which the file will be added, as per
+-- [system.pathForFile](https://docs.coronalabs.com/api/library/system/pathForFile.html).
+-- @uint w Width of _data_, in pixels...
+-- @uint h ...and height.
+-- @uint comp Number of components per pixel
+-- @tparam Bytes data As per @{bmp}.
+-- @tparam ?table opts Currently unused.
+-- @return[1] **true**, indicating success.
+-- @return[2] **false**, meaning failure.
+-- @treturn[2] string Error message.
+
+--- Variant of @{tga} that saves the image as a stream of bytes.
+-- @function tga_to_memory
+-- @uint w Width of _data_, in pixels...
+-- @uint h ...and height.
+-- @uint comp Number of components per pixel
+-- @tparam Bytes data As per @{tga}.
+-- @tparam ?table opts As per @{bmp_to_memory}.
+-- @treturn[1] Bytes On success, as per @{bmp_to_memory}, but in **TGA** form.
+-- @return[2] **nil**, meaning failure.
+-- @treturn[2] string Error message.

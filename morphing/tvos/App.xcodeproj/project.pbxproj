@@ -1,0 +1,457 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A49EC14C1BD76ECE0093F529 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = A49EC14B1BD76ECE0093F529 /* main.mm */; };
+		A49EC14F1BD76ECE0093F529 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A49EC14E1BD76ECE0093F529 /* AppDelegate.m */; };
+		A49EC1551BD76ECE0093F529 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A49EC1531BD76ECE0093F529 /* Main.storyboard */; };
+		A49EC1571BD76ECE0093F529 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A49EC1561BD76ECE0093F529 /* Assets.xcassets */; };
+		A49EC1B31BD77E410093F529 /* CoronaCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A49EC1A11BD77B680093F529 /* CoronaCards.framework */; };
+		A49EC1B41BD77E410093F529 /* CoronaCards.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A49EC1A11BD77B680093F529 /* CoronaCards.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F51D55B91C813F7A000CE085 /* Corona_plugin_library.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F51D55B61C813EBD000CE085 /* Corona_plugin_library.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F51D55B51C813EBD000CE085 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A49EC1911BD779870093F529 /* PluginMemBitmap.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A49EC1861BD779560093F529;
+			remoteInfo = Corona_plugin_library;
+		};
+		F51D55B71C813F72000CE085 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A49EC1911BD779870093F529 /* PluginMemBitmap.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A49EC1851BD779560093F529;
+			remoteInfo = Corona_plugin_memoryBitmap;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A49EC1B51BD77E410093F529 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				F51D55B91C813F7A000CE085 /* Corona_plugin_library.framework in Embed Frameworks */,
+				A49EC1B41BD77E410093F529 /* CoronaCards.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		A49EC1471BD76ECE0093F529 /* App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A49EC14B1BD76ECE0093F529 /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
+		A49EC14D1BD76ECE0093F529 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		A49EC14E1BD76ECE0093F529 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		A49EC1541BD76ECE0093F529 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		A49EC1561BD76ECE0093F529 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A49EC1581BD76ECE0093F529 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A49EC1911BD779870093F529 /* PluginMemBitmap.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = PluginMemBitmap.xcodeproj; sourceTree = "<group>"; };
+		A49EC1A11BD77B680093F529 /* CoronaCards.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoronaCards.framework; path = CoronaEnterprise/Corona/tvos/frameworks/CoronaCards.framework; sourceTree = SOURCE_ROOT; };
+		A49EC1AE1BD77C890093F529 /* main.lua */ = {isa = PBXFileReference; lastKnownFileType = text; name = main.lua; path = ../Corona/main.lua; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A49EC1441BD76ECE0093F529 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A49EC1B31BD77E410093F529 /* CoronaCards.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A49EC13E1BD76ECE0093F529 = {
+			isa = PBXGroup;
+			children = (
+				A49EC1911BD779870093F529 /* PluginMemBitmap.xcodeproj */,
+				A49EC1491BD76ECE0093F529 /* App */,
+				A49EC17A1BD779050093F529 /* Corona */,
+				A49EC1481BD76ECE0093F529 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A49EC1481BD76ECE0093F529 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A49EC1471BD76ECE0093F529 /* App.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A49EC1491BD76ECE0093F529 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				A49EC14D1BD76ECE0093F529 /* AppDelegate.h */,
+				A49EC14E1BD76ECE0093F529 /* AppDelegate.m */,
+				A49EC1531BD76ECE0093F529 /* Main.storyboard */,
+				A49EC1561BD76ECE0093F529 /* Assets.xcassets */,
+				A49EC1581BD76ECE0093F529 /* Info.plist */,
+				A49EC1AD1BD77C6C0093F529 /* Frameworks */,
+				A49EC14A1BD76ECE0093F529 /* Supporting Files */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		A49EC14A1BD76ECE0093F529 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				A49EC14B1BD76ECE0093F529 /* main.mm */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		A49EC17A1BD779050093F529 /* Corona */ = {
+			isa = PBXGroup;
+			children = (
+				A49EC1AE1BD77C890093F529 /* main.lua */,
+			);
+			name = Corona;
+			sourceTree = "<group>";
+		};
+		A49EC1AD1BD77C6C0093F529 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A49EC1A11BD77B680093F529 /* CoronaCards.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F51D55B11C813EBD000CE085 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F51D55B61C813EBD000CE085 /* Corona_plugin_library.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A49EC1461BD76ECE0093F529 /* App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A49EC15B1BD76ECE0093F529 /* Build configuration list for PBXNativeTarget "App" */;
+			buildPhases = (
+				A49EC1431BD76ECE0093F529 /* Sources */,
+				A49EC1441BD76ECE0093F529 /* Frameworks */,
+				A49EC1451BD76ECE0093F529 /* Resources */,
+				A49EC1B91BD77F310093F529 /* Script: touch CoronaCards.framework */,
+				A49EC1B51BD77E410093F529 /* Embed Frameworks */,
+				A49EC1B61BD77EBA0093F529 /* Script: Compile Lua sources */,
+				A49EC1B71BD77EE90093F529 /* Script: build.settings to Info.plist */,
+				A4DF58591BE2F06F00B17862 /* Script: codesign embedded framework */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F51D55B81C813F72000CE085 /* PBXTargetDependency */,
+			);
+			name = App;
+			productName = App;
+			productReference = A49EC1471BD76ECE0093F529 /* App.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A49EC13F1BD76ECE0093F529 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0710;
+				ORGANIZATIONNAME = "Corona Labs";
+				TargetAttributes = {
+					A49EC1461BD76ECE0093F529 = {
+						CreatedOnToolsVersion = 7.1;
+					};
+				};
+			};
+			buildConfigurationList = A49EC1421BD76ECE0093F529 /* Build configuration list for PBXProject "App" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A49EC13E1BD76ECE0093F529;
+			productRefGroup = A49EC1481BD76ECE0093F529 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = F51D55B11C813EBD000CE085 /* Products */;
+					ProjectRef = A49EC1911BD779870093F529 /* PluginMemBitmap.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				A49EC1461BD76ECE0093F529 /* App */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		F51D55B61C813EBD000CE085 /* Corona_plugin_library.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Corona_plugin_library.framework;
+			remoteRef = F51D55B51C813EBD000CE085 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A49EC1451BD76ECE0093F529 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A49EC1571BD76ECE0093F529 /* Assets.xcassets in Resources */,
+				A49EC1551BD76ECE0093F529 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A49EC1B61BD77EBA0093F529 /* Script: Compile Lua sources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Script: Compile Lua sources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ ! -d \"$CORONA_ROOT\" ]\nthen\n\t# Assume symlink location\n\tCORONA_ROOT=$PROJECT_DIR/CoronaEnterprise\nfi\n\nif [ ! -d \"$CORONA_ROOT\" ]\nthen\n    echo \"Could not find Corona Enterprise directory\"\n    exit -1\nfi\n\n# -------------------------------------------------------------------\n\nexport TARGET_PLATFORM=ios\nCORONA_MAC_BIN=$CORONA_ROOT/Corona/mac/bin\nCORONA_SHARED_BIN=$CORONA_ROOT/Corona/shared/bin\nexport LUA_CPATH=\"$CORONA_MAC_BIN/?.so\"\n\"$CORONA_MAC_BIN\"/lua -e \"package.path='$CORONA_SHARED_BIN/?.lua;$CORONA_SHARED_BIN/?/init.lua;'..package.path\" \"$CORONA_SHARED_BIN\"/Compile.lua mac \"$CORONA_ROOT\"\nif [ $? -ne 0 ]\nthen\n    echo \"Exiting due to errors (above)\"\n    exit -1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		A49EC1B71BD77EE90093F529 /* Script: build.settings to Info.plist */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Script: build.settings to Info.plist";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ ! -d \"$CORONA_ROOT\" ]\nthen\n\t# Assume symlink location\n\tCORONA_ROOT=$PROJECT_DIR/CoronaEnterprise\nfi\n\nif [ ! -d \"$CORONA_ROOT\" ]\nthen\n    echo \"Could not find Corona Enterprise directory\"\n    exit -1\nfi\n\n# -------------------------------------------------------------------\n\n\"$CORONA_ROOT\"/Corona/mac/bin/CreateInfoPlist.sh\n\nif [ $? -ne 0 ]\nthen\n    echo \"Exiting due to errors (above)\"\n    exit -1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		A49EC1B91BD77F310093F529 /* Script: touch CoronaCards.framework */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Script: touch CoronaCards.framework";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Ensures that next attempt to build actually rebuilds the executable so it can be (re)app_sign(ed)\necho \"Updating modification time of $PROJECT_DIR/CoronaEnterprise/Corona/tvos/frameworks/CoronaCards.framework to trigger relink of $BUILT_PRODUCTS_DIR/$EXECUTABLE_PATH\"\necho \"We need to do this b/c app_sign can only sign an unsigned executable.\"\ntouch \"$PROJECT_DIR/CoronaEnterprise/Corona/tvos/frameworks/CoronaCards.framework\"";
+			showEnvVarsInLog = 0;
+		};
+		A4DF58591BE2F06F00B17862 /* Script: codesign embedded framework */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Script: codesign embedded framework";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ ! -d \"$CORONA_ROOT\" ]\nthen\n\t# Assume symlink location\n\tCORONA_ROOT=$PROJECT_DIR/CoronaEnterprise\nfi\n\nif [ ! -d \"$CORONA_ROOT\" ]\nthen\n    echo \"Could not find Corona Enterprise directory\"\n    exit -1\nfi\n\n# -------------------------------------------------------------------\n\n\"$CORONA_ROOT\"/Corona/xcode/codesign-framework.sh \"$BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/CoronaCards.framework\"\n\nif [ $? -ne 0 ]\nthen\n    echo \"Exiting due to errors (above)\"\n    exit -1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A49EC1431BD76ECE0093F529 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A49EC14F1BD76ECE0093F529 /* AppDelegate.m in Sources */,
+				A49EC14C1BD76ECE0093F529 /* main.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F51D55B81C813F72000CE085 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Corona_plugin_memoryBitmap;
+			targetProxy = F51D55B71C813F72000CE085 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		A49EC1531BD76ECE0093F529 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A49EC1541BD76ECE0093F529 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		A49EC1591BD76ECE0093F529 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Debug;
+		};
+		A49EC15A1BD76ECE0093F529 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A49EC15C1BD76ECE0093F529 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				BITCODE_GENERATION_MODE = bitcode;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Applications/CoronaEnterprise/Corona/tvos/frameworks/,
+					"$(PROJECT_DIR)/CoronaEnterprise/Corona/tvos/frameworks",
+				);
+				INFOPLIST_FILE = App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		A49EC15D1BD76ECE0093F529 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				BITCODE_GENERATION_MODE = bitcode;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Applications/CoronaEnterprise/Corona/tvos/frameworks/,
+					"$(PROJECT_DIR)/CoronaEnterprise/Corona/tvos/frameworks",
+				);
+				INFOPLIST_FILE = App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A49EC1421BD76ECE0093F529 /* Build configuration list for PBXProject "App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A49EC1591BD76ECE0093F529 /* Debug */,
+				A49EC15A1BD76ECE0093F529 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A49EC15B1BD76ECE0093F529 /* Build configuration list for PBXNativeTarget "App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A49EC15C1BD76ECE0093F529 /* Debug */,
+				A49EC15D1BD76ECE0093F529 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A49EC13F1BD76ECE0093F529 /* Project object */;
+}

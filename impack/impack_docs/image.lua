@@ -1,0 +1,430 @@
+--- Utilities for loading images.
+--
+-- The (single-frame) image readers come from Sean Barrett's [stb](https://github.com/nothings/stb).
+--
+-- Animated GIF support builds upon STB, using urraka's [xload](https://gist.githubusercontent.com/urraka/685d9a6340b26b830d49/raw/91eee495eeefb2d60abc73a1a9d83949fe6a4882/stb.c).
+--
+-- The **Bytes** type&mdash;specified below&mdash;may be any object that implements [ByteReader](https://ggcrunchy.github.io/corona-plugin-docs/DOCS/ByteReader/policy.html),
+-- including strings.
+--
+-- Functions that begin with (**WIP**) describe work in progress. These features are not considered stable, but give a reasonable idea of what to expect.
+--
+-- ========================================================================
+--
+-- **(The comments that follow were adapted from [stb\_image.h](https://raw.githubusercontent.com/nothings/stb/master/stb_image.h).)**
+--
+-- **QUICK NOTES**:
+--
+-- Primarily of interest to game developers and other people who can
+-- avoid problematic images and only need the trivial interface
+--
+-- JPEG baseline & progressive (12 bpc/arithmetic not supported, same as stock IJG lib)
+--
+-- PNG 1/2/4/8-bit-per-channel (16 bpc not supported)
+--
+-- TGA (not sure what subset, if a subset)
+--
+-- BMP (non-1bpp, non-RLE)
+--
+-- PSD (composited view only, no extra channels, 8/16 bit-per-channel)
+--
+-- GIF (_comp_ always reports as 4-channel)
+--
+-- HDR (radiance rgbE format)
+--
+-- PIC (Softimage PIC)
+--
+-- PNM (PPM and PGM binary only)
+--
+-- (**WIP**) The formats listed for @{SpotImage} are available as well.
+--
+-- Animated GIF (via @{xload})
+--
+-- - decode from memory
+-- - SIMD acceleration on x86/x64 (SSE2) and ARM (NEON)
+--
+-- **DOCUMENTATION**
+--
+-- Limitations:
+--
+-- - no 16-bit-per-channel PNG
+-- - no 12-bit-per-channel JPEG
+-- - no JPEGs with arithmetic coding
+-- - no 1-bit BMP
+-- - GIF always returns comp = 4
+--
+-- Basic usage (see HDR discussion below for HDR usage):
+--    local data, x, y, comp = impack.image.load(filename, 0)
+--    -- ... process data if not nil ...
+--    -- ... x = width, y = height, comp = # 8-bit components per pixel ...
+--    -- ... replace '0' with '1'..'4' to force that many components per pixel
+--    -- ... but comp will always be the number that it would have been if you said 0
+--    data = nil -- or allow to go out of scope
+--
+-- Standard parameters and results:
+--    x        -- image width in pixels
+--    y        -- image height in pixels
+--    comp     -- # of image components in image file
+--    req_comp -- if non-zero, # of image components requested in result
+--
+-- The return value from an image loader is a string containing
+-- the pixel data, or **nil** on an allocation failure or if the image is
+-- corrupt or invalid. The pixel data consists of _y_ scanlines of _x_ pixels,
+-- with each pixel consisting of N interleaved 8-bit components; the first
+-- pixel pointed to is top-left-most in the image. There is no padding between
+-- image scanlines or between pixels, regardless of format. The number of
+-- components N is _req\_comp_ if _req\_comp_ is non-zero (and present), or
+-- _comp_ otherwise. If _req\_comp_ is non-zero, _comp_ has the number of
+-- components that _would_ have been output otherwise. E.g. if you set _req\_comp_
+-- to 4, you will always get RGBA output, but you can check _comp_ to see if it's
+-- trivially opaque because e.g. there were only 3 channels in the source image.
+--
+-- An output image with N components has the following components interleaved
+-- in this order in each pixel:
+--
+--     N = #comp   components
+--       1           grey
+--       2           grey, alpha
+--       3           red, green, blue
+--       4           red, green, blue, alpha
+--
+-- If image loading fails for any reason, the return value will be **nil**,
+-- along with an extremely brief explanation of why the load failed.
+--
+-- Paletted PNG, BMP, GIF, and PIC images are automatically depalettized.
+--
+-- ===========================================================================
+--
+-- **Philosophy**:
+--
+-- stb libraries are designed with the following priorities:
+--
+--    1. easy to use
+--    2. easy to maintain
+--    3. good performance
+--
+-- Sometimes I let "good performance" creep up in priority over "easy to maintain",
+-- and for best performance I may provide less-easy-to-use APIs that give higher
+-- performance, in addition to the easy to use ones. Nevertheless, it's important
+-- to keep in mind that from the standpoint of you, a client of this library,
+-- all you care about is #1 and #3, and stb libraries do not emphasize #3 above all.
+--
+-- Some secondary priorities arise directly from the first two, some of which
+-- make more explicit reasons why performance can't be emphasized.
+--
+--   - Portable ("ease of use")
+--   - Small footprint ("easy to maintain")
+--   - No dependencies ("ease of use")
+--
+-- ===========================================================================
+--
+-- **SIMD support**:
+--
+-- The JPEG decoder will try to automatically use SIMD kernels on x86 when
+-- supported by the compiler. SSE2 will automatically be used when available
+-- based on a run-time test; if not, the generic C versions are used as a
+-- fall-back. Likewise, on ARM targets, NEON will be used when available.
+--
+-- ===========================================================================
+--
+-- **HDR image support**:
+--
+-- stb_image now supports loading HDR images in general, and currently
+-- the Radiance .HDR file format, although the support is provided
+-- generically. You can still load any file through the existing interface;
+-- if you attempt to load an HDR file, it will be automatically remapped to
+-- LDR, assuming gamma 2.2 and an arbitrary scale factor defaulting to 1;
+-- both of these constants can be reconfigured through this interface:
+--
+--     impack.image.hdr_to_ldr_gamma(2.2)
+--     impack.image.hdr_to_ldr_scale(1.0)
+--
+-- (Note, do not use _inverse_ constants; the appropriate inversion will be
+-- applied internally.)
+--
+-- Additionally, there is a new, parallel interface for loading files as
+-- (linear) floats to preserve the full dynamic range:
+--
+--    local data, x, y, n = impack.image.loadf(filename)
+--
+-- If you load LDR images through this interface, those images will
+-- be promoted to floating point values, run through the inverse of
+-- constants corresponding to the above:
+--
+--     impack.image.ldr_to_hdr_scale(1.0)
+--     impack.image.ldr_to_hdr_gamma(2.2)
+--
+-- Finally, given a filename or memory block containing image data, you
+-- can query for the "most appropriate" interface to use (that is, whether
+-- the image is HDR or not), using:
+--
+--     impack.image.is_hdr(filename)
+--
+-- ===========================================================================
+--
+-- **iPhone PNG support**:
+--
+-- By default we convert iPhone-formatted PNGs back to RGB, even though
+-- they are internally encoded differently.
+--
+-- ===========================================================================
+--
+-- **From stb's project page:**
+--
+-- This software is dual-licensed to the public domain and under the following
+-- license: you are granted a perpetual, irrevocable license to copy, modify,
+-- publish, and distribute this file as you see fit.
+--
+-- ========================================================================
+
+--
+-- Permission is hereby granted, free of charge, to any person obtaining
+-- a copy of this software and associated documentation files (the
+-- "Software"), to deal in the Software without restriction, including
+-- without limitation the rights to use, copy, modify, merge, publish,
+-- distribute, sublicense, and/or sell copies of the Software, and to
+-- permit persons to whom the Software is furnished to do so, subject to
+-- the following conditions:
+--
+-- The above copyright notice and this permission notice shall be
+-- included in all copies or substantial portions of the Software.
+--
+-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+-- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+-- MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+-- IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+-- CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+-- TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+-- SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+--
+-- [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
+--
+
+--[[
+TODO: Not yet using these
+enum
+{
+   STBI_default = 0, // only used for req_comp
+
+   STBI_grey       = 1,
+   STBI_grey_alpha = 2,
+   STBI_rgb        = 3,
+   STBI_rgb_alpha  = 4
+};
+]]
+
+--- Assign the (global) high &rarr; low-dynamic-range gamma mapping.
+-- @function hdr_to_ldr_gamma
+-- @number gamma Gamma mapping.
+-- @see ldr_to_hdr_gamma
+
+--- Assign the (global) high &rarr; low-dynamic-range scale factor.
+-- @function hdr_to_ldr_scale
+-- @number scale Scale factor.
+-- @see ldr_to_hdr_scale
+
+--- Get image dimensions and component count without fully decoding.
+-- @function info
+-- @string filename Name of file to query.
+-- @param[opt=system.ResourceDirectory] baseDir Directory to search, as per
+-- [system.pathForFile](https://docs.coronalabs.com/api/library/system/pathForFile.html).
+-- @return[1] **true**, indicating success.
+-- @treturn[1] uint Width of image data...
+-- @treturn[1] uint ...and height.
+-- @treturn[1] uint Number of components per pixel.
+-- @return[2] **false**, indicating failure.
+
+--- (**WIP**) Alternate overload of **info**.
+-- @function info
+-- @ptable params Info parameters. This must include **filename** and may have a **baseDir** field, with meanings as in
+-- the other overload.
+--
+-- If an **is\_absolute** is present and true, _filename_ is interpreted as an absolute path (any _baseDir_ is ignored). On
+-- non-desktop platforms, this raises an error.
+-- @treturn As per the other overload.
+
+--- Memory-based variant of @{info}.
+-- @function info_from_memory
+-- @tparam Bytes image Undecoded image contents.
+-- @return[1] **true**, indicating success.
+-- @treturn[1] uint Width of image data...
+-- @treturn[1] uint ...and height.
+-- @treturn[1] uint Number of components per pixel.
+-- @return[2] **false**, indicating failure.
+
+--- Check whether a file contains an HDR image.
+-- @function is_hdr
+-- @string filename Name of file to query.
+-- @param[opt=system.ResourceDirectory] baseDir Directory to search, as per
+-- [system.pathForFile](https://docs.coronalabs.com/api/library/system/pathForFile.html).
+-- @treturn boolean Image contents are HDR data?
+
+--- (**WIP**) Alternate overload of **is\_hdr**.
+-- @function is_hdr
+-- @ptable params Query parameters. See the table overload of @{info} for details.
+-- @return As per the other overload.
+
+--- Memory-based variant of @{is_hdr}.
+-- @function is_hdr_from_memory
+-- @tparam Bytes image Undecoded image contents.
+-- @treturn boolean Image contents are HDR data?
+
+--- Assign the (global) low &rarr; high-dynamic-range gamma mapping.
+-- @function ldr_to_hdr_gamma
+-- @number gamma Gamma mapping.
+-- @see hdr_to_ldr_gamma
+
+--- Assign the (global) low &rarr; high-dynamic-range scale factor.
+-- @function ldr_to_hdr_scale
+-- @number scale Scale factor.
+-- @see hdr_to_ldr_scale
+
+--- Loads an image into one-byte-per-component form. Refer to the summary above for further details.
+-- @function load
+-- @string filename Name of file to load.
+-- @param[opt=system.ResourceDirectory] baseDir Directory to search, as per
+-- [system.pathForFile](https://docs.coronalabs.com/api/library/system/pathForFile.html).
+-- @tparam ?table opts Load options, which include:
+--
+-- * **as\_userdata** Affects how the image data is returned.
+-- * **req\_comp** When present (and non-0), it should be an integer between 1 and 4, the loaded data
+-- will have as many components (adding or removing channels as needed).
+-- * **is\_absolute**: (**WIP**) If true, _filename_ is interpreted as being an absolute path (any _baseDir_ is ignored). On
+-- non-desktop platforms, this raises an error.
+-- * **blob**: (**WIP**) If this is a [blob](https://ggcrunchy.github.io/corona-plugin-docs/DOCS/MemoryBlob/api.html) and
+-- the decoded image data will fit, it is populated with said data. (**TODO** errors, etc.)
+-- * **bypass\_filtering**: (**WIP**) WebP-specific: bypass filtering during decoding.
+-- * **no\_fancy\_upsampling**: (**WIP**) WebP-specific: forgo any fancy upsampling during decoding.
+-- * **premultiply**: (**WIP**) If true, alpha is premultiplied in the case of 4-component data.
+-- * **x**: (**WIP**) Horizontal offset into blob, if available...
+-- * **y**: (**WIP**) ...and vertical offset.
+-- @treturn[1] Bytes Image data.
+--
+-- If _opts.as\_userdata_ was true, the data is returned as a userdata that implements **ByteReader**,
+-- rather than being converted to a more friendly string. Under some circumstances, this might be worth
+-- doing for performance reasons. (**N.B.** This feature is in flux at the moment and subject to change.)
+-- @treturn[1] uint Width of image data...
+-- @treturn[1] uint ...and height.
+-- @treturn[1] uint Number of (actual, not requested) components per pixel.
+-- @return[2] **nil**, indicating failure.
+-- @treturn[2] string Error message.
+
+--- Memory-based variant of @{load}.
+-- @function load_from_memory
+-- @tparam Bytes image Undecoded image contents.
+-- @tparam ?table opts As per @{load}
+-- @treturn[1] Bytes Image data, as per @{load}.
+-- @treturn[1] uint Width of image data...
+-- @treturn[1] uint ...and height.
+-- @treturn[1] uint Number of (actual, not requested) components per pixel.
+-- @return[2] **nil**, indicating failure.
+-- @treturn[2] string Error message.
+
+--- Loads an image into floating-point form. Refer to the summary above for further details.
+-- @function loadf
+-- @string filename Name of file to load.
+-- @param[opt=system.ResourceDirectory] baseDir Directory to search, as per
+-- [system.pathForFile](https://docs.coronalabs.com/api/library/system/pathForFile.html).
+-- @tparam ?table opts As per @{load}.
+-- @treturn[1] Bytes Image data, as per @{load}.
+-- @treturn[1] uint Width of image data...
+-- @treturn[1] uint ...and height.
+-- @treturn[1] uint Number of (actual, not requested) components per pixel.
+-- @return[2] **nil**, indicating failure.
+-- @treturn[2] string Error message.
+
+--- Memory-based variant of @{loadf}.
+-- @function loadf_from_memory
+-- @tparam Bytes image Undecoded image contents.
+-- @tparam ?table opts As per @{loadf}.
+-- @treturn[1] Bytes data Image data, as per @{loadf}.
+-- @treturn[1] uint Width of image data...
+-- @treturn[1] uint ...and height.
+-- @treturn[1] uint Number of (actual, not requested) components per pixel.
+-- @return[2] **nil**, indicating failure.
+-- @treturn[2] string Error message.
+
+--- (**WIP**) Load a Spot image from a file.
+-- @function load_image_object
+-- @string name Name of file to load.
+-- @param[opt=system.ResourceDirectory] baseDir Directory to search, as per
+-- [system.pathForFile](https://docs.coronalabs.com/api/library/system/pathForFile.html).
+-- @treturn[1] SpotImage On success, the new Spot image, cf. @{SpotImage}.
+-- @return[2] **nil**, indicating an error.
+-- @treturn[2] string Error message.
+
+--- (**WIP**) Alternate overload of **load\_image\_object**.
+-- @function load_image_object
+-- @ptable params Load parameters. See the table overload of @{info} for details.
+-- @return As per the other overload.
+
+--- (**WIP**) Load a Spot image from memory.
+-- @function load_image_object_from_memory
+-- @tparam Bytes image Undecoded image contents.
+-- @treturn[1] SpotImage On success, the new Spot image, cf. @{SpotImage}.
+-- @return[2] **nil**, indicating an error.
+-- @treturn[2] string Error message.
+
+--- (**WIP**) Create a new Spot color in HSLA form.
+-- @function new_color_hsla
+-- @number[opt=0] h Hue component, typically between 0 and, inclusive...
+-- @number[opt=0] s ...saturation component, ditto...
+-- @number[opt=0] l ...lightness, ditto...
+-- @number[opt=1] a ...and alpha, ditto.
+-- @treturn[1] SpotColor On success, the new Spot color, cf. @{SpotColor}.
+-- @return[2] **nil**, indicating an error.
+-- @treturn[2] string Error message.
+
+--- (**WIP**) Create a new Spot color in RGBA form.
+-- @function new_color_rgba
+-- @number[opt=0] r Red component, between 0 and 255, inclusive...
+-- @number[opt=0] g ...green component, ditto...
+-- @number[opt=0] b ...blue, ditto...
+-- @number[opt=0] a ...and alpha, ditto.
+-- @treturn[1] SpotColor On success, the new Spot color, cf. @{SpotColor}.
+-- @return[2] **nil**, indicating an error.
+-- @treturn[2] string Error message.
+
+--- (**WIP**) Create a new empty Spot image.
+-- @function new_image_object
+-- @uint w Image width...
+-- @uint h ...height...
+-- @uint[opt = 0] d ...and depth.
+-- @tparam ?SpotColor filler Optional initial fill color.
+-- @treturn SpotImage On success, the new Spot image, cf. @{SpotImage}.
+-- @return[2] **nil**, indicating an error.
+-- @treturn[2] string Error message.
+
+--- Represents a single frame in a GIF animation.
+-- @tparam Bytes image Frame data.
+-- @uint delay Delay, in milliseconds, for frame.
+-- @table GifFrame
+
+--- Given a GIF, loads its frames (image data, delay to next frame) into an array. All frames are loaded
+-- as RGBA with the same width and height.
+--
+-- A single image buffer (with no delay info) is returned for non-GIF files and for GIFs that have one frame.
+-- @function xload
+-- @string filename Name of file to load.
+-- @param[opt=system.ResourceDirectory] baseDir Directory to search, as per
+-- [system.pathForFile](https://docs.coronalabs.com/api/library/system/pathForFile.html).
+-- @treturn[1] {GifFrame,...} frames, where a **frame** is a table with two keys, **image** containing
+-- a string and **delay** a uint.
+-- @treturn[1] uint Width common to all frames...
+-- @treturn[1] uint ...and height.
+-- @treturn[2] string Image data, in the case there is only one frame or _filename_ was not a GIF.
+-- @treturn[2] uint Image width...
+-- @treturn[2] uint ...and height.
+-- @treturn[2] uint bpp Always 4.
+-- @return[3] **nil**, indicating failure.
+-- @treturn[3] string Error message.
+
+--- (**WIP**) Alternate overload of **xload**.
+-- @function xload
+-- @ptable params Load parameters. See the table overload of @{info} for details.
+-- @return As per the other overload.
+
+--- Variant of @{xload} that loads from memory.
+-- @function xload_from_memory
+-- @tparam Bytes image Undecoded image contents
+-- @return As per @{xload}.

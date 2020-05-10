@@ -1,0 +1,71 @@
+---	Corona binding for [FreeImage](http://freeimage.sourceforge.net):
+--
+-- "FreeImage is an Open Source library project for developers who would like to
+-- support popular graphics image formats like PNG, BMP, JPEG, TIFF and others as
+-- needed by today's multimedia applications. FreeImage is easy to use, fast,
+-- multithreading safe, compatible with all 32-bit or 64-bit versions of Windows,
+-- and cross-platform (works both with Linux and Mac OS X)."
+--
+-- This binding largely follows [FreeImagePlus](http://freeimage.sourceforge.net/fip/index.html).
+--
+--    local freeimage = require("plugin.freeimage")
+
+--
+-- Permission is hereby granted, free of charge, to any person obtaining
+-- a copy of this software and associated documentation files (the
+-- "Software"), to deal in the Software without restriction, including
+-- without limitation the rights to use, copy, modify, merge, publish,
+-- distribute, sublicense, and/or sell copies of the Software, and to
+-- permit persons to whom the Software is furnished to do so, subject to
+-- the following conditions:
+--
+-- The above copyright notice and this permission notice shall be
+-- included in all copies or substantial portions of the Software.
+--
+-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+-- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+-- MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+-- IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+-- CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+-- TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+-- SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+--
+-- [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
+--
+
+--- Identify an image file's format.
+-- @function M.IdentifyFIF
+-- @param string name Filename.
+-- @treturn uint FIF code. (TODO This is probably broken, should return a file format)
+
+--- Instantiate a new @{fipImage}.
+-- @function M.NewImage
+-- @string[opt="BITMAP"] image_type Image type, cf. @{enums.FREE_IMAGE_TYPE}.
+-- @uint[opt=0] width
+-- @uint[opt=0] height
+-- @uint[opt=0] bpp Bitdepth.
+-- @treturn fipImage New image.
+
+--- Wrap a memory buffer containing image data.
+--
+-- The memory buffer is read only and has to be freed by the user when no longer in use. (TODO: true?)
+--
+-- When default arguments are used, open a memory file as read/write.
+-- @function M.NewMemoryIO
+-- @param[opt] data Pointer to the memory buffer.
+-- @uint[opt=0] size_in_bytes Buffer size in bytes.
+-- @treturn fipMemoryIO New memory handle.
+
+--- Instantiate a new @{fipMultiPage}.
+-- @function M.NewMultiPage
+-- @bool keep_in_memory When true, all gathered bitmap data in the page manipulation process is kept in memory, otherwise it
+-- is lazily flushed to a temporary file on the hard disk in 64 Kb blocks.
+-- @treturn fipMultiPage New multi-page.
+
+--- Instantiate a new @{fipWinImage}.
+-- @function M.NewWinImage
+-- @string[opt="BITMAP"] image_type Image type, cf. @{enums.FREE_IMAGE_TYPE}.
+-- @uint[opt=0] width
+-- @uint[opt=0] height
+-- @uint[opt=0] bpp Bitdepth.
+-- @treturn fipWinImage New (Win) image.

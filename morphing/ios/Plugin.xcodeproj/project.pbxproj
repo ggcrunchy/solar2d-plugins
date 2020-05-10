@@ -1,0 +1,274 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CE14706B1CEFCE3700741FDA /* CubicCoords.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE1470641CEFCE3700741FDA /* CubicCoords.cpp */; };
+		CE14706C1CEFCE3700741FDA /* MorphState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE1470651CEFCE3700741FDA /* MorphState.cpp */; };
+		CE14706D1CEFCE3700741FDA /* PoissonCoords.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE1470661CEFCE3700741FDA /* PoissonCoords.cpp */; };
+		CE14706E1CEFCE3700741FDA /* Poly.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE1470671CEFCE3700741FDA /* Poly.cpp */; };
+		CE14706F1CEFCE3700741FDA /* State.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE1470681CEFCE3700741FDA /* State.cpp */; };
+		CE1470701CEFCE3700741FDA /* utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE1470691CEFCE3700741FDA /* utils.cpp */; };
+		CEFA83791CED245B00BFA9AF /* CubicMVCs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEFA83711CED245B00BFA9AF /* CubicMVCs.cpp */; };
+		CEFA837A1CED245B00BFA9AF /* plugin.morphing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEFA83731CED245B00BFA9AF /* plugin.morphing.cpp */; };
+		CEFA837B1CED245B00BFA9AF /* Point.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEFA83741CED245B00BFA9AF /* Point.cpp */; };
+		CEFA837C1CED245B00BFA9AF /* PoissonMVCs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEFA83761CED245B00BFA9AF /* PoissonMVCs.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A4E253B4166D6FB300DCDC2C /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/${PRODUCT_NAME}";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		A4E253B6166D6FB300DCDC2C /* libplugin_morphing.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libplugin_morphing.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE1470631CEFCE3700741FDA /* classes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = classes.h; path = ../shared/classes.h; sourceTree = "<group>"; };
+		CE1470641CEFCE3700741FDA /* CubicCoords.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CubicCoords.cpp; path = ../shared/CubicCoords.cpp; sourceTree = "<group>"; };
+		CE1470651CEFCE3700741FDA /* MorphState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MorphState.cpp; path = ../shared/MorphState.cpp; sourceTree = "<group>"; };
+		CE1470661CEFCE3700741FDA /* PoissonCoords.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PoissonCoords.cpp; path = ../shared/PoissonCoords.cpp; sourceTree = "<group>"; };
+		CE1470671CEFCE3700741FDA /* Poly.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Poly.cpp; path = ../shared/Poly.cpp; sourceTree = "<group>"; };
+		CE1470681CEFCE3700741FDA /* State.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = State.cpp; path = ../shared/State.cpp; sourceTree = "<group>"; };
+		CE1470691CEFCE3700741FDA /* utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = utils.cpp; path = ../shared/utils.cpp; sourceTree = "<group>"; };
+		CE14706A1CEFCE3700741FDA /* utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = utils.h; path = ../shared/utils.h; sourceTree = "<group>"; };
+		CEFA83711CED245B00BFA9AF /* CubicMVCs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CubicMVCs.cpp; path = ../shared/CubicMVCs.cpp; sourceTree = "<group>"; };
+		CEFA83721CED245B00BFA9AF /* CubicMVCs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CubicMVCs.h; path = ../shared/CubicMVCs.h; sourceTree = "<group>"; };
+		CEFA83731CED245B00BFA9AF /* plugin.morphing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = plugin.morphing.cpp; path = ../shared/plugin.morphing.cpp; sourceTree = "<group>"; };
+		CEFA83741CED245B00BFA9AF /* Point.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Point.cpp; path = ../shared/Point.cpp; sourceTree = "<group>"; };
+		CEFA83751CED245B00BFA9AF /* Point.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Point.h; path = ../shared/Point.h; sourceTree = "<group>"; };
+		CEFA83761CED245B00BFA9AF /* PoissonMVCs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PoissonMVCs.cpp; path = ../shared/PoissonMVCs.cpp; sourceTree = "<group>"; };
+		CEFA83771CED245B00BFA9AF /* PoissonMVCs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PoissonMVCs.h; path = ../shared/PoissonMVCs.h; sourceTree = "<group>"; };
+		CEFA83781CED245B00BFA9AF /* stdafx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stdafx.h; path = ../shared/stdafx.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A4E253B3166D6FB300DCDC2C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A447B609165D72A6009EA762 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				CE1470631CEFCE3700741FDA /* classes.h */,
+				CE1470641CEFCE3700741FDA /* CubicCoords.cpp */,
+				CE1470651CEFCE3700741FDA /* MorphState.cpp */,
+				CE1470661CEFCE3700741FDA /* PoissonCoords.cpp */,
+				CE1470671CEFCE3700741FDA /* Poly.cpp */,
+				CE1470681CEFCE3700741FDA /* State.cpp */,
+				CE1470691CEFCE3700741FDA /* utils.cpp */,
+				CE14706A1CEFCE3700741FDA /* utils.h */,
+				CEFA83711CED245B00BFA9AF /* CubicMVCs.cpp */,
+				CEFA83721CED245B00BFA9AF /* CubicMVCs.h */,
+				CEFA83731CED245B00BFA9AF /* plugin.morphing.cpp */,
+				CEFA83741CED245B00BFA9AF /* Point.cpp */,
+				CEFA83751CED245B00BFA9AF /* Point.h */,
+				CEFA83761CED245B00BFA9AF /* PoissonMVCs.cpp */,
+				CEFA83771CED245B00BFA9AF /* PoissonMVCs.h */,
+				CEFA83781CED245B00BFA9AF /* stdafx.h */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		A484110E15114F700074BD57 = {
+			isa = PBXGroup;
+			children = (
+				A447B609165D72A6009EA762 /* Source */,
+				A484111A15114F700074BD57 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A484111A15114F700074BD57 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A4E253B6166D6FB300DCDC2C /* libplugin_morphing.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A4E253B5166D6FB300DCDC2C /* plugin_morphing */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A4E253BF166D6FB300DCDC2C /* Build configuration list for PBXNativeTarget "plugin_morphing" */;
+			buildPhases = (
+				A4E253B2166D6FB300DCDC2C /* Sources */,
+				A4E253B3166D6FB300DCDC2C /* Frameworks */,
+				A4E253B4166D6FB300DCDC2C /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = plugin_morphing;
+			productName = plugin_library;
+			productReference = A4E253B6166D6FB300DCDC2C /* libplugin_morphing.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A484111015114F700074BD57 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = A484111315114F700074BD57 /* Build configuration list for PBXProject "Plugin" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = A484110E15114F700074BD57;
+			productRefGroup = A484111A15114F700074BD57 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A4E253B5166D6FB300DCDC2C /* plugin_morphing */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A4E253B2166D6FB300DCDC2C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE14706B1CEFCE3700741FDA /* CubicCoords.cpp in Sources */,
+				CE1470701CEFCE3700741FDA /* utils.cpp in Sources */,
+				CE14706D1CEFCE3700741FDA /* PoissonCoords.cpp in Sources */,
+				CEFA837C1CED245B00BFA9AF /* PoissonMVCs.cpp in Sources */,
+				CE14706C1CEFCE3700741FDA /* MorphState.cpp in Sources */,
+				CEFA837B1CED245B00BFA9AF /* Point.cpp in Sources */,
+				CE14706E1CEFCE3700741FDA /* Poly.cpp in Sources */,
+				CEFA83791CED245B00BFA9AF /* CubicMVCs.cpp in Sources */,
+				CEFA837A1CED245B00BFA9AF /* plugin.morphing.cpp in Sources */,
+				CE14706F1CEFCE3700741FDA /* State.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A484114015114F700074BD57 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/CoronaEnterprise/Corona/shared/include/Corona ${SRCROOT}/CoronaEnterprise/Corona/shared/include/lua ${SRCROOT}/CoronaEnterprise/Corona/ios/include/Corona";
+			};
+			name = Debug;
+		};
+		A484114115114F700074BD57 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/CoronaEnterprise/Corona/shared/include/Corona ${SRCROOT}/CoronaEnterprise/Corona/shared/include/lua ${SRCROOT}/CoronaEnterprise/Corona/ios/include/Corona";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A4E253C0166D6FB300DCDC2C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "compiler-default";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				DSTROOT = /tmp/plugin_library.dst;
+				ENABLE_BITCODE = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		A4E253C1166D6FB300DCDC2C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "compiler-default";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				DSTROOT = /tmp/plugin_library.dst;
+				ENABLE_BITCODE = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				"HEADER_SEARCH_PATHS[arch=*]" = /Applications/CoronaEnterprise/Corona/shared/include/lua;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A484111315114F700074BD57 /* Build configuration list for PBXProject "Plugin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A484114015114F700074BD57 /* Debug */,
+				A484114115114F700074BD57 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A4E253BF166D6FB300DCDC2C /* Build configuration list for PBXNativeTarget "plugin_morphing" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A4E253C0166D6FB300DCDC2C /* Debug */,
+				A4E253C1166D6FB300DCDC2C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A484111015114F700074BD57 /* Project object */;
+}

@@ -1,0 +1,595 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\shared\jo_gif.cpp">
+      <Filter>jo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\image_resize.cpp">
+      <Filter>modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\image.cpp">
+      <Filter>modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\image_write.cpp">
+      <Filter>modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\math_libraries\projectNe10\modules\imgproc\NE10_resize.c">
+      <Filter>ne10</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\math_libraries\projectNe10\modules\imgproc\NE10_rotate.c">
+      <Filter>ne10</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\math_libraries\projectNe10\modules\imgproc\NE10_boxfilter.c">
+      <Filter>ne10</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\image_ops.cpp">
+      <Filter>modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\image_utils.cpp" />
+    <ClCompile Include="..\shared\plugin.impack.cpp" />
+    <ClCompile Include="..\shared\jo_file.cpp">
+      <Filter>jo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\jo_mpeg.cpp">
+      <Filter>jo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\grayscale.cpp">
+      <Filter>modules</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\spot.cpp">
+      <Filter>spot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\SpotInterface.cpp">
+      <Filter>spot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\jo_jpeg.cpp">
+      <Filter>jo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dec\alpha_dec.c">
+      <Filter>webp\dec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dec\buffer_dec.c">
+      <Filter>webp\dec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dec\frame_dec.c">
+      <Filter>webp\dec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dec\idec_dec.c">
+      <Filter>webp\dec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dec\io_dec.c">
+      <Filter>webp\dec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dec\quant_dec.c">
+      <Filter>webp\dec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dec\tree_dec.c">
+      <Filter>webp\dec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dec\vp8_dec.c">
+      <Filter>webp\dec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dec\vp8l_dec.c">
+      <Filter>webp\dec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dec\webp_dec.c">
+      <Filter>webp\dec</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\demux\anim_decode.c">
+      <Filter>webp\demux</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\demux\demux.c">
+      <Filter>webp\demux</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\alpha_processing.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\alpha_processing_mips_dsp_r2.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\alpha_processing_neon.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\alpha_processing_sse2.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\alpha_processing_sse41.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\cost.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\cost_mips_dsp_r2.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\cost_mips32.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\cost_sse2.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\cpu.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\dec.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\dec_clip_tables.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\dec_mips_dsp_r2.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\dec_mips32.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\dec_msa.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\dec_neon.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\dec_sse2.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\dec_sse41.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\enc.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\enc_avx2.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\enc_mips_dsp_r2.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\enc_mips32.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\enc_msa.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\enc_neon.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\enc_sse2.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\enc_sse41.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\filters.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\filters_mips_dsp_r2.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\filters_msa.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\filters_neon.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\filters_sse2.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\lossless.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\lossless_enc.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\lossless_enc_mips_dsp_r2.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\lossless_enc_mips32.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\lossless_enc_msa.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\lossless_enc_neon.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\lossless_enc_sse2.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\lossless_enc_sse41.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\lossless_mips_dsp_r2.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\lossless_msa.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\lossless_neon.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\lossless_sse2.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\rescaler.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\rescaler_mips_dsp_r2.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\rescaler_mips32.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\rescaler_msa.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\rescaler_neon.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\rescaler_sse2.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\ssim.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\ssim_sse2.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\upsampling.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\upsampling_mips_dsp_r2.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\upsampling_msa.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\upsampling_neon.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\upsampling_sse2.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\upsampling_sse41.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\yuv.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\yuv_mips_dsp_r2.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\yuv_mips32.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\yuv_neon.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\yuv_sse2.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\yuv_sse41.c">
+      <Filter>webp\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\enc\alpha_enc.c">
+      <Filter>webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\enc\analysis_enc.c">
+      <Filter>webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\enc\backward_references_cost_enc.c">
+      <Filter>webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\enc\backward_references_enc.c">
+      <Filter>webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\enc\config_enc.c">
+      <Filter>webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\enc\cost_enc.c">
+      <Filter>webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\enc\filter_enc.c">
+      <Filter>webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\enc\frame_enc.c">
+      <Filter>webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\enc\histogram_enc.c">
+      <Filter>webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\enc\iterator_enc.c">
+      <Filter>webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\enc\near_lossless_enc.c">
+      <Filter>webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\enc\picture_csp_enc.c">
+      <Filter>webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\enc\picture_enc.c">
+      <Filter>webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\enc\picture_psnr_enc.c">
+      <Filter>webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\enc\picture_rescale_enc.c">
+      <Filter>webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\enc\picture_tools_enc.c">
+      <Filter>webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\enc\predictor_enc.c">
+      <Filter>webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\enc\quant_enc.c">
+      <Filter>webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\enc\syntax_enc.c">
+      <Filter>webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\enc\token_enc.c">
+      <Filter>webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\enc\tree_enc.c">
+      <Filter>webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\enc\vp8l_enc.c">
+      <Filter>webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\enc\webp_enc.c">
+      <Filter>webp\enc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\mux\anim_encode.c">
+      <Filter>webp\mux</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\mux\muxedit.c">
+      <Filter>webp\mux</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\mux\muxinternal.c">
+      <Filter>webp\mux</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\mux\muxread.c">
+      <Filter>webp\mux</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\utils\bit_reader_utils.c">
+      <Filter>webp\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\utils\bit_writer_utils.c">
+      <Filter>webp\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\utils\color_cache_utils.c">
+      <Filter>webp\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\utils\filters_utils.c">
+      <Filter>webp\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\utils\huffman_encode_utils.c">
+      <Filter>webp\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\utils\huffman_utils.c">
+      <Filter>webp\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\utils\quant_levels_dec_utils.c">
+      <Filter>webp\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\utils\quant_levels_utils.c">
+      <Filter>webp\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\utils\random_utils.c">
+      <Filter>webp\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\utils\rescaler_utils.c">
+      <Filter>webp\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\utils\thread_utils.c">
+      <Filter>webp\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\utils\utils.c">
+      <Filter>webp\utils</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\shared\stb_image.h">
+      <Filter>stb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\stb_image_write.h">
+      <Filter>stb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\jo_gif.h">
+      <Filter>jo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\sdf.h">
+      <Filter>sdf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\stb_image_resize.h">
+      <Filter>stb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\image_utils.h" />
+    <ClInclude Include="..\shared\impack.h" />
+    <ClInclude Include="..\shared\jo_file.h">
+      <Filter>jo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\spot.hpp">
+      <Filter>spot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\SpotHelper.h">
+      <Filter>spot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\SpotInterface.h">
+      <Filter>spot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\dec\webpi_dec.h">
+      <Filter>webp\dec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\dec\alphai_dec.h">
+      <Filter>webp\dec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\dec\common_dec.h">
+      <Filter>webp\dec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\dec\vp8_dec.h">
+      <Filter>webp\dec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\dec\vp8i_dec.h">
+      <Filter>webp\dec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\dec\vp8li_dec.h">
+      <Filter>webp\dec</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\dsp\common_sse2.h">
+      <Filter>webp\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\dsp\common_sse41.h">
+      <Filter>webp\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\dsp\dsp.h">
+      <Filter>webp\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\dsp\lossless.h">
+      <Filter>webp\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\dsp\lossless_common.h">
+      <Filter>webp\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\dsp\mips_macro.h">
+      <Filter>webp\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\dsp\msa_macro.h">
+      <Filter>webp\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\dsp\neon.h">
+      <Filter>webp\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\dsp\yuv.h">
+      <Filter>webp\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\enc\backward_references_enc.h">
+      <Filter>webp\enc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\enc\cost_enc.h">
+      <Filter>webp\enc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\enc\histogram_enc.h">
+      <Filter>webp\enc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\enc\vp8i_enc.h">
+      <Filter>webp\enc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\enc\vp8li_enc.h">
+      <Filter>webp\enc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\mux\animi.h">
+      <Filter>webp\mux</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\mux\muxi.h">
+      <Filter>webp\mux</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\webp\decode.h">
+      <Filter>webp\webp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\webp\demux.h">
+      <Filter>webp\webp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\webp\encode.h">
+      <Filter>webp\webp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\webp\format_constants.h">
+      <Filter>webp\webp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\webp\mux.h">
+      <Filter>webp\webp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\webp\mux_types.h">
+      <Filter>webp\webp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\webp\types.h">
+      <Filter>webp\webp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\utils\bit_reader_inl_utils.h">
+      <Filter>webp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\utils\bit_reader_utils.h">
+      <Filter>webp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\utils\bit_writer_utils.h">
+      <Filter>webp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\utils\color_cache_utils.h">
+      <Filter>webp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\utils\endian_inl_utils.h">
+      <Filter>webp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\utils\filters_utils.h">
+      <Filter>webp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\utils\huffman_encode_utils.h">
+      <Filter>webp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\utils\huffman_utils.h">
+      <Filter>webp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\utils\quant_levels_dec_utils.h">
+      <Filter>webp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\utils\quant_levels_utils.h">
+      <Filter>webp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\utils\random_utils.h">
+      <Filter>webp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\utils\rescaler_utils.h">
+      <Filter>webp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\utils\thread_utils.h">
+      <Filter>webp\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\utils\utils.h">
+      <Filter>webp\utils</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="stb">
+      <UniqueIdentifier>{05c7133c-58f6-48da-8501-ab1010dcc442}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="jo">
+      <UniqueIdentifier>{cab327e9-7364-439b-b819-4845595a6a43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sdf">
+      <UniqueIdentifier>{820ee398-d183-4873-9b6b-f9a44fcab7df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="modules">
+      <UniqueIdentifier>{f22aee92-ac39-4f3e-8d70-f2f5345d0aef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ne10">
+      <UniqueIdentifier>{b17d9553-bf86-4373-a731-154714449c96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="spot">
+      <UniqueIdentifier>{5ebafdfe-f203-4eda-ae16-d58f06f42ae7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="webp">
+      <UniqueIdentifier>{307010f7-3e7c-42b9-ac23-24d15d127ce5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="webp\dec">
+      <UniqueIdentifier>{2df0f344-b3b9-4f4c-86f4-0f66cfb6b7d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="webp\demux">
+      <UniqueIdentifier>{1608b08e-61d8-48d8-a2c3-96757d18945a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="webp\dsp">
+      <UniqueIdentifier>{5169ae3f-a349-4e06-9b3d-8badbfabe963}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="webp\enc">
+      <UniqueIdentifier>{ec10816a-fafb-44ff-8d5c-92fffbc009ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="webp\mux">
+      <UniqueIdentifier>{8ae706d3-cf03-459d-8051-b6fa62d1ee60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="webp\utils">
+      <UniqueIdentifier>{6f26c431-534f-4203-9a44-3d2559cde4d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="webp\webp">
+      <UniqueIdentifier>{d21110f9-0552-4114-b746-734e44be8766}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

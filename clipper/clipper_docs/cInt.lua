@@ -1,0 +1,52 @@
+--- Clipper integer.
+--
+-- [Notes from Clipper's docs](http://www.angusj.com/delphi/clipper/documentation/Docs/Units/ClipperLib/Types/IntPoint.htm): The **IntPoint** structure
+-- is used to represent all vertices in the Clipper Library. An integer storage type has been deliberately chosen to preserve
+-- [numerical robustness](http://www.mpi-inf.mpg.de/~kettner/pub/nonrobust_cgta_06.pdf). (Early versions of the library used floating point coordinates,
+-- but it became apparent that floating point imprecision would always cause occasional errors.)
+--
+-- A sequence of IntPoints are contained within a @{Path} structure to represent a single contour.
+--
+-- Users wishing to clip or offset polygons containing _floating point_ coordinates need to use appropriate scaling when converting these values to
+-- and from _IntPoints_.
+--
+-- See also the notes on [rounding](http://www.angusj.com/delphi/clipper/documentation/Docs/Overview/Rounding.htm).
+--
+-- [And elsewhere](http://www.angusj.com/delphi/clipper/documentation/Docs/Units/ClipperLib/Types/CInt.htm), with minor edits:
+--
+-- **cInt** is the integer type used by the Clipper Library to represent vertex coordinate values.
+--
+-- The library uses integers instead of floating point values to preserve numerical robustness. (Very early versions of the library used floating
+-- point coordinates, but it became apparent that floating point imprecision was always going to cause occasional errors.)
+--
+-- **cInt** represents a signed 64-bit integer and polygon coordinates can have any value in the range ±9.2e+18 (`2^63`). This accommodates the
+-- scaling of floating point coordinate values to very large integers so that very high degrees of precision can be retained during clipping.
+-- However, if coordinate values can be kept within the range ±3.0e+9, then by avoiding large integer math, a modest ~10% improvement in clipping
+-- performance is achieved.
+--
+-- (Note that Lua uses doubles. Beyond `2^53`, only [some integers](https://stackoverflow.com/a/1848762) are representable.)
+--
+-- @classmod cInt
+
+--
+-- Permission is hereby granted, free of charge, to any person obtaining
+-- a copy of this software and associated documentation files (the
+-- "Software"), to deal in the Software without restriction, including
+-- without limitation the rights to use, copy, modify, merge, publish,
+-- distribute, sublicense, and/or sell copies of the Software, and to
+-- permit persons to whom the Software is furnished to do so, subject to
+-- the following conditions:
+--
+-- The above copyright notice and this permission notice shall be
+-- included in all copies or substantial portions of the Software.
+--
+-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+-- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+-- MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+-- IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+-- CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+-- TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+-- SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+--
+-- [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
+--

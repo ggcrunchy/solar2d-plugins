@@ -1,0 +1,8 @@
+[submodule "ByteReader"]
+	path = ByteReader
+	url = https://github.com/ggcrunchy/ByteReader
+	branch = master
+[submodule "corona_enterprise_utils"]
+	path = corona_enterprise_utils
+	url = https://github.com/ggcrunchy/corona_enterprise_utils
+	branch = master

@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\shared\plugin.MemoryBlob.cpp" />
+    <ClCompile Include="..\shared\SharedStorage.cpp">
+      <Filter>blob</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\State.cpp">
+      <Filter>blob</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\BlobPimpl.cpp">
+      <Filter>blob</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\Interface.cpp">
+      <Filter>blob</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\Instance.cpp">
+      <Filter>blob</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\libcuckoo-windows\city.cc">
+      <Filter>libcuckoo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\Queue.cpp">
+      <Filter>blob</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\shared\MemoryBlob.h">
+      <Filter>blob</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Macros.h">
+      <Filter>blob</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libcuckoo-windows\city.h">
+      <Filter>libcuckoo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libcuckoo-windows\city_hasher.hh">
+      <Filter>libcuckoo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libcuckoo-windows\citycrc.h">
+      <Filter>libcuckoo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libcuckoo-windows\config.h">
+      <Filter>libcuckoo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libcuckoo-windows\cuckoohash_config.h">
+      <Filter>libcuckoo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libcuckoo-windows\cuckoohash_map.hh">
+      <Filter>libcuckoo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libcuckoo-windows\cuckoohash_util.h">
+      <Filter>libcuckoo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\concurrentqueue.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="blob">
+      <UniqueIdentifier>{83553625-a318-4a37-8c2f-6da03451eeb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libcuckoo">
+      <UniqueIdentifier>{fe926cf4-c445-4695-bfcd-e8e208f9fe57}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

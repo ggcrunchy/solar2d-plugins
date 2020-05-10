@@ -1,0 +1,234 @@
+--- Byte-flavored memory bitmap, useful for loading image-style assets from byte streams (and _vice versa_),
+-- where components are integers ranging from 0 to 255.
+--
+-- While bytemaps _can_ be used like Corona's [memory bitmap](https://docs.coronalabs.com/plugin/memoryBitmap/type/MemoryBitmap/index.html),
+-- the latter should be preferred for per-pixel operations. More typical bytemap usage will involve bulk operations,
+-- such as reading entire images from memory or network downloads.
+--
+-- To use the plugin, add the following in <code>build.settings</code>:
+--
+-- <pre><code class="language-lua">plugins = {
+--   ["plugin.Bytemap"] = { publisherId = "com.xibalbastudios" }
+-- }</code></pre>
+--
+-- On Android, the [AssetReader plugin](https://marketplace.coronalabs.com/corona-plugins/assetreader) may also be included to improve file-reading support:
+-- <pre><code class="language-lua">plugins = {  
+--  ["plugin.Bytemap"] = { publisherId = "com.xibalbastudios" },
+--  ["plugin.AssetReader"] = { publisherId = "com.xibalbastudios" }
+-- }</code></pre>
+--
+-- A `require("plugin.AssetReader")` will then install support. (Down the road, this will ideally be automatic.)
+--
+-- Sample code is available [here](https://github.com/ggcrunchy/corona-plugin-docs/tree/master/Bytemap_sample).
+--
+-- The **Bytes** type&mdash;specified in a few of the bytemap methods&mdash;may be any object that implements [ByteReader](https://ggcrunchy.github.io/corona-plugin-docs/DOCS/ByteReader/policy.html),
+-- including strings.
+--
+-- Functions and sections that begin with (**WIP**) describe work in progress. These features are not considered stable,
+-- but give a reasonable idea of what to expect.
+--
+-- This plugin is designed to be called safely from other [Lua processes](https://ggcrunchy.github.io/corona-plugin-docs/DOCS/luaproc/api.html).
+
+--
+-- Permission is hereby granted, free of charge, to any person obtaining
+-- a copy of this software and associated documentation files (the
+-- "Software"), to deal in the Software without restriction, including
+-- without limitation the rights to use, copy, modify, merge, publish,
+-- distribute, sublicense, and/or sell copies of the Software, and to
+-- permit persons to whom the Software is furnished to do so, subject to
+-- the following conditions:
+--
+-- The above copyright notice and this permission notice shall be
+-- included in all copies or substantial portions of the Software.
+--
+-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+-- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+-- MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+-- IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+-- CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+-- TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+-- SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+--
+-- [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
+--
+
+--- Create a new **Bytemap**, a two-dimensional memory-structuring mechanism.
+--
+-- Normally, bytemaps are [external textures](https://docs.coronalabs.com/api/type/TextureResourceExternal/index.html) and
+-- thus integrate with Corona's display objects via their `filename` and `baseDir` properties, e.g. in [paints](https://docs.coronalabs.com/api/type/BitmapPaint/index.html),
+-- as arguments to [display.newImage](https://docs.coronalabs.com/api/library/display/newImage.html), etc.
+--
+-- Bytes are ordered linearly left-to-right, with rows going top-to-bottom. For instance, a 2 &times; 2, four-pixel
+-- RGBA bytemap would be arranged thus:
+--
+--    R1 G1 B1 A1 | R2 G2 B2 A2
+--    -------------------------
+--    R3 G3 B3 A3 | R4 G4 B4 A4
+--
+-- In flat memory, this will have the pattern
+--
+--    R1 G1 B1 A1 R2 G2 B2 A2 R3 G3 B3 A3 R4 G4 B4 A4
+--
+-- Bytemaps created [outside Corona's own process](https://ggcrunchy.github.io/corona-plugin-docs/DOCS/luaproc/api.html) lose
+-- the connection with the display hierarchy: [invalidate](https://docs.coronalabs.com/api/type/TextureResourceExternal/invalidate.html)
+-- and [releaseSelf](https://docs.coronalabs.com/api/type/TextureResource/releaseSelf.html) become no-ops, whereas `filename` and
+-- `baseDir` will throw errors if accessed.
+-- @function newTexture
+-- @ptable config Parameters used to initialize the bytemap:
+--
+-- * **format**: Underlying [data format](https://docs.coronalabs.com/native/C/CoronaGraphics.html), which may be
+-- **"mask"**, **"rgb"**, or **"rgba"** (the default).
+-- <br/><br/>
+-- The bytemap will have a corresponding _bytes\_per\_pixel_ of 1, 3, or 4, respectively.
+-- * **width**: Number of pixels wide...
+-- * **height**: ...and tall.
+-- * **is\_non\_external**: If true, the bytemap will be non-external as described above, even in Corona's process. 
+--
+-- Bytemaps have (read-only) properties with the same names that supply these values.
+-- @treturn ?|Bytemap|nil The new bytemap, or **nil** on error.
+
+--- Create and populate a new **Bytemap** from a **JPEG** or **PNG** file.
+--
+-- Compare the details about those image formats [here](https://ggcrunchy.github.io/corona-plugin-docs/DOCS/impack/modules/image.html)
+-- for an idea of what limitations are in place, as this uses similar machinery.
+--
+-- Further details about bytemaps may be found in @{newTexture}'s summary.
+-- @ptable config Parameters used to initialize the bytemap:
+--
+-- * **filename**: Name of file to load. The dimensions will be extracted from the file.
+-- * **baseDir**: If provided, the directory where _filename_ can be found, cf. [system.pathForFile](https://docs.coronalabs.com/api/library/system/pathForFile.html).
+-- * **format**: As per @{newTexture}. (Importantly, the number of components in the file is **not** consulted.)
+-- * **is\_absolute**: If true, _filename_ is interpreted as an absolute path (any _baseDir_ is ignored).
+-- <br/><br/>
+-- Using this is an error on non-desktop platforms.
+-- * **is\_non\_external**: As per @{newTexture}.
+-- * **TODO**: A premultiply flag is under consideration.
+-- @function loadTexture
+-- @treturn ?|Bytemap|nil The new bytemap, or **nil** on error.
+
+--- Bind a [memory blob](https://ggcrunchy.github.io/corona-plugin-docs/DOCS/MemoryBlob/api.html) to the bytemap,
+-- making it the data source.
+--
+-- When a blob is first bound, the bytemap's normal memory is deallocated. If a blob is later detached without
+-- being replaced, this memory is reallocated, with format-appropriate default bytes.
+--
+-- While not necessary, the bound blob's size should be at least _w_ * _h_ * _bytes\_per\_pixel_ (cf. @{newTexture}).
+-- Otherwise, [Bytemap:invalidate](https://docs.coronalabs.com/api/type/TextureResourceExternal/invalidate.html)
+-- and @{Bytemap:GetBytes} must copy the contents into a temporary buffer (padding it with default bytes) and
+-- work from that instead, negating many of the blob's benefits.
+--
+-- (**N.B.** At the moment there is also a leaky abstraction on Windows: an external RGB texture must be promoted
+-- to RGBA internally when its width is not a multiple of 4. To deal with this in a sane way, the copy process
+-- must also be performed here. This is a workaround until the (reported) issue is fixed.)
+--
+-- A call to @{Bytemap:SetBytes} will detach the blob, though it will reallocate normal memory first and
+-- render the blob contents into that. A corollary is that bytemaps regard blobs as read-only, so that
+-- [locked blobs](https://ggcrunchy.github.io/corona-plugin-docs/DOCS/MemoryBlob/api.html#MemoryBlob:IsLocked)
+-- may be bound without any problems.
+-- @function Bytemap:BindBlob
+-- @tparam ?MemoryBlob blob Any currently bound blob is detached. If present, _blob_ is then bound.
+-- @treturn ?|MemoryBlob|nil Previously bound blob, or **nil** if none was bound.
+-- @see Bytemap:Deallocate, Bytemap:GetBlob
+
+--- (**WIP**) Deallocate a bytemap's memory, for instance when no further [invalidate()]((https://docs.coronalabs.com/api/type/TextureResourceExternal/invalidate.html))s
+-- are needed.
+--
+-- This is a convenience method that performs `self:BindBlob(dummy)`, where _dummy_ is a (lazily created) zero-length,
+-- fixed-size blob. See @{Bytemap:BindBlob} for details.
+-- @function Bytemap:Deallocate
+-- @treturn ?|MemoryBlob|nil Previously bound blob, or **nil** if none was bound.
+
+--- Get the memory blob, if any, bound to the bytemap.
+-- @function Bytemap:GetBlob
+-- @treturn ?|MemoryBlob|nil Blob, or **nil** if none is bound.
+-- @see Bytemap:BindBlob
+
+--- Get a bytemap's bytes.
+--
+-- More specifically, get the region from (_x1_, _y1_) in the upper-left to (_x2_, _y2_) in the
+-- lower-right. By default, these have values (1, 1) and (_width_, _height_) respectively (cf. @{newTexture}),
+-- meaning the full bytemap.
+--
+-- Coordinates outside the bytemap will be clipped to stay within bounds. When the whole region lies
+-- outside&mdash;_x1_ and _x2_ are both &lt; 1, for instance&mdash;no bytes are available, so a
+-- zero-length string is returned.
+-- @function Bytemap:GetBytes
+-- @tparam ?table opts Options for getting bytes, which include:
+--
+-- * **format**: Output format.
+-- <br/><br/>
+-- When absent, the requested pixels are returned as-is.
+-- <br/><br/>
+-- Otherwise, when this is **"mask"**, **"rgb"**, or **"rgba"**, they are converted to the named
+-- format (cf. @{newTexture}), lopping off or adding bytes as needed&mdash;in the latter case,
+-- green and blue channels are padded with `0` bytes, alpha with `255`.
+-- <br/><br/>
+-- This may instead be one of **"red"**, **"green"**, **"blue**", or **"alpha**", in which case a
+-- one-byte-per-pixel result is found by gathering the named component from each of the pixels. If
+-- the channel is missing (e.g. the bytemap's format is **"mask"**, but **"green"** or **"alpha"**
+-- was requested), a zero-length string is returned, indicating "no bytes".
+-- <br/><br/>
+-- (Since red is the first component, it follows that **"red"** and **"mask"** are synonyms.)
+-- * **x1**, **y1**, **x2**, **y2**: Custom region coordinates, cf. the summary.
+-- <br/><br/>
+-- These are sorted to ensure _x1_ &le; _x2_ and _y1_ &le; _y2_.
+-- * **get\_info**: If true, a table is populated with some final results (described below). The value
+-- may be a table, in which case it will be the one used; otherwise, a new table is created.
+-- @treturn string A copy of the requested bytes.
+-- @treturn ?table If **get\_info** was provided as an option, the info table.
+--
+-- The final region coordinates will be added under the **x1**, **y1**, **x2**, and **y2** fields.
+-- In the case of out-of-bounds regions these will be the original values (though sorted).
+--
+-- Additionally, a **format** field will be assigned one of **"mask"**, **"rgb"**, or **"rgba"**,
+-- describing the underlying format of the returned bytes. In particular, if anything other than
+-- **"rgb"** or **"rgba"** was given as the output format option, this will be **"mask"**.
+--
+-- For within-bounds regions, the returned bytes are to be understood as a (_x2_ - _x1_ + 1) &times;
+-- (_y2_ - _y1_ + 1)-sized rectangle with _bytes\_per\_pixel_ (cf. @{newTexture}) corresponding to
+-- the output format.
+
+--- Set a bytemap's bytes.
+--
+-- The region details largely carry over from @{Bytemap:GetBytes}, although see the note for _bytes_
+-- below. No bytes are written when the region is out-of-bounds.
+--
+-- If too few bytes are provided, the requested region will be clipped against the last line containing
+-- pixels. (Color-keyed pixels are considered present for purposes of this analysis.) As many pixels
+-- as possible will be written in the final line. Furthermore, any incomplete final pixel is discarded.
+--
+-- Regardless of whether bytes are written, any blob is detached, cf. @{Bytemap:BindBlob}.
+-- @function Bytemap:SetBytes
+-- @tparam Bytes bytes Bytes to assign, interpreted as a (_x2_ - _x1_ + 1) &times; (_y2_ - _y1_ + 1)-sized rectangle.
+--
+-- **N.B.** These are the pre-clipping values of the region coordinates (though sorted).
+-- @tparam ?table opts Options for setting bytes, which include:
+--
+-- * **format**: Format of _bytes_.
+-- <br/><br/>
+-- If absent, the bytemap's format is used.
+-- <br/><br/>
+-- Otherwise, when this is **"mask"**, **"rgb"**, or **"rgba"**, discrepancies are handled as follows:
+-- if _bytes_ has more components than the bytemap (cf. @{newTexture}), the extra bytes are not written;
+-- with fewer, the additional channels in the bytemap are left alone.
+-- <br/><br/>
+-- This may instead be one of **"red"**, **"green"**, **"blue**", or **"alpha**", in which case _bytes_
+-- is interpreted as having one byte per pixel. Each byte is written to the named channel in the corresponding
+-- pixel (this is a no-op if the bytemap has no such channel, cf. the similar note for @{Bytemap:GetBytes}).
+-- <br/><br/>
+-- Lastly, the format may be **"grayscale"**. Again, _bytes_ is understood to have one per byte per pixel,
+-- but now a byte is sent to each non-alpha channel of its target pixel.
+-- * **x1**, **y1**, **x2**, **y2**: Custom region coordinates, cf. the summary.
+-- * **colorkey**: If this is a **Bytes** value of one or more bytes, pixels from _bytes_ will be compared
+-- against it. Those that match are skipped, leaving the bytemap contents intact.
+-- <br/><br/>
+-- If necessary, `0` bytes are added to agree with _bytes_'s format, or excess bytes are dropped.
+-- * (**WIP**) **extrude**: If this is an integer &gt; 0, the pixels along each edge will be extruded so many rows or
+-- columns. Extrusion in a given direction stops if it reaches the side of the bytemap.
+-- <br/><br/>
+-- Extrusion is performed after writing bytes, ignoring any clipping done for insufficient bytes.
+-- * **get\_info**: As per @{GetBytes}.
+-- @treturn ?table The info table, if requested.
+--
+-- The table contents match those for @{Bytemap:GetBytes}, except now they describe the assigned&mdash;rather
+-- than returned&mdash;bytes.

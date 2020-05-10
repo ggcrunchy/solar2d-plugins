@@ -1,0 +1,153 @@
+--- Corona binding for [luaffifb](https://github.com/facebook/luaffifb), a library for calling
+-- C functions and manipulating C types from Lua. It is designed to be interface-compatible with
+-- the FFI library in LuaJIT (see [here](http://luajit.org/ext_ffi.html)). It can parse C function
+-- declarations and struct definitions that have been directly copied out of C header files and
+-- into Lua source as a string.
+--
+-- This is a fork of [luaffi](https://github.com/jmckaskill/luaffi).
+--
+-- Documentation
+-- -------------
+-- This library is designed to be source-compatible with LuaJIT's FFI extension. The documentation [here](http://luajit.org/ext_ffi.html)
+-- describes the API and semantics.
+--
+-- Pointer Comparison
+-- ------------------
+-- Use `ffi.NULL` instead of `nil` when checking for `NULL` pointers.
+--
+--    ffi.new('void *', 0) == ffi.NULL -- true
+--
+--
+-- Known Issues
+-- ------------
+--
+-- * Comparing a ctype pointer to `nil` doesn't work the same as in LuaJIT (see above).
+--  This is unfixable with the current metamethod semantics.
+--
+-- * Constant expressions can't handle non integer intermediate values (eg
+--  offsetof won't work because it manipulates pointers)
+--
+-- * Not all metamethods work (e.g. char* + number). This is due to
+--  the way metamethods are looked up with mixed types in Lua 5.1. If you need
+-- this use boxed numbers (uint64\_t and uintptr\_t).
+--
+-- * All bitfields are treated as unsigned (does anyone even use signed
+--  bitfields?). Note that "int s:8" is unsigned on Unix x86/x64, but signed on Windows.
+--
+-- Corona-specific changes
+-- -----------------------
+--
+-- * [tonumber](https://docs.coronalabs.com/api/library/global/tonumber.html) and [type](https://docs.coronalabs.com/api/library/global/type.html)
+-- are left intact. For the FFI-aware behavior, stick to `ffi.number` and `ffi.type`.
+-- * To play nice with plugins, library loaders of the `luaopen_*` kind are rejected by `ffi.cdef`.
+--
+-- How it works
+-- ------------
+-- Types are represented by a struct ctype structure and an associated user value
+-- table. The table is shared between all related types for structs, unions, and
+-- functions. Its members have the types of struct members, function argument
+-- types, etc. The struct ctype structure then contains the modifications from
+-- the base type (e.g. number of pointers, array size, etc).
+-- 
+-- Types are pushed into Lua as a userdata containing the struct ctype with fenv
+-- set to the shared type table.
+--
+-- Boxed cdata types are pushed into Lua as a userdata containing the struct
+-- cdata structure (which contains the struct ctype of the data as its header)
+-- followed by the boxed data.
+--
+-- The functions in `ffi.C` provide the `cdata` and `ctype` metatables and ffi.*
+-- functions which manipulate these two types.
+--
+-- C functions (and function pointers) are pushed into Lua as a Lua C function
+-- with the function pointer cdata as the first upvalue. The actual code is JITed
+-- using dynasm (see call_x86.dasc). The JITed code does the following in order:
+--
+-- 1. Calls the needed unpack functions in `ffi.C` placing each argument on the HW stack
+-- 2. Updates `errno`
+-- 3. Performs the C call
+-- 4. Retrieves `errno`
+-- 5. Pushes the result back into Lua from the HW register or stack
+--
+-- BSD License
+-- -----------
+--
+-- For luaffifb software
+--
+-- Copyright (c) 2015, Facebook, Inc. All rights reserved.
+--
+-- Redistribution and use in source and binary forms, with or without modification,
+-- are permitted provided that the following conditions are met:
+--
+-- * Redistributions of source code must retain the above copyright notice, this
+--   list of conditions and the following disclaimer.
+--
+-- * Redistributions in binary form must reproduce the above copyright notice,
+--   this list of conditions and the following disclaimer in the documentation
+--   and/or other materials provided with the distribution.
+--
+-- * Neither the name Facebook nor the names of its contributors may be used to
+--   endorse or promote products derived from this software without specific
+--   prior written permission.
+--
+-- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+-- ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+-- WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+-- DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+-- ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+-- (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+-- LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+-- ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+-- (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+-- SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+--
+-- --------------------------------------------------------------------------
+--
+-- This product contains portions of third party software provided under this license:
+--
+-- luaffi software
+--
+-- Copyright (c) 2011 James R. McKaskill
+--
+-- Permission is hereby granted, free of charge, to any person obtaining a
+-- copy of this software and associated documentation files (the "Software"),
+-- to deal in the Software without restriction, including without limitation
+-- the rights to use, copy, modify, merge, publish, distribute, sublicense,
+-- and/or sell copies of the Software, and to permit persons to whom the
+-- Software is furnished to do so, subject to the following conditions:
+--
+-- The above copyright notice and this permission notice shall be included in
+-- all copies or substantial portions of the Software.
+--
+-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+-- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+-- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+-- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+-- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+-- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+-- DEALINGS IN THE SOFTWARE.
+--
+-- Facebook provides this code under the BSD License above.
+
+--
+-- Permission is hereby granted, free of charge, to any person obtaining
+-- a copy of this software and associated documentation files (the
+-- "Software"), to deal in the Software without restriction, including
+-- without limitation the rights to use, copy, modify, merge, publish,
+-- distribute, sublicense, and/or sell copies of the Software, and to
+-- permit persons to whom the Software is furnished to do so, subject to
+-- the following conditions:
+--
+-- The above copyright notice and this permission notice shall be
+-- included in all copies or substantial portions of the Software.
+--
+-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+-- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+-- MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+-- IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+-- CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+-- TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+-- SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+--
+-- [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
+--

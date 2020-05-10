@@ -1,0 +1,62 @@
+--- [PolyTree](http://www.angusj.com/delphi/clipper/documentation/Docs/Units/ClipperLib/Classes/PolyTree/_Body.htm) is intended as a
+-- **read-only** data structure that should only be used to receive _solutions_ from clipping and offsetting operations.
+--
+-- (Follow the link for a nice visual example.)
+--
+-- It's an alternative to the @{Paths} data structure which also receives these solutions. **PolyTree**'s two major advantages over
+-- the **Paths** structure are: it properly represents the **parent-child** relationships of the returned polygons; it differentiates
+-- between **open** and **closed** paths. However, since **PolyTree** is a more complex structure than the **Paths** structure, and
+-- since it's more computationally expensive to process (the **Execute** method being roughly 5-10% slower), `it should used only be`
+-- `when parent-child polygon relationships are needed, or when open paths are being 'clipped'`.
+--
+-- An empty **PolyTree** object can be passed as the solution parameter in @{Clipper:Execute} and in @{Offset:Execute}. Once the clipping or offseting
+-- operation is completed, the method returns with the **PolyTree** structure filled with data representing the solution.
+--
+-- A **PolyTree** object is a container for any number of @{PolyNode} children, with each contained **PolyNode** representing a single polygon contour
+-- (either an outer or hole polygon). `PolyTree itself is a specialized PolyNode whose immediate children represent the top-level outer polygons of the`
+-- `solution. (Its own` @{PolyNode:GetContour|Contour} `property is always empty.)` The contained top-level **PolyNode**s may contain their own **PolyNode**
+-- children representing hole polygons that may also contain children representing nested outer polygons etc. Children of outers will always be holes,
+-- and children of holes will always be outers.
+--
+-- **PolyTree**s can also contain open paths. Open paths will always be represented by _top level_ **PolyNode**s. Two functions are provided to quickly
+-- separate out _open_ and _closed_ paths from a polytree &mdash; @{core.OpenPathsFromPolyTree|OpenPathsFromPolyTree} and @{core.ClosedPathsFromPolyTree|ClosedPathsFromPolyTree}. 
+--
+-- Derives from @{PolyNode} and thus has all its methods.
+-- @classmod PolyTree
+
+--
+-- Permission is hereby granted, free of charge, to any person obtaining
+-- a copy of this software and associated documentation files (the
+-- "Software"), to deal in the Software without restriction, including
+-- without limitation the rights to use, copy, modify, merge, publish,
+-- distribute, sublicense, and/or sell copies of the Software, and to
+-- permit persons to whom the Software is furnished to do so, subject to
+-- the following conditions:
+--
+-- The above copyright notice and this permission notice shall be
+-- included in all copies or substantial portions of the Software.
+--
+-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+-- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+-- MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+-- IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+-- CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+-- TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+-- SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+--
+-- [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
+--
+
+--- This is almost equivalent to `tree:GetChild(1)` except that when a **PolyTree** object is empty (has no
+-- children), calling @{PolyNode:GetChild|that} would throw an error.
+-- @function PolyTree:GetFirst
+-- @ptable[opt] opts Options, which include:
+--
+-- * **out**: If this is a @{PolyNode}, it will be populated and used as the return value.
+-- @treturn ?|PolyNode|nil First outer polygon contour if any, otherwise **nil**.
+-- @see PolyNode:GetNext
+
+---
+-- @function PolyTree:Total
+-- @treturn uint The total number of @{PolyNode}s (polygons) contained within the PolyTree. This value is not to be confused
+-- with @{PolyNode:ChildCount} which returns the number of immediate children only (Childs) contained by PolyTree.

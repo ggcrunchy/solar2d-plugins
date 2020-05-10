@@ -1,0 +1,193 @@
+--- Corona binding for [libtess2](https://github.com/memononen/libtess2), a polygon tessellator and triangulator.
+--
+-- To use the plugin, add the following in <code>build.settings</code>:
+--
+-- <pre><code class="language-lua">plugins = {
+--   ["plugin.libtess2"] = { publisherId = "com.xibalbastudios" }
+-- }</code></pre>
+--
+-- Sample code is available [here](https://github.com/ggcrunchy/corona-plugin-docs/tree/master/libtess2_sample).
+--
+-- The **Bytes** type&mdash;specified in a few of the bytemap methods&mdash;may be any object that implements [ByteReader](https://ggcrunchy.github.io/corona-plugin-docs/DOCS/ByteReader/policy.html),
+-- including strings.
+--
+-- An overview of the algorithm is available [here](https://github.com/memononen/libtess2/blob/master/alg_outline.md).
+--
+-- **Adapted from the original project:**
+--
+-- Version 1.0.1
+--
+-- This is a refactored version of the original libtess which comes with the GLU reference implementation. The code is a
+-- good quality polygon tessellator and triangulator. The original code comes with a rather horrible interface and its
+-- performance suffers from lots of small memory allocations. The main point of the refactoring has been the interface
+-- and memory allocation scheme.
+--
+-- A lot of the GLU tessellator documentation applies to libtess2 as well, apart from the API; check out
+-- [Chapter 11](http://www.glprogramming.com/red/chapter11.html). See also [here](songho.ca/opengl/gl_tessellation.html).
+--
+-- A simple bucketed memory allocator (see Graphics Gems III for reference) was added which speeds up the code by order
+-- of magnitude (tests showed 15 to 50 times improvement depending on data). The API allows the user to pass his own
+-- allocator to the library. It is possible to configure the library so that the library runs on predefined chunk of memory.
+--
+-- The API was changed to loosely resemble the OpenGL vertex array API. The processed data can be accessed via getter
+-- functions. The code is able to output contours, polygons and connected polygons. The output of the tessellator can be
+-- also used as input for new run. I.e. the user may first want to calculate an union all the input contours and the
+-- triangulate them.
+--
+-- The code is released under SGI FREE SOFTWARE LICENSE B Version 2.0. <https://directory.fsf.org/wiki/License:SGIFreeBv2>
+--
+-- Mikko Mononen <memon@inside.org>
+
+--
+-- Permission is hereby granted, free of charge, to any person obtaining
+-- a copy of this software and associated documentation files (the
+-- "Software"), to deal in the Software without restriction, including
+-- without limitation the rights to use, copy, modify, merge, publish,
+-- distribute, sublicense, and/or sell copies of the Software, and to
+-- permit persons to whom the Software is furnished to do so, subject to
+-- the following conditions:
+--
+-- The above copyright notice and this permission notice shall be
+-- included in all copies or substantial portions of the Software.
+--
+-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+-- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+-- MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+-- IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+-- CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+-- TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+-- SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+--
+-- [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
+--
+
+--- Create a new **Tessellator**.
+-- @function M.NewTess
+-- @treturn ?|Tessellator|nil Tessellator object, or **nil** on error.
+
+--- Getter.
+-- @function M.Undef
+-- @treturn uint A constant that indicates an undefined index.
+
+--- Adds a contour to be tessellated.
+--
+-- TODO: Are the options applied here or at tessellation?
+-- @function Tessellator:AddContour
+-- @tparam ?|array|Bytes vertices As a table, the vertices are assumed to be an array of numbers: `{ x1, y1, x2, y2, ... }`
+-- or `{ x1, y1, z1, x2, y2, z2, ... }` for 2 or 3 coordinates, respectively. Any incomplete trailing vertex is ignored.
+--
+-- This may also be provided as bytes, pointing to the start of the first float.
+--
+-- @tparam[opt] table opts Contour options:
+--
+-- * **count**: Number of vertices in the contour, padding with all-zero values if necessary. By default (or when 0), the number
+-- of complete values in _vertices_.
+-- * **stride**: Offset in bytes between consecutive vertices, which must be at least `sizeof(float) * self:GetVertexSize()`.
+-- This is also used to calculate the default count for _vertices_ when provided as bytes.
+
+--- Getter.
+-- @function Tessellator:GetElementCount
+-- @treturn uint Number of elements in the the tesselated output.
+
+--- Gather the elements resulting from tessellation.
+--
+-- Their interpretation depends on the element type supplied to @{Tessellator:Tesselate}:
+--
+-- With **POLYGONS** type, elements are divvied up as `{ ..., vi #1, vi #2, ..., vi #n, ... }`, with _n_ being
+-- the @{Tessellator:GetPolySize|polygon size} used to perform the tessellation. Each _vi_ is the index for a
+-- corresponding @{Tessellator:GetVertices|vertex}; trailing indices may be undefined, cf. @{Undef}, meaning
+-- the element contains fewer than _n_ vertices.
+--
+-- **CONNECTED\_POLYGONS** is similar: `{ ..., vi #1, vi #2, ..., vi #n, ni #1, ni #2, ..., ni #n, ... }`. The _vi_
+-- carry over their meaning with **POLYGONS**, whereas each _ni_ is a neighbor index, indicating a particular
+-- fellow element borders that side; when _ni_ is undefined, there is no such neighbor.
+--
+-- **BOUNDARY\_CONTOURS**'s elements occur in pairs: `{ ..., vi #1, vi #2, ... }`. The _vi_ have the same meaning
+-- as before, except indices are never undefined.
+-- @function Tessellator:GetElements
+-- @tparam ?|string|table|nil arg This may be the string **"as\_bytes"**, in which case the elements are returned as **Bytes**.
+-- Otherwise, elements are supplied through a table, either using the one provided here or creating a new one.
+--
+-- **N.B.** With a custom table, any entries not overwritten will be left as-is. If necessary, use
+-- `self:GetElementCount() * ElementSize` to calculate the number of entries. _ElementSize_ will be `n` for
+-- **POLYGONS**, `2 * n` for **CONNECTED\_POLYGONS**, and `2` for **BOUNDARY\_CONTOURS**.
+-- @bool one_based Elements are one-based, rather than zero-based? This is ignored for **Bytes** and undefined elements.
+-- @treturn ?|Bytes|table As a table, an array `{ comp1, comp2, ... }` whose values are **uint**s.
+--
+-- Otherwise, a proxy object that implements **Bytes** and reflects the most recent tessellation results.
+
+--- Getter.
+-- @function Tessellator:GetPolySize
+-- @treturn uint Polygon size provided to @{Tessellator:Tesselate}, or 0 if not yet set.
+
+--- Getter.
+-- @function Tessellator:GetVertexCount
+-- @treturn uint Number of vertices in the tessellated output.
+		
+--- Gather the vertex indices resulting from tessellation. These describe the order in which the
+-- vertices were added and can be used to map the tessellator output to input.
+--
+-- Every vertex added using @{Tessellator:AddContour} will get a new index, starting from 0.
+--
+-- New vertices generated at the intersections of segments are undefined, cf. @{Undef}.
+-- @function Tessellator:GetVertexIndices
+-- @tparam ?|string|table|nil arg As per @{Tessellator:GetElements}.
+-- @bool one_based Elements are one-based, rather than zero-based? This is ignored for **Bytes** or undefined indices.
+-- @treturn ?|Bytes|table As per @{Tessellator:GetElements}.
+
+--- Getter.
+-- @function Tessellator:GetVertexSize
+-- @treturn uint Number of coordinates per vertex, i.e. 2 or 3.
+-- @see Tessellator:UseVertexSizeOf3
+
+--- Gather the vertices resulting from tessellation.
+-- @function Tessellator:GetVertices
+-- @tparam ?|string|table|nil arg As per @{Tessellator:GetElements}.
+-- @treturn ?|Bytes|table As a table, an array of numbers: `{ x1, y1, x2, y2, ... }` or `{ x1, y1, z1, x2, y2, z2, ... }`
+-- for 2 or 3 coordinates, respectively.
+--
+-- **Bytes** results follow the pattern of @{Tessellator:GetElements}.
+		
+--- Toggles optional tessellation parameters.					
+-- @function Tessellator:SetOption
+-- @string option One of the following:
+--
+--  * **CONSTRAINED\_DELAUNAY\_TRIANGULATION**: Used an improved non-robust Constrained Delaunay triangulation. (Off by default.)
+--  * **REVERSE\_CONTOURS**: @{Tessellator:AddContour} will treat clockwise contours as counter-clockwise and _vice versa_.
+-- @bool enable Enable the option? Disable it otherwise.
+
+--- Tessellate contours.
+--
+-- **N.B.** The method's spelling is carried over from **libtess2**.
+-- @function Tessellator:Tesselate
+-- @string winding_rule Rule used for tessellation. Must be one of the following (for descriptions see the
+-- [OpenGL Red Book](http://www.glprogramming.com/red/chapter11.html)):
+--
+-- * **"ABS\_GEQ\_TWO"**: `abs(winding_number) >= 2`
+-- * **"NEGATIVE"**: `winding_number < 0`
+-- * **"NONZERO"**: `winding_number ~= 0`
+-- * **"ODD"**: `winding_number % 2 == 1`
+-- * **"POSITIVE"**: `winding_number > 0`
+-- @string element_type Resulting element type. Must be one of the following:
+--
+-- * **"BOUNDARY\_CONTOURS"**: Generate only the outside contours of the shapes.
+-- * **"CONNECTED\_POLYGONS"**: Generate polygons with neighbor information.
+-- * **"POLYGONS"**: Generate polygons.
+-- @uint[opt=3] poly_size Maximum vertices per polygon when _element\_type_ is **"POLYGONS"**.
+-- @tparam[opt] ?|table|Bytes|nil normal Defines the normal of the input contours, either as an array of three
+-- numbers or in **Bytes** form as three consecutive floats (if either is too small, padding 0s are added). If
+-- absent, calculated automatically.
+-- @treturn boolean Tessellation succeeded?
+
+--- Variant that takes an options table instead.
+-- @function Tessellator:Tesselate
+-- @string winding_rule As before.
+-- @string element_type As before.
+-- @ptable[opt] opts Tessellation options, which may include **poly\_size** and **normal**, whose meaning is as
+-- described before.
+-- @treturn boolean Tessellation succeeded?
+
+--- Set the vertex size used by subsequent calls to @{Tessellator:AddContour} and @{Tessellator:Tesselate}.
+-- @function Tessellator:UseVertexSizeOf3
+-- @bool use3 Use 3 coordinates per vertex, rather than 2 (the default)?
+-- @see Tessellator:GetVertexSize

@@ -1,0 +1,576 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		A40A8FE61BD973A8001D2038 /* Corona_plugin_serialize.framework */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = A40A8FE91BD973A8001D2038 /* Build configuration list for PBXAggregateTarget "Corona_plugin_serialize.framework" */;
+			buildPhases = (
+				A40A8FEC1BD973B8001D2038 /* Build Universal Binary */,
+			);
+			dependencies = (
+				A40A8FEB1BD973B2001D2038 /* PBXTargetDependency */,
+			);
+			name = Corona_plugin_serialize.framework;
+			productName = Corona_plugin_library.framework;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		A49EC1AB1BD77C530093F529 /* CoronaCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A49EC1AA1BD77C530093F529 /* CoronaCards.framework */; };
+		CE51A1FF1CE15B6300F115D7 /* plugin.serialize.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE51A1FA1CE15B6300F115D7 /* plugin.serialize.cpp */; };
+		CE51A2001CE15B6300F115D7 /* stdafx.h in Headers */ = {isa = PBXBuildFile; fileRef = CE51A1FB1CE15B6300F115D7 /* stdafx.h */; };
+		CE8E82AE1E6E4130000F2322 /* struct.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8E82AD1E6E4130000F2322 /* struct.m */; };
+		CE8E82B01E6E413F000F2322 /* marshal.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8E82AF1E6E413F000F2322 /* marshal.m */; };
+		CE8E82B21E6E4148000F2322 /* lpack.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8E82B11E6E4148000F2322 /* lpack.m */; };
+		CE963CBF2335561E006EF13A /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = CE963C8D2335561E006EF13A /* .gitignore */; };
+		CE963CC62335561E006EF13A /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = CE963C962335561E006EF13A /* LICENSE */; };
+		CE963CD72335561E006EF13A /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = CE963CA82335561E006EF13A /* README.md */; };
+		CE963CD82335561E006EF13A /* Blob.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE963CAA2335561E006EF13A /* Blob.cpp */; };
+		CE963CD92335561E006EF13A /* Blob.h in Headers */ = {isa = PBXBuildFile; fileRef = CE963CAB2335561E006EF13A /* Blob.h */; };
+		CE963CDA2335561E006EF13A /* Byte.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE963CAC2335561E006EF13A /* Byte.cpp */; };
+		CE963CDB2335561E006EF13A /* Byte.h in Headers */ = {isa = PBXBuildFile; fileRef = CE963CAD2335561E006EF13A /* Byte.h */; };
+		CE963CDC2335561E006EF13A /* Compat.h in Headers */ = {isa = PBXBuildFile; fileRef = CE963CAE2335561E006EF13A /* Compat.h */; };
+		CE963CDD2335561E006EF13A /* LuaEx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE963CAF2335561E006EF13A /* LuaEx.cpp */; };
+		CE963CDE2335561E006EF13A /* LuaEx.h in Headers */ = {isa = PBXBuildFile; fileRef = CE963CB02335561E006EF13A /* LuaEx.h */; };
+		CE963CDF2335561E006EF13A /* Memory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE963CB12335561E006EF13A /* Memory.cpp */; };
+		CE963CE02335561E006EF13A /* Memory.h in Headers */ = {isa = PBXBuildFile; fileRef = CE963CB22335561E006EF13A /* Memory.h */; };
+		CE963CE12335561E006EF13A /* Namespace.h in Headers */ = {isa = PBXBuildFile; fileRef = CE963CB32335561E006EF13A /* Namespace.h */; };
+		CE963CE22335561E006EF13A /* Path.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE963CB42335561E006EF13A /* Path.cpp */; };
+		CE963CE32335561E006EF13A /* Path.h in Headers */ = {isa = PBXBuildFile; fileRef = CE963CB52335561E006EF13A /* Path.h */; };
+		CE963CE42335561E006EF13A /* Platform.h in Headers */ = {isa = PBXBuildFile; fileRef = CE963CB62335561E006EF13A /* Platform.h */; };
+		CE963CE52335561E006EF13A /* SIMD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE963CB72335561E006EF13A /* SIMD.cpp */; };
+		CE963CE62335561E006EF13A /* SIMD.h in Headers */ = {isa = PBXBuildFile; fileRef = CE963CB82335561E006EF13A /* SIMD.h */; };
+		CE963CE72335561E006EF13A /* Thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE963CB92335561E006EF13A /* Thread.cpp */; };
+		CE963CE82335561E006EF13A /* Thread.h in Headers */ = {isa = PBXBuildFile; fileRef = CE963CBA2335561E006EF13A /* Thread.h */; };
+		CE963CF42335563E006EF13A /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = CE963CEC2335563E006EF13A /* .gitignore */; };
+		CE963CF52335563E006EF13A /* ByteReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE963CED2335563E006EF13A /* ByteReader.cpp */; };
+		CE963CF62335563E006EF13A /* ByteReader.h in Headers */ = {isa = PBXBuildFile; fileRef = CE963CEE2335563E006EF13A /* ByteReader.h */; };
+		CE963CF72335563E006EF13A /* ByteReader.lua in Resources */ = {isa = PBXBuildFile; fileRef = CE963CEF2335563E006EF13A /* ByteReader.lua */; };
+		CE963CF82335563E006EF13A /* config.ld in Resources */ = {isa = PBXBuildFile; fileRef = CE963CF02335563E006EF13A /* config.ld */; };
+		CE963CF92335563E006EF13A /* ldoc.bat in Resources */ = {isa = PBXBuildFile; fileRef = CE963CF12335563E006EF13A /* ldoc.bat */; };
+		CE963CFA2335563E006EF13A /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = CE963CF22335563E006EF13A /* LICENSE */; };
+		CE963CFB2335563E006EF13A /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = CE963CF32335563E006EF13A /* README.md */; };
+		CE963CFD23355647006EF13A /* stdafx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE963CFC23355647006EF13A /* stdafx.cpp */; };
+		CE963D0023355832006EF13A /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE963CFF23355832006EF13A /* Accelerate.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		A40A8FE21BD97297001D2038 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.lua";
+			fileType = pattern.proxy;
+			isEditable = 1;
+			outputFiles = (
+				"$(DERIVED_FILE_DIR)/$(INPUT_FILE_BASE).c",
+			);
+			script = "CORONA_DIR=$SRCROOT/CoronaEnterprise/Corona\nCORONA_MAC_BIN_DIR=$CORONA_DIR/mac/bin\n\nif [ -e \"$CORONA_MAC_BIN_DIR/lua\" ]; then\n    LUA_DIR=$CORONA_MAC_BIN_DIR/lua\nelse\n    echo \"Could not find proper 32-bit lua build in: $CORONA_MAC_BIN_DIR/lua\"\n    exit 1\nfi\n\necho $CORONA_MAC_BIN_DIR/lua2c.sh $INPUT_FILE_PATH $DERIVED_FILE_DIR $CONFIGURATION\n\"$CORONA_MAC_BIN_DIR/lua2c.sh\" \"$INPUT_FILE_PATH\" \"$DERIVED_FILE_DIR\" \"$CONFIGURATION\" \"$CORONA_MAC_BIN_DIR\"";
+		};
+/* End PBXBuildRule section */
+
+/* Begin PBXContainerItemProxy section */
+		A40A8FEA1BD973B2001D2038 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A49EC17D1BD779560093F529 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A49EC1851BD779560093F529;
+			remoteInfo = Corona_plugin_library;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		A49EC1861BD779560093F529 /* Corona_plugin_serialize.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Corona_plugin_serialize.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A49EC18B1BD779560093F529 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = Plugin/Info.plist; sourceTree = "<group>"; };
+		A49EC1AA1BD77C530093F529 /* CoronaCards.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoronaCards.framework; path = CoronaEnterprise/Corona/tvos/frameworks/CoronaCards.framework; sourceTree = "<group>"; };
+		CE51A1FA1CE15B6300F115D7 /* plugin.serialize.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = plugin.serialize.cpp; path = ../shared/plugin.serialize.cpp; sourceTree = "<group>"; };
+		CE51A1FB1CE15B6300F115D7 /* stdafx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stdafx.h; path = ../shared/stdafx.h; sourceTree = "<group>"; };
+		CE8E82AD1E6E4130000F2322 /* struct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = struct.m; path = ../shared/struct.m; sourceTree = "<group>"; };
+		CE8E82AF1E6E413F000F2322 /* marshal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = marshal.m; path = ../shared/marshal.m; sourceTree = "<group>"; };
+		CE8E82B11E6E4148000F2322 /* lpack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = lpack.m; path = ../shared/lpack.m; sourceTree = "<group>"; };
+		CE963C8D2335561E006EF13A /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		CE963C962335561E006EF13A /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		CE963CA82335561E006EF13A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		CE963CAA2335561E006EF13A /* Blob.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Blob.cpp; sourceTree = "<group>"; };
+		CE963CAB2335561E006EF13A /* Blob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Blob.h; sourceTree = "<group>"; };
+		CE963CAC2335561E006EF13A /* Byte.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Byte.cpp; sourceTree = "<group>"; };
+		CE963CAD2335561E006EF13A /* Byte.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Byte.h; sourceTree = "<group>"; };
+		CE963CAE2335561E006EF13A /* Compat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Compat.h; sourceTree = "<group>"; };
+		CE963CAF2335561E006EF13A /* LuaEx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LuaEx.cpp; sourceTree = "<group>"; };
+		CE963CB02335561E006EF13A /* LuaEx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LuaEx.h; sourceTree = "<group>"; };
+		CE963CB12335561E006EF13A /* Memory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Memory.cpp; sourceTree = "<group>"; };
+		CE963CB22335561E006EF13A /* Memory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Memory.h; sourceTree = "<group>"; };
+		CE963CB32335561E006EF13A /* Namespace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Namespace.h; sourceTree = "<group>"; };
+		CE963CB42335561E006EF13A /* Path.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Path.cpp; sourceTree = "<group>"; };
+		CE963CB52335561E006EF13A /* Path.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Path.h; sourceTree = "<group>"; };
+		CE963CB62335561E006EF13A /* Platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Platform.h; sourceTree = "<group>"; };
+		CE963CB72335561E006EF13A /* SIMD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SIMD.cpp; sourceTree = "<group>"; };
+		CE963CB82335561E006EF13A /* SIMD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIMD.h; sourceTree = "<group>"; };
+		CE963CB92335561E006EF13A /* Thread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Thread.cpp; sourceTree = "<group>"; };
+		CE963CBA2335561E006EF13A /* Thread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Thread.h; sourceTree = "<group>"; };
+		CE963CEC2335563E006EF13A /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		CE963CED2335563E006EF13A /* ByteReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ByteReader.cpp; sourceTree = "<group>"; };
+		CE963CEE2335563E006EF13A /* ByteReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ByteReader.h; sourceTree = "<group>"; };
+		CE963CEF2335563E006EF13A /* ByteReader.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ByteReader.lua; sourceTree = "<group>"; };
+		CE963CF02335563E006EF13A /* config.ld */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = config.ld; sourceTree = "<group>"; };
+		CE963CF12335563E006EF13A /* ldoc.bat */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ldoc.bat; sourceTree = "<group>"; };
+		CE963CF22335563E006EF13A /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		CE963CF32335563E006EF13A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		CE963CFC23355647006EF13A /* stdafx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = stdafx.cpp; path = ../shared/stdafx.cpp; sourceTree = "<group>"; };
+		CE963CFF23355832006EF13A /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A49EC1821BD779560093F529 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE963D0023355832006EF13A /* Accelerate.framework in Frameworks */,
+				A49EC1AB1BD77C530093F529 /* CoronaCards.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A40A8FBE1BD96ED5001D2038 /* Plugin */ = {
+			isa = PBXGroup;
+			children = (
+				CE963CFC23355647006EF13A /* stdafx.cpp */,
+				CE963CEB2335563E006EF13A /* ByteReader */,
+				CE963C8C2335561E006EF13A /* corona_enterprise_utils */,
+				CE8E82B11E6E4148000F2322 /* lpack.m */,
+				CE8E82AF1E6E413F000F2322 /* marshal.m */,
+				CE8E82AD1E6E4130000F2322 /* struct.m */,
+				CE51A1FA1CE15B6300F115D7 /* plugin.serialize.cpp */,
+				CE51A1FB1CE15B6300F115D7 /* stdafx.h */,
+				A49EC18B1BD779560093F529 /* Info.plist */,
+			);
+			name = Plugin;
+			sourceTree = "<group>";
+		};
+		A49EC17C1BD779560093F529 = {
+			isa = PBXGroup;
+			children = (
+				A40A8FBE1BD96ED5001D2038 /* Plugin */,
+				A49EC1AC1BD77C5A0093F529 /* Frameworks */,
+				A49EC1871BD779560093F529 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A49EC1871BD779560093F529 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A49EC1861BD779560093F529 /* Corona_plugin_serialize.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A49EC1AC1BD77C5A0093F529 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CE963CFF23355832006EF13A /* Accelerate.framework */,
+				A49EC1AA1BD77C530093F529 /* CoronaCards.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CE963C8C2335561E006EF13A /* corona_enterprise_utils */ = {
+			isa = PBXGroup;
+			children = (
+				CE963C8D2335561E006EF13A /* .gitignore */,
+				CE963C962335561E006EF13A /* LICENSE */,
+				CE963CA82335561E006EF13A /* README.md */,
+				CE963CA92335561E006EF13A /* utils */,
+			);
+			name = corona_enterprise_utils;
+			path = ../../corona_enterprise_utils;
+			sourceTree = "<group>";
+		};
+		CE963CA92335561E006EF13A /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				CE963CAA2335561E006EF13A /* Blob.cpp */,
+				CE963CAB2335561E006EF13A /* Blob.h */,
+				CE963CAC2335561E006EF13A /* Byte.cpp */,
+				CE963CAD2335561E006EF13A /* Byte.h */,
+				CE963CAE2335561E006EF13A /* Compat.h */,
+				CE963CAF2335561E006EF13A /* LuaEx.cpp */,
+				CE963CB02335561E006EF13A /* LuaEx.h */,
+				CE963CB12335561E006EF13A /* Memory.cpp */,
+				CE963CB22335561E006EF13A /* Memory.h */,
+				CE963CB32335561E006EF13A /* Namespace.h */,
+				CE963CB42335561E006EF13A /* Path.cpp */,
+				CE963CB52335561E006EF13A /* Path.h */,
+				CE963CB62335561E006EF13A /* Platform.h */,
+				CE963CB72335561E006EF13A /* SIMD.cpp */,
+				CE963CB82335561E006EF13A /* SIMD.h */,
+				CE963CB92335561E006EF13A /* Thread.cpp */,
+				CE963CBA2335561E006EF13A /* Thread.h */,
+			);
+			path = utils;
+			sourceTree = "<group>";
+		};
+		CE963CEB2335563E006EF13A /* ByteReader */ = {
+			isa = PBXGroup;
+			children = (
+				CE963CEC2335563E006EF13A /* .gitignore */,
+				CE963CED2335563E006EF13A /* ByteReader.cpp */,
+				CE963CEE2335563E006EF13A /* ByteReader.h */,
+				CE963CEF2335563E006EF13A /* ByteReader.lua */,
+				CE963CF02335563E006EF13A /* config.ld */,
+				CE963CF12335563E006EF13A /* ldoc.bat */,
+				CE963CF22335563E006EF13A /* LICENSE */,
+				CE963CF32335563E006EF13A /* README.md */,
+			);
+			name = ByteReader;
+			path = ../../ByteReader;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		A49EC1831BD779560093F529 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE963CE12335561E006EF13A /* Namespace.h in Headers */,
+				CE963CF62335563E006EF13A /* ByteReader.h in Headers */,
+				CE963CDE2335561E006EF13A /* LuaEx.h in Headers */,
+				CE963CD92335561E006EF13A /* Blob.h in Headers */,
+				CE963CDB2335561E006EF13A /* Byte.h in Headers */,
+				CE963CDC2335561E006EF13A /* Compat.h in Headers */,
+				CE963CE42335561E006EF13A /* Platform.h in Headers */,
+				CE963CE32335561E006EF13A /* Path.h in Headers */,
+				CE963CE62335561E006EF13A /* SIMD.h in Headers */,
+				CE51A2001CE15B6300F115D7 /* stdafx.h in Headers */,
+				CE963CE02335561E006EF13A /* Memory.h in Headers */,
+				CE963CE82335561E006EF13A /* Thread.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		A49EC1851BD779560093F529 /* Corona_plugin_serialize */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A49EC18E1BD779560093F529 /* Build configuration list for PBXNativeTarget "Corona_plugin_serialize" */;
+			buildPhases = (
+				A49EC1811BD779560093F529 /* Sources */,
+				A49EC1821BD779560093F529 /* Frameworks */,
+				A49EC1831BD779560093F529 /* Headers */,
+				A49EC1841BD779560093F529 /* Resources */,
+			);
+			buildRules = (
+				A40A8FE21BD97297001D2038 /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = Corona_plugin_serialize;
+			productName = Corona_plugin_library;
+			productReference = A49EC1861BD779560093F529 /* Corona_plugin_serialize.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A49EC17D1BD779560093F529 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0920;
+				ORGANIZATIONNAME = "Corona Labs";
+				TargetAttributes = {
+					A40A8FE61BD973A8001D2038 = {
+						CreatedOnToolsVersion = 7.1;
+					};
+					A49EC1851BD779560093F529 = {
+						CreatedOnToolsVersion = 7.1;
+					};
+				};
+			};
+			buildConfigurationList = A49EC1801BD779560093F529 /* Build configuration list for PBXProject "Plugin" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = A49EC17C1BD779560093F529;
+			productRefGroup = A49EC1871BD779560093F529 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A49EC1851BD779560093F529 /* Corona_plugin_serialize */,
+				A40A8FE61BD973A8001D2038 /* Corona_plugin_serialize.framework */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A49EC1841BD779560093F529 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE963CF42335563E006EF13A /* .gitignore in Resources */,
+				CE963CC62335561E006EF13A /* LICENSE in Resources */,
+				CE963CFA2335563E006EF13A /* LICENSE in Resources */,
+				CE963CF92335563E006EF13A /* ldoc.bat in Resources */,
+				CE963CF72335563E006EF13A /* ByteReader.lua in Resources */,
+				CE963CF82335563E006EF13A /* config.ld in Resources */,
+				CE963CFB2335563E006EF13A /* README.md in Resources */,
+				CE963CD72335561E006EF13A /* README.md in Resources */,
+				CE963CBF2335561E006EF13A /* .gitignore in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A40A8FEC1BD973B8001D2038 /* Build Universal Binary */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Build Universal Binary";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ ! -d \"$CORONA_ROOT\" ]\nthen\n\t# Assume symlink location\n\tCORONA_ROOT=$PROJECT_DIR/CoronaEnterprise\nfi\n\nif [ ! -d \"$CORONA_ROOT\" ]\nthen\n    echo \"Could not find Corona Enterprise directory\"\n    exit -1\nfi\n\n# -------------------------------------------------------------------\n\n\"$CORONA_ROOT\"/Corona/xcode/universal-framework.sh \"appletv\"";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A49EC1811BD779560093F529 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE8E82AE1E6E4130000F2322 /* struct.m in Sources */,
+				CE963CDA2335561E006EF13A /* Byte.cpp in Sources */,
+				CE963CE72335561E006EF13A /* Thread.cpp in Sources */,
+				CE8E82B01E6E413F000F2322 /* marshal.m in Sources */,
+				CE963CDD2335561E006EF13A /* LuaEx.cpp in Sources */,
+				CE963CDF2335561E006EF13A /* Memory.cpp in Sources */,
+				CE963CD82335561E006EF13A /* Blob.cpp in Sources */,
+				CE8E82B21E6E4148000F2322 /* lpack.m in Sources */,
+				CE963CE52335561E006EF13A /* SIMD.cpp in Sources */,
+				CE963CFD23355647006EF13A /* stdafx.cpp in Sources */,
+				CE51A1FF1CE15B6300F115D7 /* plugin.serialize.cpp in Sources */,
+				CE963CF52335563E006EF13A /* ByteReader.cpp in Sources */,
+				CE963CE22335561E006EF13A /* Path.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A40A8FEB1BD973B2001D2038 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A49EC1851BD779560093F529 /* Corona_plugin_serialize */;
+			targetProxy = A40A8FEA1BD973B2001D2038 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		A40A8FE71BD973A8001D2038 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		A40A8FE81BD973A8001D2038 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/../../ByteReader ${SRCROOT}/../../corona_enterprise_utils ${SRCROOT}/../../math_libraries";
+			};
+			name = Release;
+		};
+		A49EC18C1BD779560093F529 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		A49EC18D1BD779560093F529 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		A49EC18F1BD779560093F529 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BITCODE_GENERATION_MODE = bitcode;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/CoronaEnterprise/Corona/tvos/frameworks",
+				);
+				INFOPLIST_FILE = Plugin/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.coronalabs.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/CoronaEnterprise/Corona/tvos/frameworks/CoronaCards.framework/PrivateHeaders ${SRCROOT}/../../ByteReader ${SRCROOT}/../../corona_enterprise_utils ${SRCROOT}/../../math_libraries";
+			};
+			name = Debug;
+		};
+		A49EC1901BD779560093F529 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BITCODE_GENERATION_MODE = bitcode;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/CoronaEnterprise/Corona/tvos/frameworks",
+				);
+				INFOPLIST_FILE = Plugin/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.coronalabs.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/CoronaEnterprise/Corona/tvos/frameworks/CoronaCards.framework/PrivateHeaders ${SRCROOT}/../../ByteReader ${SRCROOT}/../../corona_enterprise_utils ${SRCROOT}/../../math_libraries";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A40A8FE91BD973A8001D2038 /* Build configuration list for PBXAggregateTarget "Corona_plugin_serialize.framework" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A40A8FE71BD973A8001D2038 /* Debug */,
+				A40A8FE81BD973A8001D2038 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A49EC1801BD779560093F529 /* Build configuration list for PBXProject "Plugin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A49EC18C1BD779560093F529 /* Debug */,
+				A49EC18D1BD779560093F529 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A49EC18E1BD779560093F529 /* Build configuration list for PBXNativeTarget "Corona_plugin_serialize" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A49EC18F1BD779560093F529 /* Debug */,
+				A49EC1901BD779560093F529 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A49EC17D1BD779560093F529 /* Project object */;
+}

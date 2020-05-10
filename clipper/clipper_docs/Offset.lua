@@ -1,0 +1,144 @@
+--- [An encapsulation](http://www.angusj.com/delphi/clipper/documentation/Docs/Units/ClipperLib/Classes/ClipperOffset/_Body.htm)
+-- of the process of offsetting (inflating/deflating) both open and closed paths using a number of different join types and end types.
+--
+-- (Follow the first link for a nice visual example.)
+--
+-- **Preconditions for offsetting**:
+--
+-- 1. The orientations of closed paths must be consistent such that outer polygons share the same orientation, and any holes have the
+-- opposite orientation (i.e. non-zero filling). Open paths must be oriented with closed outer polygons.
+-- 2. Polygons must not self-intersect. 
+--
+-- **Limitations**:
+--
+-- When offsetting, small artefacts may appear where polygons overlap. To avoid these artefacts, offset overlapping polygons separately.
+-- @classmod Offset
+
+--
+-- Permission is hereby granted, free of charge, to any person obtaining
+-- a copy of this software and associated documentation files (the
+-- "Software"), to deal in the Software without restriction, including
+-- without limitation the rights to use, copy, modify, merge, publish,
+-- distribute, sublicense, and/or sell copies of the Software, and to
+-- permit persons to whom the Software is furnished to do so, subject to
+-- the following conditions:
+--
+-- The above copyright notice and this permission notice shall be
+-- included in all copies or substantial portions of the Software.
+--
+-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+-- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+-- MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+-- IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+-- CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+-- TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+-- SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+--
+-- [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
+--
+
+--- Adds a @{Path} in preparation for offsetting.
+--
+-- Any number of paths can be added, and each has its own join and end types. All 'outer' paths must have the same
+-- orientation, and any 'hole' paths must have reverse orientation. _Closed_ paths must have at least 3 vertices.
+-- _Open_ paths may have as few as one vertex. Open paths can only be offset with positive deltas.
+-- @function Offset:AddPath
+-- @tparam Path path
+-- @string join_type One of **"Square"**, **"Round"**, or **"Miter"**.
+--
+-- See [here](http://www.angusj.com/delphi/clipper/documentation/Docs/Units/ClipperLib/Types/JoinType.htm) for some nice visual examples.)
+-- @string end_type One of:
+--
+-- * **"ClosedPolygon"**: Ends are joined according to _join\_type_ and the path filled as a polygon.
+-- * **"ClosedLine"**: Ends are joined according to _join\_type_ and the path filled as a polyline.
+-- * **"OpenButt"**: Ends are squared off with no extension.
+-- * **"OpenSquare"**: Ends are _squared_ off and extended **delta** units.
+-- * **"OpenRound"**: Ends are _rounded_ off and extended **delta** units.
+--
+-- See [here](http://www.angusj.com/delphi/clipper/documentation/Docs/Units/ClipperLib/Types/EndType.htm) for some nice visual examples.)
+
+--- Like @{Offset:AddPath}, but adds a @{Paths}.
+-- @function Offset:AddPaths
+-- @tparam Paths paths
+-- @string join_type As per @{Offset:AddPath}.
+-- @string end_type As per @{Offset:AddPath}.
+
+--- Clear all paths, allowing new ones to be assigned.
+-- @function Offset:Clear
+
+--- Apply the offset operation to the currently added paths.
+--
+-- This method can be called multiple times, offsetting the same paths by different amounts (i.e. using different deltas).
+-- @function Offset:Execute
+-- @tparam ?|PolyTree|Paths solution Structure that will receive the result of the operation.
+-- @number delta Amount to which the supplied paths will be offset &mdash; negative delta values to
+-- shrink polygons and positive delta to expand them.
+-- @treturn ?|PolyTree|Paths _solution_.
+
+--- Alternative signature of **Execute**.
+-- @function Offset:Execute
+-- @number delta As before.
+-- @treturn Paths Result of the operation, via a new object.
+
+---
+-- @function Offset:GetArcTolerance
+-- @treturn number Current tolerance.
+-- @see Offset:SetArcTolerance
+
+---
+-- @function Offset:GetMiterLimit
+-- @treturn number Current limit.
+-- @see Offset:SetMiterLimit
+
+--- Since flattened paths can never perfectly represent arcs, this field / property specifies a maximum
+-- acceptable imprecision ('tolerance') when arcs are approximated in an offsetting operation. Smaller
+-- values will increase 'smoothness' up to a point though at a cost of performance and in creating more
+-- vertices to construct the arc.
+--
+-- The default ArcTolerance is 0.25 units. This means that the maximum distance the flattened path will
+-- deviate from the 'true' arc will be no more than 0.25 units (before rounding).
+--
+-- _Reducing tolerances below 0.25 will **not** improve smoothness since vertex coordinates will still_
+-- _be rounded to integer values._ The only way to achieve sub-integer precision is through coordinate
+-- scaling before and after offsetting (see example below).
+--
+-- _It's important to make ArcTolerance a sensible fraction of the offset delta (arc radius)._ Large
+-- tolerances relative to the offset delta will produce poor arc approximations but, just as importantly,
+-- very small tolerances will substantially slow offsetting performance while providing unnecessary
+-- degrees of precision. This is most likely to be an issue when offsetting polygons whose coordinates
+-- have been scaled to preserve floating point precision.
+--
+-- **Example**: Imagine a set of polygons (defined in floating point coordinates) that is to be offset
+-- by 10 units using round joins, and the solution is to retain floating point precision up to at least
+-- 6 decimal places.
+--
+-- To preserve this degree of floating point precision, and given that @{Clipper} and **Offset** both
+-- operate on integer coordinates, the polygon coordinates will be scaled up by `10^8` (and rounded to
+-- integers) prior to offsetting. Both offset delta and ArcTolerance will also need to be scaled by
+-- this same factor. _If ArcTolerance was left unscaled at the default 0.25 units, every arc in the_
+-- _solution would contain a fraction of 44 THOUSAND vertices_ while the final arc imprecision would
+-- be `0.25 × 10^-8` units (i.e. once scaling was reversed). However, if 0.1 units was an acceptable
+-- imprecision in the final _unscaled_ solution, then ArcTolerance should be set to 0.1 × scaling\_factor
+-- (`0.1 × 10^8`). Now if scaling is applied equally to both ArcTolerance and to Delta Offset, then
+-- in this example the number of vertices (steps) defining each arc would be a fraction of 23.
+--
+-- The formula for the number of steps in a full circular arc is: `Pi / acos(1 - arc_tolerance / abs(delta))`
+--
+-- The arc tolerance is relevant only when _join\_type_ is **"Round"** or _end\_type_ is **"OpenRound"**
+-- @function Offset:SetArcTolerance
+-- @number tolerance New tolerance.
+-- @see Offset:GetArcTolerance
+
+--- This property sets the maximum distance in _multiples of delta_ that vertices can be offset from their
+-- original positions before squaring is applied. (Squaring truncates a miter by 'cutting it off' at 1 × delta
+-- distance from the original vertex.)
+--
+-- **The default value for MiterLimit is 2** (i.e. twice delta). This is also the smallest MiterLimit that's
+-- allowed. If mitering was unrestricted (ie without any squaring), then offsets at very acute angles would
+-- generate unacceptably long 'spikes'. (See [here](http://www.angusj.com/delphi/clipper/documentation/Docs/Units/ClipperLib/Classes/ClipperOffset/Properties/MiterLimit.htm)
+-- for an example of such a spike.)
+--
+-- The miter limit is relevant only when _join\_type_ is **"Miter"**, cf. @{Offset:AddPath}.
+-- @function Offset:SetMiterLimit
+-- @number limit New limit, &ge; 2.
+-- @see Offset:GetMiterLimit

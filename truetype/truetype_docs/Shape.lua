@@ -1,0 +1,64 @@
+--- Representation of a glyph's shape as a series of contours.
+-- @classmod Shape
+
+--
+-- Permission is hereby granted, free of charge, to any person obtaining
+-- a copy of this software and associated documentation files (the
+-- "Software"), to deal in the Software without restriction, including
+-- without limitation the rights to use, copy, modify, merge, publish,
+-- distribute, sublicense, and/or sell copies of the Software, and to
+-- permit persons to whom the Software is furnished to do so, subject to
+-- the following conditions:
+--
+-- The above copyright notice and this permission notice shall be
+-- included in all copies or substantial portions of the Software.
+--
+-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+-- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+-- MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+-- IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+-- CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+-- TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+-- SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+--
+-- [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
+--
+
+--- Get a "vertex", i.e. a step in the shape's contour(s).
+--
+-- Each contour starts with a **"move\_to"**, then consists of a series of mixed **"line\_to"**
+-- and **"curve\_to"** steps, describing either a line segment or a quadratic Beziér curve from
+-- the previous endpoint to the new one.
+-- @function Shape:GetVertex
+-- @uint index Position of vertex in the array, from 1 to `#self`
+-- @return[1] Either **"line\_to"** or **"move\_to"**. (There will be `#self` moves in the array.)
+-- @treturn[1] number Position to move to or line segment endpoint, x-coordinate (unscaled)...
+-- @treturn[1] number ...and y-coordinate.
+-- @return[2] The string **"curve\_to"**.
+-- @treturn[2] number Curve endpoint, x-coordinate...
+-- @treturn[2] number ...and y-coordinate.
+-- @treturn[2] number Control point, x-coordinate...
+-- @treturn[2] number ...and y-coordinate.
+
+--- Metamethod.
+-- @function Shape:__len
+-- @treturn uint Number of vertices in shape.
+
+--- Rasterize a shape with quadratic Beziérs into a bitmap.
+-- @function Shape:Rasterize
+-- @uint w Bitmap width...
+-- @uint h ...and height.
+-- @number xscale Scale applied to vertices' x-components...
+-- @number yscale ...and y-components.
+-- @number xshift Translation applied to vertices' x-components...
+-- @number yshift ...and y-components.
+-- @int xoff Further translation to the x-components...
+-- @int yoff ...and y-components.
+-- @ptable[opt] opts Rasterize options, which include:
+--
+-- * **as\_userdata**: TODO: return as userdata
+-- * **blob**: TODO: use memory blob
+-- * **flatness**: Allowable error of curve (in pixels), .35 by default.
+-- * **invert**: If true, vertically flip shape.
+-- * **stride**: TODO: stride in blob
+-- @treturn ?|Bytes|string Rasterized 1-channel bitmap.

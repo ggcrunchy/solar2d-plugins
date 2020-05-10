@@ -1,0 +1,400 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CE51A1841CDD596E00F115D7 /* lpack.m in Sources */ = {isa = PBXBuildFile; fileRef = CE51A17F1CDD596E00F115D7 /* lpack.m */; };
+		CE51A1851CDD596E00F115D7 /* marshal.m in Sources */ = {isa = PBXBuildFile; fileRef = CE51A1801CDD596E00F115D7 /* marshal.m */; };
+		CE51A1861CDD596E00F115D7 /* plugin.serialize.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE51A1811CDD596E00F115D7 /* plugin.serialize.cpp */; };
+		CE51A1871CDD596E00F115D7 /* struct.m in Sources */ = {isa = PBXBuildFile; fileRef = CE51A1831CDD596E00F115D7 /* struct.m */; };
+		CE963C7823355366006EF13A /* Blob.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE963C5E23355365006EF13A /* Blob.cpp */; };
+		CE963C7923355366006EF13A /* Byte.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE963C6023355365006EF13A /* Byte.cpp */; };
+		CE963C7A23355366006EF13A /* LuaEx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE963C6323355365006EF13A /* LuaEx.cpp */; };
+		CE963C7B23355366006EF13A /* Memory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE963C6523355365006EF13A /* Memory.cpp */; };
+		CE963C7C23355366006EF13A /* Path.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE963C6823355365006EF13A /* Path.cpp */; };
+		CE963C7D23355366006EF13A /* SIMD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE963C6B23355365006EF13A /* SIMD.cpp */; };
+		CE963C7E23355366006EF13A /* Thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE963C6D23355365006EF13A /* Thread.cpp */; };
+		CE963C8823355390006EF13A /* ByteReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE963C8123355390006EF13A /* ByteReader.cpp */; };
+		CE963C8A23355398006EF13A /* stdafx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE963C8923355398006EF13A /* stdafx.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A4E253B4166D6FB300DCDC2C /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/${PRODUCT_NAME}";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		A4E253B6166D6FB300DCDC2C /* libplugin_serialize.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libplugin_serialize.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE51A17F1CDD596E00F115D7 /* lpack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = lpack.m; path = ../shared/lpack.m; sourceTree = "<group>"; };
+		CE51A1801CDD596E00F115D7 /* marshal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = marshal.m; path = ../shared/marshal.m; sourceTree = "<group>"; };
+		CE51A1811CDD596E00F115D7 /* plugin.serialize.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = plugin.serialize.cpp; path = ../shared/plugin.serialize.cpp; sourceTree = "<group>"; };
+		CE51A1821CDD596E00F115D7 /* stdafx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stdafx.h; path = ../shared/stdafx.h; sourceTree = "<group>"; };
+		CE51A1831CDD596E00F115D7 /* struct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = struct.m; path = ../shared/struct.m; sourceTree = "<group>"; };
+		CE963C4123355365006EF13A /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		CE963C4A23355365006EF13A /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		CE963C5C23355365006EF13A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		CE963C5E23355365006EF13A /* Blob.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Blob.cpp; sourceTree = "<group>"; };
+		CE963C5F23355365006EF13A /* Blob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Blob.h; sourceTree = "<group>"; };
+		CE963C6023355365006EF13A /* Byte.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Byte.cpp; sourceTree = "<group>"; };
+		CE963C6123355365006EF13A /* Byte.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Byte.h; sourceTree = "<group>"; };
+		CE963C6223355365006EF13A /* Compat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Compat.h; sourceTree = "<group>"; };
+		CE963C6323355365006EF13A /* LuaEx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LuaEx.cpp; sourceTree = "<group>"; };
+		CE963C6423355365006EF13A /* LuaEx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LuaEx.h; sourceTree = "<group>"; };
+		CE963C6523355365006EF13A /* Memory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Memory.cpp; sourceTree = "<group>"; };
+		CE963C6623355365006EF13A /* Memory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Memory.h; sourceTree = "<group>"; };
+		CE963C6723355365006EF13A /* Namespace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Namespace.h; sourceTree = "<group>"; };
+		CE963C6823355365006EF13A /* Path.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Path.cpp; sourceTree = "<group>"; };
+		CE963C6923355365006EF13A /* Path.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Path.h; sourceTree = "<group>"; };
+		CE963C6A23355365006EF13A /* Platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Platform.h; sourceTree = "<group>"; };
+		CE963C6B23355365006EF13A /* SIMD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SIMD.cpp; sourceTree = "<group>"; };
+		CE963C6C23355365006EF13A /* SIMD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIMD.h; sourceTree = "<group>"; };
+		CE963C6D23355365006EF13A /* Thread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Thread.cpp; sourceTree = "<group>"; };
+		CE963C6E23355365006EF13A /* Thread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Thread.h; sourceTree = "<group>"; };
+		CE963C8023355390006EF13A /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		CE963C8123355390006EF13A /* ByteReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ByteReader.cpp; sourceTree = "<group>"; };
+		CE963C8223355390006EF13A /* ByteReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ByteReader.h; sourceTree = "<group>"; };
+		CE963C8323355390006EF13A /* ByteReader.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ByteReader.lua; sourceTree = "<group>"; };
+		CE963C8423355390006EF13A /* config.ld */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = config.ld; sourceTree = "<group>"; };
+		CE963C8523355390006EF13A /* ldoc.bat */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ldoc.bat; sourceTree = "<group>"; };
+		CE963C8623355390006EF13A /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		CE963C8723355390006EF13A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		CE963C8923355398006EF13A /* stdafx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = stdafx.cpp; path = ../shared/stdafx.cpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A4E253B3166D6FB300DCDC2C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A447B609165D72A6009EA762 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				CE963C8923355398006EF13A /* stdafx.cpp */,
+				CE963C7F23355390006EF13A /* ByteReader */,
+				CE963C4023355365006EF13A /* corona_enterprise_utils */,
+				CE51A17F1CDD596E00F115D7 /* lpack.m */,
+				CE51A1801CDD596E00F115D7 /* marshal.m */,
+				CE51A1811CDD596E00F115D7 /* plugin.serialize.cpp */,
+				CE51A1821CDD596E00F115D7 /* stdafx.h */,
+				CE51A1831CDD596E00F115D7 /* struct.m */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		A484110E15114F700074BD57 = {
+			isa = PBXGroup;
+			children = (
+				A447B609165D72A6009EA762 /* Source */,
+				A484111A15114F700074BD57 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A484111A15114F700074BD57 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A4E253B6166D6FB300DCDC2C /* libplugin_serialize.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CE963C4023355365006EF13A /* corona_enterprise_utils */ = {
+			isa = PBXGroup;
+			children = (
+				CE963C4123355365006EF13A /* .gitignore */,
+				CE963C4A23355365006EF13A /* LICENSE */,
+				CE963C5C23355365006EF13A /* README.md */,
+				CE963C5D23355365006EF13A /* utils */,
+			);
+			name = corona_enterprise_utils;
+			path = ../../corona_enterprise_utils;
+			sourceTree = "<group>";
+		};
+		CE963C5D23355365006EF13A /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				CE963C5E23355365006EF13A /* Blob.cpp */,
+				CE963C5F23355365006EF13A /* Blob.h */,
+				CE963C6023355365006EF13A /* Byte.cpp */,
+				CE963C6123355365006EF13A /* Byte.h */,
+				CE963C6223355365006EF13A /* Compat.h */,
+				CE963C6323355365006EF13A /* LuaEx.cpp */,
+				CE963C6423355365006EF13A /* LuaEx.h */,
+				CE963C6523355365006EF13A /* Memory.cpp */,
+				CE963C6623355365006EF13A /* Memory.h */,
+				CE963C6723355365006EF13A /* Namespace.h */,
+				CE963C6823355365006EF13A /* Path.cpp */,
+				CE963C6923355365006EF13A /* Path.h */,
+				CE963C6A23355365006EF13A /* Platform.h */,
+				CE963C6B23355365006EF13A /* SIMD.cpp */,
+				CE963C6C23355365006EF13A /* SIMD.h */,
+				CE963C6D23355365006EF13A /* Thread.cpp */,
+				CE963C6E23355365006EF13A /* Thread.h */,
+			);
+			path = utils;
+			sourceTree = "<group>";
+		};
+		CE963C7F23355390006EF13A /* ByteReader */ = {
+			isa = PBXGroup;
+			children = (
+				CE963C8023355390006EF13A /* .gitignore */,
+				CE963C8123355390006EF13A /* ByteReader.cpp */,
+				CE963C8223355390006EF13A /* ByteReader.h */,
+				CE963C8323355390006EF13A /* ByteReader.lua */,
+				CE963C8423355390006EF13A /* config.ld */,
+				CE963C8523355390006EF13A /* ldoc.bat */,
+				CE963C8623355390006EF13A /* LICENSE */,
+				CE963C8723355390006EF13A /* README.md */,
+			);
+			name = ByteReader;
+			path = ../../ByteReader;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A4E253B5166D6FB300DCDC2C /* plugin_serialize */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A4E253BF166D6FB300DCDC2C /* Build configuration list for PBXNativeTarget "plugin_serialize" */;
+			buildPhases = (
+				A4E253B2166D6FB300DCDC2C /* Sources */,
+				A4E253B3166D6FB300DCDC2C /* Frameworks */,
+				A4E253B4166D6FB300DCDC2C /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = plugin_serialize;
+			productName = plugin_library;
+			productReference = A4E253B6166D6FB300DCDC2C /* libplugin_serialize.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A484111015114F700074BD57 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0920;
+			};
+			buildConfigurationList = A484111315114F700074BD57 /* Build configuration list for PBXProject "Plugin" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = A484110E15114F700074BD57;
+			productRefGroup = A484111A15114F700074BD57 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A4E253B5166D6FB300DCDC2C /* plugin_serialize */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A4E253B2166D6FB300DCDC2C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE51A1861CDD596E00F115D7 /* plugin.serialize.cpp in Sources */,
+				CE963C7923355366006EF13A /* Byte.cpp in Sources */,
+				CE963C7E23355366006EF13A /* Thread.cpp in Sources */,
+				CE51A1851CDD596E00F115D7 /* marshal.m in Sources */,
+				CE963C7A23355366006EF13A /* LuaEx.cpp in Sources */,
+				CE963C7B23355366006EF13A /* Memory.cpp in Sources */,
+				CE963C7823355366006EF13A /* Blob.cpp in Sources */,
+				CE51A1871CDD596E00F115D7 /* struct.m in Sources */,
+				CE963C7D23355366006EF13A /* SIMD.cpp in Sources */,
+				CE963C8A23355398006EF13A /* stdafx.cpp in Sources */,
+				CE51A1841CDD596E00F115D7 /* lpack.m in Sources */,
+				CE963C8823355390006EF13A /* ByteReader.cpp in Sources */,
+				CE963C7C23355366006EF13A /* Path.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A484114015114F700074BD57 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "compiler-default";
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/CoronaEnterprise/Corona/shared/include/Corona ${SRCROOT}/CoronaEnterprise/Corona/shared/include/lua ${SRCROOT}/CoronaEnterprise/Corona/ios/include/Corona";
+			};
+			name = Debug;
+		};
+		A484114115114F700074BD57 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "compiler-default";
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				OTHER_CFLAGS = (
+					"-DNS_BLOCK_ASSERTIONS=1",
+					"-D_POSIX_SOURCE",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/CoronaEnterprise/Corona/shared/include/Corona ${SRCROOT}/CoronaEnterprise/Corona/shared/include/lua ${SRCROOT}/CoronaEnterprise/Corona/ios/include/Corona";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A4E253C0166D6FB300DCDC2C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				DSTROOT = /tmp/plugin_library.dst;
+				ENABLE_BITCODE = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/CoronaEnterprise/Corona/shared/include/Corona ${SRCROOT}/CoronaEnterprise/Corona/shared/include/lua ${SRCROOT}/CoronaEnterprise/Corona/ios/include/Corona ${SRCROOT}/../../ByteReader ${SRCROOT}/../../corona_enterprise_utils ${SRCROOT}/../../math_libraries";
+			};
+			name = Debug;
+		};
+		A4E253C1166D6FB300DCDC2C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				DSTROOT = /tmp/plugin_library.dst;
+				ENABLE_BITCODE = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				"HEADER_SEARCH_PATHS[arch=*]" = /Applications/CoronaEnterprise/Corona/shared/include/lua;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/CoronaEnterprise/Corona/shared/include/Corona ${SRCROOT}/CoronaEnterprise/Corona/shared/include/lua ${SRCROOT}/CoronaEnterprise/Corona/ios/include/Corona ${SRCROOT}/../../ByteReader ${SRCROOT}/../../corona_enterprise_utils ${SRCROOT}/../../math_libraries";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A484111315114F700074BD57 /* Build configuration list for PBXProject "Plugin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A484114015114F700074BD57 /* Debug */,
+				A484114115114F700074BD57 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A4E253BF166D6FB300DCDC2C /* Build configuration list for PBXNativeTarget "plugin_serialize" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A4E253C0166D6FB300DCDC2C /* Debug */,
+				A4E253C1166D6FB300DCDC2C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A484111015114F700074BD57 /* Project object */;
+}

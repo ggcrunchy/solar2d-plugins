@@ -1,0 +1,158 @@
+--- An object that represents a memory blob, with various useful operations.
+-- @classmod MemoryBlob
+
+--
+-- Permission is hereby granted, free of charge, to any person obtaining
+-- a copy of this software and associated documentation files (the
+-- "Software"), to deal in the Software without restriction, including
+-- without limitation the rights to use, copy, modify, merge, publish,
+-- distribute, sublicense, and/or sell copies of the Software, and to
+-- permit persons to whom the Software is furnished to do so, subject to
+-- the following conditions:
+--
+-- The above copyright notice and this permission notice shall be
+-- included in all copies or substantial portions of the Software.
+--
+-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+-- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+-- MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+-- IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+-- CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+-- TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+-- SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+--
+-- [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
+--
+
+--- Add bytes to the end of the blob.
+--
+-- This is a no-op for fixed-size and locked blobs.
+-- @function MemoryBlob:Append
+-- @tparam Bytes bytes Bytes to write.
+-- @treturn uint Number of bytes actually written.
+-- @see MemoryBlob:IsLocked
+-- @see MemoryBlob:IsLocked
+
+--- Create a clone of the blob.
+--
+-- The clone inherits the alignment, resizability, size, and type of the original blob.
+--
+-- Initially, the clone will contain a copy of the parent's current contents. The two blobs are independent,
+-- however; changes to one's contents are not reflected in the other.
+--
+-- Clones begin unlocked.
+-- @function MemoryBlob:Clone
+-- @treturn MemoryBlob Cloned blob.
+
+--- Dump the blob's contents as a string of bytes.
+--
+-- If either index refers to a position outside the blob, or _i1_ &gt; _i2_ (after normalizing any
+-- negative indices), an empty string is returned.
+-- @function MemoryBlob:GetBytes
+-- @uint[opt=1] i1 Index of first byte. If negative, the index counts down from the end of the blob, much like
+-- certain Lua [string functions](https://docs.coronalabs.com/api/library/string/sub.html).
+-- @uint[opt=#self] i2 Index of last byte. Again, indices may be negative.
+-- @treturn string Copy of current blob contents.
+-- @see MemoryBlob:__len
+
+--- Populate a table with the following blob properties:
+--
+-- * **alignment**: As per @{core.New|New}, an integer &ge; 0, with 0 meaning default alignment.
+-- * **resizable**: As per @{core.New|New}, a boolean indicating resizability.
+-- @function MemoryBlob:GetProperties
+-- @tparam ?table out Table to populate and return. If absent, a fresh table is created.
+-- @treturn table Properties table.
+
+--- Insert bytes into the blob, starting at position _pos_.
+--
+-- The current contents from _pos_ onward are moved ahead #_bytes_ positions to make room. In the case of
+-- fixed-size blobs, any bytes moved beyond the end of the blob are thrown away.
+--
+-- This is a no-op for locked blobs.
+-- @function MemoryBlob:Insert
+-- @int pos Insert position, between 1 and #_self_, inclusive. A negative index may also be provided,
+-- cf. @{MemoryBlob:GetBytes} for details.
+--
+-- Resizable blobs may also use position #_self_ + 1, with behavior like `self:Append(bytes)`.
+--
+-- No bytes are inserted when the position lies outside the legal range.
+-- @tparam Bytes bytes Bytes to insert.
+-- @treturn uint Number of bytes actually inserted.
+-- @see MemoryBlob:Append, MemoryBlob:IsLocked, MemoryBlob:__len
+
+--- Indicates whether writes to this blob are restricted (via the native API).
+--
+-- Certain MemoryBlob methods will early-out when given a locked blob, cf. various summaries.
+-- @function MemoryBlob:IsLocked
+-- @treturn boolean The blob is locked?
+
+--- Metamethod.
+-- @function MemoryBlob:__len
+-- @treturn uint Current size of blob, in bytes.
+
+--- Remove a range of bytes from the blob.
+--
+-- Any bytes beyond _i2_ will be moved down to fill the vacated positions.
+--
+-- Naturally, resizable blobs will shrink. Since fixed-size blobs cannot do this, there will be _i2_ -
+-- _i1_ + 1 "extra" bytes at the end, after elements move down; these will be left as-is.
+--
+-- This is a no-op for locked blobs.
+-- @function MemoryBlob:Remove
+-- @int[opt=1] i1 Index of first byte to remove, cf. @{MemoryBlob:GetBytes}.
+-- @int[opt=#self] i2 Index of last byte to remove, ditto.
+-- @treturn uint Number of bytes actually removed.
+-- @see MemoryBlob:IsLocked, MemoryBlob:__len
+
+--- (**WIP**, in probation) Submit this blob's contents to storage. This is a mechanism geared toward
+-- sharing memory among [Lua processes](https://ggcrunchy.github.io/corona-pluin-docs/DOCS/luaproc/api.html),
+-- which can even be done without copying when certain conditions are met (cf. @{MemoryBlob:Sync} for details,
+-- as well as the comments about resizable blobs that follow).
+--
+-- Essentially, an empty resizable blob with the same alignment is first created in storage.
+--
+-- If the original blob is resizable, its contents are swapped directly into the stored entry.
+--
+-- Fixed-size blobs cannot do this, so something like `entry:Append(fixed\_blob)` is done instead.
+--
+-- To keep memory under control, any blobs in storage left unsynchronized will be evicted after a few frames have
+-- gone by (on average, 5). Listeners for **"stale\_entry"** will be sent a message each time this happens (cf.
+-- @{core.GetBlobDispatcher|GetBlobDispatcher}), with an **id** field containing the former entry's ID.
+--
+-- This is a no-op for locked, resizable blobs.
+-- @function MemoryBlob:Submit
+-- @treturn ?|string|nil On success, an ID for later use by @{MemoryBlob:Sync}. Otherwise, **nil**.
+-- @see core.ExistsInStorage, MemoryBlob:Append, MemoryBlob:IsLocked
+
+--- (**WIP**, in probation) Synchronize this blob with an entry in storage, which then ceases to exist.
+--
+-- For fixed-size blobs, this is essentially `self:Write(1, bytes)`, with _bytes_ being the entry's contents.
+--
+-- With resizable blobs, the same is true, but the blob's length is also trimmed to #_bytes_, if necessary. 
+-- When the blob and stored entry have a common alignment (cf. @{MemoryBlob:Submit}), the blob simply assumes
+-- ownership of the latter's contents, forgoing a potentially expensive copy.
+--
+-- This operation is designed for safe communication between [Lua processes](https://ggcrunchy.github.io/corona-plugin-docs/DOCS/luaproc/api.html).
+--
+-- This is a no-op for locked blobs, or if _id_ does not refer to a valid entry.
+-- @function MemoryBlob:Sync
+-- @string id Stored entry's lookup ID, cf. @{MemoryBlob:Submit}.
+-- @treturn boolean Synchronization succeeded?
+-- @see core.ExistsInStorage, MemoryBlob:IsLocked, MemoryBlob:Write
+
+--- Write bytes to the blob, starting at position _pos_, overwriting the blob's contents.
+--
+-- Resizable blobs will grow to accommodate these bytes, if necessary, whereas writes to fixed-size
+-- blobs will stop if they reach the end.
+--
+-- This is a no-op for locked blobs.
+-- @function MemoryBlob:Write
+-- @int pos Write position, between 1 and #_self_, inclusive.  A negative index may also be provided,
+-- cf. @{MemoryBlob:GetBytes} for details.
+--
+-- Resizable blobs may also use position #_self_ + 1, with behavior like `self:Append(bytes)`.
+--
+-- No bytes are written when the position lies outside the legal range.
+-- @tparam Bytes bytes Bytes to write.
+-- @treturn uint Number of bytes actually written.
+-- @see MemoryBlob:Append, MemoryBlob:IsLocked, MemoryBlob:__len

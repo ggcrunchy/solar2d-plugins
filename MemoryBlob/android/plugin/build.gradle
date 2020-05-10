@@ -1,0 +1,21 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 27
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+    }
+}
+
+dependencies {
+    def coronaNativeDir = System.getProperty("user.home") + "/Library/Application Support/Corona/Native"
+    if (System.properties['os.name'].toLowerCase().contains('windows'))
+    {
+        coronaNativeDir = System.getenv("CORONA_ROOT")
+    }
+    implementation(files("$coronaNativeDir/Corona/android/lib/gradle/Corona.aar"))
+}

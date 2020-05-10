@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\shared\common.cpp" />
+    <ClCompile Include="..\shared\dynamics.cpp" />
+    <ClCompile Include="..\shared\math.cpp" />
+    <ClCompile Include="..\shared\plugin.qu3e.cpp" />
+    <ClCompile Include="..\shared\qu3e\broadphase\q3BroadPhase.cpp" />
+    <ClCompile Include="..\shared\qu3e\broadphase\q3DynamicAABBTree.cpp" />
+    <ClCompile Include="..\shared\qu3e\collision\q3Box.cpp" />
+    <ClCompile Include="..\shared\qu3e\collision\q3Collide.cpp" />
+    <ClCompile Include="..\shared\qu3e\common\q3Geometry.cpp" />
+    <ClCompile Include="..\shared\qu3e\common\q3Memory.cpp" />
+    <ClCompile Include="..\shared\qu3e\debug\q3Render.h" />
+    <ClCompile Include="..\shared\qu3e\dynamics\q3Body.cpp" />
+    <ClCompile Include="..\shared\qu3e\dynamics\q3Contact.cpp" />
+    <ClCompile Include="..\shared\qu3e\dynamics\q3ContactManager.cpp" />
+    <ClCompile Include="..\shared\qu3e\dynamics\q3ContactSolver.cpp" />
+    <ClCompile Include="..\shared\qu3e\dynamics\q3Island.cpp" />
+    <ClCompile Include="..\shared\qu3e\math\q3Mat3.cpp" />
+    <ClCompile Include="..\shared\qu3e\math\q3Quaternion.cpp" />
+    <ClCompile Include="..\shared\qu3e\math\q3Vec3.cpp" />
+    <ClCompile Include="..\shared\qu3e\scene\q3Scene.cpp" />
+    <ClCompile Include="..\shared\scene.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\shared\qu3e\broadphase\q3BroadPhase.h" />
+    <ClInclude Include="..\shared\qu3e\broadphase\q3DynamicAABBTree.h" />
+    <ClInclude Include="..\shared\qu3e\collision\q3Box.h" />
+    <ClInclude Include="..\shared\qu3e\collision\q3Collide.h" />
+    <ClInclude Include="..\shared\qu3e\common\q3Geometry.h" />
+    <ClInclude Include="..\shared\qu3e\common\q3Memory.h" />
+    <ClInclude Include="..\shared\qu3e\common\q3Settings.h" />
+    <ClInclude Include="..\shared\qu3e\common\q3Types.h" />
+    <ClInclude Include="..\shared\qu3e\dynamics\q3Body.h" />
+    <ClInclude Include="..\shared\qu3e\dynamics\q3Contact.h" />
+    <ClInclude Include="..\shared\qu3e\dynamics\q3ContactManager.h" />
+    <ClInclude Include="..\shared\qu3e\dynamics\q3ContactSolver.h" />
+    <ClInclude Include="..\shared\qu3e\dynamics\q3Island.h" />
+    <ClInclude Include="..\shared\qu3e\math\q3Mat3.h" />
+    <ClInclude Include="..\shared\qu3e\math\q3Math.h" />
+    <ClInclude Include="..\shared\qu3e\math\q3Quaternion.h" />
+    <ClInclude Include="..\shared\qu3e\math\q3Transform.h" />
+    <ClInclude Include="..\shared\qu3e\math\q3Vec3.h" />
+    <ClInclude Include="..\shared\qu3e\q3.h" />
+    <ClInclude Include="..\shared\qu3e\scene\q3Scene.h" />
+    <ClInclude Include="..\shared\qu3e.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\shared\qu3e\broadphase\q3DynamicAABBTree.inl" />
+    <None Include="..\shared\qu3e\collision\q3Box.inl" />
+    <None Include="..\shared\qu3e\common\q3Geometry.inl" />
+    <None Include="..\shared\qu3e\math\q3Mat3.inl" />
+    <None Include="..\shared\qu3e\math\q3Math.inl" />
+    <None Include="..\shared\qu3e\math\q3Transform.inl" />
+    <None Include="..\shared\qu3e\math\q3Vec3.inl" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{79F0CACC-457B-4A25-BC54-81277688C361}</ProjectGuid>
+    <RootNamespace>Plugin</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120_xp</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120_xp</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>12.0.30501.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(Configuration)\</OutDir>
+    <TargetName>plugin_memoryBitmap</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(Configuration)\</OutDir>
+    <TargetName>plugin_qu3e</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <PreBuildEvent />
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>CoronaEnterprise\Corona\shared\include;CoronaEnterprise\Corona\shared\include\Corona;CoronaEnterprise\Corona\shared\include\lua;..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>CoronaEnterprise\Corona\win\lib\*.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <PostBuildEvent />
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <PreBuildEvent />
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(CORONA_ROOT)/Corona/shared/include/Corona;$(CORONA_ROOT)/Corona/shared/include/lua;%(AdditionalIncludeDirectories);$(SolutionDir)../../ByteReader;$(SolutionDir)../../corona_enterprise_utils;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);LUA_BUILD_AS_DLL;LUA_LIB;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(CORONA_ROOT)\Corona\win\lib\*.lib;%(AdditionalDependencies);;$(Configuration)\corona_enterprise_utils.lib</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+    </Link>
+    <PostBuildEvent />
+    <PostBuildEvent>
+      <Command>set PLUGINS=$(appdata)/Corona Labs/Corona Simulator/Plugins/plugin/
+copy "$(OutDir)$(TargetName).dll" "%PLUGINS%qu3e.dll"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

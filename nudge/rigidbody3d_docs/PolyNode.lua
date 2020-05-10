@@ -1,0 +1,91 @@
+--- [PolyNode](http://www.angusj.com/delphi/clipper/documentation/Docs/Units/ClipperLib/Classes/PolyNode/_Body.htm)s are encapsulated
+-- within a @{PolyTree} container, and together provide a data structure representing the parent-child relationships of polygon contours
+-- returned by the @{Clipper:Execute} method.
+--
+-- A **PolyNode** object represents a single polygon. Its @{PolyNode:IsHole|IsHole} property indicates whether it's [an outer or a hole](../api.html#terminology).
+-- PolyNodes may own any number of PolyNode children (@{PolyNode:GetChild|Childs}), where children of outer polygons are holes, and children of holes are (nested)
+-- outer polygons.
+-- @classmod PolyNode
+
+--
+-- Permission is hereby granted, free of charge, to any person obtaining
+-- a copy of this software and associated documentation files (the
+-- "Software"), to deal in the Software without restriction, including
+-- without limitation the rights to use, copy, modify, merge, publish,
+-- distribute, sublicense, and/or sell copies of the Software, and to
+-- permit persons to whom the Software is furnished to do so, subject to
+-- the following conditions:
+--
+-- The above copyright notice and this permission notice shall be
+-- included in all copies or substantial portions of the Software.
+--
+-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+-- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+-- MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+-- IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+-- CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+-- TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+-- SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+--
+-- [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
+--
+
+---
+-- @function PolyNode:ChildCount
+-- @treturn uint Number of @{PolyNode:GetChild|children} directly owned by the node.
+
+--- Get one of the node's children.
+--
+-- Outer **PolyNode** childs contain hole **PolyNode**s, and hole **PolyNode** childs contain nested
+-- outer **PolyNode**s.
+-- @function PolyNode:GetChild
+-- @uint index Child index, from 1 to @{PolyNode:ChildCount}.
+-- @ptable[opt] opts Options, which include:
+--
+-- * **out**: If this is a **PolyNode**, it will be populated and used as the return value.
+-- @treturn PolyNode
+
+---
+-- @function PolyNode:GetContour
+-- @ptable[opt] opts Options, which include:
+--
+-- * **out**: If this is a **Path**, it will be populated and used as the return value.
+-- @treturn Path
+
+---
+-- @function PolyNode:GetNext
+-- @ptable[opt] opts Options, which include:
+--
+-- * **out**: If this is a **PolyNode**, it will be populated and used as the return value.
+-- @treturn ?|PolyNode|nil N
+
+---
+-- @function PolyNode:GetParent
+-- @ptable[opt] opts Options, which include:
+--
+-- * **out**: If this is a **PolyNode**, it will be populated and used as the return value.
+-- @treturn ?|PolyNode|nil If the node is not also a @{PolyTree}, its parent; otherwise **nil**.
+-- @see PolyNode:ToTree
+
+---
+-- @function PolyNode:IsHole
+-- @treturn boolean Is the node's @{PolyNode:GetContour|contour} a [hole](../api.html#terminology)?
+--
+-- Children of outer polygons are always _holes_, and children of _holes_ are always (nested)
+-- _outer_ polygons. In a @{PolyTree} this property is undefined, but its children are always
+-- top-level _outer_ polygons.
+
+---
+-- @function PolyNode:IsOpen
+-- @treturn boolean Did the node's @{PolyNode:GetContour|contour} result from a clipping operation on
+-- an open contour (path)?
+--
+-- Only top-level PolyNodes can contain open contours.
+
+---
+-- @function PolyNode:ToTree
+-- @ptable[opt] opts Options, which include:
+--
+-- * **out**:  If this is a @{PolyTree}, it will be populated and used as the return value.
+-- @treturn ?|PolyTree|nil If the node is also a @{PolyTree}, a rewrapping of this node as the
+-- corresponding Lua object; otherwise **nil**.

@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\shared\common.cpp" />
+    <ClCompile Include="..\shared\dynamics.cpp" />
+    <ClCompile Include="..\shared\math.cpp" />
+    <ClCompile Include="..\shared\scene.cpp" />
+    <ClCompile Include="..\shared\qu3e\broadphase\q3BroadPhase.cpp">
+      <Filter>qu3e\broadphase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\qu3e\broadphase\q3DynamicAABBTree.cpp">
+      <Filter>qu3e\broadphase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\qu3e\collision\q3Box.cpp">
+      <Filter>qu3e\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\qu3e\collision\q3Collide.cpp">
+      <Filter>qu3e\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\qu3e\common\q3Geometry.cpp">
+      <Filter>qu3e\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\qu3e\common\q3Memory.cpp">
+      <Filter>qu3e\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\qu3e\dynamics\q3Body.cpp">
+      <Filter>qu3e\dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\qu3e\dynamics\q3Contact.cpp">
+      <Filter>qu3e\dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\qu3e\dynamics\q3ContactManager.cpp">
+      <Filter>qu3e\dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\qu3e\dynamics\q3ContactSolver.cpp">
+      <Filter>qu3e\dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\qu3e\dynamics\q3Island.cpp">
+      <Filter>qu3e\dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\qu3e\math\q3Mat3.cpp">
+      <Filter>qu3e\math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\qu3e\math\q3Quaternion.cpp">
+      <Filter>qu3e\math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\qu3e\math\q3Vec3.cpp">
+      <Filter>qu3e\math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\qu3e\scene\q3Scene.cpp">
+      <Filter>qu3e\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\qu3e\debug\q3Render.h">
+      <Filter>qu3e\debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\plugin.qu3e.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\shared\qu3e\q3.h">
+      <Filter>qu3e</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\qu3e\broadphase\q3BroadPhase.h">
+      <Filter>qu3e\broadphase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\qu3e\broadphase\q3DynamicAABBTree.h">
+      <Filter>qu3e\broadphase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\qu3e\collision\q3Box.h">
+      <Filter>qu3e\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\qu3e\collision\q3Collide.h">
+      <Filter>qu3e\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\qu3e\common\q3Geometry.h">
+      <Filter>qu3e\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\qu3e\common\q3Memory.h">
+      <Filter>qu3e\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\qu3e\common\q3Settings.h">
+      <Filter>qu3e\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\qu3e\common\q3Types.h">
+      <Filter>qu3e\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\qu3e\dynamics\q3Body.h">
+      <Filter>qu3e\dynamics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\qu3e\dynamics\q3Contact.h">
+      <Filter>qu3e\dynamics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\qu3e\dynamics\q3ContactManager.h">
+      <Filter>qu3e\dynamics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\qu3e\dynamics\q3ContactSolver.h">
+      <Filter>qu3e\dynamics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\qu3e\dynamics\q3Island.h">
+      <Filter>qu3e\dynamics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\qu3e\math\q3Mat3.h">
+      <Filter>qu3e\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\qu3e\math\q3Math.h">
+      <Filter>qu3e\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\qu3e\math\q3Quaternion.h">
+      <Filter>qu3e\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\qu3e\math\q3Transform.h">
+      <Filter>qu3e\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\qu3e\math\q3Vec3.h">
+      <Filter>qu3e\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\qu3e\scene\q3Scene.h">
+      <Filter>qu3e\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\qu3e.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="qu3e">
+      <UniqueIdentifier>{1ed31230-c531-4405-a277-5fb50b154e01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="qu3e\broadphase">
+      <UniqueIdentifier>{0a3eade6-7095-45ff-b8eb-a82c81ae0e50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="qu3e\collision">
+      <UniqueIdentifier>{46fe9dd5-ebe4-4fb3-93c9-71102e7c8fa5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="qu3e\dynamics">
+      <UniqueIdentifier>{394a76f5-5560-45f7-9281-7b09e10f5e80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="qu3e\common">
+      <UniqueIdentifier>{882867b3-9cca-44e1-bc68-53c6128b4998}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="qu3e\math">
+      <UniqueIdentifier>{7dccb430-78c6-4bc2-a3f9-72c20eb2f5ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="qu3e\scene">
+      <UniqueIdentifier>{c8ef20b6-a349-4cc0-9a19-981aa4aabd67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="qu3e\debug">
+      <UniqueIdentifier>{24aedc64-af1d-4e4e-9e09-65173ed29407}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\shared\qu3e\broadphase\q3DynamicAABBTree.inl">
+      <Filter>qu3e\broadphase</Filter>
+    </None>
+    <None Include="..\shared\qu3e\collision\q3Box.inl">
+      <Filter>qu3e\collision</Filter>
+    </None>
+    <None Include="..\shared\qu3e\common\q3Geometry.inl">
+      <Filter>qu3e\common</Filter>
+    </None>
+    <None Include="..\shared\qu3e\math\q3Mat3.inl">
+      <Filter>qu3e\math</Filter>
+    </None>
+    <None Include="..\shared\qu3e\math\q3Math.inl">
+      <Filter>qu3e\math</Filter>
+    </None>
+    <None Include="..\shared\qu3e\math\q3Transform.inl">
+      <Filter>qu3e\math</Filter>
+    </None>
+    <None Include="..\shared\qu3e\math\q3Vec3.inl">
+      <Filter>qu3e\math</Filter>
+    </None>
+  </ItemGroup>
+</Project>

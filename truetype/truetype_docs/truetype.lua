@@ -1,0 +1,62 @@
+--- Free functions used to create and prepare some font objects.
+
+--
+-- Permission is hereby granted, free of charge, to any person obtaining
+-- a copy of this software and associated documentation files (the
+-- "Software"), to deal in the Software without restriction, including
+-- without limitation the rights to use, copy, modify, merge, publish,
+-- distribute, sublicense, and/or sell copies of the Software, and to
+-- permit persons to whom the Software is furnished to do so, subject to
+-- the following conditions:
+--
+-- The above copyright notice and this permission notice shall be
+-- included in all copies or substantial portions of the Software.
+--
+-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+-- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+-- MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+-- IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+-- CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+-- TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+-- SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+--
+-- [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
+--
+
+--- Each .ttf / .ttc file may have more than one font. Each font has a sequential
+-- index number starting from 1. Call this function to get the font offset for
+-- a given index. A regular .ttf file will only define one font that will always be
+-- at offset 0, so it will return 0 for index 1, and -1 for all other indices.
+-- You can just skip this step if you know it's that kind of font.
+-- @function GetFontOffsetForIndex
+-- @tparam Bytes|string bytes Font data, e.g. as read from a file. Data is assumed to be valid.
+-- @uint[opt=1] index Font index, &ge; 1.
+-- @treturn int Offset into _bytes_, or -1 if _index_ is out of range.
+-- @see NewFont
+
+--- Given an offset into the file that defines a font, this function builds
+-- the necessary cached info for the rest of the system. You don't need to
+-- do anything special to free it, because the contents are pure value data
+-- with no additional data structures.
+-- @function NewFont
+-- @tparam Bytes|string bytes Font data, typically the contents of a file.
+-- @int[opt=0] offset Offset into _bytes_, cf. @{GetFontOffsetForIndex}.
+-- @treturn ?|FontInfo|nil On success, a new @{FontInfo} instance. Otherwise, **nil**.
+
+--- Initializes a packing context. Future calls using this context will pack
+-- characters into its 1-channel, _width_ x _height_ @{Packing:GetBitmap|bitmap}.
+--
+-- TODO: options for bitmap...
+-- @function NewPacking
+-- @uint width Packing width...
+-- @uint height ...and height.
+-- @uint[opt=0] stride_in_bytes Distance from one row to the next (or 0 to mean they
+-- are packed tightly together).
+-- @uint[opt=1] packing Amount of padding to leave between each character (normally
+-- you want 1 for bitmaps you'll use as textures with bilinear filtering).
+-- @treturn ?|Packing|nil On success, a new @{Packing} instance. Otherwise, **nil**.
+
+--- Encode a size so that certain methods associate it with @{FontInfo:ScaleForMappingEmToPixels}.
+-- @function PointSize
+-- @number size Font size, &gt; 0.
+-- @treturn string Encoded size.

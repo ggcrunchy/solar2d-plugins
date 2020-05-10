@@ -1,0 +1,72 @@
+--- Utility for reading files from Android, which are out of reach of Lua's file API.
+--
+-- This is a thin veneer over Android's [AssetManager](https://developer.android.com/reference/android/content/res/AssetManager).
+--
+-- To use the plugin, add the following in <code>build.settings</code>:
+--
+-- <pre><code class="language-lua">plugins = {
+--   ["plugin.AssetReader"] = { publisherId = "com.xibalbastudios" }
+-- }</code></pre>
+--
+-- Sample code is available [here](https://github.com/ggcrunchy/corona-plugin-docs/tree/master/AssetReader_sample).
+--
+-- This plugin is designed to be called safely from other [Lua processes](https://ggcrunchy.github.io/corona-plugin-docs/DOCS/luaproc/api.html).
+
+--
+-- Permission is hereby granted, free of charge, to any person obtaining
+-- a copy of this software and associated documentation files (the
+-- "Software"), to deal in the Software without restriction, including
+-- without limitation the rights to use, copy, modify, merge, publish,
+-- distribute, sublicense, and/or sell copies of the Software, and to
+-- permit persons to whom the Software is furnished to do so, subject to
+-- the following conditions:
+--
+-- The above copyright notice and this permission notice shall be
+-- included in all copies or substantial portions of the Software.
+--
+-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+-- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+-- MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+-- IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+-- CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+-- TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+-- SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+--
+-- [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
+--
+
+--- Gather the contents of **assets** or one of its subdirectories.
+-- @function EnumerateDirectory
+-- @string path Path to directory, relative to **assets**, the top-level being `""`.
+-- @ptable[opt] into If provided, this will be populated and returned. Otherwise, a new table is created.
+-- @treturn[1] {string,...} List of file and / or directory names.
+-- @treturn[1] uint Number of entries in the directory. If _into_ was provided, any of its entries not overwritten
+-- will be left as-is, so the simpler `#into` is unreliable.
+-- @return[2] **nil**, indicating an empty or missing directory.
+
+--- Create a proxy that may be bound to an asset.
+--
+-- Proxies implement [ByteReader](https://ggcrunchy.github.io/corona-plugin-docs/DOCS/ByteReader/policy.html), allowing them to be consumed elsewhere.
+-- @function NewProxy
+-- @treturn Proxy
+
+--- If a file is found in the assets, extract its content.
+-- @function Read
+-- @string filename
+-- @treturn ?|string|nil On success, the content bytes; otherwise **nil**.
+
+--- If a file is found in the assets, @{Proxy:Clear|clear} the proxy and bind the asset.
+-- @function Proxy:Bind
+-- @string filename
+-- @ptable[opt] opts Bind options, which include:
+--
+-- * **chunk\_size**: Size of reads, &le; 1MB. (**Not yet implemented**)
+-- * **mode**: Read mode. (**Not yet implemented**)
+-- @treturn boolean Was the asset bound?
+
+--- Remove any resources associated with the proxy.
+-- @function Proxy:Clear
+
+---
+-- @function Proxy:GetRemainingLength
+-- @treturn uint Number of bytes left to read from the asset, &le; its size, or 0 if @{Proxy:Clear|clear}.

@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\shared\plugin.libtess2.cpp" />
+    <ClCompile Include="..\shared\Source\bucketalloc.c">
+      <Filter>tessellator\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\Source\dict.c">
+      <Filter>tessellator\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\Source\geom.c">
+      <Filter>tessellator\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\Source\mesh.c">
+      <Filter>tessellator\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\Source\priorityq.c">
+      <Filter>tessellator\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\Source\sweep.c">
+      <Filter>tessellator\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\Source\tess.c">
+      <Filter>tessellator\Source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="tessellator">
+      <UniqueIdentifier>{3688718a-7e3b-4cd8-8cb7-8076fad12f37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tessellator\Source">
+      <UniqueIdentifier>{fb9f7a87-6488-4ab6-9cd5-a75aeff1e43b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tessellator\Include">
+      <UniqueIdentifier>{ebe1385b-42b3-4b75-85de-b9439e3c5067}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\shared\Include\tesselator.h">
+      <Filter>tessellator\Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Source\bucketalloc.h">
+      <Filter>tessellator\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Source\dict.h">
+      <Filter>tessellator\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Source\geom.h">
+      <Filter>tessellator\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Source\mesh.h">
+      <Filter>tessellator\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Source\priorityq.h">
+      <Filter>tessellator\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Source\sweep.h">
+      <Filter>tessellator\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Source\tess.h">
+      <Filter>tessellator\Source</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

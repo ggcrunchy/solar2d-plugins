@@ -1,0 +1,390 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CE05C5121D10AFF80001242B /* BytesOpts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE05C50C1D10AFF80001242B /* BytesOpts.cpp */; };
+		CE05C5141D10AFF80001242B /* GetBytes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE05C50E1D10AFF80001242B /* GetBytes.cpp */; };
+		CE05C5161D10AFF80001242B /* SetBytes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE05C5101D10AFF80001242B /* SetBytes.cpp */; };
+		CE0C2B911D9F674E00EF95D2 /* plugin.ByteMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0C2B901D9F674E00EF95D2 /* plugin.ByteMap.cpp */; };
+		CE6E2BE11DF23A2B00AA7AF8 /* ByteReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE6E2BDF1DF23A2B00AA7AF8 /* ByteReader.cpp */; };
+		CE6E2BF11DF23A3C00AA7AF8 /* Blob.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE6E2BE21DF23A3C00AA7AF8 /* Blob.cpp */; };
+		CE6E2BF21DF23A3C00AA7AF8 /* Byte.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE6E2BE41DF23A3C00AA7AF8 /* Byte.cpp */; };
+		CE6E2BF31DF23A3C00AA7AF8 /* LuaEx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE6E2BE71DF23A3C00AA7AF8 /* LuaEx.cpp */; };
+		CE6E2BF41DF23A3C00AA7AF8 /* Memory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE6E2BE91DF23A3C00AA7AF8 /* Memory.cpp */; };
+		CE6E2BF51DF23A3C00AA7AF8 /* Path.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE6E2BEB1DF23A3C00AA7AF8 /* Path.cpp */; };
+		CE6E2BF61DF23A3C00AA7AF8 /* SIMD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE6E2BED1DF23A3C00AA7AF8 /* SIMD.cpp */; };
+		CE6E2BF71DF23A3C00AA7AF8 /* Thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE6E2BEF1DF23A3C00AA7AF8 /* Thread.cpp */; };
+		CE6E2BFE1DF2472B00AA7AF8 /* BindBlob.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE6E2BFD1DF2472B00AA7AF8 /* BindBlob.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A4E253B4166D6FB300DCDC2C /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/${PRODUCT_NAME}";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		A4E253B6166D6FB300DCDC2C /* libplugin_Bytemap.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libplugin_Bytemap.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE05C50B1D10AFF80001242B /* Bytes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Bytes.h; path = ../shared/Bytes.h; sourceTree = "<group>"; };
+		CE05C50C1D10AFF80001242B /* BytesOpts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BytesOpts.cpp; path = ../shared/BytesOpts.cpp; sourceTree = "<group>"; };
+		CE05C50E1D10AFF80001242B /* GetBytes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GetBytes.cpp; path = ../shared/GetBytes.cpp; sourceTree = "<group>"; };
+		CE05C5101D10AFF80001242B /* SetBytes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SetBytes.cpp; path = ../shared/SetBytes.cpp; sourceTree = "<group>"; };
+		CE0C2B901D9F674E00EF95D2 /* plugin.ByteMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = plugin.ByteMap.cpp; path = ../shared/plugin.ByteMap.cpp; sourceTree = "<group>"; };
+		CE0C2BCF1DA381EE00EF95D2 /* Bytemap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Bytemap.h; path = ../shared/Bytemap.h; sourceTree = "<group>"; };
+		CE6E2BDF1DF23A2B00AA7AF8 /* ByteReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ByteReader.cpp; path = ../../ByteReader/ByteReader.cpp; sourceTree = "<group>"; };
+		CE6E2BE01DF23A2B00AA7AF8 /* ByteReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ByteReader.h; path = ../../ByteReader/ByteReader.h; sourceTree = "<group>"; };
+		CE6E2BE21DF23A3C00AA7AF8 /* Blob.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Blob.cpp; path = ../../corona_enterprise_utils/utils/Blob.cpp; sourceTree = "<group>"; };
+		CE6E2BE31DF23A3C00AA7AF8 /* Blob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Blob.h; path = ../../corona_enterprise_utils/utils/Blob.h; sourceTree = "<group>"; };
+		CE6E2BE41DF23A3C00AA7AF8 /* Byte.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Byte.cpp; path = ../../corona_enterprise_utils/utils/Byte.cpp; sourceTree = "<group>"; };
+		CE6E2BE51DF23A3C00AA7AF8 /* Byte.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Byte.h; path = ../../corona_enterprise_utils/utils/Byte.h; sourceTree = "<group>"; };
+		CE6E2BE61DF23A3C00AA7AF8 /* Compat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Compat.h; path = ../../corona_enterprise_utils/utils/Compat.h; sourceTree = "<group>"; };
+		CE6E2BE71DF23A3C00AA7AF8 /* LuaEx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LuaEx.cpp; path = ../../corona_enterprise_utils/utils/LuaEx.cpp; sourceTree = "<group>"; };
+		CE6E2BE81DF23A3C00AA7AF8 /* LuaEx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LuaEx.h; path = ../../corona_enterprise_utils/utils/LuaEx.h; sourceTree = "<group>"; };
+		CE6E2BE91DF23A3C00AA7AF8 /* Memory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Memory.cpp; path = ../../corona_enterprise_utils/utils/Memory.cpp; sourceTree = "<group>"; };
+		CE6E2BEA1DF23A3C00AA7AF8 /* Memory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Memory.h; path = ../../corona_enterprise_utils/utils/Memory.h; sourceTree = "<group>"; };
+		CE6E2BEB1DF23A3C00AA7AF8 /* Path.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Path.cpp; path = ../../corona_enterprise_utils/utils/Path.cpp; sourceTree = "<group>"; };
+		CE6E2BEC1DF23A3C00AA7AF8 /* Path.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Path.h; path = ../../corona_enterprise_utils/utils/Path.h; sourceTree = "<group>"; };
+		CE6E2BED1DF23A3C00AA7AF8 /* SIMD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SIMD.cpp; path = ../../corona_enterprise_utils/utils/SIMD.cpp; sourceTree = "<group>"; };
+		CE6E2BEE1DF23A3C00AA7AF8 /* SIMD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SIMD.h; path = ../../corona_enterprise_utils/utils/SIMD.h; sourceTree = "<group>"; };
+		CE6E2BEF1DF23A3C00AA7AF8 /* Thread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Thread.cpp; path = ../../corona_enterprise_utils/utils/Thread.cpp; sourceTree = "<group>"; };
+		CE6E2BF01DF23A3C00AA7AF8 /* Thread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Thread.h; path = ../../corona_enterprise_utils/utils/Thread.h; sourceTree = "<group>"; };
+		CE6E2BFD1DF2472B00AA7AF8 /* BindBlob.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BindBlob.cpp; path = ../shared/BindBlob.cpp; sourceTree = "<group>"; };
+		CE8A2C501E0F86D900FCFAFD /* Platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Platform.h; path = ../../corona_enterprise_utils/utils/Platform.h; sourceTree = "<group>"; };
+		CE8A2C521E0F86F500FCFAFD /* aligned_allocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = aligned_allocator.h; path = ../../corona_enterprise_utils/external/aligned_allocator.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A4E253B3166D6FB300DCDC2C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A447B609165D72A6009EA762 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				CE8A2C511E0F86E500FCFAFD /* external */,
+				CE6E2BDE1DF23A0600AA7AF8 /* ByteReader */,
+				CE6E2BDD1DF239F100AA7AF8 /* corona_enterprise_utils */,
+				CE6E2BFD1DF2472B00AA7AF8 /* BindBlob.cpp */,
+				CE0C2BCF1DA381EE00EF95D2 /* Bytemap.h */,
+				CE0C2B901D9F674E00EF95D2 /* plugin.ByteMap.cpp */,
+				CE05C50B1D10AFF80001242B /* Bytes.h */,
+				CE05C50C1D10AFF80001242B /* BytesOpts.cpp */,
+				CE05C50E1D10AFF80001242B /* GetBytes.cpp */,
+				CE05C5101D10AFF80001242B /* SetBytes.cpp */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		A484110E15114F700074BD57 = {
+			isa = PBXGroup;
+			children = (
+				A447B609165D72A6009EA762 /* Source */,
+				A484111A15114F700074BD57 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A484111A15114F700074BD57 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A4E253B6166D6FB300DCDC2C /* libplugin_Bytemap.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CE6E2BDD1DF239F100AA7AF8 /* corona_enterprise_utils */ = {
+			isa = PBXGroup;
+			children = (
+				CE8A2C501E0F86D900FCFAFD /* Platform.h */,
+				CE6E2BE21DF23A3C00AA7AF8 /* Blob.cpp */,
+				CE6E2BE31DF23A3C00AA7AF8 /* Blob.h */,
+				CE6E2BE41DF23A3C00AA7AF8 /* Byte.cpp */,
+				CE6E2BE51DF23A3C00AA7AF8 /* Byte.h */,
+				CE6E2BE61DF23A3C00AA7AF8 /* Compat.h */,
+				CE6E2BE71DF23A3C00AA7AF8 /* LuaEx.cpp */,
+				CE6E2BE81DF23A3C00AA7AF8 /* LuaEx.h */,
+				CE6E2BE91DF23A3C00AA7AF8 /* Memory.cpp */,
+				CE6E2BEA1DF23A3C00AA7AF8 /* Memory.h */,
+				CE6E2BEB1DF23A3C00AA7AF8 /* Path.cpp */,
+				CE6E2BEC1DF23A3C00AA7AF8 /* Path.h */,
+				CE6E2BED1DF23A3C00AA7AF8 /* SIMD.cpp */,
+				CE6E2BEE1DF23A3C00AA7AF8 /* SIMD.h */,
+				CE6E2BEF1DF23A3C00AA7AF8 /* Thread.cpp */,
+				CE6E2BF01DF23A3C00AA7AF8 /* Thread.h */,
+			);
+			name = corona_enterprise_utils;
+			sourceTree = "<group>";
+		};
+		CE6E2BDE1DF23A0600AA7AF8 /* ByteReader */ = {
+			isa = PBXGroup;
+			children = (
+				CE6E2BDF1DF23A2B00AA7AF8 /* ByteReader.cpp */,
+				CE6E2BE01DF23A2B00AA7AF8 /* ByteReader.h */,
+			);
+			name = ByteReader;
+			sourceTree = "<group>";
+		};
+		CE8A2C511E0F86E500FCFAFD /* external */ = {
+			isa = PBXGroup;
+			children = (
+				CE8A2C521E0F86F500FCFAFD /* aligned_allocator.h */,
+			);
+			name = external;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A4E253B5166D6FB300DCDC2C /* plugin_Bytemap */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A4E253BF166D6FB300DCDC2C /* Build configuration list for PBXNativeTarget "plugin_Bytemap" */;
+			buildPhases = (
+				A4E253B2166D6FB300DCDC2C /* Sources */,
+				A4E253B3166D6FB300DCDC2C /* Frameworks */,
+				A4E253B4166D6FB300DCDC2C /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = plugin_Bytemap;
+			productName = plugin_library;
+			productReference = A4E253B6166D6FB300DCDC2C /* libplugin_Bytemap.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A484111015114F700074BD57 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0920;
+			};
+			buildConfigurationList = A484111315114F700074BD57 /* Build configuration list for PBXProject "Plugin" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = A484110E15114F700074BD57;
+			productRefGroup = A484111A15114F700074BD57 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A4E253B5166D6FB300DCDC2C /* plugin_Bytemap */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A4E253B2166D6FB300DCDC2C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE6E2BF11DF23A3C00AA7AF8 /* Blob.cpp in Sources */,
+				CE6E2BF31DF23A3C00AA7AF8 /* LuaEx.cpp in Sources */,
+				CE05C5141D10AFF80001242B /* GetBytes.cpp in Sources */,
+				CE6E2BFE1DF2472B00AA7AF8 /* BindBlob.cpp in Sources */,
+				CE6E2BF41DF23A3C00AA7AF8 /* Memory.cpp in Sources */,
+				CE6E2BF51DF23A3C00AA7AF8 /* Path.cpp in Sources */,
+				CE0C2B911D9F674E00EF95D2 /* plugin.ByteMap.cpp in Sources */,
+				CE6E2BF61DF23A3C00AA7AF8 /* SIMD.cpp in Sources */,
+				CE6E2BE11DF23A2B00AA7AF8 /* ByteReader.cpp in Sources */,
+				CE6E2BF21DF23A3C00AA7AF8 /* Byte.cpp in Sources */,
+				CE05C5121D10AFF80001242B /* BytesOpts.cpp in Sources */,
+				CE05C5161D10AFF80001242B /* SetBytes.cpp in Sources */,
+				CE6E2BF71DF23A3C00AA7AF8 /* Thread.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A484114015114F700074BD57 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "compiler-default";
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "${SRCROOT}/Boost/include/";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LIBRARY_SEARCH_PATHS = "${SRCROOT}/Boost";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-lboost";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/Native/Corona/shared/include/Corona ${SRCROOT}/Native/Corona/shared/include/lua ${SRCROOT}/Native/Corona/ios/include/Corona ${SRCROOT}/../../ByteReader ${SRCROOT}/../../corona_enterprise_utils ${SRCROOT}/../../math_libraries";
+			};
+			name = Debug;
+		};
+		A484114115114F700074BD57 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "compiler-default";
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "${SRCROOT}/Boost/include/";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LIBRARY_SEARCH_PATHS = "${SRCROOT}/Boost";
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				OTHER_LDFLAGS = "-lboost";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/Native/Corona/shared/include/Corona ${SRCROOT}/Native/Corona/shared/include/lua ${SRCROOT}/Native/Corona/ios/include/Corona";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A4E253C0166D6FB300DCDC2C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DSTROOT = /tmp/plugin_library.dst;
+				ENABLE_BITCODE = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GENERATE_MASTER_OBJECT_FILE = YES;
+				HEADER_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRIP_STYLE = "non-global";
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/Native/Corona/shared/include/Corona ${SRCROOT}/Native/Corona/shared/include/lua ${SRCROOT}/Native/Corona/ios/include/Corona ${SRCROOT}/ByteReader ${SRCROOT}/corona_enterprise_utils ${SRCROOT}/Boost/config/include ${SRCROOT}/Boost/atomic/include";
+			};
+			name = Debug;
+		};
+		A4E253C1166D6FB300DCDC2C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DSTROOT = /tmp/plugin_library.dst;
+				ENABLE_BITCODE = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GENERATE_MASTER_OBJECT_FILE = YES;
+				HEADER_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRIP_STYLE = "non-global";
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/Native/Corona/shared/include/Corona ${SRCROOT}/Native/Corona/shared/include/lua ${SRCROOT}/Native/Corona/ios/include/Corona ${SRCROOT}/../../ByteReader ${SRCROOT}/../../corona_enterprise_utils ${SRCROOT}/../../math_libraries";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A484111315114F700074BD57 /* Build configuration list for PBXProject "Plugin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A484114015114F700074BD57 /* Debug */,
+				A484114115114F700074BD57 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A4E253BF166D6FB300DCDC2C /* Build configuration list for PBXNativeTarget "plugin_Bytemap" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A4E253C0166D6FB300DCDC2C /* Debug */,
+				A4E253C1166D6FB300DCDC2C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A484111015114F700074BD57 /* Project object */;
+}

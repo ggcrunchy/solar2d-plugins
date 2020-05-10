@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\shared\lpsched.c" />
+    <ClCompile Include="..\shared\luaproc.c" />
+    <ClCompile Include="..\..\libcuckoo-windows\city.cc">
+      <Filter>libcuckoo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\extensions.cpp" />
+    <ClCompile Include="..\shared\win32.cpp">
+      <Filter>pevents</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\shared\lpsched.h" />
+    <ClInclude Include="..\shared\luaproc.h" />
+    <ClInclude Include="..\..\libcuckoo-windows\city.h">
+      <Filter>libcuckoo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libcuckoo-windows\city_hasher.hh">
+      <Filter>libcuckoo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libcuckoo-windows\citycrc.h">
+      <Filter>libcuckoo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libcuckoo-windows\config.h">
+      <Filter>libcuckoo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libcuckoo-windows\cuckoohash_config.h">
+      <Filter>libcuckoo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libcuckoo-windows\cuckoohash_map.hh">
+      <Filter>libcuckoo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libcuckoo-windows\cuckoohash_util.h">
+      <Filter>libcuckoo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\extensions.h" />
+    <ClInclude Include="..\shared\pevents.h">
+      <Filter>pevents</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="libcuckoo">
+      <UniqueIdentifier>{ee429c13-eb04-4e99-b433-9160774dc1d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pevents">
+      <UniqueIdentifier>{3f65e12d-0361-4dc9-8d66-b31c09e44b62}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

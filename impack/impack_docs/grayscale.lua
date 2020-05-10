@@ -1,0 +1,160 @@
+--- Operations to find and operate on grayscale values.
+--
+-- The signed distance field operations wrap Mikko Mononen's [SDF](https://github.com/memononen/SDF).
+--
+-- The **Bytes** type&mdash;specified below&mdash;may be any object that implements [ByteReader](https://ggcrunchy.github.io/corona-plugin-docs/DOCS/ByteReader/policy.html),
+-- including strings.
+--
+-- For all functions, isufficient input images will be padded with `0` bytes.
+--
+-- ========================================================================
+--
+-- **(The comments that follow were adapted from [sdf.h](https://raw.githubusercontent.com/memononen/SDF/master/src/sdf.h).)**
+--
+-- Sweep-and-update Euclidean distance transform of an antialiased image for contour texturing.
+--
+-- The code is based on [edtaa3func.c](http://webstaff.itn.liu.se/~stegu/aadist/edtaa3func.c) by Stefan Gustavson and improves the
+-- original in terms of memory usage and execution time.
+--
+-- The algorithms first traverse the image and uses gradient direction and the edge function
+-- from `edtaa3` to find an approximated point on the contour of the input image. After this pass
+-- the distance at the edge pixels are known, and the code proceeds to update the rest of the
+-- distance field using sweep-and-update until the distance field convergences (or max passes run).
+--
+-- The code procudes comparable, but probably not as accurate, distance fields as the original code.
+--
+-- The code is intended to be used to calculate distance fields for [contour texturing](http://contourtextures.wikidot.com/).
+--
+-- ========================================================================
+--
+-- **Notice in sdf.h:**
+--
+-- Copyright (C) 2014 Mikko Mononen (memon@inside.org)
+--
+-- Copyright (C) 2009-2012 Stefan Gustavson (stefan.gustavson@gmail.com)
+--
+-- Permission is hereby granted, free of charge, to any person obtaining a copy
+-- of this software and associated documentation files (the "Software"), to deal
+-- in the Software without restriction, including without limitation the rights
+-- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+-- copies of the Software, and to permit persons to whom the Software is
+-- furnished to do so, subject to the following conditions:
+--
+-- The above copyright notice and this permission notice shall be included in
+-- all copies or substantial portions of the Software.
+--
+-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+-- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+-- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+-- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+-- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+-- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+-- THE SOFTWARE.
+--
+-- ========================================================================
+
+--
+-- Permission is hereby granted, free of charge, to any person obtaining
+-- a copy of this software and associated documentation files (the
+-- "Software"), to deal in the Software without restriction, including
+-- without limitation the rights to use, copy, modify, merge, publish,
+-- distribute, sublicense, and/or sell copies of the Software, and to
+-- permit persons to whom the Software is furnished to do so, subject to
+-- the following conditions:
+--
+-- The above copyright notice and this permission notice shall be
+-- included in all copies or substantial portions of the Software.
+--
+-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+-- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+-- MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+-- IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+-- CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+-- TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+-- SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+--
+-- [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
+--
+
+--- Sweep-and-update Euclidean distance transform of an antialised image for contour textures.
+-- Based on `edtaa3func.c` by Stefan Gustavson, cf. the summary above.
+--
+-- White (255) pixels are treated as object pixels, zero pixels are treated as background.
+-- An attempt is made to treat antialiased edges correctly. The input image must have
+-- pixels in the range [0, 255], and the antialiased image should be a box-filter
+-- sampling of the ideal, crisp edge. If the antialias region is more than one pixel wide,
+-- the result from this transform will be inaccurate.
+--
+-- Pixels at image border are not calculated and are set to 0.
+--
+-- The output distance field is encoded as bytes, where 0 = _radius_ (outside) and 255 = -_radius_ (inside).
+--
+-- Input and output can be the same buffer. (Support for [blobs](https://ggcrunchy.github.io/corona-plugin-docs/DOCS/MemoryBlob/api.html)
+-- is planned and would be exposed via _opts_.)
+-- @function M.build_distance_field
+-- @tparam Bytes input Input image, one byte per pixel.
+-- @number radius The radius of the distance field narrow band in pixels.
+-- @uint w Width of the image...
+-- @uint h ...and height.
+-- @tparam ?table opts Build options, which include:
+--
+-- * **in\_stride**: Bytes per row on input image (_w_ by default)...
+-- * **out\_stride**: ...and on output image (again, default _w_).
+-- * **as\_userdata**: Affects how the image data is returned.
+-- @treturn[1] Bytes On success, the output of the distance transform, one byte per pixel.
+--
+-- If _opts.as\_userdata_ was true, the data is returned as a userdata that implements **ByteReader**,
+-- rather than being converted to a more friendly string. Under some circumstances, this might be worth
+-- doing for performance reasons.
+-- @return[2] **nil**, indicating an error.
+-- @treturn[2] string Error message.
+
+--- This function converts the antialiased image where each pixel represents coverage (box-filter
+-- sampling of the ideal, crisp edge) to a distance field with narrow band radius of `sqrt(2)`.
+--
+-- This is the fastest way to turn antialised image to contour texture. This function is good
+-- if you don't need the distance field for effects (e.g. fat outline or dropshadow).
+--
+-- Input and output buffers must be different.
+-- @function M.coverage_to_distance_field
+-- @tparam Bytes input Input image, one byte per pixel.
+-- @uint w Width of the image...
+-- @uint h ...and height.
+-- @tparam ?table opts As per @{build_distance_field}.
+-- @treturn[1] Bytes As per @{build_distance_field}.
+-- @return[2] **nil**, indicating an error.
+-- @treturn[2] string Error message.
+
+--- Converts a (three-bytes-per-pixel) RGB image into a grayscale one.
+-- @function M.rgb_to_gray
+-- @tparam Bytes input Input image, in RGB form.
+-- @uint w Width of image...
+-- @uint h ...and height.
+-- @tparam ?table opts As per @{build_distance_field}, but may also contain a **gray\_method**
+-- field, which can have as value any of the @{GrayscaleScheme} choices, **"average"** being the default.
+-- @treturn[1] Bytes As per @{build_distance_field}.
+-- @return[2] **nil**, indicating an error.
+-- @treturn[2] string Error message.
+
+--- Variant of @{rgb_to_gray} that also considers alpha.
+-- @function M.rgba_to_gray
+-- @tparam Bytes input Input image, in RGBA form.
+-- @uint w Width of image...
+-- @uint h ...and height.
+-- @tparam ?table opts As per @{rgb_to_gray}.
+-- @treturn[1] Bytes As per @{rgb_to_gray}.
+-- @return[2] **nil**, indicating an error.
+-- @treturn[2] string Error message.
+
+--- Various ways to compute grayscale from RGB. The "fields" are different strings that may be
+-- assigned as **gray\_method** for either @{rgb_to_gray} or @{rgba_to_gray}.
+-- @field average Grayscale as average of _r_, _g_, and _b_.
+-- @field lightness Grayscale as average of `max(r, g, b)` and `min(r, g, b)`.
+-- @field max Grayscale from `max(r, g, b)`...
+-- @field min ...and `min(r, g, b)`.
+-- @field red Interpret _r_ as grayscale...
+-- @field green ...or _g_...
+-- @field blue ...or _b_.
+-- @field 601 [YUV](https://en.wikipedia.org/wiki/YUV) luminance according to [Recommendation 601](https://en.wikipedia.org/wiki/Rec._601)...
+-- @field 709 ...and [Recommendation 709](https://en.wikipedia.org/wiki/Rec._709).
+-- @table GrayscaleScheme
