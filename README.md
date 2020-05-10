@@ -3,7 +3,7 @@ Source for various [Solar2D](https://solar2d.com) plugins, both in Lua and C / C
 
 Some of these are fairly mature, a few are in development, while others are abandoned or on hold.
 
-### The list so far ###
+## The list so far ##
 
 * AssetReader (a thin veneer over [Android's asset management](https://developer.android.com/reference/android/content/res/AssetManager))
 * Bytemap (original, but uses a bit of [stb](https://github.com/nothings/stb))
@@ -33,7 +33,7 @@ Some of these are fairly mature, a few are in development, while others are aban
 
 A few larger ones might be divvied up into more manageable sub-plugins.
 
-### Some libraries used by more than one of the above ###
+## Some libraries used by more than one of the above ##
 
 * Accelerate (beyond that used by **impack**)
 * [ConcRT](docs.microsoft.com/en-us/cpp/parallel/concrt/concurrency-runtime)
@@ -43,7 +43,7 @@ A few larger ones might be divvied up into more manageable sub-plugins.
 * [XMath](https://github.com/Napoleon314/XMath) (might now be superfluous; **DirectXMath** required a newer C++ version than all targets could honor at the time)
 
 
-### Under more or less serious consideration ###
+## Under more or less serious consideration ##
 
 * [Blend2D](https://github.com/blend2d/blend2d)
 * [Polylidar](https://github.com/JeremyBYU/polylidar)
@@ -97,7 +97,7 @@ Some of these would benefit from audio-style support in the tradition of "extern
 * [ddlt](https://github.com/leiradel/ddlt)
 * [parser-gen](https://github.com/vsbenas/parser-gen)
 
-### Research ###
+## Research ##
 
 Other stuff that looked interesting.
 
@@ -165,6 +165,6 @@ There is FAR too much here to even review, much less implement. Some of it's mer
 * [renderdoc](https://github.com/baldurk/renderdoc)
 * [apitrace](https://github.com/apitrace/apitrace)
 
-### Licenses ###
+## Licenses ##
 
 Everything original to this repository falls under the MIT license.
