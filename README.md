@@ -50,14 +50,11 @@ A few larger ones might be divvied up into more manageable sub-plugins.
 * [pl_mpeg](https://github.com/phoboslab/pl_mpeg)
 * [cffi](https://github.com/q66/cffi-lua) as a better **luaffifb**
 * [psd.c](https://github.com/hkrn/psd.c)
-* [mpc](https://github.com/orangeduck/mpc)
 * [dmon](https://github.com/septag/dmon)
 * [iji2dgrid](https://github.com/incrediblejr/iji2dgrid); **stb** has something along these lines too
-* [nanovg](https://github.com/memononen/nanovg), needs stencil support
 * [ExprTk](https://github.com/ArashPartow/exprtk); author has several other interesting libraries as well
-* [ddlt](https://github.com/leiradel/ddlt); need to compare [parser-gen](https://github.com/vsbenas/parser-gen), which seems to already be in Lua
 
-### Various audio ideas ###
+### Audio ideas ###
 
 Some of these would benefit from audio-style support in the tradition of "external textures".
 
@@ -74,6 +71,7 @@ Some of these would benefit from audio-style support in the tradition of "extern
 
 ### GUI ideas ###
 
+* [nanovg](https://github.com/memononen/nanovg), needs stencil support
 * [libagar](https://github.com/JulNadeauCA/libagar)
 * [libui](https://github.com/andlabs/libui)
 * [raygui](https://github.com/raysan5/raygui)
@@ -82,16 +80,22 @@ Some of these would benefit from audio-style support in the tradition of "extern
 * [love-nuklear](https://github.com/keharriso/love-nuklear)
 * [LURE](https://github.com/rdlaitila/LURE)
 
-### Shape generator ideas ###
+### Parser ideas ###
 
-* [Generator](https://github.com/ilmola/generator)
-* `par_shapes` from **par**
-* `yocto_shape` in [yocto-gl](https://github.com/xelatihy/yocto-gl)
+* [ddlt](https://github.com/leiradel/ddlt)
+* [mpc](https://github.com/orangeduck/mpc)
+* Need to compare those against [parser-gen](https://github.com/vsbenas/parser-gen), which seems to already be in Lua
 
 ### SAT ideas ###
 
 * [minisat](https://github.com/niklasso/minisat)
 * [MiniZinc](https://github.com/MiniZinc/libminizinc)
+
+### Shape generator ideas ###
+
+* [Generator](https://github.com/ilmola/generator)
+* `par_shapes` from **par**
+* `yocto_shape` in [yocto-gl](https://github.com/xelatihy/yocto-gl)
 
 ## Research ##
 
