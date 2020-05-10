@@ -55,6 +55,7 @@ A few larger ones might be divvied up into more manageable sub-plugins.
 * [iji2dgrid](https://github.com/incrediblejr/iji2dgrid); **stb** has something along these lines too
 * [nanovg](https://github.com/memononen/nanovg), needs stencil support
 * [ExprTk](https://github.com/ArashPartow/exprtk); author has several other interesting libraries as well
+* [ddlt](https://github.com/leiradel/ddlt); need to compare [parser-gen](https://github.com/vsbenas/parser-gen), which seems to already be in Lua
 
 ### Various audio ideas ###
 
@@ -87,15 +88,10 @@ Some of these would benefit from audio-style support in the tradition of "extern
 * `par_shapes` from **par**
 * `yocto_shape` in [yocto-gl](https://github.com/xelatihy/yocto-gl)
 
-### Satisfiability ideas ###
+### SAT ideas ###
 
 * [minisat](https://github.com/niklasso/minisat)
 * [MiniZinc](https://github.com/MiniZinc/libminizinc)
-
-### Parser Generation ideas ###
-
-* [ddlt](https://github.com/leiradel/ddlt)
-* [parser-gen](https://github.com/vsbenas/parser-gen)
 
 ## Research ##
 
