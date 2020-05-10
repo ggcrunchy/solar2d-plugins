@@ -28,7 +28,7 @@ Some of these are fairly mature, a few are in development, while others are aban
 * serialize (uses [lpack](http://webserver2.tecgraf.puc-rio.br/~lhf/ftp/lua/#lpack), [lua-marshal](https://github.com/richardhundt/lua-marshal), and [struct](http://www.inf.puc-rio.br/~roberto/struct/))
 * StableArray (original)
 * streamlines (from **par**; WIP)
-* tinyfiledialogs (eponymous)
+* tinyfiledialogs ([eponymous](https://sourceforge.net/projects/tinyfiledialogs/))
 * truetype (uses **stb**'s `truetype` module)
 
 A few larger ones might be divvied up into more manageable sub-plugins.
