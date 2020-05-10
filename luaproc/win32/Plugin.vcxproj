@@ -96,7 +96,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>$(CORONA_ROOT)/Corona/shared/include/Corona;$(CORONA_ROOT)/Corona/shared/include/lua;%(AdditionalIncludeDirectories);$(SolutionDir)../..;$(SolutionDir)../../pthreads;$(SolutionDir)../../corona_enterprise_utils/pdep</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(CORONA_ROOT)/Corona/shared/include/Corona;$(CORONA_ROOT)/Corona/shared/include/lua;%(AdditionalIncludeDirectories);$(SolutionDir)../..;$(SolutionDir)../../pthreads;$(SolutionDir)../../solar2d_native_utils/pdep</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);LUA_BUILD_AS_DLL;LUA_LIB;_CRT_SECURE_NO_WARNINGS;WFMO</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>

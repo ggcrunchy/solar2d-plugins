@@ -68,14 +68,14 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;PLUGINMEMORYBITMAP_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(CORONA_ROOT)/Corona/shared/include/Corona;$(CORONA_ROOT)/Corona/shared/include/lua;$(SolutionDir)../../ByteReader;$(SolutionDir)../../corona_enterprise_utils</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(CORONA_ROOT)/Corona/shared/include/Corona;$(CORONA_ROOT)/Corona/shared/include/lua;$(SolutionDir)../../ByteReader;$(SolutionDir)../../solar2d_native_utils</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>$(CORONA_ROOT)/Corona/win/lib/*.lib;$(Configuration)\corona_enterprise_utils.lib</AdditionalDependencies>
+      <AdditionalDependencies>$(CORONA_ROOT)/Corona/win/lib/*.lib;$(Configuration)\solar2d_native_utils.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>set PLUGINS=$(appdata)/Corona Labs/Corona Simulator/Plugins/plugin/

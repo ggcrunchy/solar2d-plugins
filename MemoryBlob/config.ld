@@ -22,7 +22,7 @@ To use the plugin, add the following in <code>build.settings</code>:
 
 Sample code is available [here](https://github.com/ggcrunchy/corona-plugin-docs/tree/master/MemoryBlob_sample).
 
-Once this plugin has been loaded, native plugins may create and manage blobs via the [BlobXS API](https://raw.githubusercontent.com/ggcrunchy/corona_enterprise_utils/master/utils/Blob.h).
+Once this plugin has been loaded, native plugins may create and manage blobs via the [BlobXS API](https://raw.githubusercontent.com/ggcrunchy/solar2d_native_utils/master/utils/Blob.h).
 Until then, any calls to the API will be suitable no-ops. (Documentation is lacking at the moment!)
 
 Blobs implement the [ByteReader protocol](https://ggcrunchy.github.io/corona-plugin-docs/DOCS/ByteReader/policy.html).

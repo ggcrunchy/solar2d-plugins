@@ -86,23 +86,23 @@
 		CE28BCC01D7B894200F30E15 /* stb_rect_pack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stb_rect_pack.h; path = ../shared/stb_rect_pack.h; sourceTree = "<group>"; };
 		CE28BCC11D7B894200F30E15 /* stb_truetype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stb_truetype.h; path = ../shared/stb_truetype.h; sourceTree = "<group>"; };
 		CE39D59A20BDFAEA00061FB3 /* CoronaCards.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoronaCards.framework; path = ../../../../../../../Applications/Corona/Native/Corona/tvos/frameworks/CoronaCards.framework; sourceTree = "<group>"; };
-		CE8A2CBE1E10851700FCFAFD /* aligned_allocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = aligned_allocator.h; path = ../../corona_enterprise_utils/external/aligned_allocator.h; sourceTree = "<group>"; };
-		CE8A2CC01E10852100FCFAFD /* Blob.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Blob.cpp; path = ../../corona_enterprise_utils/utils/Blob.cpp; sourceTree = "<group>"; };
-		CE8A2CC11E10852100FCFAFD /* Blob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Blob.h; path = ../../corona_enterprise_utils/utils/Blob.h; sourceTree = "<group>"; };
-		CE8A2CC21E10852100FCFAFD /* Byte.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Byte.cpp; path = ../../corona_enterprise_utils/utils/Byte.cpp; sourceTree = "<group>"; };
-		CE8A2CC31E10852100FCFAFD /* Byte.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Byte.h; path = ../../corona_enterprise_utils/utils/Byte.h; sourceTree = "<group>"; };
-		CE8A2CC41E10852100FCFAFD /* Compat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Compat.h; path = ../../corona_enterprise_utils/utils/Compat.h; sourceTree = "<group>"; };
-		CE8A2CC51E10852100FCFAFD /* LuaEx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LuaEx.cpp; path = ../../corona_enterprise_utils/utils/LuaEx.cpp; sourceTree = "<group>"; };
-		CE8A2CC61E10852100FCFAFD /* LuaEx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LuaEx.h; path = ../../corona_enterprise_utils/utils/LuaEx.h; sourceTree = "<group>"; };
-		CE8A2CC71E10852100FCFAFD /* Memory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Memory.cpp; path = ../../corona_enterprise_utils/utils/Memory.cpp; sourceTree = "<group>"; };
-		CE8A2CC81E10852100FCFAFD /* Memory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Memory.h; path = ../../corona_enterprise_utils/utils/Memory.h; sourceTree = "<group>"; };
-		CE8A2CC91E10852100FCFAFD /* Path.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Path.cpp; path = ../../corona_enterprise_utils/utils/Path.cpp; sourceTree = "<group>"; };
-		CE8A2CCA1E10852100FCFAFD /* Path.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Path.h; path = ../../corona_enterprise_utils/utils/Path.h; sourceTree = "<group>"; };
-		CE8A2CCB1E10852100FCFAFD /* Platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Platform.h; path = ../../corona_enterprise_utils/utils/Platform.h; sourceTree = "<group>"; };
-		CE8A2CCC1E10852100FCFAFD /* SIMD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SIMD.cpp; path = ../../corona_enterprise_utils/utils/SIMD.cpp; sourceTree = "<group>"; };
-		CE8A2CCD1E10852100FCFAFD /* SIMD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SIMD.h; path = ../../corona_enterprise_utils/utils/SIMD.h; sourceTree = "<group>"; };
-		CE8A2CCE1E10852100FCFAFD /* Thread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Thread.cpp; path = ../../corona_enterprise_utils/utils/Thread.cpp; sourceTree = "<group>"; };
-		CE8A2CCF1E10852100FCFAFD /* Thread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Thread.h; path = ../../corona_enterprise_utils/utils/Thread.h; sourceTree = "<group>"; };
+		CE8A2CBE1E10851700FCFAFD /* aligned_allocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = aligned_allocator.h; path = ../../solar2d_native_utils/external/aligned_allocator.h; sourceTree = "<group>"; };
+		CE8A2CC01E10852100FCFAFD /* Blob.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Blob.cpp; path = ../../solar2d_native_utils/utils/Blob.cpp; sourceTree = "<group>"; };
+		CE8A2CC11E10852100FCFAFD /* Blob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Blob.h; path = ../../solar2d_native_utils/utils/Blob.h; sourceTree = "<group>"; };
+		CE8A2CC21E10852100FCFAFD /* Byte.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Byte.cpp; path = ../../solar2d_native_utils/utils/Byte.cpp; sourceTree = "<group>"; };
+		CE8A2CC31E10852100FCFAFD /* Byte.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Byte.h; path = ../../solar2d_native_utils/utils/Byte.h; sourceTree = "<group>"; };
+		CE8A2CC41E10852100FCFAFD /* Compat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Compat.h; path = ../../solar2d_native_utils/utils/Compat.h; sourceTree = "<group>"; };
+		CE8A2CC51E10852100FCFAFD /* LuaEx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LuaEx.cpp; path = ../../solar2d_native_utils/utils/LuaEx.cpp; sourceTree = "<group>"; };
+		CE8A2CC61E10852100FCFAFD /* LuaEx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LuaEx.h; path = ../../solar2d_native_utils/utils/LuaEx.h; sourceTree = "<group>"; };
+		CE8A2CC71E10852100FCFAFD /* Memory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Memory.cpp; path = ../../solar2d_native_utils/utils/Memory.cpp; sourceTree = "<group>"; };
+		CE8A2CC81E10852100FCFAFD /* Memory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Memory.h; path = ../../solar2d_native_utils/utils/Memory.h; sourceTree = "<group>"; };
+		CE8A2CC91E10852100FCFAFD /* Path.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Path.cpp; path = ../../solar2d_native_utils/utils/Path.cpp; sourceTree = "<group>"; };
+		CE8A2CCA1E10852100FCFAFD /* Path.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Path.h; path = ../../solar2d_native_utils/utils/Path.h; sourceTree = "<group>"; };
+		CE8A2CCB1E10852100FCFAFD /* Platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Platform.h; path = ../../solar2d_native_utils/utils/Platform.h; sourceTree = "<group>"; };
+		CE8A2CCC1E10852100FCFAFD /* SIMD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SIMD.cpp; path = ../../solar2d_native_utils/utils/SIMD.cpp; sourceTree = "<group>"; };
+		CE8A2CCD1E10852100FCFAFD /* SIMD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SIMD.h; path = ../../solar2d_native_utils/utils/SIMD.h; sourceTree = "<group>"; };
+		CE8A2CCE1E10852100FCFAFD /* Thread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Thread.cpp; path = ../../solar2d_native_utils/utils/Thread.cpp; sourceTree = "<group>"; };
+		CE8A2CCF1E10852100FCFAFD /* Thread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Thread.h; path = ../../solar2d_native_utils/utils/Thread.h; sourceTree = "<group>"; };
 		CE8A2CE01E10852900FCFAFD /* ByteReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ByteReader.cpp; path = ../../ByteReader/ByteReader.cpp; sourceTree = "<group>"; };
 		CE8A2CE11E10852900FCFAFD /* ByteReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ByteReader.h; path = ../../ByteReader/ByteReader.h; sourceTree = "<group>"; };
 		CE8A2CE41E10857800FCFAFD /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
@@ -125,7 +125,7 @@
 			isa = PBXGroup;
 			children = (
 				CE8A2CBD1E10850100FCFAFD /* ByteReader */,
-				CE8A2CBC1E1084F700FCFAFD /* corona_enterprise_utils */,
+				CE8A2CBC1E1084F700FCFAFD /* solar2d_native_utils */,
 				CE8A2CBB1E1084ED00FCFAFD /* external */,
 				CE0C2C0A1DA38B7500EF95D2 /* truetype.h */,
 				CE0C2C0B1DA38B7500EF95D2 /* plugin.truetype.cpp */,
@@ -181,7 +181,7 @@
 			name = external;
 			sourceTree = "<group>";
 		};
-		CE8A2CBC1E1084F700FCFAFD /* corona_enterprise_utils */ = {
+		CE8A2CBC1E1084F700FCFAFD /* solar2d_native_utils */ = {
 			isa = PBXGroup;
 			children = (
 				CE8A2CC01E10852100FCFAFD /* Blob.cpp */,
@@ -201,7 +201,7 @@
 				CE8A2CCE1E10852100FCFAFD /* Thread.cpp */,
 				CE8A2CCF1E10852100FCFAFD /* Thread.h */,
 			);
-			name = corona_enterprise_utils;
+			name = solar2d_native_utils;
 			sourceTree = "<group>";
 		};
 		CE8A2CBD1E10850100FCFAFD /* ByteReader */ = {
@@ -484,7 +484,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.coronalabs.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/Native/Corona/tvos/frameworks/CoronaCards.framework/PrivateHeaders ${SRCROOT}/../../ByteReader ${SRCROOT}/../../corona_enterprise_utils ${SRCROOT}/../../math_libraries";
+				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/Native/Corona/tvos/frameworks/CoronaCards.framework/PrivateHeaders ${SRCROOT}/../../ByteReader ${SRCROOT}/../../solar2d_native_utils ${SRCROOT}/../../math_libraries";
 			};
 			name = Debug;
 		};
@@ -507,7 +507,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.coronalabs.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/Native/Corona/tvos/frameworks/CoronaCards.framework/PrivateHeaders ${SRCROOT}/../../ByteReader ${SRCROOT}/../../corona_enterprise_utils ${SRCROOT}/../../math_libraries";
+				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/Native/Corona/tvos/frameworks/CoronaCards.framework/PrivateHeaders ${SRCROOT}/../../ByteReader ${SRCROOT}/../../solar2d_native_utils ${SRCROOT}/../../math_libraries";
 			};
 			name = Release;
 		};

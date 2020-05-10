@@ -418,7 +418,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.coronalabs.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/CoronaEnterprise/Corona/tvos/frameworks/CoronaCards.framework/PrivateHeaders ${SRCROOT}/../.. ${SRCROOT}/../../corona_enterprise_utils/";
+				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/CoronaEnterprise/Corona/tvos/frameworks/CoronaCards.framework/PrivateHeaders ${SRCROOT}/../.. ${SRCROOT}/../../solar2d_native_utils/";
 			};
 			name = Debug;
 		};
@@ -441,7 +441,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.coronalabs.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/CoronaEnterprise/Corona/tvos/frameworks/CoronaCards.framework/PrivateHeaders ${SRCROOT}/../.. ${SRCROOT}/../../corona_enterprise_utils/";
+				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/CoronaEnterprise/Corona/tvos/frameworks/CoronaCards.framework/PrivateHeaders ${SRCROOT}/../.. ${SRCROOT}/../../solar2d_native_utils/";
 			};
 			name = Release;
 		};

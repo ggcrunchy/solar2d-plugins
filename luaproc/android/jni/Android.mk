@@ -19,7 +19,7 @@ PLUGIN_DIR := ../..
 CUCKOO_DIR := $(PLUGIN_DIR)/../libcuckoo
 
 SRC_DIR := $(PLUGIN_DIR)/shared
-CEU_DIR := $(PLUGIN_DIR)/../corona_enterprise_utils
+CEU_DIR := $(PLUGIN_DIR)/../solar2d_native_utils
 
 # -----------------------------------------------------------------------------
 

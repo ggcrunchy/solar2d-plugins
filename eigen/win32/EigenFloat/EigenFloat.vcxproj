@@ -70,7 +70,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;EIGENFLOAT_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(CORONA_ROOT)/Corona/shared/include/Corona;$(CORONA_ROOT)/Corona/shared/include/lua;$(SolutionDir)../../ByteReader;$(SolutionDir)../../corona_enterprise_utils;$(SolutionDir)../../math_libraries/eigen/eigen;$(SolutionDir)../../pthreads</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(CORONA_ROOT)/Corona/shared/include/Corona;$(CORONA_ROOT)/Corona/shared/include/lua;$(SolutionDir)../../ByteReader;$(SolutionDir)../../solar2d_native_utils;$(SolutionDir)../../math_libraries/eigen/eigen;$(SolutionDir)../../pthreads</AdditionalIncludeDirectories>
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -79,10 +79,10 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;$(CORONA_ROOT)\Corona\win\lib\*.lib;%(AdditionalDependencies);../$(Configuration)\corona_enterprise_utils.lib;</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;$(CORONA_ROOT)\Corona\win\lib\*.lib;%(AdditionalDependencies);../$(Configuration)\solar2d_native_utils.lib;</AdditionalDependencies>
     </Link>
     <Lib>
-      <AdditionalDependencies>$(CORONA_ENTERPRISE)\Corona\win\lib\*.lib;%(AdditionalDependencies);../$(Configuration)\corona_enterprise_utils.lib;</AdditionalDependencies>
+      <AdditionalDependencies>$(CORONA_ENTERPRISE)\Corona\win\lib\*.lib;%(AdditionalDependencies);../$(Configuration)\solar2d_native_utils.lib;</AdditionalDependencies>
     </Lib>
     <PostBuildEvent>
       <Command>set PLUGINS=$(appdata)/Corona Labs/Corona Simulator/Plugins/plugin/

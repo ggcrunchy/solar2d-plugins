@@ -102,7 +102,7 @@
 			children = (
 				CE963C3C2332A578006EF13A /* stdafx.cpp */,
 				CE963C312332A56D006EF13A /* ByteReader */,
-				CE963BD82332A561006EF13A /* corona_enterprise_utils */,
+				CE963BD82332A561006EF13A /* solar2d_native_utils */,
 				CE51A1891CDD5A8C00F115D7 /* lpack.c */,
 				CE51A18A1CDD5A8C00F115D7 /* marshal.c */,
 				CE51A18B1CDD5A8C00F115D7 /* plugin.serialize.cpp */,
@@ -136,7 +136,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		CE963BD82332A561006EF13A /* corona_enterprise_utils */ = {
+		CE963BD82332A561006EF13A /* solar2d_native_utils */ = {
 			isa = PBXGroup;
 			children = (
 				CE963BD92332A561006EF13A /* .gitignore */,
@@ -144,8 +144,8 @@
 				CE963BF42332A561006EF13A /* README.md */,
 				CE963BF52332A561006EF13A /* utils */,
 			);
-			name = corona_enterprise_utils;
-			path = ../../corona_enterprise_utils;
+			name = solar2d_native_utils;
+			path = ../../solar2d_native_utils;
 			sourceTree = "<group>";
 		};
 		CE963BF52332A561006EF13A /* utils */ = {
@@ -378,7 +378,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				INSTALL_PATH = "@rpath";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/CoronaEnterprise/Corona/shared/include/Corona ${SRCROOT}/CoronaEnterprise/Corona/shared/include/lua ${SRCROOT}/CoronaEnterprise/Corona/ios/include/Corona ${SRCROOT}/../.. ${SRCROOT}/../../ByteReader ${SRCROOT}/../../corona_enterprise_utils ${SRCROOT}/../../math_libraries";
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/CoronaEnterprise/Corona/shared/include/Corona ${SRCROOT}/CoronaEnterprise/Corona/shared/include/lua ${SRCROOT}/CoronaEnterprise/Corona/ios/include/Corona ${SRCROOT}/../.. ${SRCROOT}/../../ByteReader ${SRCROOT}/../../solar2d_native_utils ${SRCROOT}/../../math_libraries";
 			};
 			name = Release;
 		};

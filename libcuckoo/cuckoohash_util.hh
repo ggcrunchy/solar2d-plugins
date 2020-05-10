@@ -38,7 +38,7 @@
 #endif
 
 // STEVE CHANGE
-#include "../corona_enterprise_utils/utils/Thread.h"
+#include "../solar2d_native_utils/utils/Thread.h"
 // /STEVE CHANGE
 /**
  * thread_local requires GCC >= 4.8 and is not supported in some clang versions,

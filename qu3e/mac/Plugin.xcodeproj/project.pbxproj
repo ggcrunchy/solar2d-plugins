@@ -57,23 +57,23 @@
 		CE5D44BF2117777100CA82E2 /* scene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = scene.cpp; path = ../shared/scene.cpp; sourceTree = "<group>"; };
 		CE5D44C1211D284A00CA82E2 /* qu3e.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = qu3e.h; path = ../shared/qu3e.h; sourceTree = "<group>"; };
 		CE5D44C3211D285200CA82E2 /* plugin.qu3e.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = plugin.qu3e.cpp; path = ../shared/plugin.qu3e.cpp; sourceTree = "<group>"; };
-		CE8A2C8B1E10841B00FCFAFD /* aligned_allocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = aligned_allocator.h; path = ../../corona_enterprise_utils/external/aligned_allocator.h; sourceTree = "<group>"; };
-		CE8A2C8D1E10842700FCFAFD /* Blob.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Blob.cpp; path = ../../corona_enterprise_utils/utils/Blob.cpp; sourceTree = "<group>"; };
-		CE8A2C8E1E10842700FCFAFD /* Blob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Blob.h; path = ../../corona_enterprise_utils/utils/Blob.h; sourceTree = "<group>"; };
-		CE8A2C8F1E10842700FCFAFD /* Byte.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Byte.cpp; path = ../../corona_enterprise_utils/utils/Byte.cpp; sourceTree = "<group>"; };
-		CE8A2C901E10842700FCFAFD /* Byte.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Byte.h; path = ../../corona_enterprise_utils/utils/Byte.h; sourceTree = "<group>"; };
-		CE8A2C911E10842700FCFAFD /* Compat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Compat.h; path = ../../corona_enterprise_utils/utils/Compat.h; sourceTree = "<group>"; };
-		CE8A2C921E10842700FCFAFD /* LuaEx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LuaEx.cpp; path = ../../corona_enterprise_utils/utils/LuaEx.cpp; sourceTree = "<group>"; };
-		CE8A2C931E10842700FCFAFD /* LuaEx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LuaEx.h; path = ../../corona_enterprise_utils/utils/LuaEx.h; sourceTree = "<group>"; };
-		CE8A2C941E10842700FCFAFD /* Memory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Memory.cpp; path = ../../corona_enterprise_utils/utils/Memory.cpp; sourceTree = "<group>"; };
-		CE8A2C951E10842700FCFAFD /* Memory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Memory.h; path = ../../corona_enterprise_utils/utils/Memory.h; sourceTree = "<group>"; };
-		CE8A2C961E10842700FCFAFD /* Path.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Path.cpp; path = ../../corona_enterprise_utils/utils/Path.cpp; sourceTree = "<group>"; };
-		CE8A2C971E10842700FCFAFD /* Path.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Path.h; path = ../../corona_enterprise_utils/utils/Path.h; sourceTree = "<group>"; };
-		CE8A2C981E10842700FCFAFD /* Platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Platform.h; path = ../../corona_enterprise_utils/utils/Platform.h; sourceTree = "<group>"; };
-		CE8A2C991E10842700FCFAFD /* SIMD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SIMD.cpp; path = ../../corona_enterprise_utils/utils/SIMD.cpp; sourceTree = "<group>"; };
-		CE8A2C9A1E10842700FCFAFD /* SIMD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SIMD.h; path = ../../corona_enterprise_utils/utils/SIMD.h; sourceTree = "<group>"; };
-		CE8A2C9B1E10842700FCFAFD /* Thread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Thread.cpp; path = ../../corona_enterprise_utils/utils/Thread.cpp; sourceTree = "<group>"; };
-		CE8A2C9C1E10842700FCFAFD /* Thread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Thread.h; path = ../../corona_enterprise_utils/utils/Thread.h; sourceTree = "<group>"; };
+		CE8A2C8B1E10841B00FCFAFD /* aligned_allocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = aligned_allocator.h; path = ../../solar2d_native_utils/external/aligned_allocator.h; sourceTree = "<group>"; };
+		CE8A2C8D1E10842700FCFAFD /* Blob.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Blob.cpp; path = ../../solar2d_native_utils/utils/Blob.cpp; sourceTree = "<group>"; };
+		CE8A2C8E1E10842700FCFAFD /* Blob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Blob.h; path = ../../solar2d_native_utils/utils/Blob.h; sourceTree = "<group>"; };
+		CE8A2C8F1E10842700FCFAFD /* Byte.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Byte.cpp; path = ../../solar2d_native_utils/utils/Byte.cpp; sourceTree = "<group>"; };
+		CE8A2C901E10842700FCFAFD /* Byte.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Byte.h; path = ../../solar2d_native_utils/utils/Byte.h; sourceTree = "<group>"; };
+		CE8A2C911E10842700FCFAFD /* Compat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Compat.h; path = ../../solar2d_native_utils/utils/Compat.h; sourceTree = "<group>"; };
+		CE8A2C921E10842700FCFAFD /* LuaEx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LuaEx.cpp; path = ../../solar2d_native_utils/utils/LuaEx.cpp; sourceTree = "<group>"; };
+		CE8A2C931E10842700FCFAFD /* LuaEx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LuaEx.h; path = ../../solar2d_native_utils/utils/LuaEx.h; sourceTree = "<group>"; };
+		CE8A2C941E10842700FCFAFD /* Memory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Memory.cpp; path = ../../solar2d_native_utils/utils/Memory.cpp; sourceTree = "<group>"; };
+		CE8A2C951E10842700FCFAFD /* Memory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Memory.h; path = ../../solar2d_native_utils/utils/Memory.h; sourceTree = "<group>"; };
+		CE8A2C961E10842700FCFAFD /* Path.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Path.cpp; path = ../../solar2d_native_utils/utils/Path.cpp; sourceTree = "<group>"; };
+		CE8A2C971E10842700FCFAFD /* Path.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Path.h; path = ../../solar2d_native_utils/utils/Path.h; sourceTree = "<group>"; };
+		CE8A2C981E10842700FCFAFD /* Platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Platform.h; path = ../../solar2d_native_utils/utils/Platform.h; sourceTree = "<group>"; };
+		CE8A2C991E10842700FCFAFD /* SIMD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SIMD.cpp; path = ../../solar2d_native_utils/utils/SIMD.cpp; sourceTree = "<group>"; };
+		CE8A2C9A1E10842700FCFAFD /* SIMD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SIMD.h; path = ../../solar2d_native_utils/utils/SIMD.h; sourceTree = "<group>"; };
+		CE8A2C9B1E10842700FCFAFD /* Thread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Thread.cpp; path = ../../solar2d_native_utils/utils/Thread.cpp; sourceTree = "<group>"; };
+		CE8A2C9C1E10842700FCFAFD /* Thread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Thread.h; path = ../../solar2d_native_utils/utils/Thread.h; sourceTree = "<group>"; };
 		CE8A2CAD1E10843000FCFAFD /* ByteReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ByteReader.cpp; path = ../../ByteReader/ByteReader.cpp; sourceTree = "<group>"; };
 		CE8A2CAE1E10843000FCFAFD /* ByteReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ByteReader.h; path = ../../ByteReader/ByteReader.h; sourceTree = "<group>"; };
 		CE8A2CB11E10844000FCFAFD /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
@@ -95,7 +95,7 @@
 			children = (
 				CE8A2C881E1083FD00FCFAFD /* external */,
 				CE8A2C8A1E10840C00FCFAFD /* ByteReader */,
-				CE8A2C891E10840400FCFAFD /* corona_enterprise_utils */,
+				CE8A2C891E10840400FCFAFD /* solar2d_native_utils */,
 				CE5D44AD21176CA400CA82E2 /* qu3e */,
 				CE5D44C1211D284A00CA82E2 /* qu3e.h */,
 				CE5D44C3211D285200CA82E2 /* plugin.qu3e.cpp */,
@@ -140,7 +140,7 @@
 			name = external;
 			sourceTree = "<group>";
 		};
-		CE8A2C891E10840400FCFAFD /* corona_enterprise_utils */ = {
+		CE8A2C891E10840400FCFAFD /* solar2d_native_utils */ = {
 			isa = PBXGroup;
 			children = (
 				CE8A2C8D1E10842700FCFAFD /* Blob.cpp */,
@@ -160,7 +160,7 @@
 				CE8A2C9B1E10842700FCFAFD /* Thread.cpp */,
 				CE8A2C9C1E10842700FCFAFD /* Thread.h */,
 			);
-			name = corona_enterprise_utils;
+			name = solar2d_native_utils;
 			sourceTree = "<group>";
 		};
 		CE8A2C8A1E10840C00FCFAFD /* ByteReader */ = {
@@ -389,7 +389,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				INSTALL_PATH = "@rpath";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/Native/Corona/shared/include/Corona ${SRCROOT}/Native/Corona/shared/include/lua ${SRCROOT}/Native/Corona/ios/include/Corona ${SRCROOT}/../../ByteReader ${SRCROOT}/../../corona_enterprise_utils ${SRCROOT}/../../math_libraries";
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/Native/Corona/shared/include/Corona ${SRCROOT}/Native/Corona/shared/include/lua ${SRCROOT}/Native/Corona/ios/include/Corona ${SRCROOT}/../../ByteReader ${SRCROOT}/../../solar2d_native_utils ${SRCROOT}/../../math_libraries";
 			};
 			name = Debug;
 		};
@@ -405,7 +405,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				INSTALL_PATH = "@rpath";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/Native/Corona/shared/include/Corona ${SRCROOT}/Native/Corona/shared/include/lua ${SRCROOT}/Native/Corona/ios/include/Corona ${SRCROOT}/../../ByteReader ${SRCROOT}/../../corona_enterprise_utils ${SRCROOT}/../../math_libraries";
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/Native/Corona/shared/include/Corona ${SRCROOT}/Native/Corona/shared/include/lua ${SRCROOT}/Native/Corona/ios/include/Corona ${SRCROOT}/../../ByteReader ${SRCROOT}/../../solar2d_native_utils ${SRCROOT}/../../math_libraries";
 			};
 			name = Release;
 		};

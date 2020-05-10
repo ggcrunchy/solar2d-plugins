@@ -20,7 +20,7 @@ PLUGIN_DIR := ../..
 SRC_DIR := $(PLUGIN_DIR)/shared
 TESS_DIR := $(SRC_DIR)/Source
 BR_DIR := $(PLUGIN_DIR)/../ByteReader
-CEU_DIR := $(PLUGIN_DIR)/../corona_enterprise_utils
+CEU_DIR := $(PLUGIN_DIR)/../solar2d_native_utils
 CEU_SRC := $(CEU_DIR)/utils
 
 # -----------------------------------------------------------------------------

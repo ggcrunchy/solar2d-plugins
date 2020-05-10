@@ -20,7 +20,7 @@ MATH_LIBRARIES_DIR := $(PLUGIN_DIR)/../math_libraries
 
 SRC_DIR := $(PLUGIN_DIR)/shared
 BR_DIR := $(PLUGIN_DIR)/../ByteReader
-CEU_DIR := $(PLUGIN_DIR)/../corona_enterprise_utils
+CEU_DIR := $(PLUGIN_DIR)/../solar2d_native_utils
 CEU_SRC := $(CEU_DIR)/utils
 TOP_DIR := $(PLUGIN_DIR)/..
 CUCKOO_DIR := $(TOP_DIR)/libcuckoo

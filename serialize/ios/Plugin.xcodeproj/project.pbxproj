@@ -88,7 +88,7 @@
 			children = (
 				CE963C8923355398006EF13A /* stdafx.cpp */,
 				CE963C7F23355390006EF13A /* ByteReader */,
-				CE963C4023355365006EF13A /* corona_enterprise_utils */,
+				CE963C4023355365006EF13A /* solar2d_native_utils */,
 				CE51A17F1CDD596E00F115D7 /* lpack.m */,
 				CE51A1801CDD596E00F115D7 /* marshal.m */,
 				CE51A1811CDD596E00F115D7 /* plugin.serialize.cpp */,
@@ -114,7 +114,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		CE963C4023355365006EF13A /* corona_enterprise_utils */ = {
+		CE963C4023355365006EF13A /* solar2d_native_utils */ = {
 			isa = PBXGroup;
 			children = (
 				CE963C4123355365006EF13A /* .gitignore */,
@@ -122,8 +122,8 @@
 				CE963C5C23355365006EF13A /* README.md */,
 				CE963C5D23355365006EF13A /* utils */,
 			);
-			name = corona_enterprise_utils;
-			path = ../../corona_enterprise_utils;
+			name = solar2d_native_utils;
+			path = ../../solar2d_native_utils;
 			sourceTree = "<group>";
 		};
 		CE963C5D23355365006EF13A /* utils */ = {
@@ -348,7 +348,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/CoronaEnterprise/Corona/shared/include/Corona ${SRCROOT}/CoronaEnterprise/Corona/shared/include/lua ${SRCROOT}/CoronaEnterprise/Corona/ios/include/Corona ${SRCROOT}/../../ByteReader ${SRCROOT}/../../corona_enterprise_utils ${SRCROOT}/../../math_libraries";
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/CoronaEnterprise/Corona/shared/include/Corona ${SRCROOT}/CoronaEnterprise/Corona/shared/include/lua ${SRCROOT}/CoronaEnterprise/Corona/ios/include/Corona ${SRCROOT}/../../ByteReader ${SRCROOT}/../../solar2d_native_utils ${SRCROOT}/../../math_libraries";
 			};
 			name = Debug;
 		};
@@ -369,7 +369,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/CoronaEnterprise/Corona/shared/include/Corona ${SRCROOT}/CoronaEnterprise/Corona/shared/include/lua ${SRCROOT}/CoronaEnterprise/Corona/ios/include/Corona ${SRCROOT}/../../ByteReader ${SRCROOT}/../../corona_enterprise_utils ${SRCROOT}/../../math_libraries";
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/CoronaEnterprise/Corona/shared/include/Corona ${SRCROOT}/CoronaEnterprise/Corona/shared/include/lua ${SRCROOT}/CoronaEnterprise/Corona/ios/include/Corona ${SRCROOT}/../../ByteReader ${SRCROOT}/../../solar2d_native_utils ${SRCROOT}/../../math_libraries";
 			};
 			name = Release;
 		};

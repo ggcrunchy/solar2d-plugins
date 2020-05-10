@@ -19,7 +19,7 @@ PLUGIN_DIR := ../..
 
 SRC_DIR := $(PLUGIN_DIR)/shared
 BR_DIR := $(PLUGIN_DIR)/../ByteReader
-CEU_DIR := $(PLUGIN_DIR)/../corona_enterprise_utils
+CEU_DIR := $(PLUGIN_DIR)/../solar2d_native_utils
 MATHLIBS_DIR := $(PLUGIN_DIR)/../math_libraries
 CEU_SRC := $(CEU_DIR)/utils
 

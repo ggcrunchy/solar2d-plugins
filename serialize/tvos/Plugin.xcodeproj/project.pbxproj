@@ -143,7 +143,7 @@
 			children = (
 				CE963CFC23355647006EF13A /* stdafx.cpp */,
 				CE963CEB2335563E006EF13A /* ByteReader */,
-				CE963C8C2335561E006EF13A /* corona_enterprise_utils */,
+				CE963C8C2335561E006EF13A /* solar2d_native_utils */,
 				CE8E82B11E6E4148000F2322 /* lpack.m */,
 				CE8E82AF1E6E413F000F2322 /* marshal.m */,
 				CE8E82AD1E6E4130000F2322 /* struct.m */,
@@ -180,7 +180,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		CE963C8C2335561E006EF13A /* corona_enterprise_utils */ = {
+		CE963C8C2335561E006EF13A /* solar2d_native_utils */ = {
 			isa = PBXGroup;
 			children = (
 				CE963C8D2335561E006EF13A /* .gitignore */,
@@ -188,8 +188,8 @@
 				CE963CA82335561E006EF13A /* README.md */,
 				CE963CA92335561E006EF13A /* utils */,
 			);
-			name = corona_enterprise_utils;
-			path = ../../corona_enterprise_utils;
+			name = solar2d_native_utils;
+			path = ../../solar2d_native_utils;
 			sourceTree = "<group>";
 		};
 		CE963CA92335561E006EF13A /* utils */ = {
@@ -390,7 +390,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/../../ByteReader ${SRCROOT}/../../corona_enterprise_utils ${SRCROOT}/../../math_libraries";
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/../../ByteReader ${SRCROOT}/../../solar2d_native_utils ${SRCROOT}/../../math_libraries";
 			};
 			name = Release;
 		};
@@ -513,7 +513,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.coronalabs.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/CoronaEnterprise/Corona/tvos/frameworks/CoronaCards.framework/PrivateHeaders ${SRCROOT}/../../ByteReader ${SRCROOT}/../../corona_enterprise_utils ${SRCROOT}/../../math_libraries";
+				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/CoronaEnterprise/Corona/tvos/frameworks/CoronaCards.framework/PrivateHeaders ${SRCROOT}/../../ByteReader ${SRCROOT}/../../solar2d_native_utils ${SRCROOT}/../../math_libraries";
 			};
 			name = Debug;
 		};
@@ -536,7 +536,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.coronalabs.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/CoronaEnterprise/Corona/tvos/frameworks/CoronaCards.framework/PrivateHeaders ${SRCROOT}/../../ByteReader ${SRCROOT}/../../corona_enterprise_utils ${SRCROOT}/../../math_libraries";
+				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/CoronaEnterprise/Corona/tvos/frameworks/CoronaCards.framework/PrivateHeaders ${SRCROOT}/../../ByteReader ${SRCROOT}/../../solar2d_native_utils ${SRCROOT}/../../math_libraries";
 			};
 			name = Release;
 		};
