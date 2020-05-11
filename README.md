@@ -50,6 +50,7 @@ Little or no code has gone into the following, but they might get some attention
 * [Blend2D](https://github.com/blend2d/blend2d)
 * [Polylidar](https://github.com/JeremyBYU/polylidar)
 * [pl_mpeg](https://github.com/phoboslab/pl_mpeg)
+* [TheoryPlay](https://www.icculus.org/theoraplay/)
 * [cffi](https://github.com/q66/cffi-lua) as a better **luaffifb**
 * [psd.c](https://github.com/hkrn/psd.c)
 * [dmon](https://github.com/septag/dmon)
@@ -123,7 +124,7 @@ There is FAR too much here to even review, much less implement. Some of it's mer
 * [xf8](https://github.com/skeeto/xf8)
 * [blob](https://github.com/BlockoS/blob)
 * [dj_fft](https://github.com/jdupuy/dj_fft), [Simple-FFT](https://github.com/d1vanov/Simple-FFT)
-* [CLK](https://github.com/TomHarte/CLK)
+* [CLK](https://github.com/TomHarte/CLK), [x16 emulator](https://github.com/commanderx16/x16-emulator/)
 * [luaproc-master](https://github.com/lmillanfdez/luaproc-master) and [https://github.com/fernando-ala/luaproc---messaging-tables-async-read](https://github.com/fernando-ala/luaproc---messaging-tables-async-read)
 * [lua-mtmsg](https://github.com/osch/lua-mtmsg)
 * [SuRF](https://github.com/efficient/SuRF)
