@@ -50,7 +50,7 @@ Little or no code has gone into the following, but they might get some attention
 * [Blend2D](https://github.com/blend2d/blend2d)
 * [Polylidar](https://github.com/JeremyBYU/polylidar)
 * [pl_mpeg](https://github.com/phoboslab/pl_mpeg)
-* [TheoryPlay](https://www.icculus.org/theoraplay/)
+* [TheoraPlay](https://www.icculus.org/theoraplay/)
 * [cffi](https://github.com/q66/cffi-lua) as a better **luaffifb**
 * [psd.c](https://github.com/hkrn/psd.c)
 * [dmon](https://github.com/septag/dmon)
