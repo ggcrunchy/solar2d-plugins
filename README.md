@@ -131,7 +131,7 @@ There is FAR too much here to even review, much less implement. Some of it's mer
 * [SplineLibrary](https://github.com/ejmahler/SplineLibrary), [SplineLib](https://github.com/andrewwillmott/splines-lib), [tinyspline](https://github.com/msteinbeck/tinyspline)
 * [nanoflann](https://github.com/jlblancoc/nanoflann), [annoy](https://github.com/spotify/annoy)
 * [sse2neon](https://github.com/jratcliff63367/sse2neon), [ARM_NEON_2_x86_SSE](https://github.com/intel/ARM_NEON_2_x86_SSE), [simde](https://github.com/nemequ/simde)
-* [geometry-central](https://github.com/nmwsharp/geometry-central), * [cinolib](https://github.com/mlivesu/cinolib), [c.thi.ng](https://github.com/thi-ng/c-thing), [libhedra](https://github.com/avaxman/libhedra), [libigl](https://github.com/libigl/libigl); see also [Geometric Tools](https://www.geometrictools.com)
+* [geometry-central](https://github.com/nmwsharp/geometry-central), [cinolib](https://github.com/mlivesu/cinolib), [c.thi.ng](https://github.com/thi-ng/c-thing), [libhedra](https://github.com/avaxman/libhedra), [libigl](https://github.com/libigl/libigl); see also [Geometric Tools](https://www.geometrictools.com)
 * [timeout](https://github.com/wahern/timeout), [Ratas](https://github.com/jsnell/ratas)
 * [tinn](https://github.com/glouw/tinn), [tiny-dnn](https://github.com/tiny-dnn/tiny-dnn)
 * [Mesh](https://github.com/plasma-umass/Mesh)
