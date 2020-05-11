@@ -89,10 +89,11 @@ Some of these would benefit from audio-style support in the tradition of "extern
 * [mpc](https://github.com/orangeduck/mpc)
 * Need to compare those against [parser-gen](https://github.com/vsbenas/parser-gen), which seems to already be in Lua
 
-### SAT ideas ###
+### Satisfiability and theorem solver ideas ###
 
 * [minisat](https://github.com/niklasso/minisat)
 * [MiniZinc](https://github.com/MiniZinc/libminizinc)
+* [Z3](https://github.com/Z3Prover/z3)
 
 ### Shape generator ideas ###
 
@@ -106,18 +107,17 @@ Other stuff that looked interesting.
 
 Many things here probably aren't plugin material on their own, but might serve well for sourcing components and such.
 
-There is FAR too much here to even review, much less implement. Some of it's merely interesting and to jog ideas.
+There is FAR too much here to even review, much less implement. Some of this is just to jog ideas.
 
 * [RSMotion](https://github.com/BasGeertsema/rsmotion)
 * [MazuCC](https://github.com/jserv/MazuCC), [chibicc](https://github.com/rui314/chibicc), [CToy](https://github.com/anael-seghezzi/CToy)
 * [asmjit](https://github.com/asmjit/asmjit)
-* [MemoryModule](https://github.com/fancycode/MemoryModule)
+* [MemoryModule](https://github.com/fancycode/MemoryModule), [loadlibrary](https://github.com/taviso/loadlibrary)
 * [CTPL](https://github.com/vit-vit/CTPL), [jobxx](https://github.com/seanmiddleditch/jobxx), [cpp-taskflow](https://github.com/cpp-taskflow/cpp-taskflow), [px](https://github.com/pplux/px), [transwarp](https://github.com/bloomen/transwarp), [FiberTaskingLib](https://github.com/RichieSams/FiberTaskingLib), [ThreadPool](https://github.com/nbsdx/ThreadPool), [boson](https://github.com/duckie/boson), [oqpi](https://github.com/H-EAL/oqpi), [enkiTS](https://github.com/dougbinks/enkiTS), [libmill](https://github.com/sustrik/libmill), [checkedthreads](https://github.com/yosefk/checkedthreads), [libcsp](https://github.com/shiyanhui/libcsp)
 * [RaftLib](https://github.com/RaftLib/RaftLib)
 * [libnop](https://github.com/google/libnop)
 * [subprocess](https://github.com/sheredom/subprocess.h), [tiny-process-library](https://github.com/eidheim/tiny-process-library) (possibly supersed by **luaipc** above)
 * [lcpp](https://github.com/m-schmoock/lcpp), [CParser](https://github.com/facebookresearch/CParser)
-* [TriWild](https://github.com/wildmeshing/TriWild)
 * [AGS Fast Wave Function Collapse Plugin](https://github.com/ericoporto/agsfastwfc)
 * [robust-predicates](https://github.com/mourner/robust-predicates)
 * [xf8](https://github.com/skeeto/xf8)
@@ -132,6 +132,7 @@ There is FAR too much here to even review, much less implement. Some of it's mer
 * [nanoflann](https://github.com/jlblancoc/nanoflann), [annoy](https://github.com/spotify/annoy)
 * [sse2neon](https://github.com/jratcliff63367/sse2neon), [ARM_NEON_2_x86_SSE](https://github.com/intel/ARM_NEON_2_x86_SSE), [simde](https://github.com/nemequ/simde)
 * [geometry-central](https://github.com/nmwsharp/geometry-central), [cinolib](https://github.com/mlivesu/cinolib), [c.thi.ng](https://github.com/thi-ng/c-thing), [libhedra](https://github.com/avaxman/libhedra), [libigl](https://github.com/libigl/libigl); see also [Geometric Tools](https://www.geometrictools.com)
+* [TriWild](https://github.com/wildmeshing/TriWild)
 * [timeout](https://github.com/wahern/timeout), [Ratas](https://github.com/jsnell/ratas)
 * [tinn](https://github.com/glouw/tinn), [tiny-dnn](https://github.com/tiny-dnn/tiny-dnn)
 * [Mesh](https://github.com/plasma-umass/Mesh)
@@ -151,7 +152,6 @@ There is FAR too much here to even review, much less implement. Some of it's mer
 * [hashids.lua](https://github.com/leihog/hashids.lua)
 * [squash](https://github.com/quixdb/squash), [Bundle](https://github.com/r-lyeh-archived/bundle)
 * [crunch](https://github.com/BinomialLLC/crunch)
-* [Z3](https://github.com/Z3Prover/z3)
 * [acl](https://github.com/nfrechette/acl)
 * [ik](https://github.com/TheComet/ik)
 * [tinygizmo](https://github.com/ddiakopoulos/tinygizmo)
@@ -161,8 +161,7 @@ There is FAR too much here to even review, much less implement. Some of it's mer
 * [msdfgen](https://github.com/Chlumsky/msdfgen)
 * [nbind](https://github.com/charto/nbind)
 * [Remotery](https://github.com/Celtoys/Remotery)
-* [renderdoc](https://github.com/baldurk/renderdoc)
-* [apitrace](https://github.com/apitrace/apitrace)
+* [renderdoc](https://github.com/baldurk/renderdoc), [apitrace](https://github.com/apitrace/apitrace)
 
 ## Licenses ##
 
