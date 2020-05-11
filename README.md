@@ -45,6 +45,8 @@ A few larger ones might be divvied up into more manageable sub-plugins.
 
 ## Under more or less serious consideration ##
 
+Little or no code has gone into the following, but they might get some attention down the road.
+
 * [Blend2D](https://github.com/blend2d/blend2d)
 * [Polylidar](https://github.com/JeremyBYU/polylidar)
 * [pl_mpeg](https://github.com/phoboslab/pl_mpeg)
