@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{9b808ef6-8ba0-4d38-a599-0e929a5e798e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\parallel_hashmap">
+      <UniqueIdentifier>{f27556ee-a4f3-4bb5-a44f-4606e9f14f73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\polylidar">
+      <UniqueIdentifier>{1fdff3df-8897-4a8b-a950-42fe3647599a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="predicates">
+      <UniqueIdentifier>{8313a6d8-3ca7-4a82-8f27-9ca6de4cde83}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\shared\include\parallel_hashmap\meminfo.h">
+      <Filter>include\parallel_hashmap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\parallel_hashmap\phmap.h">
+      <Filter>include\parallel_hashmap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\parallel_hashmap\phmap_base.h">
+      <Filter>include\parallel_hashmap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\parallel_hashmap\phmap_bits.h">
+      <Filter>include\parallel_hashmap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\parallel_hashmap\phmap_config.h">
+      <Filter>include\parallel_hashmap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\parallel_hashmap\phmap_dump.h">
+      <Filter>include\parallel_hashmap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\parallel_hashmap\phmap_fwd_decl.h">
+      <Filter>include\parallel_hashmap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\parallel_hashmap\phmap_utils.h">
+      <Filter>include\parallel_hashmap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\polylidar\helper.hpp">
+      <Filter>include\polylidar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\polylidar\polylidar.hpp">
+      <Filter>include\polylidar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\polylidar\util.hpp">
+      <Filter>include\polylidar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\delaunator.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\predicates\constants.h">
+      <Filter>predicates</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\predicates\predicates.h">
+      <Filter>predicates</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\predicates\predicates.hpp">
+      <Filter>predicates</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\predicates\predicatesDLLExport.h">
+      <Filter>predicates</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\shared\predicates\constants.c">
+      <Filter>predicates</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\predicates\predicates.c">
+      <Filter>predicates</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\predicates\printing.c">
+      <Filter>predicates</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\predicates\random.c">
+      <Filter>predicates</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

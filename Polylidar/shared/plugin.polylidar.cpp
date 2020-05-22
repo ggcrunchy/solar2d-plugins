@@ -22,6 +22,7 @@
 */
 
 #include "CoronaLua.h"
+/*
 #include "tinyfiledialogs.h"
 #include <string.h>
 
@@ -240,11 +241,12 @@ static luaL_Reg tfd_funcs[] = {
 	},
 	{ NULL, NULL }
 };
-
-CORONA_EXPORT int luaopen_plugin_tinyfiledialogs(lua_State* L)
+*/
+CORONA_EXPORT int luaopen_plugin_polylidar (lua_State* L)
 {
+/*
 	lua_newtable(L);// t
 	luaL_register(L, NULL, tfd_funcs);
-
+*/
 	return 1;
 }

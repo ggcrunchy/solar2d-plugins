@@ -11,11 +11,32 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\shared\plugin.tinyfiledialogs.cpp" />
-    <ClCompile Include="..\shared\tinyfiledialogs.c" />
+    <ClCompile Include="..\shared\delaunator.cpp" />
+    <ClCompile Include="..\shared\helper.cpp" />
+    <ClCompile Include="..\shared\plugin.polylidar.cpp" />
+    <ClCompile Include="..\shared\polylidar.cpp" />
+    <ClCompile Include="..\shared\predicates\constants.c" />
+    <ClCompile Include="..\shared\predicates\predicates.c" />
+    <ClCompile Include="..\shared\predicates\printing.c" />
+    <ClCompile Include="..\shared\predicates\random.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\shared\tinyfiledialogs.h" />
+    <ClInclude Include="..\shared\include\delaunator.hpp" />
+    <ClInclude Include="..\shared\include\parallel_hashmap\meminfo.h" />
+    <ClInclude Include="..\shared\include\parallel_hashmap\phmap.h" />
+    <ClInclude Include="..\shared\include\parallel_hashmap\phmap_base.h" />
+    <ClInclude Include="..\shared\include\parallel_hashmap\phmap_bits.h" />
+    <ClInclude Include="..\shared\include\parallel_hashmap\phmap_config.h" />
+    <ClInclude Include="..\shared\include\parallel_hashmap\phmap_dump.h" />
+    <ClInclude Include="..\shared\include\parallel_hashmap\phmap_fwd_decl.h" />
+    <ClInclude Include="..\shared\include\parallel_hashmap\phmap_utils.h" />
+    <ClInclude Include="..\shared\include\polylidar\helper.hpp" />
+    <ClInclude Include="..\shared\include\polylidar\polylidar.hpp" />
+    <ClInclude Include="..\shared\include\polylidar\util.hpp" />
+    <ClInclude Include="..\shared\predicates\constants.h" />
+    <ClInclude Include="..\shared\predicates\predicates.h" />
+    <ClInclude Include="..\shared\predicates\predicates.hpp" />
+    <ClInclude Include="..\shared\predicates\predicatesDLLExport.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{79F0CACC-457B-4A25-BC54-81277688C361}</ProjectGuid>
@@ -25,7 +46,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v120_xp</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
@@ -55,7 +76,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(Configuration)\</OutDir>
-    <TargetName>plugin_tinyfiledialogs</TargetName>
+    <TargetName>plugin_Polylidar</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <PreBuildEvent />
@@ -103,7 +124,7 @@
     <PostBuildEvent />
     <PostBuildEvent>
       <Command>set PLUGINS=$(appdata)/Corona Labs/Corona Simulator/Plugins/plugin/
-copy "$(OutDir)$(TargetName).dll" "%PLUGINS%tinyfiledialogs.dll"</Command>
+copy "$(OutDir)$(TargetName).dll" "%PLUGINS%Polylidar.dll"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
