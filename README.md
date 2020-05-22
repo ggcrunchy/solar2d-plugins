@@ -30,6 +30,10 @@ Some of these are fairly mature, a few are in development, while others are aban
 * streamlines (from **par**; WIP)
 * tinyfiledialogs ([eponymous](https://sourceforge.net/projects/tinyfiledialogs/))
 * truetype (uses **stb**'s `truetype` module)
+* Blend2D ([eponymous](https://github.com/blend2d/blend2d); WIP)
+* OAML ([Open Adaptive Music Engine](https://github.com/oamldev/oaml); WIP)
+* Polylidar([eponymous](https://github.com/JeremyBYU/polylidar); WIP)
+* TheoraPlay ([eponymous](https://www.icculus.org/theoraplay/); WIP)
 
 A few larger ones might be divvied up into more manageable sub-plugins.
 
@@ -47,10 +51,7 @@ A few larger ones might be divvied up into more manageable sub-plugins.
 
 Little or no code has gone into the following, but they might get some attention down the road.
 
-* [Blend2D](https://github.com/blend2d/blend2d)
-* [Polylidar](https://github.com/JeremyBYU/polylidar)
 * [pl_mpeg](https://github.com/phoboslab/pl_mpeg)
-* [TheoraPlay](https://www.icculus.org/theoraplay/)
 * [cffi](https://github.com/q66/cffi-lua) as a better **luaffifb**
 * [psd.c](https://github.com/hkrn/psd.c)
 * [dmon](https://github.com/septag/dmon)
@@ -68,7 +69,6 @@ Some of these would benefit from audio-style support in the tradition of "extern
 * [Soundpipe](https://github.com/PaulBatchelor/Soundpipe)
 * [miniaudio](https://github.com/dr-soft/miniaudio)
 * [Maximimilian](https://github.com/micknoise/Maximilian)
-* [Open Adaptive Music Engine](https://github.com/oamldev/oaml)
 * [Pure Data](https://github.com/libpd/libpd)
 * [liquid-dsp](https://github.com/jgaeddert/liquid-dsp)
 
