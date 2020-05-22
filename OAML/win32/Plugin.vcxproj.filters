@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source">
+      <UniqueIdentifier>{f0065149-61eb-442e-b473-08e05c6784c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header">
+      <UniqueIdentifier>{3c1b19db-030a-4b9d-802c-4ba8b6b6498c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\shared\Source\aif.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\Source\audioFile.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\Source\ByteBuffer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\Source\gettime.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\Source\oaml.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\Source\oamlAudio.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\Source\oamlAudioFile.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\Source\oamlBase.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\Source\oamlC.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\Source\oamlCompressor.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\Source\oamlLayer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\Source\oamlMusicTrack.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\Source\oamlSfxTrack.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\Source\oamlStudioApi.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\Source\oamlTrack.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\Source\oamlUtil.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\Source\ogg.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\Source\RtAudio.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\Source\tinyxml2.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\Source\wav.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\plugin.oaml.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\shared\Include\aif.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Include\audioFile.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Include\ByteBuffer.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Include\gettime.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Include\oaml.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Include\oamlAudio.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Include\oamlAudioFile.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Include\oamlBase.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Include\oamlCommon.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Include\oamlCompressor.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Include\oamlLayer.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Include\oamlMusicTrack.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Include\oamlSfxTrack.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Include\oamlTrack.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Include\oamlUtil.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Include\ogg.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Include\RtAudio.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Include\tinyxml2.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Include\wav.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
