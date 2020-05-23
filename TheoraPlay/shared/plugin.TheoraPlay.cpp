@@ -22,232 +22,316 @@
 */
 
 #include "CoronaLua.h"
+#include "CoronaGraphics.h"
 #include "theoraplay.h"
-/*
-#include "tinyfiledialogs.h"
-#include <string.h>
+#include <vector>
 
-#define STATIC_FILTER_COUNT 8
+struct TheoraPlay {
+	THEORAPLAY_Decoder * mDecoder{nullptr};
+	const THEORAPLAY_AudioPacket * mAudio{nullptr};
+	const THEORAPLAY_VideoFrame * mVideo{nullptr};
+	THEORAPLAY_VideoFormat mFormat{THEORAPLAY_VIDFMT_RGBA};
+	std::vector<unsigned char> mBlank;
+	unsigned int mElapsed{0U}, mFrameMS{UINT_MAX};
+	bool mIsPaused{false};
 
-static int GetBool (lua_State * L, const char * key)
-{
-	lua_getfield(L, 1, key);// ..., bool
-
-	int bval = lua_toboolean(L, -1);
-
-	lua_pop(L, 1);	// ...
-
-	return bval;
-}
-
-static const char * GetStrOrBlank (lua_State * L, const char * key, const char * blank = "")
-{
-	lua_getfield(L, 1, key);// ..., str?
-
-	const char * str = blank;	// might be NULL, thus not using luaL_optstring
-
-	if (!lua_isnil(L, -1)) str = luaL_checkstring(L, -1);
-
-	lua_pop(L, 1);
-
-	return str;
-}
-
-static int GetFilters (lua_State * L, const char *** filters)
-{
-	int nfilters = 0;
-
-	lua_getfield(L, 1, "filter_patterns");	// ..., patts
-
-	if (lua_istable(L, -1))
+	~TheoraPlay ()
 	{
-		int n = lua_objlen(L, -1);
-
-		if (n > STATIC_FILTER_COUNT) *filters = (const char **)lua_newuserdata(L, sizeof(const char *) * n);// ..., patts, filters
-
-		for (int i = 1; i <= n; ++i, lua_pop(L, 1))
-		{
-			lua_rawgeti(L, -1, i);	// ..., patts[, filters], patt
-
-			(*filters)[nfilters++] = luaL_checkstring(L, -1);
-		}
+		THEORAPLAY_stopDecode(mDecoder);
+		THEORAPLAY_freeAudio(mAudio);
+		THEORAPLAY_freeVideo(mVideo);
 	}
+};
 
-	else if (!lua_isnil(L, -1)) (*filters)[nfilters++] = luaL_checkstring(L, -1);
 
-	return nfilters;
+static unsigned int TheoraPlay_GetW (void * context)
+{
+	TheoraPlay * tp = static_cast<TheoraPlay *>(context);
+
+	// unfortunately for YV12 / IYUV these are 1-channel but not a mask...
+	// "rg" would be enough...
+
+	return tp->mVideo ? tp->mVideo->width : 1U;
 }
 
-static int StringResponse (lua_State * L, const char * res)
+static unsigned int TheoraPlay_GetH (void * context)
 {
-	if (!res) lua_pushboolean(L, 0);// ..., false
+	TheoraPlay * tp = static_cast<TheoraPlay *>(context);
 
-	else lua_pushstring(L, res);// ..., res
+	if (tp->mVideo)
+	{
+		unsigned int h = tp->mVideo->height;
+
+		if (tp->mFormat == THEORAPLAY_VIDFMT_YV12 || tp->mFormat == THEORAPLAY_VIDFMT_IYUV) h += h / 2U;
+
+		return h;
+	}
+	
+	else return 1U;
+}
+
+static const void * TheoraPlay_GetData (void * context)
+{
+	TheoraPlay * tp = static_cast<TheoraPlay *>(context);
+
+	if (tp->mVideo) return tp->mVideo->pixels;
+		
+	else
+	{
+		tp->mBlank.assign(4U, 0U); // at least one blank pixel
+
+		return tp->mBlank.data();
+	}
+}
+
+static void TheoraPlay_Cleanup (void * context)
+{
+	TheoraPlay * tp = static_cast<TheoraPlay *>(context);
+
+	//
+}
+
+static CoronaExternalBitmapFormat TheoraPlay_Format (void * context)
+{
+	TheoraPlay * tp = static_cast<TheoraPlay *>(context);
+
+	// not very accurate... we want "masks" for iyuv / yv12, but without that behavior
+
+	return tp->mFormat == THEORAPLAY_VIDFMT_RGBA ? kExternalBitmapFormat_RGBA : kExternalBitmapFormat_RGB;
+}
+
+static void TheoraPlay_Dispose (void * context)
+{
+	delete static_cast<TheoraPlay *>(context);
+}
+
+static int PushCachedFunction ( lua_State * L, lua_CFunction f )
+{
+	// check cache for the funciton, cache key is function address
+	lua_pushlightuserdata(L, (void *)f);
+	lua_gettable(L, LUA_REGISTRYINDEX);
+
+	// cahce miss
+	if (!lua_iscfunction(L, -1))
+	{
+		lua_pop(L, 1); // pop nil on top of stack
+
+		// create c function closure on top of stack
+		lua_pushcfunction(L, f);
+
+		// push cache key
+		lua_pushlightuserdata(L, (void *)f);
+		// copy function to be on top of stack as well
+		lua_pushvalue(L, -2);
+		lua_settable(L, LUA_REGISTRYINDEX);
+
+		// now original function is on top of stack, and cache key and function is in cache
+	}
 
 	return 1;
 }
 
-static luaL_Reg tfd_funcs[] = {
+static int Step (lua_State * L)
+{
+	TheoraPlay * tp = static_cast<TheoraPlay *>(CoronaExternalGetUserData(L, 1));
+
+	if (!tp->mIsPaused && THEORAPLAY_isDecoding(tp->mDecoder))
 	{
-		"colorChooser", [](lua_State * L)
+		unsigned int step = luaL_checkinteger(L, 2);
+
+		if (!tp->mAudio) tp->mAudio = THEORAPLAY_getAudio(tp->mDecoder);
+		if (!tp->mVideo) tp->mVideo = THEORAPLAY_getVideo(tp->mDecoder);
+
+		if ((tp->mAudio || tp->mVideo) && step > 0U) // ??
 		{
-        #ifndef __APPLE__
-			luaL_checktype(L, 1, LUA_TTABLE);
-			lua_settop(L, 1);	// opts
-			lua_getfield(L, 1, "out_rgb");	// opts, out
+			unsigned int now = tp->mElapsed + step;
 
-			const char * title = GetStrOrBlank(L, "title");
+			// audio currently not very functional :P
 
-			//
-			unsigned char rgb[3];
-
-			lua_getfield(L, 1, "rgb");	// opts, out, rgb
-
-			const char * def_hex_rgb = NULL;
-
-			if (lua_istable(L, 3))
+			if (tp->mVideo)
 			{
-				lua_getfield(L, 3, "r");// opts, out, rgb, r
-				lua_getfield(L, 3, "g");// opts, out, rgb, r, g
-				lua_getfield(L, 3, "b");// opts, out, rgb, r, g, b
+				if (tp->mFrameMS == UINT_MAX) tp->mFrameMS = (unsigned int)(1000.0 / tp->mVideo->fps);
 
-				for (int i = 1; i <= 3; ++i) rgb[i - 1] = (unsigned char)(luaL_checknumber(L, 3 + i) * 255.0);
-			}
-
-			else def_hex_rgb = luaL_optstring(L, 3, "#000000");
-
-			const char * color = tinyfd_colorChooser(title, def_hex_rgb, rgb, rgb);
-
-			if (color && lua_istable(L, 2))
-			{
-				for (int i = 0; i < 3; ++i) lua_pushnumber(L, (double)rgb[i] / 255.0);	// opts, out, rgb[, r, g, b], rout, gout, bout
-
-				lua_setfield(L, 2, "b");// opts, out, rgb[, r, g, b], rout, gout
-				lua_setfield(L, 2, "g");// opts, out, rgb[, r, g, b], rout
-				lua_setfield(L, 2, "r");// opts, out, rgb[, r, g, b]
-			}
-
-			return StringResponse(L, color);// opts, out, rgb[, r, g, b], color
-        #else
-            lua_pushboolean(L, 0);
-            
-            return 1;
-        #endif
-		}
-	}, {
-		"inputBox", [](lua_State * L)
-		{
-			luaL_checktype(L, 1, LUA_TTABLE);
-
-			const char * title = GetStrOrBlank(L, "title");
-			const char * message = GetStrOrBlank(L, "message");
-
-			//
-			lua_getfield(L, 1, "default_input");// opts, def_input
-
-			const char * def_input;
-
-			if (lua_type(L, -1) == LUA_TBOOLEAN && !lua_toboolean(L, -1)) def_input = NULL;
-
-			else def_input = luaL_optstring(L, -1, "");
-
-			return StringResponse(L, tinyfd_inputBox(title, message, def_input));	// opts, def_input, input
-		}
-	}, {
-		"messageBox", [](lua_State * L)
-		{
-			luaL_checktype(L, 1, LUA_TTABLE);
-
-			const char * title = GetStrOrBlank(L, "title");
-			const char * message = GetStrOrBlank(L, "message");
-			const char * dialog_types[] = { "ok", "okcancel", "yesno" };
-			const char * icon_types[] = { "info", "warning", "error", "question" };
-
-			lua_getfield(L, 1, "dialog_type");	// opts, dialog_type
-			lua_getfield(L, 1, "icon_type");// opts, dialog_type, icon_type
-
-			const char * dtype = dialog_types[luaL_checkoption(L, -2, "ok", dialog_types)];
-			const char * itype = icon_types[luaL_checkoption(L, -1, "info", icon_types)];
-
-			lua_pushboolean(L, tinyfd_messageBox(title, message, dtype, itype, GetBool(L, "default_okyes")));	// opts, dialog_type, icon_type, ok / yes
-
-			return 1;
-		}
-	}, {
-		"openFileDialog", [](lua_State * L)
-		{
-			luaL_checktype(L, 1, LUA_TTABLE);
-
-			//
-			const char * title = GetStrOrBlank(L, "title");
-			const char * def_path_and_file = GetStrOrBlank(L, "default_path_and_file");
-			const char * filter_description = GetStrOrBlank(L, "filter_description", NULL);
-			const char * filter_array[STATIC_FILTER_COUNT] = { 0 }, ** filters = filter_array;
-			int allow_multiple_selects = GetBool(L, "allow_multiple_selects");
-			int nfilters = GetFilters(L, &filters);	// opts, patts[, filters]
-
-			//
-			const char * files = tinyfd_openFileDialog(title, def_path_and_file, nfilters, nfilters ? filters : NULL, filter_description, allow_multiple_selects);
-
-			if (!allow_multiple_selects || !files) return StringResponse(L, files);	// opts, patts[, filters], files?
-
-			else
-			{
-				lua_newtable(L);// opts, patts[, filters], files
-
-				char * from = (char *)files, * sep = from; // assign sep in order to pass first iteration
-
-				for (int fi = 1; sep; ++fi)
+				while (now >= tp->mVideo->playms + tp->mFrameMS)
 				{
-					sep = strchr(from, '|');
+					const THEORAPLAY_VideoFrame * next_video = THEORAPLAY_getVideo(tp->mDecoder);
 
-					if (sep)
-					{
-						lua_pushlstring(L, from, sep - from);	// opts, patts[, filters], files, file
+					if (!next_video) break;
 
-						from = sep + 1;
-					}
+					THEORAPLAY_freeVideo(tp->mVideo);
 
-					else lua_pushstring(L, from);// opts, patts[, filters], files, file
-						
-					lua_rawseti(L, -2, fi);	// opts, patts[, filters], files = { ..., file }
+					tp->mVideo = next_video;
 				}
 			}
 
-			return 1;
+			tp->mElapsed = now;
 		}
-	}, {
-		"saveFileDialog", [](lua_State * L)
-		{
-			luaL_checktype(L, 1, LUA_TTABLE);
+	}
+//	if (tp->mVideo) CoronaLog("ms: %u, elapsed: %u", tp->mVideo->playms, tp->mElapsed);
+	return 0;
+}
 
-			const char * title = GetStrOrBlank(L, "title");
-			const char * def_path_and_file = GetStrOrBlank(L, "default_path_and_file");
-			const char * filter_description = GetStrOrBlank(L, "filter_description", NULL);
-			const char * filter_array[STATIC_FILTER_COUNT] = { 0 }, ** filters = filter_array;
-			int nfilters = GetFilters(L, &filters);	// opts, patts[, filters]
-
-			return StringResponse(L, tinyfd_saveFileDialog(title, def_path_and_file, nfilters, filters, filter_description));	// opts, patts[, filters], file
-		}
-	}, {
-		"selectFolderDialog", [](lua_State * L)
-		{
-			luaL_checktype(L, 1, LUA_TTABLE);
-
-			const char * title = GetStrOrBlank(L, "title");
-			const char * def_path = GetStrOrBlank(L, "default_path");
-
-			return StringResponse(L, tinyfd_selectFolderDialog(title, def_path));	// opts, folder
-		}
-	},
-	{ NULL, NULL }
-};
-*/
-CORONA_EXPORT int luaopen_plugin_TheoraPlay (lua_State* L)
+static int Pause (lua_State * L)
 {
-	/*
-	lua_newtable(L);// t
-	luaL_register(L, NULL, tfd_funcs);
-	*/
+	TheoraPlay * tp = static_cast<TheoraPlay *>(CoronaExternalGetUserData(L, 1));
+
+	tp->mIsPaused = lua_toboolean(L, 2) != 0;
+
+	return 0;
+}
+
+static void AvailableAudio (lua_State * L, TheoraPlay * tp)
+{
+	lua_pushinteger(L, THEORAPLAY_availableAudio(tp->mDecoder));
+}
+
+static void AvailableVideo (lua_State * L, TheoraPlay * tp)
+{
+	lua_pushinteger(L, THEORAPLAY_availableVideo(tp->mDecoder));
+}
+
+static void Elapsed (lua_State * L, TheoraPlay * tp)
+{
+	lua_pushinteger(L, tp->mElapsed);
+}
+
+static void HasAudioStream (lua_State * L, TheoraPlay * tp)
+{
+	lua_pushboolean(L, THEORAPLAY_hasAudioStream(tp->mDecoder));
+}
+
+static void HasVideoStream (lua_State * L, TheoraPlay * tp)
+{
+	lua_pushboolean(L, THEORAPLAY_hasVideoStream(tp->mDecoder));
+}
+
+static void IsPaused (lua_State * L, TheoraPlay * tp)
+{
+	lua_pushboolean(L, tp->mIsPaused ? 1 : 0);
+}
+
+static void PushFormat (lua_State * L, TheoraPlay * tp)
+{
+	switch (tp->mFormat)
+	{
+	case THEORAPLAY_VIDFMT_IYUV:
+		lua_pushliteral(L, "IYUV");
+		break;
+	case THEORAPLAY_VIDFMT_YV12:
+		lua_pushliteral(L, "YV12");
+		break;
+	case THEORAPLAY_VIDFMT_RGB:
+		lua_pushliteral(L, "RGB");
+		break;
+	default:
+		lua_pushliteral(L, "RGBA");
+		break;
+	}
+}
+
+static int TheoraPlay_GetField (lua_State * L, const char * field, void * context)
+{
+	int res = 1;
+
+	if (strcmp(field, "Step") == 0) res = PushCachedFunction(L, Step);
+	else if (strcmp(field, "Pause") == 0) res = PushCachedFunction(L, Pause);
+	else if (strcmp(field, "availableAudio") == 0) AvailableAudio(L, static_cast<TheoraPlay *>(context));
+	else if (strcmp(field, "availableVideo") == 0) AvailableVideo(L, static_cast<TheoraPlay *>(context));
+	else if (strcmp(field, "elapsed") == 0) Elapsed(L, static_cast<TheoraPlay *>(context));
+	else if (strcmp(field, "format") == 0) PushFormat(L, static_cast<TheoraPlay *>(context));
+	else if (strcmp(field, "hasAudio") == 0) HasAudioStream(L, static_cast<TheoraPlay *>(context));
+	else if (strcmp(field, "hasVideo") == 0) HasVideoStream(L, static_cast<TheoraPlay *>(context));
+	else if (strcmp(field, "paused") == 0) IsPaused(L, static_cast<TheoraPlay *>(context));
+	else res = 0;
+
+	return res;
+}
+
+CORONA_EXPORT int luaopen_plugin_TheoraPlay (lua_State * L)
+{
+	lua_getglobal(L, "system");	// system
+	lua_newtable(L);// system, theora_play
+	lua_getfield(L, -2, "pathForFile");	// system, theora_play, system.pathForFile
+	lua_pushcclosure(L, [](lua_State * L) {
+		unsigned int max_frames = 30;
+		THEORAPLAY_VideoFormat vformat = THEORAPLAY_VIDFMT_RGBA;
+
+		if (lua_istable(L, 2))
+		{
+			lua_getfield(L, 2, "format");	// file, opts, format?
+			lua_getfield(L, 2, "maxFrames");// file, opts, format?, maxFrames?
+			lua_getfield(L, 2, "baseDir");	// file, opts, format?, maxFrames?, baseDir?
+
+			if (!lua_isnil(L, -3))
+			{
+				const char * fnames[] = {"YV12", "IYUV", "RGB", "RGBA", nullptr};
+				THEORAPLAY_VideoFormat formats[] = {THEORAPLAY_VIDFMT_YV12, THEORAPLAY_VIDFMT_IYUV, THEORAPLAY_VIDFMT_RGB, THEORAPLAY_VIDFMT_RGBA};
+
+				vformat = formats[luaL_checkoption(L, -3, nullptr, fnames)];
+			}
+
+			if (!lua_isnil(L, -2)) max_frames = luaL_checkinteger(L, -2);
+
+			if (!lua_isnil(L, -1))
+			{
+				lua_replace(L, 2);	// file, baseDir, format?, max_frames?
+				lua_settop(L, 2);	// file, baseDir
+			}
+
+			else lua_settop(L, 1);	// file
+		}
+
+		else lua_settop(L, 1);	// file
+
+		lua_pushvalue(L, lua_upvalueindex(1));	// file[, baseDir], system.pathForFile
+		lua_insert(L, 1);	// system.pathForFile, file[, baseDir]
+
+		if (lua_pcall(L, lua_gettop(L) - 1, 1, 0) != 0)	// file / err
+		{
+			lua_pushnil(L);	// err, nil
+			lua_insert(L, 1);	// nil, err
+
+			return 2;
+		}
+
+		TheoraPlay * tp = new TheoraPlay;
+
+		tp->mDecoder = THEORAPLAY_startDecodeFile(lua_tostring(L, 1), max_frames, vformat);
+
+		if (!tp->mDecoder)
+		{
+			delete tp;
+
+			lua_pushnil(L);	// file, nil
+			lua_pushliteral(L, "Unable to start Theora file decode");	// file, nil, err
+
+			return 2;
+		}
+
+		CoronaExternalTextureCallbacks callbacks = {};
+
+		callbacks.size = sizeof(CoronaExternalTextureCallbacks);
+		callbacks.getFormat = TheoraPlay_Format;
+		callbacks.getHeight = TheoraPlay_GetH;
+		callbacks.getWidth = TheoraPlay_GetW;
+		callbacks.onFinalize = TheoraPlay_Dispose;
+		callbacks.onGetField = TheoraPlay_GetField;
+		callbacks.onReleaseBitmap = TheoraPlay_Cleanup;
+		callbacks.onRequestBitmap = TheoraPlay_GetData;
+
+		if (!CoronaExternalPushTexture(L, &callbacks, tp))	// file, tp
+		{
+			delete tp;
+
+			lua_pushnil(L);	// file, tp, nil
+			lua_pushliteral(L, "Unable to set up TheoraPlay callbacks");// file, tp, nil, err
+
+			return 2;
+		}
+
+		return 1;
+	}, 1);	// system, theora_play, DecodeFromFile
+	lua_setfield(L, -2, "decodeFromFile");	// system, theora_play = { decodeFromFile = DecodeFromFile }
+
 	return 1;
 }
