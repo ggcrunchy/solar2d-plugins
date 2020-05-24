@@ -425,6 +425,9 @@ paket-files/
 *.css
 *.html
 
+# Other #
+**/data.tgz
+
 # Exceptions #
 ##############
 !boost/libboost.a
@@ -439,3 +442,4 @@ paket-files/
 !video/libs/mac/vlc/lib/*.*.dylib
 !video/libs/mac/vlc/plugins/*.*
 !video/libs/win32/*.lib
+!DevSnapshots/**/data.tgz
