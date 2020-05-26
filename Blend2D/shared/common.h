@@ -21,27 +21,14 @@
 * [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
 */
 
-#include "CoronaLua.h"
-#include "common.h"
+#pragma once
 
-CORONA_EXPORT int luaopen_plugin_blend2d (lua_State* L)
-{
-	lua_newtable(L);// blend2d
+int add_codec (lua_State * L);
+int add_context (lua_State * L);
+int add_image (lua_State * L);
+int add_path (lua_State * L);
 
-	luaL_Reg classes[] = {
-		{ "codec", add_codec },
-		{ "context", add_context },
-		{ "image", add_image },
-		{ "path", add_path },
-		{ nullptr, nullptr }
-	};
-
-	for (int i = 0; classes[i].func; ++i)
-	{
-		lua_pushcfunction(L, classes[i].func);	// blend2d, func
-		lua_call(L, 0, 1);	// blend2d, class
-		lua_setfield(L, -2, classes[i].name);	// blend2d = { ..., name = class }
-	}
-
-	return 1;
-}
+struct BLContextCore * GetContext (lua_State * L, int arg = 1, bool * intact_ptr = nullptr);
+struct BLImageCodecCore * GetImageCodec (lua_State * L, int arg = 1, bool * intact_ptr = nullptr);
+struct BLImageCore * GetImage (lua_State * L, int arg = 1, bool * intact_ptr = nullptr);
+struct BLPathCore * GetPath (lua_State * L, int arg = 1, bool * intact_ptr = nullptr);

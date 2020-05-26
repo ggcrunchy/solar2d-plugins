@@ -21,27 +21,35 @@
 * [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
 */
 
-#include "CoronaLua.h"
-#include "common.h"
+#pragma once
 
-CORONA_EXPORT int luaopen_plugin_blend2d (lua_State* L)
+int Index (lua_State * L);
+
+template<typename T> T * New (lua_State * L)
 {
-	lua_newtable(L);// blend2d
+	T * object = (T *)lua_newuserdata(L, sizeof(T) + sizeof(bool)); // object
 
-	luaL_Reg classes[] = {
-		{ "codec", add_codec },
-		{ "context", add_context },
-		{ "image", add_image },
-		{ "path", add_path },
-		{ nullptr, nullptr }
-	};
+	memset(object, 0, sizeof(T));
 
-	for (int i = 0; classes[i].func; ++i)
-	{
-		lua_pushcfunction(L, classes[i].func);	// blend2d, func
-		lua_call(L, 0, 1);	// blend2d, class
-		lua_setfield(L, -2, classes[i].name);	// blend2d = { ..., name = class }
-	}
+	*reinterpret_cast<bool *>(&object[1]) = true;
 
-	return 1;
+	return object;
+}
+
+template<typename T> T * Get (lua_State * L, int arg, const char * name, bool * intact_ptr = nullptr)
+{
+	T * object = static_cast<T *>(luaL_checkudata(L, arg, name));
+
+	bool intact = *reinterpret_cast<bool *>(&object[1]);
+	if (intact_ptr) *intact_ptr = intact;
+	else luaL_argcheck(L, intact, arg, "Object has been destroyed");
+
+	return object;
+}
+
+template<typename T> void Destroy (lua_State * L)
+{
+	T * object = static_cast<T *>(lua_touserdata(L, 1));
+
+	*reinterpret_cast<bool *>(&object[1]) = false;
 }

@@ -22,226 +22,125 @@
 */
 
 #include "CoronaLua.h"
+#include "polylidar/polylidar.hpp"
+#include "delaunator.hpp"
+#include <vector>
+
 /*
-#include "tinyfiledialogs.h"
-#include <string.h>
 
-#define STATIC_FILTER_COUNT 8
-
-static int GetBool (lua_State * L, const char * key)
+namespace polylidar
 {
-	lua_getfield(L, 1, key);// ..., bool
 
-	int bval = lua_toboolean(L, -1);
-
-	lua_pop(L, 1);	// ...
-
-	return bval;
+std::tuple<delaunator::Delaunator, std::vector<std::vector<size_t>>, std::vector<Polygon>> _extractPlanesAndPolygons(py::array_t<double> nparray,
+																													 double alpha = DEFAULT_ALPHA, double xyThresh = DEFAULT_XYTHRESH, double lmax = DEFAULT_LMAX, size_t minTriangles = DEFAULT_MINTRIANGLES,
+																													 size_t minHoleVertices = DEFAULT_MINHOLEVERTICES, double minBboxArea = DEFAULT_MINBBOX, double zThresh = DEFAULT_ZTHRESH,
+																													 double normThresh = DEFAULT_NORMTHRESH, double normThreshMin = DEFAULT_NORMTHRESH_MIN,
+																													 double allowedClass = DEFAULT_ALLOWEDCLASS)
+{
+	// This function allows us to convert keyword arguments into a configuration struct
+	auto info = nparray.request();
+	std::vector<size_t> shape({(size_t)info.shape[0], (size_t)info.shape[1]});
+	Config config{shape[1], alpha, xyThresh, lmax, minTriangles, minHoleVertices, minBboxArea, zThresh, normThresh, normThreshMin, allowedClass};
+	Matrix<double> points((double *)info.ptr, shape[0], shape[1]);
+	return ExtractPlanesAndPolygons(points, config);
 }
 
-static const char * GetStrOrBlank (lua_State * L, const char * key, const char * blank = "")
+std::tuple<std::vector<std::vector<size_t>>, std::vector<Polygon>> _extractPlanesAndPolygonsFromMesh(py::array_t<double> vertices, py::array_t<size_t> triangles, py::array_t<size_t> halfedges,
+																									 double alpha = DEFAULT_ALPHA, double xyThresh = DEFAULT_XYTHRESH, double lmax = DEFAULT_LMAX, size_t minTriangles = DEFAULT_MINTRIANGLES,
+																									 size_t minHoleVertices = DEFAULT_MINHOLEVERTICES, double minBboxArea = DEFAULT_MINBBOX, double zThresh = DEFAULT_ZTHRESH,
+																									 double normThresh = DEFAULT_NORMTHRESH, double normThreshMin = DEFAULT_NORMTHRESH_MIN,
+																									 double allowedClass = DEFAULT_ALLOWEDCLASS)
 {
-	lua_getfield(L, 1, key);// ..., str?
-
-	const char * str = blank;	// might be NULL, thus not using luaL_optstring
-
-	if (!lua_isnil(L, -1)) str = luaL_checkstring(L, -1);
-
-	lua_pop(L, 1);
-
-	return str;
+	// This function allows us to convert keyword arguments into a configuration struct
+	auto info = vertices.request();
+	std::vector<size_t> shape({(size_t)info.shape[0], (size_t)info.shape[1]});
+	Config config{shape[1], alpha, xyThresh, lmax, minTriangles, minHoleVertices, minBboxArea, zThresh, normThresh, normThreshMin, allowedClass};
+	Matrix<double> points((double *)info.ptr, shape[0], shape[1]);
+	delaunator::HalfEdgeTriangulation triangulation(points, triangles, halfedges);
+	return ExtractPlanesAndPolygonsFromMesh(triangulation, config);
 }
 
-static int GetFilters (lua_State * L, const char *** filters)
+std::vector<double> _extractPointCloudFromFloatDepth(py::array_t<float> image, py::array_t<double> intrinsics, size_t stride = DEFAULT_STRIDE)
 {
-	int nfilters = 0;
+	// Create Image Wrapper
+	auto info_im = image.request();
+	Matrix<float> im((float *)info_im.ptr, info_im.shape[0], info_im.shape[1]);
+	// Create intrinsics wrapper
+	auto info_int = intrinsics.request();
+	Matrix<double> intrinsics_((double *)info_int.ptr, info_int.shape[0], info_int.shape[1]);
+	// Extract point cloud
+	std::vector<double> points = ExtractPointCloudFromFloatDepth(im, intrinsics_, stride);
+	// std::cout << "extractPointCloudFromFloatDepth C++ : " << points[0] << " Address:" <<  &points[0] << std::endl;
 
-	lua_getfield(L, 1, "filter_patterns");	// ..., patts
-
-	if (lua_istable(L, -1))
-	{
-		int n = lua_objlen(L, -1);
-
-		if (n > STATIC_FILTER_COUNT) *filters = (const char **)lua_newuserdata(L, sizeof(const char *) * n);// ..., patts, filters
-
-		for (int i = 1; i <= n; ++i, lua_pop(L, 1))
-		{
-			lua_rawgeti(L, -1, i);	// ..., patts[, filters], patt
-
-			(*filters)[nfilters++] = luaL_checkstring(L, -1);
-		}
-	}
-
-	else if (!lua_isnil(L, -1)) (*filters)[nfilters++] = luaL_checkstring(L, -1);
-
-	return nfilters;
+	return points;
 }
 
-static int StringResponse (lua_State * L, const char * res)
+std::tuple<std::vector<double>, std::vector<size_t>, std::vector<size_t>> _extractUniformMeshFromFloatDepth(py::array_t<float> image, py::array_t<double> intrinsics, size_t stride = DEFAULT_STRIDE)
 {
-	if (!res) lua_pushboolean(L, 0);// ..., false
+	// Will hold the point cloud
+	std::vector<double> points;
+	std::vector<size_t> triangles;
+	std::vector<size_t> halfedges;
+	// Create Image Wrapper
+	auto info_im = image.request();
+	Matrix<float> im((float *)info_im.ptr, info_im.shape[0], info_im.shape[1]);
+	// Create intrinsics wrapper
+	auto info_int = intrinsics.request();
+	Matrix<double> intrinsics_((double *)info_int.ptr, info_int.shape[0], info_int.shape[1]);
 
-	else lua_pushstring(L, res);// ..., res
+	// Get Data
+	std::tie(points, triangles, halfedges) = ExtractUniformMeshFromFloatDepth(im, intrinsics_, stride);
+	// std::cout << "_extractUniformMeshFromFloatDepth C++ : " << points[0] << " Address:" <<  &points[0] << std::endl;
 
-	return 1;
+	return std::make_tuple(std::move(points), std::move(triangles), std::move(halfedges));
 }
 
-static luaL_Reg tfd_funcs[] = {
-	{
-		"colorChooser", [](lua_State * L)
-		{
-        #ifndef __APPLE__
-			luaL_checktype(L, 1, LUA_TTABLE);
-			lua_settop(L, 1);	// opts
-			lua_getfield(L, 1, "out_rgb");	// opts, out
+std::vector<Polygon> _extractPolygonsFromMesh(py::array_t<double> vertices, py::array_t<size_t> triangles, py::array_t<size_t> halfedges,
+											  double alpha = DEFAULT_ALPHA, double xyThresh = DEFAULT_XYTHRESH, double lmax = DEFAULT_LMAX, size_t minTriangles = DEFAULT_MINTRIANGLES,
+											  size_t minHoleVertices = DEFAULT_MINHOLEVERTICES, double minBboxArea = DEFAULT_MINBBOX, double zThresh = DEFAULT_ZTHRESH,
+											  double normThresh = DEFAULT_NORMTHRESH, double normThreshMin = DEFAULT_NORMTHRESH_MIN,
+											  double allowedClass = DEFAULT_ALLOWEDCLASS)
+{
+	// This function allows us to convert keyword arguments into a configuration struct
+	auto info = vertices.request();
+	std::vector<size_t> shape({(size_t)info.shape[0], (size_t)info.shape[1]});
+	Config config{shape[1], alpha, xyThresh, lmax, minTriangles, minHoleVertices, minBboxArea, zThresh, normThresh, normThreshMin, allowedClass};
+	Matrix<double> points((double *)info.ptr, shape[0], shape[1]);
+	delaunator::HalfEdgeTriangulation triangulation(points, triangles, halfedges);
+	return ExtractPolygonsFromMesh(triangulation, config);
+}
 
-			const char * title = GetStrOrBlank(L, "title");
+std::vector<Polygon> _extractPolygons(py::array_t<double> nparray,
+									  double alpha = DEFAULT_ALPHA, double xyThresh = DEFAULT_XYTHRESH, double lmax = DEFAULT_LMAX, size_t minTriangles = DEFAULT_MINTRIANGLES,
+									  size_t minHoleVertices = DEFAULT_MINHOLEVERTICES, double minBboxArea = DEFAULT_MINBBOX, double zThresh = DEFAULT_ZTHRESH,
+									  double normThresh = DEFAULT_NORMTHRESH, double normThreshMin = DEFAULT_NORMTHRESH_MIN,
+									  double allowedClass = DEFAULT_ALLOWEDCLASS)
+{
+	// This function allows us to convert keyword arguments into a configuration struct
+	auto info = nparray.request();
+	std::vector<size_t> shape({(size_t)info.shape[0], (size_t)info.shape[1]});
+	Config config{shape[1], alpha, xyThresh, lmax, minTriangles, minHoleVertices, minBboxArea, zThresh, normThresh, normThreshMin, allowedClass};
+	Matrix<double> points((double *)info.ptr, shape[0], shape[1]);
+	return ExtractPolygons(points, config);
+}
 
-			//
-			unsigned char rgb[3];
+std::tuple<std::vector<Polygon>, std::vector<float>> _extractPolygonsAndTimings(py::array_t<double> nparray,
+																				double alpha = DEFAULT_ALPHA, double xyThresh = DEFAULT_XYTHRESH, double lmax = DEFAULT_LMAX, size_t minTriangles = DEFAULT_MINTRIANGLES,
+																				size_t minHoleVertices = DEFAULT_MINHOLEVERTICES, double minBboxArea = DEFAULT_MINBBOX, double zThresh = DEFAULT_ZTHRESH,
+																				double normThresh = DEFAULT_NORMTHRESH, double allowedClass = DEFAULT_ALLOWEDCLASS)
+{
+	auto info = nparray.request();
+	std::vector<size_t> shape({(size_t)info.shape[0], (size_t)info.shape[1]});
+	// This function allows us to convert keyword arguments into a configuration struct
+	Config config{shape[1], alpha, xyThresh, lmax, minTriangles, minHoleVertices, minBboxArea, zThresh, normThresh, 0.5, allowedClass};
+	Matrix<double> points((double *)info.ptr, shape[0], shape[1]);
+	std::vector<float> timings;
+	auto polygons = ExtractPolygonsAndTimings(points, config, timings);
 
-			lua_getfield(L, 1, "rgb");	// opts, out, rgb
-
-			const char * def_hex_rgb = NULL;
-
-			if (lua_istable(L, 3))
-			{
-				lua_getfield(L, 3, "r");// opts, out, rgb, r
-				lua_getfield(L, 3, "g");// opts, out, rgb, r, g
-				lua_getfield(L, 3, "b");// opts, out, rgb, r, g, b
-
-				for (int i = 1; i <= 3; ++i) rgb[i - 1] = (unsigned char)(luaL_checknumber(L, 3 + i) * 255.0);
-			}
-
-			else def_hex_rgb = luaL_optstring(L, 3, "#000000");
-
-			const char * color = tinyfd_colorChooser(title, def_hex_rgb, rgb, rgb);
-
-			if (color && lua_istable(L, 2))
-			{
-				for (int i = 0; i < 3; ++i) lua_pushnumber(L, (double)rgb[i] / 255.0);	// opts, out, rgb[, r, g, b], rout, gout, bout
-
-				lua_setfield(L, 2, "b");// opts, out, rgb[, r, g, b], rout, gout
-				lua_setfield(L, 2, "g");// opts, out, rgb[, r, g, b], rout
-				lua_setfield(L, 2, "r");// opts, out, rgb[, r, g, b]
-			}
-
-			return StringResponse(L, color);// opts, out, rgb[, r, g, b], color
-        #else
-            lua_pushboolean(L, 0);
-            
-            return 1;
-        #endif
-		}
-	}, {
-		"inputBox", [](lua_State * L)
-		{
-			luaL_checktype(L, 1, LUA_TTABLE);
-
-			const char * title = GetStrOrBlank(L, "title");
-			const char * message = GetStrOrBlank(L, "message");
-
-			//
-			lua_getfield(L, 1, "default_input");// opts, def_input
-
-			const char * def_input;
-
-			if (lua_type(L, -1) == LUA_TBOOLEAN && !lua_toboolean(L, -1)) def_input = NULL;
-
-			else def_input = luaL_optstring(L, -1, "");
-
-			return StringResponse(L, tinyfd_inputBox(title, message, def_input));	// opts, def_input, input
-		}
-	}, {
-		"messageBox", [](lua_State * L)
-		{
-			luaL_checktype(L, 1, LUA_TTABLE);
-
-			const char * title = GetStrOrBlank(L, "title");
-			const char * message = GetStrOrBlank(L, "message");
-			const char * dialog_types[] = { "ok", "okcancel", "yesno" };
-			const char * icon_types[] = { "info", "warning", "error", "question" };
-
-			lua_getfield(L, 1, "dialog_type");	// opts, dialog_type
-			lua_getfield(L, 1, "icon_type");// opts, dialog_type, icon_type
-
-			const char * dtype = dialog_types[luaL_checkoption(L, -2, "ok", dialog_types)];
-			const char * itype = icon_types[luaL_checkoption(L, -1, "info", icon_types)];
-
-			lua_pushboolean(L, tinyfd_messageBox(title, message, dtype, itype, GetBool(L, "default_okyes")));	// opts, dialog_type, icon_type, ok / yes
-
-			return 1;
-		}
-	}, {
-		"openFileDialog", [](lua_State * L)
-		{
-			luaL_checktype(L, 1, LUA_TTABLE);
-
-			//
-			const char * title = GetStrOrBlank(L, "title");
-			const char * def_path_and_file = GetStrOrBlank(L, "default_path_and_file");
-			const char * filter_description = GetStrOrBlank(L, "filter_description", NULL);
-			const char * filter_array[STATIC_FILTER_COUNT] = { 0 }, ** filters = filter_array;
-			int allow_multiple_selects = GetBool(L, "allow_multiple_selects");
-			int nfilters = GetFilters(L, &filters);	// opts, patts[, filters]
-
-			//
-			const char * files = tinyfd_openFileDialog(title, def_path_and_file, nfilters, nfilters ? filters : NULL, filter_description, allow_multiple_selects);
-
-			if (!allow_multiple_selects || !files) return StringResponse(L, files);	// opts, patts[, filters], files?
-
-			else
-			{
-				lua_newtable(L);// opts, patts[, filters], files
-
-				char * from = (char *)files, * sep = from; // assign sep in order to pass first iteration
-
-				for (int fi = 1; sep; ++fi)
-				{
-					sep = strchr(from, '|');
-
-					if (sep)
-					{
-						lua_pushlstring(L, from, sep - from);	// opts, patts[, filters], files, file
-
-						from = sep + 1;
-					}
-
-					else lua_pushstring(L, from);// opts, patts[, filters], files, file
-						
-					lua_rawseti(L, -2, fi);	// opts, patts[, filters], files = { ..., file }
-				}
-			}
-
-			return 1;
-		}
-	}, {
-		"saveFileDialog", [](lua_State * L)
-		{
-			luaL_checktype(L, 1, LUA_TTABLE);
-
-			const char * title = GetStrOrBlank(L, "title");
-			const char * def_path_and_file = GetStrOrBlank(L, "default_path_and_file");
-			const char * filter_description = GetStrOrBlank(L, "filter_description", NULL);
-			const char * filter_array[STATIC_FILTER_COUNT] = { 0 }, ** filters = filter_array;
-			int nfilters = GetFilters(L, &filters);	// opts, patts[, filters]
-
-			return StringResponse(L, tinyfd_saveFileDialog(title, def_path_and_file, nfilters, filters, filter_description));	// opts, patts[, filters], file
-		}
-	}, {
-		"selectFolderDialog", [](lua_State * L)
-		{
-			luaL_checktype(L, 1, LUA_TTABLE);
-
-			const char * title = GetStrOrBlank(L, "title");
-			const char * def_path = GetStrOrBlank(L, "default_path");
-
-			return StringResponse(L, tinyfd_selectFolderDialog(title, def_path));	// opts, folder
-		}
-	},
-	{ NULL, NULL }
-};
+	return std::make_tuple(polygons, timings);
+}
 */
+
 CORONA_EXPORT int luaopen_plugin_polylidar (lua_State* L)
 {
 /*

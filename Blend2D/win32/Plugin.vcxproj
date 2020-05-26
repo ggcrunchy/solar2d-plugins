@@ -145,7 +145,12 @@
     <ClCompile Include="..\shared\blend2d\zonehash_b2d.cpp" />
     <ClCompile Include="..\shared\blend2d\zonelist_b2d.cpp" />
     <ClCompile Include="..\shared\blend2d\zonetree_b2d.cpp" />
+    <ClCompile Include="..\shared\add_codec.cpp" />
+    <ClCompile Include="..\shared\add_context.cpp" />
+    <ClCompile Include="..\shared\add_image.cpp" />
+    <ClCompile Include="..\shared\add_path.cpp" />
     <ClCompile Include="..\shared\plugin.blend2d.cpp" />
+    <ClCompile Include="..\shared\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\shared\asmjit\src\asmjit\asmjit.h" />
@@ -342,6 +347,8 @@
     <ClInclude Include="..\shared\blend2d\zonehash_p.h" />
     <ClInclude Include="..\shared\blend2d\zonelist_p.h" />
     <ClInclude Include="..\shared\blend2d\zonetree_p.h" />
+    <ClInclude Include="..\shared\common.h" />
+    <ClInclude Include="..\shared\utils.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="..\shared\asmjit\src\asmjit.natvis" />
@@ -386,7 +393,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(Configuration)\</OutDir>
-    <TargetName>plugin_blend2d</TargetName>
+    <TargetName>blend2d</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <PreBuildEvent />
@@ -415,7 +422,7 @@
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>$(CORONA_ROOT)/Corona/shared/include/Corona;$(CORONA_ROOT)/Corona/shared/include/lua;%(AdditionalIncludeDirectories);../shared;../shared/asmjit/src</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);LUA_BUILD_AS_DLL;LUA_LIB;_CRT_SECURE_NO_WARNINGS;BL_EMBED;BL_BUILD_OPT_SSE2;ASMJIT_STATIC;ASMJIT_NO_STDCXX;</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);LUA_BUILD_AS_DLL;LUA_LIB;_CRT_SECURE_NO_WARNINGS;BL_EMBED;BL_STATIC;BL_BUILD_OPT_SSE2;ASMJIT_STATIC;ASMJIT_NO_STDCXX;</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <WarningLevel>Level3</WarningLevel>
@@ -433,8 +440,15 @@
     </Link>
     <PostBuildEvent />
     <PostBuildEvent>
-      <Command>set PLUGINS=$(appdata)/Corona Labs/Corona Simulator/Plugins/plugin/
-copy "$(OutDir)$(TargetName).dll" "%PLUGINS%blend2d.dll"</Command>
+      <Command>set PLUGIN_DIR=$(appdata)\Solar2DPlugins\com.xibalbastudios\plugin.$(TargetName)\win32-sim
+setlocal enableextensions
+mkdir %PLUGIN_DIR%
+set FILENAME=plugin_$(TargetName).dll
+set FULL_NAME=%PLUGIN_DIR%\%FILENAME%
+copy "$(OutDir)$(TargetName).dll" "%FULL_NAME%"
+del "%PLUGIN_DIR%\data.tgz"
+tar -czf "%PLUGIN_DIR%\data.tgz" -C "%PLUGIN_DIR%" %FILENAME%
+del "%FULL_NAME%"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

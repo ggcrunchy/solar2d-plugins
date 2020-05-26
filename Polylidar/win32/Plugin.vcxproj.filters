@@ -77,5 +77,9 @@
     <ClCompile Include="..\shared\predicates\random.c">
       <Filter>predicates</Filter>
     </ClCompile>
+    <ClCompile Include="..\shared\delaunator.cpp" />
+    <ClCompile Include="..\shared\helper.cpp" />
+    <ClCompile Include="..\shared\plugin.polylidar.cpp" />
+    <ClCompile Include="..\shared\polylidar.cpp" />
   </ItemGroup>
 </Project>

@@ -22,26 +22,12 @@
 */
 
 #include "CoronaLua.h"
-#include "common.h"
 
-CORONA_EXPORT int luaopen_plugin_blend2d (lua_State* L)
+int Index (lua_State * L)
 {
-	lua_newtable(L);// blend2d
-
-	luaL_Reg classes[] = {
-		{ "codec", add_codec },
-		{ "context", add_context },
-		{ "image", add_image },
-		{ "path", add_path },
-		{ nullptr, nullptr }
-	};
-
-	for (int i = 0; classes[i].func; ++i)
-	{
-		lua_pushcfunction(L, classes[i].func);	// blend2d, func
-		lua_call(L, 0, 1);	// blend2d, class
-		lua_setfield(L, -2, classes[i].name);	// blend2d = { ..., name = class }
-	}
+	lua_getmetatable(L, 1);	// ud, k, mt
+	lua_insert(L, 2);	// ud, mt, k
+	lua_rawget(L, 2);	// ud, mt, v
 
 	return 1;
 }

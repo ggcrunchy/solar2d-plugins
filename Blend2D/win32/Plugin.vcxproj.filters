@@ -404,6 +404,19 @@
     <ClCompile Include="..\shared\blend2d\zonetree_b2d.cpp">
       <Filter>src\blend2d</Filter>
     </ClCompile>
+    <ClCompile Include="..\shared\utils.cpp" />
+    <ClCompile Include="..\shared\add_codec.cpp">
+      <Filter>classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\add_context.cpp">
+      <Filter>classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\add_image.cpp">
+      <Filter>classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\add_path.cpp">
+      <Filter>classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -438,6 +451,9 @@
     </Filter>
     <Filter Include="src\blend2d\threading">
       <UniqueIdentifier>{f2d1a0fd-8546-4645-8cd6-5fca4d623f04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="classes">
+      <UniqueIdentifier>{2e4e9b55-e0a2-488a-b5a1-c5e9011f3bb6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1023,6 +1039,8 @@
     <ClInclude Include="..\shared\blend2d\threading\uniqueidgenerator_p.h">
       <Filter>src\blend2d\threading</Filter>
     </ClInclude>
+    <ClInclude Include="..\shared\common.h" />
+    <ClInclude Include="..\shared\utils.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="..\shared\asmjit\src\asmjit.natvis">
