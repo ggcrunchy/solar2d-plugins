@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\shared\plugin.gif.cpp" />
+    <ClCompile Include="..\shared\jo_gif.cpp" />
+    <ClCompile Include="..\shared\giflib\dgif_lib.c">
+      <Filter>giflib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\giflib\gif_err.c">
+      <Filter>giflib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\giflib\gif_font.c">
+      <Filter>giflib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\giflib\gif_hash.c">
+      <Filter>giflib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\giflib\openbsd-reallocarray.c">
+      <Filter>giflib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\giflib\gifalloc.c">
+      <Filter>giflib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\jo_file.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="giflib">
+      <UniqueIdentifier>{91c90b4f-a9e5-4b16-9b36-ae0bb2186e41}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\shared\jo_gif.h" />
+    <ClInclude Include="..\shared\giflib\gif_hash.h">
+      <Filter>giflib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\giflib\gif_lib.h">
+      <Filter>giflib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\giflib\gif_lib_private.h">
+      <Filter>giflib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\jo_file.h" />
+  </ItemGroup>
+</Project>
