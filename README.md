@@ -32,8 +32,11 @@ Some of these are fairly mature, a few are in development, while others are aban
 * truetype (uses **stb**'s `truetype` module)
 * Blend2D ([eponymous](https://github.com/blend2d/blend2d); WIP)
 * OAML ([Open Adaptive Music Engine](https://github.com/oamldev/oaml); WIP)
-* Polylidar([eponymous](https://github.com/JeremyBYU/polylidar); WIP)
+* Polylidar ([eponymous](https://github.com/JeremyBYU/polylidar); WIP)
 * TheoraPlay ([eponymous](https://www.icculus.org/theoraplay/); WIP)
+* gif (Uses the writer from Jon Olick and a more robust [GIFLib](https://sourceforge.net/projects/giflib/)-based implementation; WIP)
+* mpeg (Uses the writer from Jon Olick and [pl_mpeg](https://github.com/phoboslab/pl_mpeg); WIP)
+* webp (Aiming to give a better home to some "fast path" stuff from **impack**, now supplementing NYI features in **Bytemap**; WIP)
 
 A few larger ones might be divvied up into more manageable sub-plugins.
 
@@ -51,10 +54,9 @@ A few larger ones might be divvied up into more manageable sub-plugins.
 
 Little or no code has gone into the following, but they might get some attention down the road.
 
-* [pl_mpeg](https://github.com/phoboslab/pl_mpeg)
 * [cffi](https://github.com/q66/cffi-lua) as a better **luaffifb**
 * [psd.c](https://github.com/hkrn/psd.c)
-* [dmon](https://github.com/septag/dmon)
+* [dmon](https://github.com/septag/dmon) **UPDATE** Implemented by [DannyGlover](https://github.com/DannyGlover)
 * [iji2dgrid](https://github.com/incrediblejr/iji2dgrid); **stb** has something along these lines too
 * [ExprTk](https://github.com/ArashPartow/exprtk); author has several other interesting libraries as well
 
@@ -77,7 +79,7 @@ Some of these would benefit from audio-style support in the tradition of "extern
 * [nanovg](https://github.com/memononen/nanovg), needs stencil support
 * [libagar](https://github.com/JulNadeauCA/libagar)
 * [libui](https://github.com/andlabs/libui)
-* [raygui](https://github.com/raysan5/raygui)
+* [raygui](https://github.com/raysan5/raygui) **UPDATE** Under investigation by [DannyGlover](https://github.com/DannyGlover)
 * [microui](https://github.com/rxi/microui)
 * [lvgl](https://github.com/littlevgl/lvgl)
 * [love-nuklear](https://github.com/keharriso/love-nuklear)
