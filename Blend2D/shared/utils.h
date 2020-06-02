@@ -52,19 +52,20 @@ template<typename T> T * Get (lua_State * L, int arg, const char * name, bool * 
 
 template<typename T> bool Is (lua_State * L, int arg, const char * name)
 {
-	lua_getmetatable(L, arg);	// ..., mt1
-	luaL_getmetatable(L, name);	// ..., mt2
+	int has_metatable = lua_getmetatable(L, arg);	// ...[, mt1]
 
-	bool ok = false;
+	luaL_getmetatable(L, name);	// ...[, mt1], mt2
 
-	if (lua_equal(L, -1, -2) && !lua_isnil(L, -1)) // has the same metatable and both are tables?
+	bool ok = (has_metatable && lua_equal(L, -1, -2)) != 0;
+
+	lua_pop(L, 1 + has_metatable);	// ...
+
+	if (ok)
 	{
 		T * object = static_cast<T *>(lua_touserdata(L, arg));
 
 		ok = *reinterpret_cast<bool *>(&object[1]);
 	}
-
-	lua_pop(L, 2);	// ...
 
 	return ok;
 }
