@@ -31,3 +31,10 @@ int Index (lua_State * L)
 
 	return 1;
 }
+
+uint32_t CheckUint32 (lua_State * L, int arg)
+{
+	lua_Number n = luaL_checknumber(L, arg);
+	CoronaLog("1");
+	return uint32_t(n);
+}

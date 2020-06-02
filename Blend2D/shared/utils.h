@@ -25,6 +25,8 @@
 
 int Index (lua_State * L);
 
+uint32_t CheckUint32 (lua_State * L, int arg);
+
 template<typename T> T * New (lua_State * L)
 {
 	T * object = (T *)lua_newuserdata(L, sizeof(T) + sizeof(bool)); // object
@@ -41,15 +43,33 @@ template<typename T> T * Get (lua_State * L, int arg, const char * name, bool * 
 	T * object = static_cast<T *>(luaL_checkudata(L, arg, name));
 
 	bool intact = *reinterpret_cast<bool *>(&object[1]);
+
 	if (intact_ptr) *intact_ptr = intact;
 	else luaL_argcheck(L, intact, arg, "Object has been destroyed");
 
 	return object;
 }
 
-template<typename T> void Destroy (lua_State * L)
+template<typename T> bool Is (lua_State * L, int arg, const char * name)
 {
-	T * object = static_cast<T *>(lua_touserdata(L, 1));
+	lua_getmetatable(L, arg);	// ..., mt1
+	luaL_getmetatable(L, name);	// ..., mt2
 
+	bool ok = false;
+
+	if (lua_equal(L, -1, -2) && !lua_isnil(L, -1)) // has the same metatable and both are tables?
+	{
+		T * object = static_cast<T *>(lua_touserdata(L, arg));
+
+		ok = *reinterpret_cast<bool *>(&object[1]);
+	}
+
+	lua_pop(L, 2);	// ...
+
+	return ok;
+}
+
+template<typename T> void Destroy (T * object)
+{
 	*reinterpret_cast<bool *>(&object[1]) = false;
 }

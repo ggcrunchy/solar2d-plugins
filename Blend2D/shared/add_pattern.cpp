@@ -26,34 +26,35 @@
 #include "common.h"
 #include "utils.h"
 
-#define PATH_MNAME "blend2d.path"
+#define PATTERN_MNAME "blend2d.pattern"
 
-BLPathCore * GetPath (lua_State * L, int arg, bool * intact_ptr)
+BLPatternCore * GetPattern (lua_State * L, int arg, bool * intact_ptr)
 {
-	return Get<BLPathCore>(L, arg, PATH_MNAME, intact_ptr);
+	return Get<BLPatternCore>(L, arg, PATTERN_MNAME, intact_ptr);
 }
 
-bool IsPath (lua_State * L, int arg)
+bool IsPattern (lua_State * L, int arg)
 {
-	return Is<BLPathCore>(L, arg, PATH_MNAME);
+	return Is<BLPatternCore>(L, arg, PATTERN_MNAME);
 }
 
-static int NewPath (lua_State * L)
+static int NewPattern (lua_State * L)
 {
-	BLPathCore * path = New<BLPathCore>(L);	// path
+	BLImageCore * texture = GetImage(L, 1);
+	BLPatternCore * pattern = New<BLPatternCore>(L);// texture, pattern
 
-	blPathInit(path);
+	blPatternInitAs(pattern, texture, nullptr, BL_EXTEND_MODE_REPEAT, nullptr);
 
-	if (luaL_newmetatable(L, PATH_MNAME)) // path, mt
+	if (luaL_newmetatable(L, PATTERN_MNAME)) // texture, pattern, mt
 	{
-		luaL_Reg path_funcs[] = {
+		luaL_Reg pattern_funcs[] = {
 			{
 				"destroy", [](lua_State * L)
 				{
-					BLPathCore * path = GetPath(L);
+					BLPatternCore * pattern = GetPattern(L);
 
-					blPathDestroy(path);
-					Destroy(path);
+					blPatternDestroy(pattern);
+					Destroy(pattern);
 
 					return 1;
 				}
@@ -62,48 +63,33 @@ static int NewPath (lua_State * L)
 				{
 					bool intact;
 
-					BLPathCore * path = GetPath(L, 1, &intact);
+					BLPatternCore * pattern = GetPattern(L, 1, &intact);
 
-					if (intact) blPathDestroy(path);
+					if (intact) blPatternDestroy(pattern);
 
 					return 0;
 				}
 			}, {
 				"__index", Index
 			}, {
-				"cubicTo", [](lua_State * L)
-				{
-					blPathCubicTo(GetPath(L),
-						luaL_checknumber(L, 2), luaL_checknumber(L, 3),
-						luaL_checknumber(L, 4), luaL_checknumber(L, 5),
-						luaL_checknumber(L, 6), luaL_checknumber(L, 7));
 
-					return 0;
-				}
-			}, {
-				"moveTo", [](lua_State * L)
-				{
-					blPathMoveTo(GetPath(L), luaL_checknumber(L, 2), luaL_checknumber(L, 3));
-
-					return 0;
-				}
 			},
 			{ nullptr, nullptr }
 		};
 
-		luaL_register(L, NULL, path_funcs);
+		luaL_register(L, NULL, pattern_funcs);
 	}
 
-	lua_setmetatable(L, -2);// path
+	lua_setmetatable(L, -2);// texture, pattern
 
 	return 1;
 }
 
-int add_path (lua_State * L)
+int add_pattern (lua_State * L)
 {
 	lua_newtable(L);// t
-	lua_pushcfunction(L, NewPath);	// t, NewPath
-	lua_setfield(L, -2, "New");	// t = { New = NewPath }
+	lua_pushcfunction(L, NewPattern);	// t, NewPattern
+	lua_setfield(L, -2, "New");	// t = { New = NewPattern }
 
 	return 1;
 }

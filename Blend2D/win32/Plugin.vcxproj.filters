@@ -417,6 +417,12 @@
     <ClCompile Include="..\shared\add_path.cpp">
       <Filter>classes</Filter>
     </ClCompile>
+    <ClCompile Include="..\shared\add_gradient.cpp">
+      <Filter>classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\add_pattern.cpp">
+      <Filter>classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">

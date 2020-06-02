@@ -26,9 +26,11 @@
 #include "common.h"
 #include "utils.h"
 
+#define CODEC_MNAME "blend2d.codec"
+
 BLImageCodecCore * GetImageCodec (lua_State * L, int arg, bool * intact_ptr)
 {
-	return Get<BLImageCodecCore>(L, arg, "blend2d.codec", intact_ptr);
+	return Get<BLImageCodecCore>(L, arg, CODEC_MNAME, intact_ptr);
 }
 
 static int NewCodec (lua_State * L)
@@ -37,23 +39,23 @@ static int NewCodec (lua_State * L)
 
 	blImageCodecInit(codec);
 
-	if (luaL_newmetatable(L, "blend2d.codec")) // codec, mt
+	if (luaL_newmetatable(L, CODEC_MNAME)) // codec, mt
 	{
 		luaL_Reg codec_funcs[] = {
 			{
 				"destroy", [](lua_State * L)
 				{
-					BLImageCodecCore * codec = GetImageCodec(L, 1);
+					BLImageCodecCore * codec = GetImageCodec(L);
 
 					blImageCodecDestroy(codec);
-					Destroy<BLImageCodecCore>(L);
+					Destroy(codec);
 
 					return 1;
 				}
 			}, {
 				"findByName", [](lua_State * L)
 				{
-					blImageCodecFindByName(GetImageCodec(L), luaL_checkstring(L, 2), 0U, nullptr);
+					blImageCodecFindByName(GetImageCodec(L), luaL_checkstring(L, 2), SIZE_MAX, nullptr);
 
 					return 0;
 				}

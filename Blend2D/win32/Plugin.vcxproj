@@ -11,6 +11,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\shared\add_gradient.cpp" />
+    <ClCompile Include="..\shared\add_pattern.cpp" />
     <ClCompile Include="..\shared\asmjit\src\asmjit\core\arch.cpp" />
     <ClCompile Include="..\shared\asmjit\src\asmjit\core\assembler.cpp" />
     <ClCompile Include="..\shared\asmjit\src\asmjit\core\builder.cpp" />
@@ -358,12 +360,12 @@
     <ProjectGuid>{79F0CACC-457B-4A25-BC54-81277688C361}</ProjectGuid>
     <RootNamespace>Plugin</RootNamespace>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v141_xp</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>

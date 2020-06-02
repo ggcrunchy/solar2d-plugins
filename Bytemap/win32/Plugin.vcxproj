@@ -14,18 +14,19 @@
     <ProjectGuid>{5B45F8CA-B2E2-435A-8BD1-EFE21718A800}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>pluginmemoryBitmap</RootNamespace>
+    <WindowsTargetPlatformVersion>7.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v141_xp</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v120_xp</PlatformToolset>
+    <PlatformToolset>v141_xp</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -44,7 +45,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>plugin_Bytemap</TargetName>
+    <TargetName>Bytemap</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -78,8 +79,15 @@
       <AdditionalDependencies>$(CORONA_ROOT)/Corona/win/lib/*.lib;$(Configuration)\solar2d_native_utils.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>set PLUGINS=$(appdata)/Corona Labs/Corona Simulator/Plugins/plugin/
-copy "$(OutDir)$(TargetName).dll" "%PLUGINS%Bytemap.dll"</Command>
+      <Command>set PLUGIN_DIR=$(appdata)\Solar2DPlugins\com.xibalbastudios\plugin.$(TargetName)\win32-sim
+setlocal enableextensions
+mkdir %PLUGIN_DIR%
+set FILENAME=plugin_$(TargetName).dll
+set FULL_NAME=%PLUGIN_DIR%\%FILENAME%
+copy "$(OutDir)$(TargetName).dll" "%FULL_NAME%"
+del "%PLUGIN_DIR%\data.tgz"
+tar -czf "%PLUGIN_DIR%\data.tgz" -C "%PLUGIN_DIR%" %FILENAME%
+del "%FULL_NAME%"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

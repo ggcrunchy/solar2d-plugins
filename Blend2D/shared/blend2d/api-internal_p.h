@@ -69,7 +69,7 @@
   //! \endcond
 
   #include <windows.h>   // Required to build Blend2D on Windows platform.
-  #include <synchapi.h>  // Synchronization primitivess.
+//  #include <synchapi.h>  // Synchronization primitivess. // <- ???????? STEVE CHANGE
 #else
   #include <errno.h>     // Need to access it in some cases.
   #include <pthread.h>   // Required to build Blend2D on POSIX compliant platforms.

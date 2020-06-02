@@ -26,9 +26,11 @@
 #include "common.h"
 #include "utils.h"
 
+#define IMAGE_MNAME "blend2d.image"
+
 BLImageCore * GetImage (lua_State * L, int arg, bool * intact_ptr)
 {
-	return Get<BLImageCore>(L, arg, "blend2d.image", intact_ptr);
+	return Get<BLImageCore>(L, arg, IMAGE_MNAME, intact_ptr);
 }
 
 uint32_t GetFormat (lua_State * L, int arg)
@@ -41,23 +43,22 @@ uint32_t GetFormat (lua_State * L, int arg)
 
 static int NewImage (lua_State * L)
 {
-	int w = lua_tointeger(L, 1), h = lua_tointeger(L, 2);
-	uint32_t format = GetFormat(L, 3);
+	int has_params = !lua_isnoneornil(L, 1);
+	BLImageCore * image = New<BLImageCore>(L);	// [w, h, format, ]image
 
-	BLImageCore * image = New<BLImageCore>(L);	// w, h, format, image
+	if (has_params) blImageInitAs(image, lua_tointeger(L, 1), lua_tointeger(L, 2), GetFormat(L, 3));
+	else blImageInit(image);
 
-	blImageInitAs(image, w, h, format);
-
-	if (luaL_newmetatable(L, "blend2d.image")) // w, h, format, image, mt
+	if (luaL_newmetatable(L, IMAGE_MNAME)) // [w, h, format, ]image, mt
 	{
 		luaL_Reg image_funcs[] = {
 			{
 				"destroy", [](lua_State * L)
 				{
-					BLImageCore * image = GetImage(L, 1);
+					BLImageCore * image = GetImage(L);
 
 					blImageDestroy(image);
-					Destroy<BLImageCore>(L);
+					Destroy(image);
 
 					return 1;
 				}
@@ -75,9 +76,29 @@ static int NewImage (lua_State * L)
 			}, {
 				"__index", Index
 			}, {
+				"readFromFile", [](lua_State * L)
+				{
+					BLResult result = blImageReadFromFile(GetImage(L), luaL_checkstring(L, 2), nullptr);
+
+					if (BL_SUCCESS == result)
+					{
+						lua_pushboolean(L, 1);	// image, filename, true
+
+						return 1;
+					}
+
+					else
+					{
+						lua_pushboolean(L, 0);	// image, filename, false
+						lua_pushinteger(L, result);	// image, filename, false, err
+
+						return 2;
+					}
+				}
+			}, {
 				"writeToFile", [](lua_State * L)
 				{
-					blImageWriteToFile(GetImage(L), luaL_checkstring(L, 2), GetImageCodec(L, 3));
+					blImageWriteToFile(GetImage(L), luaL_checkstring(L, 2), !lua_isnil(L, 3) ? GetImageCodec(L, 3) : nullptr);
 
 					return 0;
 				}
@@ -88,7 +109,7 @@ static int NewImage (lua_State * L)
 		luaL_register(L, NULL, image_funcs);
 	}
 
-	lua_setmetatable(L, -2);// w, h, format, image
+	lua_setmetatable(L, -2);// [w, h, format, ]image
 
 	return 1;
 }

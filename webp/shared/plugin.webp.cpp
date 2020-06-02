@@ -185,9 +185,8 @@ CORONA_EXPORT int luaopen_plugin_webp (lua_State* L)
         ByteReaderWriterMultipleSized output{L, 2, {size_t(w), size_t(h), ncomps}, ByteReaderOpts{}.SetGetStrides(true)};   // input, output, config[, err]
 
         if (!output.mBytes) return AddError(L); // input, output, config, false, err
-        else if (output.mStrides.empty()) return AddError(L, "Got no WEBP stride"); // input, output, config, false, err
-        else if (output.mStrides.front() > 0U) return AddError(L, "Stride of 0");   // input, output, config, false, err
 
+        int stride = (!output.mStrides.empty() && output.mStrides.front() > 0U) ? int(output.mStrides.front()) : w * ncomps;
         const uint8_t * out = static_cast<const uint8_t *>(output.mBytes);
 
         config->output.u.RGBA.rgba = const_cast<uint8_t *>(out);

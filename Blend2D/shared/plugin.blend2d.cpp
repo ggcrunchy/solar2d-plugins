@@ -31,8 +31,10 @@ CORONA_EXPORT int luaopen_plugin_blend2d (lua_State* L)
 	luaL_Reg classes[] = {
 		{ "codec", add_codec },
 		{ "context", add_context },
+		{ "gradient", add_gradient },
 		{ "image", add_image },
 		{ "path", add_path },
+		{ "pattern", add_pattern },
 		{ nullptr, nullptr }
 	};
 

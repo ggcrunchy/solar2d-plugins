@@ -25,10 +25,18 @@
 
 int add_codec (lua_State * L);
 int add_context (lua_State * L);
+int add_gradient (lua_State * L);
 int add_image (lua_State * L);
 int add_path (lua_State * L);
+int add_pattern (lua_State * L);
 
 struct BLContextCore * GetContext (lua_State * L, int arg = 1, bool * intact_ptr = nullptr);
+struct BLGradientCore * GetGradient (lua_State * L, int arg = 1, bool * intact_ptr = nullptr);
 struct BLImageCodecCore * GetImageCodec (lua_State * L, int arg = 1, bool * intact_ptr = nullptr);
 struct BLImageCore * GetImage (lua_State * L, int arg = 1, bool * intact_ptr = nullptr);
 struct BLPathCore * GetPath (lua_State * L, int arg = 1, bool * intact_ptr = nullptr);
+struct BLPatternCore * GetPattern (lua_State * L, int arg = 1, bool * intact_ptr = nullptr);
+
+bool IsGradient (lua_State * L, int arg);
+bool IsPath (lua_State * L, int arg);
+bool IsPattern (lua_State * L, int arg);

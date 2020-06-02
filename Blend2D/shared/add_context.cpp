@@ -26,15 +26,17 @@
 #include "common.h"
 #include "utils.h"
 
+#define CONTEXT_MNAME "blend2d.context"
+
 BLContextCore * GetContext (lua_State * L, int arg, bool * intact_ptr)
 {
-	return Get<BLContextCore>(L, arg, "blend2d.context", intact_ptr);
+	return Get<BLContextCore>(L, arg, CONTEXT_MNAME, intact_ptr);
 }
 
 BLCompOp GetCompOp (lua_State * L, int arg)
 {
-	const char * names[] = { "SRC_OVER", "SRC_COPY", nullptr };
-	BLCompOp ops[] = { BL_COMP_OP_SRC_OVER, BL_COMP_OP_SRC_COPY };
+	const char * names[] = { "SRC_OVER", "SRC_COPY", "DIFFERENCE", nullptr };
+	BLCompOp ops[] = { BL_COMP_OP_SRC_OVER, BL_COMP_OP_SRC_COPY, BL_COMP_OP_DIFFERENCE };
 /*
 	// BL_DEFINE_ENUM(BLCompOp) {
   //! Source-over [default].
@@ -102,22 +104,30 @@ BLCompOp GetCompOp (lua_State * L, int arg)
 	return ops[luaL_checkoption(L, arg, "SRC_OVER", names)];
 }
 
+static uint32_t GetCap (lua_State * L, int arg)
+{
+	const char * names[] = { "BUTT", "SQUARE", "ROUND", "ROUND_REV", "TRIANGLE", "TRIANGLE_REV", nullptr };
+	BLStrokeCap caps[] = {BL_STROKE_CAP_BUTT, BL_STROKE_CAP_SQUARE, BL_STROKE_CAP_ROUND, BL_STROKE_CAP_ROUND_REV, BL_STROKE_CAP_TRIANGLE, BL_STROKE_CAP_TRIANGLE_REV };
+
+	return caps[luaL_checkoption(L, arg, "BUTT", names)];
+}
+
 static int NewContext (lua_State * L)
 {
 	BLContextCore * context = New<BLContextCore>(L);// image, context
 
 	blContextInitAs(context, GetImage(L, 1), nullptr);
 
-	if (luaL_newmetatable(L, "blend2d.context")) // image, context, mt
+	if (luaL_newmetatable(L, CONTEXT_MNAME)) // image, context, mt
 	{
 		luaL_Reg context_funcs[] = {
 			{
 				"destroy", [](lua_State * L)
 				{
-					BLContextCore * context = GetContext(L, 1);
+					BLContextCore * context = GetContext(L);
 
 					blContextDestroy(context);
-					Destroy<BLContextCore>(L);
+					Destroy(context);
 
 					return 1;
 				}
@@ -136,9 +146,42 @@ static int NewContext (lua_State * L)
 					return 0;
 				}
 			}, {
+				"fillCircle", [](lua_State * L)
+				{
+					BLCircle circle;
+
+					circle.reset(luaL_checknumber(L, 2), luaL_checknumber(L, 3), luaL_checknumber(L, 4));
+
+					blContextFillGeometry(GetContext(L), BL_GEOMETRY_TYPE_CIRCLE, &circle);
+
+					return 0;
+				}
+			}, {
 				"fillPath", [](lua_State * L)
 				{
 					blContextFillPathD(GetContext(L), GetPath(L, 2));
+
+					return 0;
+				}
+			}, {
+				"fillRoundRect", [](lua_State * L)
+				{
+					BLRoundRect round_rect;
+
+				/*
+				  BL_INLINE BLResult fillRoundRect(const BLRoundRect& rr) noexcept { return fillGeometry(BL_GEOMETRY_TYPE_ROUND_RECT, &rr); }
+  //! \overload
+  BL_INLINE BLResult fillRoundRect(const BLRect& rect, double r) noexcept { return fillRoundRect(BLRoundRect(rect.x, rect.y, rect.w, rect.h, r)); }
+  //! \overload
+  BL_INLINE BLResult fillRoundRect(const BLRect& rect, double rx, double ry) noexcept { return fillRoundRect(BLRoundRect(rect.x, rect.y, rect.w, rect.h, rx, ry)); }
+  //! \overload
+  BL_INLINE BLResult fillRoundRect(double x, double y, double w, double h, double r) noexcept { return fillRoundRect(BLRoundRect(x, y, w, h, r)); }
+  //! \overload
+  BL_INLINE BLResult fillRoundRect(double x, double y, double w, double h, double rx, double ry) noexcept { return fillRoundRect(BLRoundRect(x, y, w, h, rx, ry)); }
+				*/
+					round_rect.reset(luaL_checknumber(L, 2), luaL_checknumber(L, 3), luaL_checknumber(L, 4), luaL_checknumber(L, 5), luaL_checknumber(L, 6));
+
+					blContextFillGeometry(GetContext(L), BL_GEOMETRY_TYPE_ROUND_RECT, &round_rect);
 
 					return 0;
 				}
@@ -156,9 +199,11 @@ static int NewContext (lua_State * L)
 			}, {
 				"__index", Index
 			}, {
-				"setFillStyle", [](lua_State * L)
+				"rotate", [](lua_State * L)
 				{
-					blContextSetFillStyleRgba32(GetContext(L), (uint32_t)luaL_checkinteger(L, 2));
+					double data[] = { luaL_checknumber(L, 2), luaL_checknumber(L, 3), luaL_checknumber(L, 4) };
+
+					blContextMatrixOp(GetContext(L), BL_MATRIX2D_OP_ROTATE_PT, data);
 
 					return 0;
 				}
@@ -166,6 +211,50 @@ static int NewContext (lua_State * L)
 				"setCompOp", [](lua_State * L)
 				{
 					blContextSetCompOp(GetContext(L), GetCompOp(L, 2));
+
+					return 0;
+				}
+			}, {
+				"setFillStyle", [](lua_State * L)
+				{
+					if (IsGradient(L, 2)) blContextSetFillStyleObject(GetContext(L), GetGradient(L, 2));
+					else if (IsPattern(L, 2)) blContextSetFillStyleObject(GetContext(L), GetPattern(L, 2));
+					else blContextSetFillStyleRgba32(GetContext(L), CheckUint32(L, 2));
+
+					return 0;
+				}
+			}, {
+				"setStrokeEndCap", [](lua_State * L)
+				{
+					blContextSetStrokeCap(GetContext(L), BL_STROKE_CAP_POSITION_END, GetCap(L, 2));
+
+					return 0;
+				}
+			}, {
+				"setStrokeStartCap", [](lua_State * L)
+				{
+					blContextSetStrokeCap(GetContext(L), BL_STROKE_CAP_POSITION_START, GetCap(L, 2));
+
+					return 0;
+				}
+			}, {
+				"setStrokeStyle", [](lua_State * L)
+				{
+					blContextSetStrokeStyleObject(GetContext(L), GetGradient(L, 2));
+
+					return 0;
+				}
+			}, {
+				"setStrokeWidth", [](lua_State * L)
+				{
+					blContextSetStrokeWidth(GetContext(L), luaL_checknumber(L, 2));
+
+					return 0;
+				}
+			}, {
+				"strokePath", [](lua_State * L)
+				{
+					blContextStrokePathD(GetContext(L), GetPath(L, 2));
 
 					return 0;
 				}
