@@ -24,6 +24,7 @@
 #include "CoronaLua.h"
 #include "ByteReader.h"
 #include "src/webp/decode.h"
+#include "src/dsp/dsp.h"
 #include <stddef.h>
 #include <string.h>
 
@@ -175,27 +176,107 @@ CORONA_EXPORT int luaopen_plugin_webp (lua_State* L)
             return AddError(L); // input, output, false, err
         }
         
-        ByteReaderOpts opts;
+        ByteReaderWriterMultipleSized output{L, 2, {size_t(w), size_t(h)}, ByteReaderOpts{}.SetGetStrides(true)};   // input, output[, err]
+
+        if (!output.mBytes) return AddError(L); // input, output, false, err
+
+        if (output.mNumComponents != 1U && output.mNumComponents != 3U && output.mNumComponents != 4U)
+        {
+            lua_pushliteral(L, "Invalid component count");  // input, output, err
+
+            return AddError(L); // input, output, false, err
+        }
 
         lua_pushvalue(L, lua_upvalueindex(1));  // input, output, config
 
         WebPDecoderConfig * config = (WebPDecoderConfig *)lua_touserdata(L, -1);
-        size_t ncomps = WebPIsAlphaMode(config->output.colorspace) ? 4U : 3U;
+        WEBP_CSP_MODE old = config->output.colorspace;
+        size_t ncomps = WebPIsAlphaMode(old) ? 4U : 3U, fixup = 0U;
 
-        ByteReaderWriterMultipleSized output{L, 2, {size_t(w), size_t(h), ncomps}, ByteReaderOpts{}.SetGetStrides(true)};   // input, output, config[, err]
+        if (ncomps != output.mNumComponents)
+        {
+            switch (output.mNumComponents)
+            {
+            case 4U: // 3 components: hoist into corresponding 4-component space
+                if (MODE_BGR == old) config->output.colorspace = MODE_BGRA;
+                else if (MODE_RGB == old) config->output.colorspace = MODE_RGBA;
+            break;
 
-        if (!output.mBytes) return AddError(L); // input, output, config, false, err
+            case 3U: // 4 components: strip off alpha
+                if (WebPIsPremultipliedMode(old)) // must premultiply first?
+                {
+                    if (MODE_Argb == old) config->output.colorspace = MODE_rgbA;
 
-        int stride = (!output.mStrides.empty() && output.mStrides.front() > 0U) ? int(output.mStrides.front()) : w * ncomps;
+                    fixup = 1U; // strip off last byte
+                }
+                
+                else
+                {
+                    if (MODE_ARGB == old || MODE_RGBA == old) config->output.colorspace = MODE_RGB;
+                    else if (MODE_BGRA == old) config->output.colorspace = MODE_BGR;
+                }
+
+                break;
+
+            default: // want alpha
+                fixup = ncomps; // 3U = decoding pointless, fill with 0xFF
+                                // 4U = extract after decode
+
+                break;
+            }
+        }
+
         const uint8_t * out = static_cast<const uint8_t *>(output.mBytes);
+        int def_stride = w * output.mNumComponents;
+        int out_stride = (!output.mStrides.empty() && output.mStrides.front() > 0U) ? int(output.mStrides.front()) : def_stride;
+        bool ok = out_stride >= def_stride;
 
-        config->output.u.RGBA.rgba = const_cast<uint8_t *>(out);
-        config->output.u.RGBA.size = output.mCount;
-        config->output.u.RGBA.stride = int(output.mStrides.front());
+        if (!ok)
+        {
+            lua_pushliteral(L, "Stride too low");  // input, output, config, err
 
-        bool ok = CheckCode(L, WebPDecode(static_cast<const uint8_t *>(input.mBytes), input.mCount, config)); // input, output, config[, err]
+            return AddError(L); // input, output, config, false, err
+        }
 
-        WebPFreeDecBuffer(&config->output);
+        if (fixup != 3U) // see note above
+        {
+            std::vector<uint8_t> intermediate;
+
+            if (fixup)
+            {
+                intermediate.resize(size_t(w * h * ncomps));
+
+                config->output.u.RGBA.rgba = intermediate.data();
+                config->output.u.RGBA.size = intermediate.size();
+                config->output.u.RGBA.stride = w * ncomps;
+            }
+
+            else
+            {
+                config->output.u.RGBA.rgba = const_cast<uint8_t *>(out);
+                config->output.u.RGBA.size = output.mCount;
+                config->output.u.RGBA.stride = out_stride;
+            }
+
+            ok = CheckCode(L, WebPDecode(static_cast<const uint8_t *>(input.mBytes), input.mCount, config)); // input, output, config[, err]
+
+            WebPFreeDecBuffer(&config->output);
+
+            if (ok && fixup) // see above
+            {
+                const uint8_t * const data = intermediate.data();
+
+                ok = output.mCount >= w * h * output.mNumComponents;
+
+                if (!ok) lua_pushliteral(L, "Final buffer too small");  // input, output, config, err
+                else if (4U == fixup) WebPExtractAlpha(data, w * 4, w, h, const_cast<uint8_t *>(out), w);
+                else WebPPackRGB(data, data + 1, data + 2, w * h, 4U, reinterpret_cast<uint32_t *>(const_cast<uint8_t *>(out)));
+            }
+        }
+
+        else memset(const_cast<uint8_t *>(out), 0xFF, output.mCount);
+
+        config->output.colorspace = old;
 
         if (!ok) return AddError(L);// input, output, config, false, err
 

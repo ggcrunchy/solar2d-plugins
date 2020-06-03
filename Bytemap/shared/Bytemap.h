@@ -52,7 +52,7 @@ struct Bytemap
 	bool Flatten (bool bDetach = false);
 
 	void DetachBlob (int * ref = nullptr);
-	void InitializeBytes (bool bZeroBytes = true);
+	void InitializeBytes (std::vector<unsigned char> * bytes = nullptr);
 	void CheckSufficientMemory (void);
 	void PushBlob (void);
 	void ResolveMemory (void);

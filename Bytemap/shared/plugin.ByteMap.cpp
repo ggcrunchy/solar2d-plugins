@@ -115,26 +115,30 @@ void Bytemap::DetachBlob (int * ref)
 	*ref = LUA_NOREF;
 }
 
-void Bytemap::InitializeBytes (bool bZeroBytes)
+void Bytemap::InitializeBytes (std::vector<unsigned char> * bytes)
 {
-	size_t sz = mW * mH * CoronaExternalFormatBPP(mFormat);
-
-	if (mFormat != mRepFormat) sz += mW * mH; // n.b. at the moment this means adding a dummy alpha component
-
-	if (bZeroBytes) mBytes.assign(sz, 0);
-	else mBytes.resize(sz);
-
-	if (mFormat != mRepFormat)
+	if (!bytes)
 	{
-		const unsigned char fixup[4] = { 0, 0, 0, 255 };
-		
+		size_t sz = mW * mH * CoronaExternalFormatBPP(mFormat);
+
+		if (mFormat != mRepFormat) sz += mW * mH; // n.b. at the moment this means adding a dummy alpha component
+
+		mBytes.assign(sz, 0);
+
 		int bpp = CoronaExternalFormatBPP(mFormat), true_bpp = GetEffectiveBPP();
 
-		for (size_t offset = bpp; offset < sz; offset += true_bpp)
+		if (true_bpp > bpp)
 		{
-			for (int i = 0; i < true_bpp - bpp; ++i) mBytes[offset + i] = fixup[3 - i];
+			const unsigned char fixup[4] = {0, 0, 0, 255};
+
+			for (size_t offset = bpp; offset < sz; offset += true_bpp)
+			{
+				for (int i = 0; i < true_bpp - bpp; ++i) mBytes[offset + i] = fixup[3 - i];
+			}
 		}
 	}
+
+	else mBytes.swap(*bytes);
 }
 
 void Bytemap::CheckSufficientMemory (void)
@@ -237,8 +241,6 @@ static int Bytemap_GetField (lua_State * L, const char * field, void * context)
 Bytemap::Bytemap (lua_State * L, int w, int h, CoronaExternalBitmapFormat format, CoronaExternalBitmapFormat rep_format) : mL{L}, mW{w}, mH{h}, mFormat{format}, mRepFormat{rep_format}
 {
 	if (rep_format == kExternalBitmapFormat_Undefined) rep_format = format;
-
-	InitializeBytes();
 }
 
 Bytemap::~Bytemap (void)
@@ -248,7 +250,44 @@ Bytemap::~Bytemap (void)
 	lua_unref(mL, mDummyRef);
 }
 
-static bool NewBytemap (lua_State * L, int w, int h, CoronaExternalBitmapFormat format)
+static bool AttachCallbacks (lua_State * L, Bytemap * bmap)
+{
+	CoronaExternalTextureCallbacks callbacks = {};
+
+	callbacks.size = sizeof(CoronaExternalTextureCallbacks);
+	callbacks.getFormat = Bytemap_Format;
+	callbacks.getHeight = Bytemap_GetH;
+	callbacks.getWidth = Bytemap_GetW;
+	callbacks.onFinalize = Bytemap_Dispose;
+	callbacks.onGetField = Bytemap_GetField;
+	callbacks.onReleaseBitmap = Bytemap_Cleanup;
+	callbacks.onRequestBitmap = Bytemap_GetData;
+
+	if (!CoronaExternalPushTexture(L, &callbacks, bmap))	// ...[, bmap]
+	{
+		delete bmap;
+
+		return false;
+	}
+
+	return false;
+}
+
+static CoronaExternalBitmapFormat ResolveFormat (int w, int h, CoronaExternalBitmapFormat format)
+{
+	if (w > 0 && h > 0)
+	{
+		CoronaExternalBitmapFormat rep_format = format;
+
+		if (w % 4 != 0 && CoronaExternalFormatBPP(format) == 3) rep_format = kExternalBitmapFormat_RGBA;
+
+		return rep_format;
+	}
+
+	else return kExternalBitmapFormat_Undefined;
+}
+
+static bool NewBytemap (lua_State * L, int w, int h, CoronaExternalBitmapFormat format, std::vector<unsigned char> * bytes = nullptr)
 {
 	lua_getfield(L, 1, "is_non_external");	// ..., is_non_external
 
@@ -259,34 +298,15 @@ static bool NewBytemap (lua_State * L, int w, int h, CoronaExternalBitmapFormat 
 	// In main state, create an external userdata, unless requested otherwise.
 	if (LuaXS::IsMainState(L) && !is_non_external)
 	{
-		if (w > 0 && h > 0)
+		CoronaExternalBitmapFormat rep_format = ResolveFormat(w, h, format);
+
+		if (rep_format != kExternalBitmapFormat_Undefined)
 		{
-			CoronaExternalBitmapFormat rep_format = format;
-
-			if (w % 4 != 0 && CoronaExternalFormatBPP(format) == 3) rep_format = kExternalBitmapFormat_RGBA;
-
 			Bytemap * bmap = new Bytemap{L, w, h, format, rep_format};
 
-			// set up callbacks
-			CoronaExternalTextureCallbacks callbacks = {};
+			bmap->InitializeBytes(bytes);
 
-			callbacks.size = sizeof(CoronaExternalTextureCallbacks);
-			callbacks.getFormat = Bytemap_Format;
-			callbacks.getHeight = Bytemap_GetH;
-			callbacks.getWidth = Bytemap_GetW;
-			callbacks.onFinalize = Bytemap_Dispose;
-			callbacks.onGetField = Bytemap_GetField;
-			callbacks.onReleaseBitmap = Bytemap_Cleanup;
-			callbacks.onRequestBitmap = Bytemap_GetData;
-
-			if (!CoronaExternalPushTexture(L, &callbacks, bmap))	// params[, bmap]
-			{
-				delete bmap;
-
-				return false;
-			}
-
-			return true;
+			return AttachCallbacks(L, bmap);	// params[, bmap]
 		}
 
 		else return false;
@@ -295,7 +315,10 @@ static bool NewBytemap (lua_State * L, int w, int h, CoronaExternalBitmapFormat 
 	// Otherwise, make a plain userdata.
 	else
 	{
-		LuaXS::NewTyped<Bytemap>(L, L, w, h, format);	// params, bmap
+		Bytemap * bmap = LuaXS::NewTyped<Bytemap>(L, L, w, h, format);	// params, bmap
+
+		bmap->InitializeBytes(bytes);
+
 		LuaXS::AttachMethods(L, "BytemapXS", [](lua_State * L)
 		{
 			luaL_Reg methods[] = {
@@ -357,11 +380,6 @@ struct ByteProxy {
 	size_t mSize;
 };
 
-struct BytemapRef {
-	Bytemap * mBytemap{nullptr};
-	std::vector<int> mLoaders;
-};
-
 static void * RegisterByteProxyReader (lua_State * L)
 {
 	ByteReaderFunc * func = ByteReader::Register(L);
@@ -379,6 +397,12 @@ static void * RegisterByteProxyReader (lua_State * L)
 	return func;
 }
 
+struct BytemapRef {
+	std::vector<unsigned char> * mBytes{nullptr};
+	std::vector<int> mLoaders;
+	int mW, mH, mComps;
+};
+
 static void * RegisterBytemapReaderWriter (lua_State * L)
 {
 	ByteReaderFunc * func = ByteReader::Register(L);
@@ -387,18 +411,18 @@ static void * RegisterBytemapReaderWriter (lua_State * L)
 	{
 		BytemapRef * bref = LuaXS::UD<BytemapRef>(L, arg);
 
-		if (!bref->mBytemap) return false;
+		if (!bref->mBytes) return false;
 		if (sizes.size() < 2U) return false;
 
 		const size_t * psizes = sizes.data();
 
 		if (!psizes[0] || !psizes[1]) return false;
 
-		bref->mBytemap->mW = int(psizes[0]);
-		bref->mBytemap->mH = int(psizes[1]);
-		bref->mBytemap->InitializeBytes(false);
+		bref->mW = int(psizes[0]);
+		bref->mH = int(psizes[1]);
+		bref->mBytes->resize(bref->mW * bref->mH * bref->mComps);
 
-		reader.mNumComponents = CoronaExternalFormatBPP(bref->mBytemap->mRepFormat);
+		reader.mNumComponents = bref->mComps;
 
 		return true;
 	};
@@ -407,10 +431,10 @@ static void * RegisterBytemapReaderWriter (lua_State * L)
 	{
 		BytemapRef * bref = LuaXS::UD<BytemapRef>(L, arg);
 
-		if (!bref->mBytemap) return false;
+		if (!bref->mBytes) return false;
 
-		reader.mBytes = bref->mBytemap->mBytes.data();
-		reader.mCount = bref->mBytemap->mBytes.size();
+		reader.mBytes = bref->mBytes->data();
+		reader.mCount = bref->mBytes->size();
 
 		return true;
 	};
@@ -432,8 +456,6 @@ template<typename T> void NewByteSource (lua_State * L, const char * mname, void
 	lua_newuserdata(L, sizeof(T));	// ..., source
 
 	ByteXS::AddBytesMetatable(L, mname, &opts);
-
-	return source;
 }
 
 CORONA_EXPORT int luaopen_plugin_Bytemap (lua_State * L)
@@ -525,23 +547,34 @@ CORONA_EXPORT int luaopen_plugin_Bytemap (lua_State * L)
 			{
 				lua_pushvalue(L, lua_upvalueindex(3));	// params, dirs, format?, is_absolute, filename, bmap_ref
 
+				std::vector<unsigned char> out;
+
 				BytemapRef * bref = LuaXS::UD<BytemapRef>(L, -1);
 
-				if (!bref->mLoaders.empty())
+				bref->mBytes = &out;
+				bref->mComps = ncomps;
+
+				for (auto && loader : bref->mLoaders)
 				{
-					bOK = NewBytemap(L, 1, 1, format);	// params, dirs, format?, is_absolute, filename[, bmap]
+					lua_getref(L, loader);	// params, dirs, format?, is_absolute, filename, bmap_ref, loader
+					lua_pushvalue(L, bytes.mPos);	// params, dirs, format?, is_absolute, filename, bmap_ref, loader, bytes
+					lua_pushvalue(L, -3);	// params, dirs, format?, is_absolute, filename, bmap_ref, loader, bytes, bmap_ref
+
+					int result = lua_pcall(L, 1, 1, 0);	// params, dirs, format?, is_absolute, filename, bmap_ref, ok / err
+
+					bOK = 0 == result && lua_toboolean(L, -1) != 0;
+
+					lua_pop(L, 1);	// params, dirs, format?, is_absolute, filename, bmap_ref
 
 					if (bOK)
 					{
-					}
+						bOK = NewBytemap(L, bref->mW, bref->mH, format, bref->mBytes);	// params, dirs, format?, is_absolute, filename, bmap_ref[, bmap]
 
-					if (!bOK)
-					{
-						lua_getfield(L, -1, "releaseSelf");	// params, dirs, format?, is_absolute, filename, bmap, releaseSelf
-						lua_insert(L, -2);	// params, dirs, format?, is_absolute, filename, releaseSelf, bmap
-						lua_call(L, 1, 0);	// params, dirs, format?, is_absolute, filename
+						break;
 					}
 				}
+
+				bref->mBytes = nullptr;
 			}
 
             return bOK;
