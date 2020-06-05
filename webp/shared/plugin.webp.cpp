@@ -80,16 +80,6 @@ static void SetOption (lua_State * L, int arg, WebPDecoderConfig & config)
     }
 }
 
-static int AddError (lua_State * L, const char * error = nullptr)
-{
-    if (error) lua_pushstring(L, error);// ..., err
-
-    lua_pushboolean(L, 0);  // ..., err, false
-    lua_insert(L, -2);  // ..., false, err
-
-    return 2;
-}
-
 static bool CheckCode (lua_State * L, VP8StatusCode code)
 {
     if (VP8_STATUS_OK == code) return true;
@@ -165,32 +155,22 @@ CORONA_EXPORT int luaopen_plugin_webp (lua_State* L)
 
         ByteReader input{L, 1}; // input, output[, err]
 
-        if (!input.mBytes) return AddError(L);  // input, output, false, err
+        if (!input.mBytes) return lua_error(L);
 
         int w, h;
 
-        if (!WebPGetInfo(static_cast<const uint8_t *>(input.mBytes), input.mCount, &w, &h))
-        {
-            lua_pushliteral(L, "Unable to get info");   // input, output, err
+        if (!WebPGetInfo(static_cast<const uint8_t *>(input.mBytes), input.mCount, &w, &h)) return luaL_error(L, "Unable to get info");
 
-            return AddError(L); // input, output, false, err
-        }
-        
         ByteReaderWriterMultipleSized output{L, 2, {size_t(w), size_t(h)}, ByteReaderOpts{}.SetGetStrides(true)};   // input, output[, err]
 
-        if (!output.mBytes) return AddError(L); // input, output, false, err
+        if (!output.mBytes) return lua_error(L);
 
-        if (output.mNumComponents != 1U && output.mNumComponents != 3U && output.mNumComponents != 4U)
-        {
-            lua_pushliteral(L, "Invalid component count");  // input, output, err
-
-            return AddError(L); // input, output, false, err
-        }
+        if (output.mNumComponents != 1U && output.mNumComponents != 3U && output.mNumComponents != 4U) return luaL_error(L, "Invalid component count");
 
         lua_pushvalue(L, lua_upvalueindex(1));  // input, output, config
 
-        WebPDecoderConfig * config = (WebPDecoderConfig *)lua_touserdata(L, -1);
-        WEBP_CSP_MODE old = config->output.colorspace;
+        WebPDecoderConfig config = *(WebPDecoderConfig *)lua_touserdata(L, -1); // might be changed, so copy in case of error
+        WEBP_CSP_MODE old = config.output.colorspace;
         size_t ncomps = WebPIsAlphaMode(old) ? 4U : 3U, fixup = 0U;
 
         if (ncomps != output.mNumComponents)
@@ -198,22 +178,22 @@ CORONA_EXPORT int luaopen_plugin_webp (lua_State* L)
             switch (output.mNumComponents)
             {
             case 4U: // 3 components: hoist into corresponding 4-component space
-                if (MODE_BGR == old) config->output.colorspace = MODE_BGRA;
-                else if (MODE_RGB == old) config->output.colorspace = MODE_RGBA;
+                if (MODE_BGR == old) config.output.colorspace = MODE_BGRA;
+                else if (MODE_RGB == old) config.output.colorspace = MODE_RGBA;
             break;
 
             case 3U: // 4 components: strip off alpha
                 if (WebPIsPremultipliedMode(old)) // must premultiply first?
                 {
-                    if (MODE_Argb == old) config->output.colorspace = MODE_rgbA;
+                    if (MODE_Argb == old) config.output.colorspace = MODE_rgbA;
 
                     fixup = 1U; // strip off last byte
                 }
                 
                 else
                 {
-                    if (MODE_ARGB == old || MODE_RGBA == old) config->output.colorspace = MODE_RGB;
-                    else if (MODE_BGRA == old) config->output.colorspace = MODE_BGR;
+                    if (MODE_ARGB == old || MODE_RGBA == old) config.output.colorspace = MODE_RGB;
+                    else if (MODE_BGRA == old) config.output.colorspace = MODE_BGR;
                 }
 
                 break;
@@ -226,17 +206,12 @@ CORONA_EXPORT int luaopen_plugin_webp (lua_State* L)
             }
         }
 
-        const uint8_t * out = static_cast<const uint8_t *>(output.mBytes);
         int def_stride = w * output.mNumComponents;
         int out_stride = (!output.mStrides.empty() && output.mStrides.front() > 0U) ? int(output.mStrides.front()) : def_stride;
-        bool ok = out_stride >= def_stride;
 
-        if (!ok)
-        {
-            lua_pushliteral(L, "Stride too low");  // input, output, config, err
+        if (out_stride < def_stride) return luaL_error(L, "Stride too low");
 
-            return AddError(L); // input, output, config, false, err
-        }
+        uint8_t * out = const_cast<uint8_t *>(static_cast<const uint8_t *>(output.mBytes));
 
         if (fixup != 3U) // see note above
         {
@@ -246,50 +221,63 @@ CORONA_EXPORT int luaopen_plugin_webp (lua_State* L)
             {
                 intermediate.resize(size_t(w * h * ncomps));
 
-                config->output.u.RGBA.rgba = intermediate.data();
-                config->output.u.RGBA.size = intermediate.size();
-                config->output.u.RGBA.stride = w * ncomps;
+                config.output.u.RGBA.rgba = intermediate.data();
+                config.output.u.RGBA.size = intermediate.size();
+                config.output.u.RGBA.stride = w * ncomps;
             }
 
             else
             {
-                config->output.u.RGBA.rgba = const_cast<uint8_t *>(out);
-                config->output.u.RGBA.size = output.mCount;
-                config->output.u.RGBA.stride = out_stride;
+                config.output.u.RGBA.rgba = out;
+                config.output.u.RGBA.size = output.mCount;
+                config.output.u.RGBA.stride = out_stride;
             }
 
-            ok = CheckCode(L, WebPDecode(static_cast<const uint8_t *>(input.mBytes), input.mCount, config)); // input, output, config[, err]
+            bool ok = CheckCode(L, WebPDecode(static_cast<const uint8_t *>(input.mBytes), input.mCount, &config));  // input, output, config[, err]
 
-            WebPFreeDecBuffer(&config->output);
+            WebPFreeDecBuffer(&config.output);
 
-            if (ok && fixup) // see above
+            if (!ok) return lua_error(L);
+                
+            if (fixup) // see above
             {
-                const uint8_t * const data = intermediate.data();
+                if (output.mCount < w * h * output.mNumComponents) luaL_error(L, "Final buffer too small");
 
-                ok = output.mCount >= w * h * output.mNumComponents;
+                const uint8_t * data = intermediate.data();
 
-                if (!ok) lua_pushliteral(L, "Final buffer too small");  // input, output, config, err
-                else if (4U == fixup) WebPExtractAlpha(data, w * 4, w, h, const_cast<uint8_t *>(out), w);
-                else WebPPackRGB(data, data + 1, data + 2, w * h, 4U, reinterpret_cast<uint32_t *>(const_cast<uint8_t *>(out)));
+                if (4U == fixup)
+                {
+                    if (old != MODE_ARGB && old != MODE_Argb) data += 3;
+
+                    WebPExtractAlpha(data, w * 4, w, h, out, out_stride);
+                }
+
+                else
+                {
+                    int n = w * h;
+
+                    for (int i = 0; i < n; ++i)
+                    {
+                        *out++ = data[0];
+                        *out++ = data[1];
+                        *out++ = data[2];
+
+                        data += 4;
+                    }
+                }
             }
         }
 
-        else memset(const_cast<uint8_t *>(out), 0xFF, output.mCount);
+        else memset(out, 0xFF, output.mCount);
 
-        config->output.colorspace = old;
-
-        if (!ok) return AddError(L);// input, output, config, false, err
-
-        lua_pushboolean(L, 1); // input, output, config, true
-
-        return 1;
+        return 0;
     }, 1); // webp, config, LoadWebP
     lua_pushcclosure(L, [](lua_State * L) {
         lua_pushvalue(L, lua_upvalueindex(1));  // LoadWebP
 
         return 1;
     }, 1);  // webp, config, GetLoader
-    lua_setfield(L, -2, "GetLoader");   // webp = { GetLoader = GetLoader }
+    lua_setfield(L, -3, "GetLoader");   // webp = { GetLoader = GetLoader }, config
     lua_pushcclosure(L, [](lua_State * L) {
         lua_pushvalue(L, lua_upvalueindex(1));  // opts / key?[, value?], config
 
@@ -312,7 +300,7 @@ CORONA_EXPORT int luaopen_plugin_webp (lua_State* L)
         *config = temp;
 
         return 0;
-    }, 1);  // webp, config, UpdateConfig
+    }, 1);  // webp, UpdateConfig
     lua_setfield(L, -2, "UpdateConfig");// webp = { GetLoader, UpdateConfig = UpdateConfig }
 
 	return 1;

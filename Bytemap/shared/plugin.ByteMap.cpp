@@ -270,7 +270,7 @@ static bool AttachCallbacks (lua_State * L, Bytemap * bmap)
 		return false;
 	}
 
-	return false;
+	return true;
 }
 
 static CoronaExternalBitmapFormat ResolveFormat (int w, int h, CoronaExternalBitmapFormat format)
@@ -420,9 +420,24 @@ static void * RegisterBytemapReaderWriter (lua_State * L)
 
 		bref->mW = int(psizes[0]);
 		bref->mH = int(psizes[1]);
-		bref->mBytes->resize(bref->mW * bref->mH * bref->mComps);
 
-		reader.mNumComponents = bref->mComps;
+		int ncomps = bref->mComps;
+
+		if (ncomps > 1)
+		{
+			if (3 == bref->mComps && ResolveFormat(bref->mW, bref->mH, kExternalBitmapFormat_RGB) != kExternalBitmapFormat_RGB) ncomps = 4;
+
+			bref->mBytes->resize(bref->mW * bref->mH * ncomps);
+		}
+
+		else
+		{
+			bref->mW = ((bref->mW + 6) + 3) & ~3;
+			bref->mH = ((bref->mH + 6) + 3) & ~3;
+			bref->mBytes->assign(size_t(bref->mW * bref->mH), 0U);
+		}
+
+		reader.mNumComponents = ncomps;
 
 		return true;
 	};
@@ -433,8 +448,23 @@ static void * RegisterBytemapReaderWriter (lua_State * L)
 
 		if (!bref->mBytes) return false;
 
-		reader.mBytes = bref->mBytes->data();
+		unsigned char * data = bref->mBytes->data();
+
+		if (1U == reader.mNumComponents) data += (bref->mW + 1) * 3;// 3 rows, then 3 columns
+
+		reader.mBytes = data;
 		reader.mCount = bref->mBytes->size();
+
+		return true;
+	};
+
+	func->mGetStrides = [](lua_State * L, ByteReader & reader, int arg, void *)
+	{
+		BytemapRef * bref = LuaXS::UD<BytemapRef>(L, arg);
+
+		if (!bref->mBytes) return false;
+
+		if (1U == reader.mNumComponents) reader.mStrides.push_back(size_t(bref->mW));
 
 		return true;
 	};
@@ -453,12 +483,12 @@ template<typename T> void NewByteSource (lua_State * L, const char * mname, void
 		lua_setfield(L, -2, "__bytes");	// ..., mt = { ..., __bytes = key }
 	};
 
-	lua_newuserdata(L, sizeof(T));	// ..., source
+	LuaXS::NewTyped<T>(L);	// ..., source
 
 	ByteXS::AddBytesMetatable(L, mname, &opts);
 }
 
-CORONA_EXPORT int luaopen_plugin_Bytemap (lua_State * L)
+CORONA_EXPORT int luaopen_plugin_Bytemapp (lua_State * L)
 {
 	lua_newtable(L);// bytemap
 
@@ -482,23 +512,24 @@ CORONA_EXPORT int luaopen_plugin_Bytemap (lua_State * L)
 	NewByteSource<ByteProxy>(L, "Bytemap.proxy", RegisterByteProxyReader(L));	// bytemap, proxy
 	PathXS::Directories::Instantiate(L);// bytemap, proxy, dirs
 
-	NewByteSource<BytemapRef>(L, "Bytemap.ptr", RegisterBytemapReaderWriter);	// bytemap, proxy, dirs, bmap_ref
+	NewByteSource<BytemapRef>(L, "Bytemap.ptr", RegisterBytemapReaderWriter(L));// bytemap, proxy, dirs, bmap_ref
 
-	lua_pushvalue(L, -1);	// bytemap, proxy, dirs, bmap_ref
+	lua_pushvalue(L, -1);	// bytemap, proxy, dirs, bmap_ref, bmap_ref
 	lua_pushcclosure(L, [](lua_State * L) {
 		luaL_argcheck(L, lua_isfunction(L, 1) || luaL_getmetafield(L, 1, "__call"), 1, "Non-callable loader");	// func[, call]
-		lua_settop(L, 1);	// func
-		lua_pushvalue(L, lua_upvalueindex(1));	// func, bmap_ref
+		lua_pushvalue(L, 1);// func[, call], func
 
-		BytemapRef * bref = LuaXS::UD<BytemapRef>(L, 2);
+		int ref = lua_ref(L, 1);// func[, call]
 
-		lua_insert(L, 1);	// bmap_ref, func
+		lua_pushvalue(L, lua_upvalueindex(1));	// func[, call], bmap_ref
 
-		bref->mLoaders.push_back(luaL_ref(L, 1));	// bmap_ref
+		LuaXS::UD<BytemapRef>(L, -1)->mLoaders.push_back(ref);
 
 		return 0;
-	}, 1); // bytemap, proxy, dirs, addLoader
-	lua_setfield(L, -2, "addLoader");	// bytemap = { newTexture, addLoader = addLoader }, proxy, dirs
+	}, 1); // bytemap, proxy, dirs, bmap_ref, addLoader
+
+	lua_setfield(L, -5, "addLoader");	// bytemap = { newTexture, addLoader = addLoader }, proxy, dirs, bmap_ref
+
 	lua_pushcclosure(L, [](lua_State * L) {
 		luaL_argcheck(L, lua_istable(L, 1), 1, "Non-table params for loadTexture");
 		lua_pushvalue(L, lua_upvalueindex(2));	// params, dirs
@@ -512,6 +543,7 @@ CORONA_EXPORT int luaopen_plugin_Bytemap (lua_State * L)
 		lua_getfield(L, 1, "is_absolute");	// params, dirs, format?, is_absolute
 		lua_getfield(L, 1, "filename");	// params, dirs, format?, is_absolute, filename
         lua_getfield(L, 1, "baseDir");  // params, dirs, format?, is_absolute, filename, base_dir
+		luaL_argcheck(L, lua_isstring(L, -2), -2, "Expected filename");
 
         return LuaXS::ResultOrNil(L, dirs->WithFileContentsDo(L, -2, -3, [L, format](ByteReader & bytes) {
             int w, h, comp, ncomps = 4;
@@ -545,7 +577,12 @@ CORONA_EXPORT int luaopen_plugin_Bytemap (lua_State * L)
 
 			if (!used_stb)
 			{
-				lua_pushvalue(L, lua_upvalueindex(3));	// params, dirs, format?, is_absolute, filename, bmap_ref
+				lua_pushvalue(L, lua_upvalueindex(3));	// params, dirs, format?, is_absolute, filename, ..., bmap_ref
+				lua_getfield(L, 1, "want_loader_errors");	// params, dirs, format?, is_absolute, filename, ..., bmap_ref, want_loader_errors
+
+				bool want_loader_errors = lua_toboolean(L, -1) != 0;
+
+				lua_pop(L, 1);	// params, dirs, format?, is_absolute, filename, ..., bmap_ref
 
 				std::vector<unsigned char> out;
 
@@ -556,19 +593,22 @@ CORONA_EXPORT int luaopen_plugin_Bytemap (lua_State * L)
 
 				for (auto && loader : bref->mLoaders)
 				{
-					lua_getref(L, loader);	// params, dirs, format?, is_absolute, filename, bmap_ref, loader
-					lua_pushvalue(L, bytes.mPos);	// params, dirs, format?, is_absolute, filename, bmap_ref, loader, bytes
-					lua_pushvalue(L, -3);	// params, dirs, format?, is_absolute, filename, bmap_ref, loader, bytes, bmap_ref
+					lua_getref(L, loader);	// params, dirs, format?, is_absolute, filename, ..., bmap_ref, loader
+					lua_pushvalue(L, bytes.mPos);	// params, dirs, format?, is_absolute, filename, ..., bmap_ref, loader, bytes
+					lua_pushvalue(L, -3);	// params, dirs, format?, is_absolute, filename, ..., bmap_ref, loader, bytes, bmap_ref
 
-					int result = lua_pcall(L, 1, 1, 0);	// params, dirs, format?, is_absolute, filename, bmap_ref, ok / err
+					bOK = lua_pcall(L, 2, 0, 0) == 0;	// params, dirs, format?, is_absolute, filename, ..., bmap_ref[, err]
 
-					bOK = 0 == result && lua_toboolean(L, -1) != 0;
-
-					lua_pop(L, 1);	// params, dirs, format?, is_absolute, filename, bmap_ref
-
-					if (bOK)
+					if (!bOK)
 					{
-						bOK = NewBytemap(L, bref->mW, bref->mH, format, bref->mBytes);	// params, dirs, format?, is_absolute, filename, bmap_ref[, bmap]
+						if (want_loader_errors) CoronaLuaWarning(L, "error = %s", lua_isstring(L, -1) ? lua_tostring(L, -1) : "ERROR");
+
+						lua_pop(L, 1);	// params, dirs, format?, is_absolute, filename, ..., bmap_ref
+					}
+
+					else
+					{
+						bOK = NewBytemap(L, bref->mW, bref->mH, format, bref->mBytes);	// params, dirs, format?, is_absolute, filename, ..., bmap_ref[, bmap]
 
 						break;
 					}
