@@ -347,6 +347,9 @@
     <ClCompile Include="..\..\ByteReader\ByteReader.cpp">
       <Filter>ByteReader</Filter>
     </ClCompile>
+    <ClCompile Include="..\shared\src\dsp\cost_neon.c">
+      <Filter>src\dsp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -509,6 +512,9 @@
     </ClInclude>
     <ClInclude Include="..\..\ByteReader\ByteReader.h">
       <Filter>ByteReader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\dsp\quant.h">
+      <Filter>src\dsp</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -28,7 +28,7 @@ extern "C" {
 // Defines and constants.
 
 #define MUX_MAJ_VERSION 1
-#define MUX_MIN_VERSION 0
+#define MUX_MIN_VERSION 1
 #define MUX_REV_VERSION 0
 
 // Chunk object.
@@ -231,4 +231,4 @@ WebPMuxError MuxValidate(const WebPMux* const mux);
 }    // extern "C"
 #endif
 
-#endif  /* WEBP_MUX_MUXI_H_ */
+#endif  // WEBP_MUX_MUXI_H_

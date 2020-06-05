@@ -33,6 +33,7 @@
     <ClCompile Include="..\shared\src\dsp\cost.c" />
     <ClCompile Include="..\shared\src\dsp\cost_mips32.c" />
     <ClCompile Include="..\shared\src\dsp\cost_mips_dsp_r2.c" />
+    <ClCompile Include="..\shared\src\dsp\cost_neon.c" />
     <ClCompile Include="..\shared\src\dsp\cost_sse2.c" />
     <ClCompile Include="..\shared\src\dsp\cpu.c" />
     <ClCompile Include="..\shared\src\dsp\dec.c" />
@@ -144,6 +145,7 @@
     <ClInclude Include="..\shared\src\dsp\mips_macro.h" />
     <ClInclude Include="..\shared\src\dsp\msa_macro.h" />
     <ClInclude Include="..\shared\src\dsp\neon.h" />
+    <ClInclude Include="..\shared\src\dsp\quant.h" />
     <ClInclude Include="..\shared\src\dsp\yuv.h" />
     <ClInclude Include="..\shared\src\enc\backward_references_enc.h" />
     <ClInclude Include="..\shared\src\enc\cost_enc.h" />

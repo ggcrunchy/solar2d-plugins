@@ -13,7 +13,7 @@ BUILD_TYPE=clean
 
 if [ $OS == Windows_NT ]
 then
-	ANDROID_NDK="D:/android-ndk-r20"
+	ANDROID_NDK="D:/android-ndk-r21b"
 	LIBS_SRC_DIR="$CORONA_ROOT/Corona/android/lib/gradle/Corona.aar"
 	CMD="cmd //c "
 else

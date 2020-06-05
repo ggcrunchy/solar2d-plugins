@@ -144,7 +144,8 @@ typedef enum {
   kSubGreen = 2,
   kSpatialSubGreen = 3,
   kPalette = 4,
-  kNumEntropyIx = 5
+  kPaletteAndSpatial = 5,
+  kNumEntropyIx = 6
 } EntropyIx;
 
 typedef enum {
@@ -405,7 +406,9 @@ static int EncoderAnalyze(VP8LEncoder* const enc,
       // Go brute force on all transforms.
       *crunch_configs_size = 0;
       for (i = 0; i < kNumEntropyIx; ++i) {
-        if (i != kPalette || use_palette) {
+        // We can only apply kPalette or kPaletteAndSpatial if we can indeed use
+        // a palette.
+        if ((i != kPalette && i != kPaletteAndSpatial) || use_palette) {
           assert(*crunch_configs_size < CRUNCH_CONFIGS_MAX);
           crunch_configs[(*crunch_configs_size)++].entropy_idx_ = i;
         }
@@ -462,6 +465,7 @@ static int GetHuffBitLengthsAndCodes(
   for (i = 0; i < histogram_image_size; ++i) {
     const VP8LHistogram* const histo = histogram_image->histograms[i];
     HuffmanTreeCode* const codes = &huffman_codes[5 * i];
+    assert(histo != NULL);
     for (k = 0; k < 5; ++k) {
       const int num_symbols =
           (k == 0) ? VP8LHistogramNumCodes(histo->palette_code_bits_) :
@@ -809,6 +813,7 @@ static WebPEncodingError EncodeImageNoHuffman(VP8LBitWriter* const bw,
     err = VP8_ENC_ERROR_OUT_OF_MEMORY;
     goto Error;
   }
+  VP8LHistogramSetClear(histogram_image);
 
   // Build histogram image and symbols from backward references.
   VP8LHistogramStoreRefs(refs, histogram_image->histograms[0]);
@@ -1248,14 +1253,20 @@ static WebPEncodingError MakeInputImageCopy(VP8LEncoder* const enc) {
   const WebPPicture* const picture = enc->pic_;
   const int width = picture->width;
   const int height = picture->height;
-  int y;
+
   err = AllocateTransformBuffer(enc, width, height);
   if (err != VP8_ENC_OK) return err;
   if (enc->argb_content_ == kEncoderARGB) return VP8_ENC_OK;
-  for (y = 0; y < height; ++y) {
-    memcpy(enc->argb_ + y * width,
-           picture->argb + y * picture->argb_stride,
-           width * sizeof(*enc->argb_));
+
+  {
+    uint32_t* dst = enc->argb_;
+    const uint32_t* src = picture->argb;
+    int y;
+    for (y = 0; y < height; ++y) {
+      memcpy(dst, src, width * sizeof(*dst));
+      dst += width;
+      src += picture->argb_stride;
+    }
   }
   enc->argb_content_ = kEncoderARGB;
   assert(enc->current_width_ == width);
@@ -1545,11 +1556,13 @@ static int EncodeStreamHook(void* input, void* data2) {
 
   for (idx = 0; idx < num_crunch_configs; ++idx) {
     const int entropy_idx = crunch_configs[idx].entropy_idx_;
-    enc->use_palette_ = (entropy_idx == kPalette);
+    enc->use_palette_ =
+        (entropy_idx == kPalette) || (entropy_idx == kPaletteAndSpatial);
     enc->use_subtract_green_ =
         (entropy_idx == kSubGreen) || (entropy_idx == kSpatialSubGreen);
-    enc->use_predict_ =
-        (entropy_idx == kSpatial) || (entropy_idx == kSpatialSubGreen);
+    enc->use_predict_ = (entropy_idx == kSpatial) ||
+                        (entropy_idx == kSpatialSubGreen) ||
+                        (entropy_idx == kPaletteAndSpatial);
     if (low_effort) {
       enc->use_cross_color_ = 0;
     } else {
