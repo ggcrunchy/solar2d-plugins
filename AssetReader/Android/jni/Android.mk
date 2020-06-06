@@ -56,8 +56,8 @@ LOCAL_CFLAGS := \
 
 LOCAL_LDLIBS := -llog -landroid
 
-LOCAL_CFLAGS += -fopenmp
-LOCAL_LDFLAGS += -fopenmp
+# LOCAL_CFLAGS += -fopenmp
+# LOCAL_LDFLAGS += -fopenmp
 
 LOCAL_SHARED_LIBRARIES := \
 	liblua libcorona
