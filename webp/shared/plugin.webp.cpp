@@ -114,7 +114,7 @@ static bool CheckCode (lua_State * L, VP8StatusCode code)
     return false;   // ..., err
 }
 
-CORONA_EXPORT int luaopen_plugin_webp (lua_State* L)
+CORONA_PUBLIC CORONA_EXPORT int luaopen_plugin_webp (lua_State* L) CORONA_PUBLIC_SUFFIX
 {
 	lua_newtable(L);// webp
 

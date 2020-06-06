@@ -20,9 +20,6 @@ PLUGIN_DIR := ../..
 SRC_DIR := $(PLUGIN_DIR)/shared
 BR_DIR := $(PLUGIN_DIR)/../ByteReader
 
-$(warning $(SRC_DIR))
-$(warning $(BR_DIR))
-
 # -----------------------------------------------------------------------------
 
 include $(CLEAR_VARS)
@@ -40,10 +37,6 @@ include $(PREBUILT_SHARED_LIBRARY)
 # -----------------------------------------------------------------------------
 
 LOCAL_PATH := $(SRC_DIR)
-
-$(warning $(LOCAL_PATH))
-$(warning $(SRC_DIR))
-$(warning $(BR_DIR))
 
 # -----------------------------------------------------------------------------
 
@@ -273,10 +266,6 @@ endif
 ################################################################################
 
 #LOCAL_PATH := $(call my-dir)
-
-$(warning $(LOCAL_PATH))
-$(warning $(SRC_DIR))
-$(warning $(BR_DIR))
 
 # -----------------------------------------------------------------------------
 
