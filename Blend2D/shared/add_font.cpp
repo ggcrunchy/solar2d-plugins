@@ -21,32 +21,76 @@
 * [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
 */
 
+#include "blend2d.h"
 #include "CoronaLua.h"
 #include "common.h"
+#include "utils.h"
 
-CORONA_EXPORT int luaopen_plugin_blend2d (lua_State* L)
+#define FONT_MNAME "blend2d.font"
+
+BLFontCore * GetFont (lua_State * L, int arg, bool * intact_ptr)
 {
-	lua_newtable(L);// blend2d
+	return Get<BLFontCore>(L, arg, FONT_MNAME, intact_ptr);
+}
 
-	luaL_Reg classes[] = {
-		{ "codec", add_codec },
-		{ "context", add_context },
-		{ "font", add_font },
-		{ "fontface", add_fontface },
-		{ "glyphbuffer", add_glyphbuffer },
-		{ "gradient", add_gradient },
-		{ "image", add_image },
-		{ "path", add_path },
-		{ "pattern", add_pattern },
-		{ nullptr, nullptr }
-	};
+static int NewFont (lua_State * L)
+{
+	BLFontCore * font = New<BLFontCore>(L);// font
 
-	for (int i = 0; classes[i].func; ++i)
+	blFontInit(font);
+
+	if (luaL_newmetatable(L, FONT_MNAME)) // font, mt
 	{
-		lua_pushcfunction(L, classes[i].func);	// blend2d, func
-		lua_call(L, 0, 1);	// blend2d, class
-		lua_setfield(L, -2, classes[i].name);	// blend2d = { ..., name = class }
+		luaL_Reg font_funcs[] = {
+			{
+				"createFromFace", [](lua_State * L)
+				{
+					blFontCreateFromFace(GetFont(L), GetFontFace(L, 2), (float)luaL_checknumber(L, 3));
+
+					return 0;
+				}
+			}, {
+				"destroy", [](lua_State * L)
+				{
+					BLFontCore * font = GetFont(L);
+
+					blFontDestroy(font);
+					Destroy(font);
+
+					return 1;
+				}
+			}, {
+				"__gc", [](lua_State * L)
+				{
+					bool intact;
+
+					BLFontCore * font = GetFont(L, 1, &intact);
+
+					if (intact) blFontDestroy(font);
+
+					return 0;
+				}
+			}, {
+				"__index", Index
+			}, {
+
+			},
+			{ nullptr, nullptr }
+		};
+
+		luaL_register(L, NULL, font_funcs);
 	}
+
+	lua_setmetatable(L, -2);// font
+
+	return 1;
+}
+
+int add_font (lua_State * L)
+{
+	lua_newtable(L);// t
+	lua_pushcfunction(L, NewFont);	// t, NewFont
+	lua_setfield(L, -2, "New");	// t = { New = NewFont }
 
 	return 1;
 }

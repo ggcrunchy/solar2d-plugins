@@ -186,6 +186,19 @@ static int NewContext (lua_State * L)
 					return 0;
 				}
 			}, {
+				"fillUtf8Text", [](lua_State * L)
+				{
+					luaL_argcheck(L, lua_istable(L, 2), 2, "Point must be a table");
+					lua_getfield(L, 2, "x"); // context, point, font, text, x
+					lua_getfield(L, 2, "y"); // context, point, font, text, x, y
+
+					BLPoint p = { luaL_checknumber(L, -2), luaL_checknumber(L, -1) };
+
+					blContextFillTextD(GetContext(L), &p, GetFont(L, 3), luaL_checkstring(L, 4), SIZE_MAX, BL_TEXT_ENCODING_UTF8);
+
+					return 0;
+				}
+			}, {
 				"__gc", [](lua_State * L)
 				{
 					bool intact;
@@ -201,9 +214,19 @@ static int NewContext (lua_State * L)
 			}, {
 				"rotate", [](lua_State * L)
 				{
-					double data[] = { luaL_checknumber(L, 2), luaL_checknumber(L, 3), luaL_checknumber(L, 4) };
+					if (lua_isnumber(L, 4))
+					{
+						double data[] = { luaL_checknumber(L, 2), luaL_checknumber(L, 3), lua_tonumber(L, 4) };
 
-					blContextMatrixOp(GetContext(L), BL_MATRIX2D_OP_ROTATE_PT, data);
+						blContextMatrixOp(GetContext(L), BL_MATRIX2D_OP_ROTATE_PT, data);
+					}
+
+					else
+					{
+						double data = luaL_checknumber(L, 2);
+
+						blContextMatrixOp(GetContext(L), BL_MATRIX2D_OP_ROTATE, &data);
+					}
 
 					return 0;
 				}

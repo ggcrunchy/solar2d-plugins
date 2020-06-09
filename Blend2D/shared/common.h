@@ -25,12 +25,18 @@
 
 int add_codec (lua_State * L);
 int add_context (lua_State * L);
+int add_font (lua_State * L);
+int add_fontface (lua_State * L);
+int add_glyphbuffer (lua_State * L);
 int add_gradient (lua_State * L);
 int add_image (lua_State * L);
 int add_path (lua_State * L);
 int add_pattern (lua_State * L);
 
 struct BLContextCore * GetContext (lua_State * L, int arg = 1, bool * intact_ptr = nullptr);
+struct BLFontCore * GetFont (lua_State * L, int arg = 1, bool * intact_ptr = nullptr);
+struct BLFontFaceCore * GetFontFace (lua_State * L, int arg = 1, bool * intact_ptr = nullptr);
+struct BLGlyphBufferCore * GetGlyphBuffer (lua_State * L, int arg = 1, bool * intact_ptr = nullptr);
 struct BLGradientCore * GetGradient (lua_State * L, int arg = 1, bool * intact_ptr = nullptr);
 struct BLImageCodecCore * GetImageCodec (lua_State * L, int arg = 1, bool * intact_ptr = nullptr);
 struct BLImageCore * GetImage (lua_State * L, int arg = 1, bool * intact_ptr = nullptr);

@@ -11,6 +11,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\shared\add_fontface.cpp" />
+    <ClCompile Include="..\shared\add_glyphbuffer.cpp" />
     <ClCompile Include="..\shared\add_gradient.cpp" />
     <ClCompile Include="..\shared\add_pattern.cpp" />
     <ClCompile Include="..\shared\asmjit\src\asmjit\core\arch.cpp" />
@@ -151,6 +153,7 @@
     <ClCompile Include="..\shared\add_context.cpp" />
     <ClCompile Include="..\shared\add_image.cpp" />
     <ClCompile Include="..\shared\add_path.cpp" />
+    <ClCompile Include="..\shared\add_font.cpp" />
     <ClCompile Include="..\shared\plugin.blend2d.cpp" />
     <ClCompile Include="..\shared\utils.cpp" />
   </ItemGroup>

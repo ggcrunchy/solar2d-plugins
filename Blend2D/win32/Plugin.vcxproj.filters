@@ -423,6 +423,15 @@
     <ClCompile Include="..\shared\add_pattern.cpp">
       <Filter>classes</Filter>
     </ClCompile>
+    <ClCompile Include="..\shared\add_fontface.cpp">
+      <Filter>classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\add_glyphbuffer.cpp">
+      <Filter>classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\add_font.cpp">
+      <Filter>classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
