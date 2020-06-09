@@ -24,11 +24,11 @@
 #include "CoronaLua.h"
 #include "common.h"
 
-CORONA_EXPORT int luaopen_plugin_blend2d (lua_State* L)
+CORONA_PUBLIC CORONA_EXPORT int luaopen_plugin_blend2d (lua_State * L) CORONA_PUBLIC_SUFFIX
 {
 	lua_newtable(L);// blend2d
 
-	luaL_Reg classes[] = {
+    luaL_Reg classes[] = {
 		{ "codec", add_codec },
 		{ "context", add_context },
 		{ "font", add_font },

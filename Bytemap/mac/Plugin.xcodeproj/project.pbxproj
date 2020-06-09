@@ -50,7 +50,7 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXFileReference section */
-		A49186401641DDB800A39286 /* plugin_Bytemap.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = plugin_Bytemap.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		A49186401641DDB800A39286 /* Bytemap.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = Bytemap.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE05C4F91D0F7D280001242B /* Bytes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Bytes.h; path = ../shared/Bytes.h; sourceTree = "<group>"; };
 		CE05C4FA1D0F7D280001242B /* BytesOpts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BytesOpts.cpp; path = ../shared/BytesOpts.cpp; sourceTree = "<group>"; };
 		CE05C4FC1D0F7D280001242B /* GetBytes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GetBytes.cpp; path = ../shared/GetBytes.cpp; sourceTree = "<group>"; };
@@ -119,7 +119,7 @@
 		A482DA8515F9B7E70084DC42 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A49186401641DDB800A39286 /* plugin_Bytemap.dylib */,
+				A49186401641DDB800A39286 /* Bytemap.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -197,9 +197,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		A49186331641DDB800A39286 /* plugin_Bytemap */ = {
+		A49186331641DDB800A39286 /* Bytemap */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "plugin_Bytemap" */;
+			buildConfigurationList = A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "Bytemap" */;
 			buildPhases = (
 				A49186341641DDB800A39286 /* Sources */,
 				A49186381641DDB800A39286 /* Frameworks */,
@@ -211,9 +211,9 @@
 			);
 			dependencies = (
 			);
-			name = plugin_Bytemap;
+			name = Bytemap;
 			productName = ads;
-			productReference = A49186401641DDB800A39286 /* plugin_Bytemap.dylib */;
+			productReference = A49186401641DDB800A39286 /* Bytemap.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 /* End PBXNativeTarget section */
@@ -236,7 +236,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A49186331641DDB800A39286 /* plugin_Bytemap */,
+				A49186331641DDB800A39286 /* Bytemap */,
 			);
 		};
 /* End PBXProject section */
@@ -420,7 +420,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "plugin_Bytemap" */ = {
+		A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "Bytemap" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A491863E1641DDB800A39286 /* Debug */,

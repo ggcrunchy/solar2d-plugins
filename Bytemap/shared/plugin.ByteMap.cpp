@@ -492,7 +492,7 @@ CORONA_EXPORT int luaopen_plugin_Bytemapp (lua_State * L)
 {
 	lua_newtable(L);// bytemap
 
-	luaL_Reg bytemap_funcs[] = {
+    luaL_Reg bytemap_funcs[] = {
 		{
 			"newTexture", [](lua_State * L)
 			{

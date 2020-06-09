@@ -3,7 +3,7 @@
 path=`dirname $0`
 
 OUTPUT_DIR=$1
-TARGET_NAME=plugin_tinyfiledialogs
+TARGET_NAME=webp
 OUTPUT_SUFFIX=dylib
 CONFIG=Release
 
@@ -44,7 +44,10 @@ checkError
 xcodebuild -project "$path/Plugin.xcodeproj" -configuration $CONFIG
 checkError
 
-PLUGINS_DIR="/Users/User/Library/Application Support/Corona/Simulator/Plugins/plugin/"
+PLUGINS_DIR="$HOME/Library/Application Support/Corona/Simulator/Plugins/plugin/"
 
 cp "$path/build/Release/$TARGET_NAME.$OUTPUT_SUFFIX" "$OUTPUT_DIR"
-cp "./$TARGET_NAME.$OUTPUT_SUFFIX" "$PLUGINS_DIR/tinyfiledialogs.dylib"
+cp "./$TARGET_NAME.$OUTPUT_SUFFIX" "$PLUGINS_DIR/$TARGET_NAME.dylib"
+
+mkdir -p "$HOME/Solar2DPlugins/com.xibalbastudios/$TARGET_NAME/macos-sim"
+tar -czf "$HOME/Solar2DPlugins/com.xibalbastudios/$TARGET_NAME/macos-sim/data.tgz" "./$TARGET_NAME.dylib"

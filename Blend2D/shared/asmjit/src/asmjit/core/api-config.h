@@ -156,6 +156,7 @@
   #define ASMJIT_ARCH_X86 64
 #elif defined(_M_IX86) || defined(__X86__) || defined(__i386__)
   #define ASMJIT_ARCH_X86 32
+
 #else
   #define ASMJIT_ARCH_X86 0
 #endif

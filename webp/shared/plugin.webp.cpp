@@ -161,7 +161,12 @@ CORONA_PUBLIC CORONA_EXPORT int luaopen_plugin_webp (lua_State* L) CORONA_PUBLIC
 
         if (!WebPGetInfo(static_cast<const uint8_t *>(input.mBytes), input.mCount, &w, &h)) return luaL_error(L, "Unable to get info");
 
-        ByteReaderWriterMultipleSized output{L, 2, {size_t(w), size_t(h)}, ByteReaderOpts{}.SetGetStrides(true)};   // input, output[, err]
+        std::vector<size_t> sizes;
+        
+        sizes.push_back(size_t(w));
+        sizes.push_back(size_t(h));
+        
+        ByteReaderWriterMultipleSized output{L, 2, sizes, ByteReaderOpts{}.SetGetStrides(true)};   // input, output[, err]
 
         if (!output.mBytes) return lua_error(L);
 
