@@ -25,7 +25,7 @@
 #define BLEND2D_FONTMANAGER_H_INCLUDED
 
 #include "./font.h"
-#include "./string.h"
+#include "./string3.h"
 
 //! \addtogroup blend2d_api_text
 //! \{

@@ -27,7 +27,7 @@
 #include "../core/arch.h"
 #include "../core/features.h"
 #include "../core/globals.h"
-#include "../core/string.h"
+#include "../core/string2.h"
 
 ASMJIT_BEGIN_NAMESPACE
 

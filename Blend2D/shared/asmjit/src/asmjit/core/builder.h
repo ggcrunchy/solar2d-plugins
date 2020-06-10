@@ -32,7 +32,7 @@
 #include "../core/constpool.h"
 #include "../core/inst.h"
 #include "../core/operand.h"
-#include "../core/string.h"
+#include "../core/string2.h"
 #include "../core/support.h"
 #include "../core/zone.h"
 #include "../core/zonevector.h"

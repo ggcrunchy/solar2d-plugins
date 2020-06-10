@@ -26,7 +26,7 @@
 
 #include "../core/cpuinfo.h"
 #include "../core/operand.h"
-#include "../core/string.h"
+#include "../core/string2.h"
 #include "../core/support.h"
 
 ASMJIT_BEGIN_NAMESPACE

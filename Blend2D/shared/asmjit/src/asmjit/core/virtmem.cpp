@@ -25,7 +25,7 @@
 #ifndef ASMJIT_NO_JIT
 
 #include "../core/osutils.h"
-#include "../core/string.h"
+#include "../core/string2.h"
 #include "../core/support.h"
 #include "../core/virtmem.h"
 

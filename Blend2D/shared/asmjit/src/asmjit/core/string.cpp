@@ -22,7 +22,7 @@
 // 3. This notice may not be removed or altered from any source distribution.
 
 #include "../core/api-build_p.h"
-#include "../core/string.h"
+#include "../core/string2.h"
 #include "../core/support.h"
 
 ASMJIT_BEGIN_NAMESPACE

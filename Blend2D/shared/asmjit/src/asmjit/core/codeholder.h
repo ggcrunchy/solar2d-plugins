@@ -27,7 +27,7 @@
 #include "../core/arch.h"
 #include "../core/datatypes.h"
 #include "../core/operand.h"
-#include "../core/string.h"
+#include "../core/string2.h"
 #include "../core/support.h"
 #include "../core/target.h"
 #include "../core/zone.h"

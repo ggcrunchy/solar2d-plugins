@@ -209,7 +209,7 @@
 		CE732FD824901D210055A521 /* scopedallocator_p.h in Headers */ = {isa = PBXBuildFile; fileRef = CE732E9C24901D200055A521 /* scopedallocator_p.h */; };
 		CE732FD924901D210055A521 /* simd_p.h in Headers */ = {isa = PBXBuildFile; fileRef = CE732E9D24901D200055A521 /* simd_p.h */; };
 		CE732FDA24901D210055A521 /* simd_x86_p.h in Headers */ = {isa = PBXBuildFile; fileRef = CE732E9E24901D200055A521 /* simd_x86_p.h */; };
-		CE732FDB24901D210055A521 /* string.h in Headers */ = {isa = PBXBuildFile; fileRef = CE732E9F24901D200055A521 /* string.h */; };
+		CE732FDB24901D210055A521 /* string3.h in Headers */ = {isa = PBXBuildFile; fileRef = CE732E9F24901D200055A521 /* string3.h */; };
 		CE732FDC24901D210055A521 /* string_b2d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE732EA024901D200055A521 /* string_b2d.cpp */; };
 		CE732FDD24901D210055A521 /* string_p.h in Headers */ = {isa = PBXBuildFile; fileRef = CE732EA124901D200055A521 /* string_p.h */; };
 		CE732FDE24901D210055A521 /* style.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE732EA224901D200055A521 /* style.cpp */; };
@@ -297,7 +297,7 @@
 		CE73331124901DED0055A521 /* rastack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE7332C524901DEC0055A521 /* rastack.cpp */; };
 		CE73331224901DED0055A521 /* rastack_p.h in Headers */ = {isa = PBXBuildFile; fileRef = CE7332C624901DEC0055A521 /* rastack_p.h */; };
 		CE73331324901DED0055A521 /* string.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE7332C724901DEC0055A521 /* string.cpp */; };
-		CE73331424901DED0055A521 /* string.h in Headers */ = {isa = PBXBuildFile; fileRef = CE7332C824901DEC0055A521 /* string.h */; };
+		CE73331424901DED0055A521 /* string2.h in Headers */ = {isa = PBXBuildFile; fileRef = CE7332C824901DEC0055A521 /* string2.h */; };
 		CE73331524901DED0055A521 /* support.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE7332C924901DEC0055A521 /* support.cpp */; };
 		CE73331624901DED0055A521 /* support.h in Headers */ = {isa = PBXBuildFile; fileRef = CE7332CA24901DEC0055A521 /* support.h */; };
 		CE73331724901DED0055A521 /* target.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE7332CB24901DEC0055A521 /* target.cpp */; };
@@ -322,6 +322,32 @@
 		CE73332A24901DED0055A521 /* core.h in Headers */ = {isa = PBXBuildFile; fileRef = CE7332DE24901DEC0055A521 /* core.h */; };
 		CE73332B24901DED0055A521 /* x86.h in Headers */ = {isa = PBXBuildFile; fileRef = CE7332DF24901DEC0055A521 /* x86.h */; };
 		CE73332D249046F30055A521 /* api-config.h in Headers */ = {isa = PBXBuildFile; fileRef = CE73332C249046F30055A521 /* api-config.h */; };
+		CE73336C24905D470055A521 /* x86builder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE73336324905D450055A521 /* x86builder.cpp */; };
+		CE73336D24905D470055A521 /* x86compiler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE73336424905D460055A521 /* x86compiler.cpp */; };
+		CE73336E24905D470055A521 /* x86builder.h in Headers */ = {isa = PBXBuildFile; fileRef = CE73336524905D460055A521 /* x86builder.h */; };
+		CE73336F24905D470055A521 /* x86assembler.h in Headers */ = {isa = PBXBuildFile; fileRef = CE73336624905D460055A521 /* x86assembler.h */; };
+		CE73337024905D470055A521 /* x86callconv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE73336724905D460055A521 /* x86callconv.cpp */; };
+		CE73337124905D470055A521 /* x86instapi_p.h in Headers */ = {isa = PBXBuildFile; fileRef = CE73336824905D460055A521 /* x86instapi_p.h */; };
+		CE73337224905D470055A521 /* x86instdb.h in Headers */ = {isa = PBXBuildFile; fileRef = CE73336924905D460055A521 /* x86instdb.h */; };
+		CE73337324905D470055A521 /* x86features.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE73336A24905D460055A521 /* x86features.cpp */; };
+		CE73337424905D470055A521 /* x86callconv_p.h in Headers */ = {isa = PBXBuildFile; fileRef = CE73336B24905D460055A521 /* x86callconv_p.h */; };
+		CE73338624905D9A0055A521 /* x86instdb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE73337524905D980055A521 /* x86instdb.cpp */; };
+		CE73338724905D9A0055A521 /* x86features.h in Headers */ = {isa = PBXBuildFile; fileRef = CE73337624905D980055A521 /* x86features.h */; };
+		CE73338824905D9A0055A521 /* x86compiler.h in Headers */ = {isa = PBXBuildFile; fileRef = CE73337724905D980055A521 /* x86compiler.h */; };
+		CE73338924905D9A0055A521 /* x86internal_p.h in Headers */ = {isa = PBXBuildFile; fileRef = CE73337824905D980055A521 /* x86internal_p.h */; };
+		CE73338A24905D9A0055A521 /* x86operand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE73337924905D980055A521 /* x86operand.cpp */; };
+		CE73338B24905D9A0055A521 /* x86logging_p.h in Headers */ = {isa = PBXBuildFile; fileRef = CE73337A24905D990055A521 /* x86logging_p.h */; };
+		CE73338C24905D9A0055A521 /* x86instapi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE73337B24905D990055A521 /* x86instapi.cpp */; };
+		CE73338D24905D9A0055A521 /* x86operand.h in Headers */ = {isa = PBXBuildFile; fileRef = CE73337C24905D990055A521 /* x86operand.h */; };
+		CE73338E24905D9A0055A521 /* x86rapass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE73337D24905D990055A521 /* x86rapass.cpp */; };
+		CE73338F24905D9A0055A521 /* x86emitter.h in Headers */ = {isa = PBXBuildFile; fileRef = CE73337E24905D990055A521 /* x86emitter.h */; };
+		CE73339024905D9A0055A521 /* x86globals.h in Headers */ = {isa = PBXBuildFile; fileRef = CE73337F24905D990055A521 /* x86globals.h */; };
+		CE73339124905D9A0055A521 /* x86instdb_p.h in Headers */ = {isa = PBXBuildFile; fileRef = CE73338024905D990055A521 /* x86instdb_p.h */; };
+		CE73339224905D9A0055A521 /* x86opcode_p.h in Headers */ = {isa = PBXBuildFile; fileRef = CE73338124905D990055A521 /* x86opcode_p.h */; };
+		CE73339324905D9A0055A521 /* x86logging.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE73338224905D9A0055A521 /* x86logging.cpp */; };
+		CE73339424905D9A0055A521 /* x86assembler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE73338324905D9A0055A521 /* x86assembler.cpp */; };
+		CE73339524905D9A0055A521 /* x86rapass_p.h in Headers */ = {isa = PBXBuildFile; fileRef = CE73338424905D9A0055A521 /* x86rapass_p.h */; };
+		CE73339624905D9A0055A521 /* x86internal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE73338524905D9A0055A521 /* x86internal.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -544,7 +570,7 @@
 		CE732E9C24901D200055A521 /* scopedallocator_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scopedallocator_p.h; sourceTree = "<group>"; };
 		CE732E9D24901D200055A521 /* simd_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = simd_p.h; sourceTree = "<group>"; };
 		CE732E9E24901D200055A521 /* simd_x86_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = simd_x86_p.h; sourceTree = "<group>"; };
-		CE732E9F24901D200055A521 /* string.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string.h; sourceTree = "<group>"; };
+		CE732E9F24901D200055A521 /* string3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string3.h; sourceTree = "<group>"; };
 		CE732EA024901D200055A521 /* string_b2d.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = string_b2d.cpp; sourceTree = "<group>"; };
 		CE732EA124901D200055A521 /* string_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_p.h; sourceTree = "<group>"; };
 		CE732EA224901D200055A521 /* style.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = style.cpp; sourceTree = "<group>"; };
@@ -632,7 +658,7 @@
 		CE7332C524901DEC0055A521 /* rastack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = rastack.cpp; sourceTree = "<group>"; };
 		CE7332C624901DEC0055A521 /* rastack_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rastack_p.h; sourceTree = "<group>"; };
 		CE7332C724901DEC0055A521 /* string.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = string.cpp; sourceTree = "<group>"; };
-		CE7332C824901DEC0055A521 /* string.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string.h; sourceTree = "<group>"; };
+		CE7332C824901DEC0055A521 /* string2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string2.h; sourceTree = "<group>"; };
 		CE7332C924901DEC0055A521 /* support.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = support.cpp; sourceTree = "<group>"; };
 		CE7332CA24901DEC0055A521 /* support.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = support.h; sourceTree = "<group>"; };
 		CE7332CB24901DEC0055A521 /* target.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = target.cpp; sourceTree = "<group>"; };
@@ -657,6 +683,32 @@
 		CE7332DE24901DEC0055A521 /* core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core.h; sourceTree = "<group>"; };
 		CE7332DF24901DEC0055A521 /* x86.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = x86.h; sourceTree = "<group>"; };
 		CE73332C249046F30055A521 /* api-config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "api-config.h"; sourceTree = "<group>"; };
+		CE73336324905D450055A521 /* x86builder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = x86builder.cpp; path = ../x86/x86builder.cpp; sourceTree = "<group>"; };
+		CE73336424905D460055A521 /* x86compiler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = x86compiler.cpp; path = ../x86/x86compiler.cpp; sourceTree = "<group>"; };
+		CE73336524905D460055A521 /* x86builder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = x86builder.h; path = ../x86/x86builder.h; sourceTree = "<group>"; };
+		CE73336624905D460055A521 /* x86assembler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = x86assembler.h; path = ../x86/x86assembler.h; sourceTree = "<group>"; };
+		CE73336724905D460055A521 /* x86callconv.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = x86callconv.cpp; path = ../x86/x86callconv.cpp; sourceTree = "<group>"; };
+		CE73336824905D460055A521 /* x86instapi_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = x86instapi_p.h; path = ../x86/x86instapi_p.h; sourceTree = "<group>"; };
+		CE73336924905D460055A521 /* x86instdb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = x86instdb.h; path = ../x86/x86instdb.h; sourceTree = "<group>"; };
+		CE73336A24905D460055A521 /* x86features.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = x86features.cpp; path = ../x86/x86features.cpp; sourceTree = "<group>"; };
+		CE73336B24905D460055A521 /* x86callconv_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = x86callconv_p.h; path = ../x86/x86callconv_p.h; sourceTree = "<group>"; };
+		CE73337524905D980055A521 /* x86instdb.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = x86instdb.cpp; path = ../x86/x86instdb.cpp; sourceTree = "<group>"; };
+		CE73337624905D980055A521 /* x86features.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = x86features.h; path = ../x86/x86features.h; sourceTree = "<group>"; };
+		CE73337724905D980055A521 /* x86compiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = x86compiler.h; path = ../x86/x86compiler.h; sourceTree = "<group>"; };
+		CE73337824905D980055A521 /* x86internal_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = x86internal_p.h; path = ../x86/x86internal_p.h; sourceTree = "<group>"; };
+		CE73337924905D980055A521 /* x86operand.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = x86operand.cpp; path = ../x86/x86operand.cpp; sourceTree = "<group>"; };
+		CE73337A24905D990055A521 /* x86logging_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = x86logging_p.h; path = ../x86/x86logging_p.h; sourceTree = "<group>"; };
+		CE73337B24905D990055A521 /* x86instapi.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = x86instapi.cpp; path = ../x86/x86instapi.cpp; sourceTree = "<group>"; };
+		CE73337C24905D990055A521 /* x86operand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = x86operand.h; path = ../x86/x86operand.h; sourceTree = "<group>"; };
+		CE73337D24905D990055A521 /* x86rapass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = x86rapass.cpp; path = ../x86/x86rapass.cpp; sourceTree = "<group>"; };
+		CE73337E24905D990055A521 /* x86emitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = x86emitter.h; path = ../x86/x86emitter.h; sourceTree = "<group>"; };
+		CE73337F24905D990055A521 /* x86globals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = x86globals.h; path = ../x86/x86globals.h; sourceTree = "<group>"; };
+		CE73338024905D990055A521 /* x86instdb_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = x86instdb_p.h; path = ../x86/x86instdb_p.h; sourceTree = "<group>"; };
+		CE73338124905D990055A521 /* x86opcode_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = x86opcode_p.h; path = ../x86/x86opcode_p.h; sourceTree = "<group>"; };
+		CE73338224905D9A0055A521 /* x86logging.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = x86logging.cpp; path = ../x86/x86logging.cpp; sourceTree = "<group>"; };
+		CE73338324905D9A0055A521 /* x86assembler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = x86assembler.cpp; path = ../x86/x86assembler.cpp; sourceTree = "<group>"; };
+		CE73338424905D9A0055A521 /* x86rapass_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = x86rapass_p.h; path = ../x86/x86rapass_p.h; sourceTree = "<group>"; };
+		CE73338524905D9A0055A521 /* x86internal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = x86internal.cpp; path = ../x86/x86internal.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -824,7 +876,7 @@
 				CE732E9C24901D200055A521 /* scopedallocator_p.h */,
 				CE732E9D24901D200055A521 /* simd_p.h */,
 				CE732E9E24901D200055A521 /* simd_x86_p.h */,
-				CE732E9F24901D200055A521 /* string.h */,
+				CE732E9F24901D200055A521 /* string3.h */,
 				CE732EA024901D200055A521 /* string_b2d.cpp */,
 				CE732EA124901D200055A521 /* string_p.h */,
 				CE732EA224901D200055A521 /* style.cpp */,
@@ -1021,6 +1073,7 @@
 		CE73329324901DEC0055A521 /* asmjit */ = {
 			isa = PBXGroup;
 			children = (
+				CE73336224905CCD0055A521 /* x86 */,
 				CE73329424901DEC0055A521 /* asmjit.h */,
 				CE73329524901DEC0055A521 /* core */,
 				CE7332DE24901DEC0055A521 /* core.h */,
@@ -1082,7 +1135,7 @@
 				CE7332C524901DEC0055A521 /* rastack.cpp */,
 				CE7332C624901DEC0055A521 /* rastack_p.h */,
 				CE7332C724901DEC0055A521 /* string.cpp */,
-				CE7332C824901DEC0055A521 /* string.h */,
+				CE7332C824901DEC0055A521 /* string2.h */,
 				CE7332C924901DEC0055A521 /* support.cpp */,
 				CE7332CA24901DEC0055A521 /* support.h */,
 				CE7332CB24901DEC0055A521 /* target.cpp */,
@@ -1108,6 +1161,40 @@
 			path = core;
 			sourceTree = "<group>";
 		};
+		CE73336224905CCD0055A521 /* x86 */ = {
+			isa = PBXGroup;
+			children = (
+				CE73338324905D9A0055A521 /* x86assembler.cpp */,
+				CE73337724905D980055A521 /* x86compiler.h */,
+				CE73337E24905D990055A521 /* x86emitter.h */,
+				CE73337624905D980055A521 /* x86features.h */,
+				CE73337F24905D990055A521 /* x86globals.h */,
+				CE73337B24905D990055A521 /* x86instapi.cpp */,
+				CE73338024905D990055A521 /* x86instdb_p.h */,
+				CE73337524905D980055A521 /* x86instdb.cpp */,
+				CE73337824905D980055A521 /* x86internal_p.h */,
+				CE73338524905D9A0055A521 /* x86internal.cpp */,
+				CE73337A24905D990055A521 /* x86logging_p.h */,
+				CE73338224905D9A0055A521 /* x86logging.cpp */,
+				CE73338124905D990055A521 /* x86opcode_p.h */,
+				CE73337924905D980055A521 /* x86operand.cpp */,
+				CE73337C24905D990055A521 /* x86operand.h */,
+				CE73338424905D9A0055A521 /* x86rapass_p.h */,
+				CE73337D24905D990055A521 /* x86rapass.cpp */,
+				CE73336624905D460055A521 /* x86assembler.h */,
+				CE73336324905D450055A521 /* x86builder.cpp */,
+				CE73336524905D460055A521 /* x86builder.h */,
+				CE73336B24905D460055A521 /* x86callconv_p.h */,
+				CE73336724905D460055A521 /* x86callconv.cpp */,
+				CE73336424905D460055A521 /* x86compiler.cpp */,
+				CE73336A24905D460055A521 /* x86features.cpp */,
+				CE73336824905D460055A521 /* x86instapi_p.h */,
+				CE73336924905D460055A521 /* x86instdb.h */,
+			);
+			name = x86;
+			path = "New Group";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -1120,6 +1207,7 @@
 				CE732F4524901D200055A521 /* filesystem_p.h in Headers */,
 				CE732F7F24901D200055A521 /* otplatform_p.h in Headers */,
 				CE732F6A24901D200055A521 /* matrix_p.h in Headers */,
+				CE73337124905D470055A521 /* x86instapi_p.h in Headers */,
 				CE73331024901DED0055A521 /* rapass_p.h in Headers */,
 				CE73332724901DED0055A521 /* zonetree.h in Headers */,
 				CE732FC124901D200055A521 /* rasterfetchdata_p.h in Headers */,
@@ -1127,6 +1215,7 @@
 				CE732F1424901D200055A521 /* blend2d-impl.h in Headers */,
 				CE732EC724901D200055A521 /* utils.h in Headers */,
 				CE732FCD24901D200055A521 /* rasterworksynchronization_p.h in Headers */,
+				CE73336F24905D470055A521 /* x86assembler.h in Headers */,
 				CE73330524901DEC0055A521 /* misc_p.h in Headers */,
 				CE7332E224901DEC0055A521 /* api-build_p.h in Headers */,
 				CE732FB524901D200055A521 /* rastercommandprocasync_p.h in Headers */,
@@ -1142,10 +1231,12 @@
 				CE73330224901DEC0055A521 /* jitruntime.h in Headers */,
 				CE73332224901DED0055A521 /* zonelist.h in Headers */,
 				CE73331A24901DED0055A521 /* type.h in Headers */,
+				CE73338D24905D9A0055A521 /* x86operand.h in Headers */,
 				CE732F6624901D200055A521 /* math_p.h in Headers */,
 				CE732F5324901D200055A521 /* geometry.h in Headers */,
 				CE732F8124901D200055A521 /* path.h in Headers */,
 				CE732FBF24901D200055A521 /* rasterdefs_p.h in Headers */,
+				CE73337224905D470055A521 /* x86instdb.h in Headers */,
 				CE732FA324901D200055A521 /* piperegusage_p.h in Headers */,
 				CE7332F724901DEC0055A521 /* emitter.h in Headers */,
 				CE7332EE24901DEC0055A521 /* codeholder.h in Headers */,
@@ -1158,14 +1249,18 @@
 				CE73330A24901DED0055A521 /* raassignment_p.h in Headers */,
 				CE732F3F24901D200055A521 /* compop_p.h in Headers */,
 				CE73330924901DED0055A521 /* osutils.h in Headers */,
+				CE73338724905D9A0055A521 /* x86features.h in Headers */,
 				CE732F2B24901D200055A521 /* bitarray_p.h in Headers */,
 				CE7332F024901DEC0055A521 /* compiler.h in Headers */,
+				CE73337424905D470055A521 /* x86callconv_p.h in Headers */,
 				CE732F8F24901D200055A521 /* fetchpart_p.h in Headers */,
 				CE732F6824901D200055A521 /* matrix.h in Headers */,
+				CE73338B24905D9A0055A521 /* x86logging_p.h in Headers */,
 				CE732F8924901D200055A521 /* pipedefs_p.h in Headers */,
 				CE732FC324901D200055A521 /* rasterjobproc_p.h in Headers */,
 				CE732F2D24901D200055A521 /* bitops_p.h in Headers */,
 				CE732FD024901D200055A521 /* region_p.h in Headers */,
+				CE73338924905D9A0055A521 /* x86internal_p.h in Headers */,
 				CE732F7C24901D200055A521 /* otmetrics_p.h in Headers */,
 				CE732FE724901D210055A521 /* mutex_p.h in Headers */,
 				CE732FBB24901D200055A521 /* rastercontextops_p.h in Headers */,
@@ -1183,7 +1278,7 @@
 				CE732F9724901D200055A521 /* fetchutils_p.h in Headers */,
 				CE732FD924901D210055A521 /* simd_p.h in Headers */,
 				CE732FED24901D210055A521 /* uniqueidgenerator_p.h in Headers */,
-				CE73331424901DED0055A521 /* string.h in Headers */,
+				CE73331424901DED0055A521 /* string2.h in Headers */,
 				CE732F5024901D200055A521 /* format.h in Headers */,
 				CE732F8D24901D200055A521 /* fetchgradientpart_p.h in Headers */,
 				CE732FBD24901D200055A521 /* rastercontextstyle_p.h in Headers */,
@@ -1196,6 +1291,7 @@
 				CE732FD224901D200055A521 /* rgba.h in Headers */,
 				CE7332E124901DEC0055A521 /* asmjit.h in Headers */,
 				CE73331224901DED0055A521 /* rastack_p.h in Headers */,
+				CE73339224905D9A0055A521 /* x86opcode_p.h in Headers */,
 				CE73331624901DED0055A521 /* support.h in Headers */,
 				CE732F7A24901D200055A521 /* otlayout_p.h in Headers */,
 				CE732FF124901D210055A521 /* unicode_p.h in Headers */,
@@ -1247,10 +1343,11 @@
 				CE732FCF24901D200055A521 /* region.h in Headers */,
 				CE732F1B24901D200055A521 /* blend2d.h in Headers */,
 				CE732FD524901D210055A521 /* runtime.h in Headers */,
+				CE73339524905D9A0055A521 /* x86rapass_p.h in Headers */,
 				CE732F2124901D200055A521 /* api-internal_p.h in Headers */,
 				CE732FE624901D210055A521 /* conditionvariable_p.h in Headers */,
 				CE732F8224901D200055A521 /* path_p.h in Headers */,
-				CE732FDB24901D210055A521 /* string.h in Headers */,
+				CE732FDB24901D210055A521 /* string3.h in Headers */,
 				CE732FE424901D210055A521 /* tables_p.h in Headers */,
 				CE732F3724901D200055A521 /* jpegops_p.h in Headers */,
 				CE732F8624901D200055A521 /* pattern.h in Headers */,
@@ -1275,6 +1372,8 @@
 				CE732F4D24901D200055A521 /* fontmanager.h in Headers */,
 				CE732FB924901D200055A521 /* rastercontext_p.h in Headers */,
 				CE732F2524901D200055A521 /* array.h in Headers */,
+				CE73338824905D9A0055A521 /* x86compiler.h in Headers */,
+				CE73339124905D9A0055A521 /* x86instdb_p.h in Headers */,
 				CE732F2624901D200055A521 /* array_p.h in Headers */,
 				CE732F3324901D200055A521 /* jpegcodec_p.h in Headers */,
 				CE732FE024901D210055A521 /* style_p.h in Headers */,
@@ -1282,10 +1381,12 @@
 				CE7332EC24901DEC0055A521 /* codebufferwriter_p.h in Headers */,
 				CE7332EB24901DEC0055A521 /* callconv.h in Headers */,
 				CE732F4724901D200055A521 /* fixedpiperuntime_p.h in Headers */,
+				CE73336E24905D470055A521 /* x86builder.h in Headers */,
 				CE732F2024901D200055A521 /* api-impl.h in Headers */,
 				CE732EC624901D200055A521 /* common.h in Headers */,
 				CE732FB724901D200055A521 /* rastercommandserializer_p.h in Headers */,
 				CE732FD824901D210055A521 /* scopedallocator_p.h in Headers */,
+				CE73338F24905D9A0055A521 /* x86emitter.h in Headers */,
 				CE732F5724901D200055A521 /* glyphbuffer_p.h in Headers */,
 				CE732F4924901D200055A521 /* font.h in Headers */,
 				CE732F1F24901D200055A521 /* api-build_p.h in Headers */,
@@ -1296,6 +1397,7 @@
 				CE732F5B24901D200055A521 /* gradient_p.h in Headers */,
 				CE7332F824901DEC0055A521 /* features.h in Headers */,
 				CE73330E24901DED0055A521 /* ralocal_p.h in Headers */,
+				CE73339024905D9A0055A521 /* x86globals.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1374,12 +1476,16 @@
 				CE732F4024901D200055A521 /* context.cpp in Sources */,
 				CE732FF524901D210055A521 /* zeroallocator.cpp in Sources */,
 				CE73332624901DED0055A521 /* zonetree.cpp in Sources */,
+				CE73337324905D470055A521 /* x86features.cpp in Sources */,
 				CE732FF924901D210055A521 /* zonehash_b2d.cpp in Sources */,
 				CE732F6C24901D200055A521 /* otcff.cpp in Sources */,
 				CE732FD124901D200055A521 /* rgba.cpp in Sources */,
+				CE73336D24905D470055A521 /* x86compiler.cpp in Sources */,
+				CE73339624905D9A0055A521 /* x86internal.cpp in Sources */,
 				CE732F3D24901D200055A521 /* pngops_sse2.cpp in Sources */,
 				CE732FA424901D200055A521 /* piperuntime.cpp in Sources */,
 				CE732FEE24901D210055A521 /* trace.cpp in Sources */,
+				CE73338624905D9A0055A521 /* x86instdb.cpp in Sources */,
 				CE732FD424901D200055A521 /* runtime.cpp in Sources */,
 				CE732F1D24901D200055A521 /* add_font.cpp in Sources */,
 				CE732F6B24901D200055A521 /* matrix_sse2.cpp in Sources */,
@@ -1390,9 +1496,12 @@
 				CE732FBA24901D200055A521 /* rastercontextops.cpp in Sources */,
 				CE732F3024901D200055A521 /* deflate.cpp in Sources */,
 				CE732F6224901D200055A521 /* imagescale.cpp in Sources */,
+				CE73338E24905D9A0055A521 /* x86rapass.cpp in Sources */,
 				CE732F2724901D200055A521 /* arrayops.cpp in Sources */,
+				CE73337024905D470055A521 /* x86callconv.cpp in Sources */,
 				CE73330124901DEC0055A521 /* jitruntime.cpp in Sources */,
 				CE732FA124901D200055A521 /* pipepart.cpp in Sources */,
+				CE73338C24905D9A0055A521 /* x86instapi.cpp in Sources */,
 				CE732F2224901D200055A521 /* api-nocxx.cpp in Sources */,
 				CE73332824901DED0055A521 /* zonevector.cpp in Sources */,
 				CE732F6024901D200055A521 /* imagecodec.cpp in Sources */,
@@ -1408,6 +1517,7 @@
 				CE7332EF24901DEC0055A521 /* compiler.cpp in Sources */,
 				CE732F3224901D200055A521 /* jpegcodec.cpp in Sources */,
 				CE7332FD24901DEC0055A521 /* inst.cpp in Sources */,
+				CE73336C24905D470055A521 /* x86builder.cpp in Sources */,
 				CE732F7D24901D200055A521 /* otname.cpp in Sources */,
 				CE732F4824901D200055A521 /* font.cpp in Sources */,
 				CE732FB124901D200055A521 /* analyticrasterizer.cpp in Sources */,
@@ -1422,6 +1532,7 @@
 				CE732FEC24901D210055A521 /* uniqueidgenerator.cpp in Sources */,
 				CE732F9424901D200055A521 /* fetchsolidpart.cpp in Sources */,
 				CE732F4624901D200055A521 /* fixedpiperuntime.cpp in Sources */,
+				CE73339324905D9A0055A521 /* x86logging.cpp in Sources */,
 				CE7332ED24901DEC0055A521 /* codeholder.cpp in Sources */,
 				CE732F4C24901D200055A521 /* fontmanager.cpp in Sources */,
 				CE7332FF24901DEC0055A521 /* jitallocator.cpp in Sources */,
@@ -1458,6 +1569,7 @@
 				CE7332F324901DEC0055A521 /* cpuinfo.cpp in Sources */,
 				CE732F9824901D200055A521 /* fillpart.cpp in Sources */,
 				CE732FF024901D210055A521 /* unicode.cpp in Sources */,
+				CE73338A24905D9A0055A521 /* x86operand.cpp in Sources */,
 				CE732FA624901D200055A521 /* pixelconverter.cpp in Sources */,
 				CE732F5524901D200055A521 /* glyphbuffer.cpp in Sources */,
 				CE732F6524901D200055A521 /* math.cpp in Sources */,
@@ -1466,6 +1578,7 @@
 				CE732F7024901D200055A521 /* otcore.cpp in Sources */,
 				CE7332E824901DEC0055A521 /* builder.cpp in Sources */,
 				CE732FCC24901D200055A521 /* rasterworksynchronization.cpp in Sources */,
+				CE73339424905D9A0055A521 /* x86assembler.cpp in Sources */,
 				CE732FEA24901D210055A521 /* threadpool.cpp in Sources */,
 				CE732F2424901D200055A521 /* array.cpp in Sources */,
 				CE732FE324901D210055A521 /* tables.cpp in Sources */,
@@ -1511,7 +1624,9 @@
 		A482DA9715F9B7E70084DC42 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -1564,7 +1679,9 @@
 		A482DA9815F9B7E70084DC42 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -1614,6 +1731,7 @@
 		A491863E1641DDB800A39286 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -1642,6 +1760,7 @@
 					"$(OTHER_CFLAGS)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SYSTEM_HEADER_SEARCH_PATHS = "";
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/Native/Corona/shared/include/Corona ${SRCROOT}/Native/Corona/shared/include/lua ${SRCROOT}/../shared/asmjit/src ${SRCROOT}/../shared";
 			};
 			name = Debug;
@@ -1649,6 +1768,7 @@
 		A491863F1641DDB800A39286 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -1681,6 +1801,7 @@
 					"$(OTHER_CFLAGS)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SYSTEM_HEADER_SEARCH_PATHS = "";
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/Native/Corona/shared/include/Corona ${SRCROOT}/Native/Corona/shared/include/lua ${SRCROOT}/../shared/asmjit/src ${SRCROOT}/../shared";
 			};
 			name = Release;

@@ -65,7 +65,7 @@
 #include "./blend2d/region.h"
 #include "./blend2d/rgba.h"
 #include "./blend2d/runtime.h"
-#include "./blend2d/string.h"
+#include "./blend2d/string3.h"
 #include "./blend2d/style.h"
 #include "./blend2d/variant.h"
 

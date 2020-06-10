@@ -29,7 +29,7 @@
 #include "../core/compiler.h"
 #include "../core/emitter.h"
 #include "../core/logging.h"
-#include "../core/string.h"
+#include "../core/string2.h"
 #include "../core/support.h"
 #include "../core/type.h"
 

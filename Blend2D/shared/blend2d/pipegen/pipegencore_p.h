@@ -35,7 +35,7 @@
 
 // External dependencies of BLPipeGen.
 #if BL_TARGET_ARCH_X86
-  #include <asmjit/x86.h>
+  #include "asmjit/x86.h"
 #endif
 
 //! \cond INTERNAL

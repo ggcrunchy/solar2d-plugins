@@ -26,7 +26,7 @@
 
 #include "./api-internal_p.h"
 #include "./array_p.h"
-#include "./string.h"
+#include "./string3.h"
 #include "./unicode_p.h"
 
 //! \cond INTERNAL

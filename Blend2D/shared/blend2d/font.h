@@ -29,7 +29,7 @@
 #include "./geometry.h"
 #include "./glyphbuffer.h"
 #include "./path.h"
-#include "./string.h"
+#include "./string3.h"
 #include "./variant.h"
 
 //! \addtogroup blend2d_api_text
