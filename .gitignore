@@ -433,8 +433,7 @@ paket-files/
 !boost/libboost.a
 !impack/libs/*/*.*
 !FreeImage/libs/*/*.*
-!x64bridge/libs/*/*.*
-!x64bridge/win32/wow64ext.dll
+!Blend2D/shared/asmjit/src/asmjit/x86
 !Remotery/vis/index.html
 !Remotery/vis/extern/BrowserLib/WindowManager/Styles/WindowManager.css
 !Remotery/vis/Styles/Remotery.css
