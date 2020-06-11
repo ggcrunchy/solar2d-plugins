@@ -87,7 +87,7 @@ static int NewImage (lua_State * L)
 
 					blImageGetData(image, data);
 					
-					CoronaExternalTextureCallbacks callbacks;
+					CoronaExternalTextureCallbacks callbacks = { 0 };
 
 					callbacks.size = sizeof(CoronaExternalTextureCallbacks);
 

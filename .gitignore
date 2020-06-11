@@ -437,6 +437,9 @@ paket-files/
 !Remotery/vis/index.html
 !Remotery/vis/extern/BrowserLib/WindowManager/Styles/WindowManager.css
 !Remotery/vis/Styles/Remotery.css
+!libtheora/lib/arm
+!libtheora/lib/c64x
+!libtheora/lib/x86
 !video/libs/mac/*.*.dylib
 !video/libs/mac/vlc/lib/*.*.dylib
 !video/libs/mac/vlc/plugins/*.*
