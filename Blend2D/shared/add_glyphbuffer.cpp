@@ -64,9 +64,26 @@ static int NewGlyphBuffer (lua_State * L)
 					return 0;
 				}
 			}, {
+				"glyphRun", [](lua_State * L)
+				{
+					const BLGlyphRun ** run = (const BLGlyphRun **)lua_newuserdata(L, sizeof(const BLGlyphRun *)); // context, glyph_run
+
+					*run = blGlyphBufferGetGlyphRun(GetGlyphBuffer(L));
+
+					luaL_newmetatable(L, "TODO:GlyphRun"); // context, glyph_run, mt
+					lua_setmetatable(L, -2); // context, glyph_run; glyph_run.metatable = mt
+
+					return 1;
+				}
+			}, {
 				"__index", Index
 			}, {
+				"setUtf8Text", [](lua_State * L)
+				{
+					blGlyphBufferSetText(GetGlyphBuffer(L), luaL_checkstring(L, 2), (size_t)luaL_optinteger(L, 3, SIZE_MAX), BL_TEXT_ENCODING_UTF8);
 
+					return 0;
+				}
 			},
 			{ nullptr, nullptr }
 		};

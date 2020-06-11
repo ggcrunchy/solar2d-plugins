@@ -22,9 +22,11 @@
 */
 
 #include "blend2d.h"
+#include "CoronaGraphics.h"
 #include "CoronaLua.h"
 #include "common.h"
 #include "utils.h"
+#include <vector>
 
 #define IMAGE_MNAME "blend2d.image"
 
@@ -75,6 +77,65 @@ static int NewImage (lua_State * L)
 				}
 			}, {
 				"__index", Index
+			}, {
+				"newView", [](lua_State * L)
+				{
+					BLImageCore * image = GetImage(L);
+					BLImageData * data = new BLImageData;
+
+					data->reset();
+
+					blImageGetData(image, data);
+					
+					CoronaExternalTextureCallbacks callbacks;
+
+					callbacks.size = sizeof(CoronaExternalTextureCallbacks);
+
+					callbacks.getWidth = [](void * ud)
+					{
+						return unsigned(static_cast<BLImageData *>(ud)->size.w);
+					};
+
+					callbacks.getHeight = [](void * ud)
+					{
+						return unsigned(static_cast<BLImageData *>(ud)->size.h);
+					};
+
+					callbacks.getFormat = [](void * ud)
+					{
+						switch (static_cast<BLImageData *>(ud)->format)
+						{
+						case BL_FORMAT_PRGB32:
+						case BL_FORMAT_XRGB32:
+							return kExternalBitmapFormat_RGBA;
+						case BL_FORMAT_A8:
+							return kExternalBitmapFormat_Mask;
+						default:
+							return kExternalBitmapFormat_Undefined;
+						}
+					};
+
+					callbacks.onFinalize = [](void * ud)
+					{
+						delete static_cast<BLImageData *>(ud);
+					};
+
+					callbacks.onRequestBitmap = [](void * ud)
+					{
+						const void * data = static_cast<BLImageData *>(ud)->pixelData;
+
+						return data;
+					};
+
+					if (!CoronaExternalPushTexture(L, &callbacks, data))
+					{
+						delete data;
+
+						return 0;
+					}
+
+					return 1;
+				}
 			}, {
 				"readFromFile", [](lua_State * L)
 				{

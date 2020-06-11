@@ -146,6 +146,19 @@ static int NewContext (lua_State * L)
 					return 0;
 				}
 			}, {
+				"fillGlyphRun", [](lua_State * L)
+				{
+					luaL_argcheck(L, lua_istable(L, 2), 2, "Point must be a table");
+					lua_getfield(L, 2, "x"); // context, point, font, glyph_run, x
+					lua_getfield(L, 2, "y"); // context, point, font, glyph_run, x, y
+					
+					BLPoint point = { luaL_checknumber(L, -2), luaL_checknumber(L, -1) };
+
+					blContextFillGlyphRunD(GetContext(L), &point, GetFont(L, 3), *(const BLGlyphRun **)luaL_checkudata(L, 4, "TODO:GlyphRun"));
+
+					return 0;
+				}
+			}, {
 				"fillCircle", [](lua_State * L)
 				{
 					BLCircle circle;
