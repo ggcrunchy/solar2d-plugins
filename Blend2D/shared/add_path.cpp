@@ -25,6 +25,7 @@
 #include "CoronaLua.h"
 #include "common.h"
 #include "utils.h"
+#include <vector>
 
 #define PATH_MNAME "blend2d.path"
 
@@ -48,6 +49,25 @@ static int NewPath (lua_State * L)
 	{
 		luaL_Reg path_funcs[] = {
 			{
+				"arcQuadrantTo", [](lua_State * L)
+				{
+					blPathArcQuadrantTo(GetPath(L),
+						luaL_checknumber(L, 2), luaL_checknumber(L, 3),
+						luaL_checknumber(L, 4), luaL_checknumber(L, 5));
+
+					return 0;
+				}
+			}, {
+				"arcTo", [](lua_State * L)
+				{
+					blPathArcTo(GetPath(L),
+						luaL_checknumber(L, 2), luaL_checknumber(L, 3),
+						luaL_checknumber(L, 4), luaL_checknumber(L, 5),
+						luaL_checknumber(L, 6), luaL_checknumber(L, 6), lua_toboolean(L, 7) != 0);
+
+					return 0;
+				}
+			}, {
 				"clear", [](lua_State * L)
 				{
 					blPathClear(GetPath(L));
@@ -88,9 +108,64 @@ static int NewPath (lua_State * L)
 					return 0;
 				}
 			}, {
+				"lineTo", [](lua_State * L)
+				{
+					blPathLineTo(GetPath(L), luaL_checknumber(L, 2), luaL_checknumber(L, 3));
+
+					return 0;
+				}
+			}, {
 				"moveTo", [](lua_State * L)
 				{
 					blPathMoveTo(GetPath(L), luaL_checknumber(L, 2), luaL_checknumber(L, 3));
+
+					return 0;
+				}
+			}, {
+				"polyTo", [](lua_State * L)
+				{
+					luaL_argcheck(L, lua_istable(L, 2), 2, "Non-table polynomial");
+
+					size_t n = lua_objlen(L, 2);
+
+					std::vector<BLPoint> poly(n);
+
+					for (int i = 1; i <= int(n); ++i, lua_pop(L, 2))
+					{
+						lua_rawgeti(L, 2, i); // path, poly, point
+						lua_getfield(L, -1, "x"); // path, poly, point, x
+						lua_getfield(L, -2, "y"); // path, poly, point, x, y
+
+						poly[i - 1] = BLPoint{ luaL_checknumber(L, -2), luaL_checknumber(L, -1) };
+					}
+
+					blPathPolyTo(GetPath(L), poly.data(), poly.size());
+
+					return 0;
+				}
+			}, {
+				"quadTo", [](lua_State * L)
+				{
+					blPathQuadTo(GetPath(L),
+						luaL_checknumber(L, 2), luaL_checknumber(L, 3),
+						luaL_checknumber(L, 4), luaL_checknumber(L, 5));
+
+					return 0;
+				}
+			}, {
+				"smoothCubicTo", [](lua_State * L)
+				{
+					blPathSmoothCubicTo(GetPath(L),
+						luaL_checknumber(L, 2), luaL_checknumber(L, 3),
+						luaL_checknumber(L, 4), luaL_checknumber(L, 5));
+
+					return 0;
+				}
+			}, {
+				"smoothQuadTo", [](lua_State * L)
+				{
+					blPathSmoothQuadTo(GetPath(L),
+						luaL_checknumber(L, 2), luaL_checknumber(L, 3));
 
 					return 0;
 				}

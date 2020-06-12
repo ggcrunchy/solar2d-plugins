@@ -35,8 +35,8 @@ BLContextCore * GetContext (lua_State * L, int arg, bool * intact_ptr)
 
 BLCompOp GetCompOp (lua_State * L, int arg)
 {
-	const char * names[] = { "SRC_OVER", "SRC_COPY", "DIFFERENCE", nullptr };
-	BLCompOp ops[] = { BL_COMP_OP_SRC_OVER, BL_COMP_OP_SRC_COPY, BL_COMP_OP_DIFFERENCE };
+	const char * names[] = { "SRC_OVER", "SRC_COPY", "CLEAR", "DIFFERENCE", nullptr };
+	BLCompOp ops[] = { BL_COMP_OP_SRC_OVER, BL_COMP_OP_SRC_COPY, BL_COMP_OP_CLEAR, BL_COMP_OP_DIFFERENCE };
 /*
 	// BL_DEFINE_ENUM(BLCompOp) {
   //! Source-over [default].
@@ -127,6 +127,13 @@ static int NewContext (lua_State * L)
 				"begin", [](lua_State * L)
 				{
 					blContextBegin(GetContext(L), GetImage(L, 2), nullptr);
+
+					return 0;
+				}
+			}, {
+				"clearAll", [](lua_State * L)
+				{
+					blContextClearAll(GetContext(L));
 
 					return 0;
 				}
@@ -285,7 +292,9 @@ static int NewContext (lua_State * L)
 			}, {
 				"setStrokeStyle", [](lua_State * L)
 				{
-					blContextSetStrokeStyleObject(GetContext(L), GetGradient(L, 2));
+					if (IsGradient(L, 2)) blContextSetStrokeStyleObject(GetContext(L), GetGradient(L, 2));
+					else if (IsPattern(L, 2)) blContextSetStrokeStyleObject(GetContext(L), GetPattern(L, 2));
+					else blContextSetStrokeStyleRgba32(GetContext(L), CheckUint32(L, 2));
 
 					return 0;
 				}
