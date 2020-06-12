@@ -44,5 +44,6 @@ struct BLPathCore * GetPath (lua_State * L, int arg = 1, bool * intact_ptr = nul
 struct BLPatternCore * GetPattern (lua_State * L, int arg = 1, bool * intact_ptr = nullptr);
 
 bool IsGradient (lua_State * L, int arg);
+bool IsImage (lua_State * L, int arg);
 bool IsPath (lua_State * L, int arg);
 bool IsPattern (lua_State * L, int arg);

@@ -163,7 +163,12 @@ static int NewGradient (lua_State * L)
 			}, {
 				"__index", Index
 			}, {
+				"resetStops", [](lua_State * L)
+				{
+					blGradientResetStops(GetGradient(L));
 
+					return 0;
+				}
 			},
 			{ nullptr, nullptr }
 		};

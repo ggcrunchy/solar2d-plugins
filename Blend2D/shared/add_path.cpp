@@ -48,6 +48,13 @@ static int NewPath (lua_State * L)
 	{
 		luaL_Reg path_funcs[] = {
 			{
+				"clear", [](lua_State * L)
+				{
+					blPathClear(GetPath(L));
+					
+					return 0;
+				}
+			}, {
 				"destroy", [](lua_State * L)
 				{
 					BLPathCore * path = GetPath(L);

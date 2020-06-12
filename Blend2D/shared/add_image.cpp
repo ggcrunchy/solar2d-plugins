@@ -35,6 +35,11 @@ BLImageCore * GetImage (lua_State * L, int arg, bool * intact_ptr)
 	return Get<BLImageCore>(L, arg, IMAGE_MNAME, intact_ptr);
 }
 
+bool IsImage (lua_State * L, int arg)
+{
+	return Is<BLImageCore>(L, arg, IMAGE_MNAME);
+}
+
 uint32_t GetFormat (lua_State * L, int arg)
 {
 	const char * names[] = { "NONE", "PRGB32", "XRGB32", "A8", nullptr };

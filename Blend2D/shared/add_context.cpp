@@ -114,14 +114,23 @@ static uint32_t GetCap (lua_State * L, int arg)
 
 static int NewContext (lua_State * L)
 {
-	BLContextCore * context = New<BLContextCore>(L);// image, context
 
-	blContextInitAs(context, GetImage(L, 1), nullptr);
+	BLContextCore * context = New<BLContextCore>(L);// [image, ]context
 
-	if (luaL_newmetatable(L, CONTEXT_MNAME)) // image, context, mt
+	if (IsImage(L, 1)) blContextInitAs(context, GetImage(L, 1), nullptr);
+	else blContextInit(context);
+
+	if (luaL_newmetatable(L, CONTEXT_MNAME)) // [image, ]context, mt
 	{
 		luaL_Reg context_funcs[] = {
 			{
+				"begin", [](lua_State * L)
+				{
+					blContextBegin(GetContext(L), GetImage(L, 2), nullptr);
+
+					return 0;
+				}
+			}, {
 				"destroy", [](lua_State * L)
 				{
 					BLContextCore * context = GetContext(L);
@@ -301,7 +310,7 @@ static int NewContext (lua_State * L)
 		luaL_register(L, NULL, context_funcs);
 	}
 
-	lua_setmetatable(L, -2);// image, context
+	lua_setmetatable(L, -2);// [image, ]context
 
 	return 1;
 }
