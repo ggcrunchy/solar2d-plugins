@@ -143,8 +143,8 @@ static int NewImage (lua_State * L)
 				}
 			}, {
 				"readFromFile", [](lua_State * L)
-				{
-					BLResult result = blImageReadFromFile(GetImage(L), luaL_checkstring(L, 2), nullptr);
+                {
+                    BLResult result = blImageReadFromFile(GetImage(L), luaL_checkstring(L, 2), nullptr);
 
 					if (BL_SUCCESS == result)
 					{

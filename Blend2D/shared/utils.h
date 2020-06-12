@@ -52,13 +52,13 @@ template<typename T> T * Get (lua_State * L, int arg, const char * name, bool * 
 
 template<typename T> bool Is (lua_State * L, int arg, const char * name)
 {
-	int has_metatable = lua_getmetatable(L, arg);	// ...[, mt1]
+	if (!lua_getmetatable(L, arg)) return false;// ...[, mt1]
 
-	luaL_getmetatable(L, name);	// ...[, mt1], mt2
+	luaL_getmetatable(L, name);	// ..., mt1, mt2
 
-	bool ok = (has_metatable && lua_equal(L, -1, -2)) != 0;
+	bool ok = !!lua_equal(L, -1, -2);
 
-	lua_pop(L, 1 + has_metatable);	// ...
+	lua_pop(L, 2);	// ...
 
 	if (ok)
 	{

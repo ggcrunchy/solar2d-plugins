@@ -114,7 +114,6 @@ static uint32_t GetCap (lua_State * L, int arg)
 
 static int NewContext (lua_State * L)
 {
-
 	BLContextCore * context = New<BLContextCore>(L);// [image, ]context
 
 	if (IsImage(L, 1)) blContextInitAs(context, GetImage(L, 1), nullptr);

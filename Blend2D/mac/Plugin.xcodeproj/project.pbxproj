@@ -365,7 +365,7 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXFileReference section */
-		A49186401641DDB800A39286 /* blend2d.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = blend2d.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		A49186401641DDB800A39286 /* plugin_blend2d.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = plugin_blend2d.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE353A2D1D690309000D2E95 /* libvlc.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libvlc.dylib; path = "../../../../Library/Application Support/Corona/Simulator/Plugins/plugin/lib/libvlc.dylib"; sourceTree = "<group>"; };
 		CE353A2E1D690309000D2E95 /* libvlccore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libvlccore.dylib; path = "../../../../Library/Application Support/Corona/Simulator/Plugins/plugin/lib/libvlccore.dylib"; sourceTree = "<group>"; };
 		CE732D7824901D1E0055A521 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = common.h; path = ../shared/common.h; sourceTree = "<group>"; };
@@ -759,7 +759,7 @@
 		A482DA8515F9B7E70084DC42 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A49186401641DDB800A39286 /* blend2d.dylib */,
+				A49186401641DDB800A39286 /* plugin_blend2d.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1404,9 +1404,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		A49186331641DDB800A39286 /* blend2d */ = {
+		A49186331641DDB800A39286 /* plugin_blend2d */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "blend2d" */;
+			buildConfigurationList = A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "plugin_blend2d" */;
 			buildPhases = (
 				A49186341641DDB800A39286 /* Sources */,
 				A49186381641DDB800A39286 /* Frameworks */,
@@ -1418,9 +1418,9 @@
 			);
 			dependencies = (
 			);
-			name = blend2d;
+			name = plugin_blend2d;
 			productName = ads;
-			productReference = A49186401641DDB800A39286 /* blend2d.dylib */;
+			productReference = A49186401641DDB800A39286 /* plugin_blend2d.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 /* End PBXNativeTarget section */
@@ -1443,7 +1443,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A49186331641DDB800A39286 /* blend2d */,
+				A49186331641DDB800A39286 /* plugin_blend2d */,
 			);
 		};
 /* End PBXProject section */
@@ -1818,7 +1818,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "blend2d" */ = {
+		A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "plugin_blend2d" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A491863E1641DDB800A39286 /* Debug */,
