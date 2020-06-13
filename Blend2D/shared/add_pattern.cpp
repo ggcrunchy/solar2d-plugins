@@ -28,9 +28,9 @@
 
 #define PATTERN_MNAME "blend2d.pattern"
 
-BLPatternCore * GetPattern (lua_State * L, int arg, bool * intact_ptr)
+BLPatternCore * GetPattern (lua_State * L, int arg)
 {
-	return Get<BLPatternCore>(L, arg, PATTERN_MNAME, intact_ptr);
+	return Get<BLPatternCore>(L, arg, PATTERN_MNAME);
 }
 
 bool IsPattern (lua_State * L, int arg)
@@ -49,26 +49,9 @@ static int NewPattern (lua_State * L)
 	{
 		luaL_Reg pattern_funcs[] = {
 			{
-				"destroy", [](lua_State * L)
-				{
-					BLPatternCore * pattern = GetPattern(L);
-
-					blPatternDestroy(pattern);
-					Destroy(pattern);
-
-					return 1;
-				}
+				BLEND2D_DESTROY(Pattern)
 			}, {
-				"__gc", [](lua_State * L)
-				{
-					bool intact;
-
-					BLPatternCore * pattern = GetPattern(L, 1, &intact);
-
-					if (intact) blPatternDestroy(pattern);
-
-					return 0;
-				}
+				BLEND2D_GC(Pattern)
 			}, {
 				"__index", Index
 			}, {

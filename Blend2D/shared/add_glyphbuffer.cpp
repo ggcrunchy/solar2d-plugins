@@ -28,9 +28,9 @@
 
 #define GLYPHBUFFER_MNAME "blend2d.glyphbuffer"
 
-BLGlyphBufferCore * GetGlyphBuffer (lua_State * L, int arg, bool * intact_ptr)
+BLGlyphBufferCore * GetGlyphBuffer (lua_State * L, int arg)
 {
-	return Get<BLGlyphBufferCore>(L, arg, GLYPHBUFFER_MNAME, intact_ptr);
+	return Get<BLGlyphBufferCore>(L, arg, GLYPHBUFFER_MNAME);
 }
 
 static int NewGlyphBuffer (lua_State * L)
@@ -43,26 +43,9 @@ static int NewGlyphBuffer (lua_State * L)
 	{
 		luaL_Reg glyphbuffer_funcs[] = {
 			{
-				"destroy", [](lua_State * L)
-				{
-					BLGlyphBufferCore * glyph_buffer = GetGlyphBuffer(L);
-
-					blGlyphBufferDestroy(glyph_buffer);
-					Destroy(glyph_buffer);
-
-					return 1;
-				}
+				BLEND2D_DESTROY(GlyphBuffer)
 			}, {
-				"__gc", [](lua_State * L)
-				{
-					bool intact;
-
-					BLGlyphBufferCore * glyph_buffer = GetGlyphBuffer(L, 1, &intact);
-
-					if (intact) blGlyphBufferDestroy(glyph_buffer);
-
-					return 0;
-				}
+				BLEND2D_GC(GlyphBuffer)
 			}, {
 				"glyphRun", [](lua_State * L)
 				{

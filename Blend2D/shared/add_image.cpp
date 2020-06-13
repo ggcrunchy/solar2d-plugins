@@ -30,9 +30,9 @@
 
 #define IMAGE_MNAME "blend2d.image"
 
-BLImageCore * GetImage (lua_State * L, int arg, bool * intact_ptr)
+BLImageCore * GetImage (lua_State * L, int arg)
 {
-	return Get<BLImageCore>(L, arg, IMAGE_MNAME, intact_ptr);
+	return Get<BLImageCore>(L, arg, IMAGE_MNAME);
 }
 
 bool IsImage (lua_State * L, int arg)
@@ -42,8 +42,8 @@ bool IsImage (lua_State * L, int arg)
 
 uint32_t GetFormat (lua_State * L, int arg)
 {
-	const char * names[] = { "NONE", "PRGB32", "XRGB32", "A8", nullptr };
-	uint32_t formats[] = { BL_FORMAT_NONE, BL_FORMAT_PRGB32, BL_FORMAT_XRGB32, BL_FORMAT_A8 };
+	const char * names[BL_FORMAT_COUNT + 1] = { "NONE", "PRGB32", "XRGB32", "A8", nullptr };
+	uint32_t formats[BL_FORMAT_COUNT] = { BL_FORMAT_NONE, BL_FORMAT_PRGB32, BL_FORMAT_XRGB32, BL_FORMAT_A8 };
 
 	return formats[luaL_checkoption(L, arg, nullptr, names)];
 }
@@ -60,26 +60,9 @@ static int NewImage (lua_State * L)
 	{
 		luaL_Reg image_funcs[] = {
 			{
-				"destroy", [](lua_State * L)
-				{
-					BLImageCore * image = GetImage(L);
-
-					blImageDestroy(image);
-					Destroy(image);
-
-					return 1;
-				}
+				BLEND2D_DESTROY(Image)
 			}, {
-				"__gc", [](lua_State * L)
-				{
-					bool intact;
-
-					BLImageCore * image = GetImage(L, 1, &intact);
-
-					if (intact) blImageDestroy(image);
-
-					return 0;
-				}
+				BLEND2D_GC(Image)
 			}, {
 				"__index", Index
 			}, {

@@ -27,27 +27,30 @@ int Index (lua_State * L);
 
 uint32_t CheckUint32 (lua_State * L, int arg);
 
+template<typename T> struct Box {
+	T mItem;
+	bool mValid;
+};
+
 template<typename T> T * New (lua_State * L)
 {
-	T * object = (T *)lua_newuserdata(L, sizeof(T) + sizeof(bool)); // object
+	Box<T> * box = (Box<T> *)lua_newuserdata(L, sizeof(Box<T>)); // object
 
-	memset(object, 0, sizeof(T));
+	memset(&box->mItem, 0, sizeof(T));
 
-	*reinterpret_cast<bool *>(&object[1]) = true;
+	box->mValid = true;
 
-	return object;
+	return &box->mItem;
 }
 
-template<typename T> T * Get (lua_State * L, int arg, const char * name, bool * intact_ptr = nullptr)
+template<typename T> T * Get (lua_State * L, int arg, const char * name)
 {
-	T * object = static_cast<T *>(luaL_checkudata(L, arg, name));
+	int targ = INDEX_DESTROY == arg ? 1 : arg;
+	Box<T> * box = static_cast<Box<T> *>(luaL_checkudata(L, targ, name));
 
-	bool intact = *reinterpret_cast<bool *>(&object[1]);
+	luaL_argcheck(L, box->mValid || INDEX_DESTROY == arg, targ, "Object has been destroyed");
 
-	if (intact_ptr) *intact_ptr = intact;
-	else luaL_argcheck(L, intact, arg, "Object has been destroyed");
-
-	return object;
+	return box->mValid ? &box->mItem : nullptr;
 }
 
 template<typename T> bool Is (lua_State * L, int arg, const char * name)
@@ -60,17 +63,29 @@ template<typename T> bool Is (lua_State * L, int arg, const char * name)
 
 	lua_pop(L, 2);	// ...
 
-	if (ok)
-	{
-		T * object = static_cast<T *>(lua_touserdata(L, arg));
-
-		ok = *reinterpret_cast<bool *>(&object[1]);
-	}
-
-	return ok;
+	return ok && static_cast<Box<T> *>(lua_touserdata(L, arg))->mValid;
 }
 
-template<typename T> void Destroy (T * object)
+template<typename T, T * (*get)(lua_State *, int), uint32_t (*destroy)(T *)> int Destroy (lua_State * L)
 {
-	*reinterpret_cast<bool *>(&object[1]) = false;
+	T * object = get(L, 1);
+
+	destroy(object);
+
+	reinterpret_cast<Box<T> *>(object)->mValid = false;
+
+	return 0;
 }
+
+#define BLEND2D_DESTROY(type) "destroy", Destroy<BL##type##Core, &Get##type, &bl##type##Destroy>
+
+template<typename T, T * (*get)(lua_State *, int), uint32_t (*destroy)(T *)> int GC (lua_State * L)
+{
+	T * object = get(L, INDEX_DESTROY);
+
+	if (object) destroy(object);
+
+	return 0;
+}
+
+#define BLEND2D_GC(type) "__gc", GC<BL##type##Core, &Get##type, &bl##type##Destroy>
