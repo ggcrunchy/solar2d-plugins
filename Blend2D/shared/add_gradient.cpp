@@ -46,9 +46,9 @@
 
 #define GRADIENT_MNAME "blend2d.gradient"
 
-BLGradientCore * GetGradient (lua_State * L, int arg, bool * intact_ptr)
+BLGradientCore * GetGradient (lua_State * L, int arg)
 {
-	return Get<BLGradientCore>(L, arg, GRADIENT_MNAME, intact_ptr);
+	return Get<BLGradientCore>(L, arg, GRADIENT_MNAME);
 }
 
 bool IsGradient (lua_State * L, int arg)
@@ -63,8 +63,8 @@ static uint32_t GetGeometry (lua_State * L, void * data)
 	luaL_checktype(L, 1, LUA_TTABLE);
 	lua_getfield(L, 1, "type");	// params, type
 
-	const char * names[] = { "LINEAR", "RADIAL", "CONICAL", nullptr };
-	uint32_t types[] = { BL_GRADIENT_TYPE_LINEAR, BL_GRADIENT_TYPE_RADIAL, BL_GRADIENT_TYPE_CONICAL };
+	const char * names[BL_GRADIENT_TYPE_COUNT + 1] = { "LINEAR", "RADIAL", "CONICAL", nullptr };
+	uint32_t types[BL_GRADIENT_TYPE_COUNT] = { BL_GRADIENT_TYPE_LINEAR, BL_GRADIENT_TYPE_RADIAL, BL_GRADIENT_TYPE_CONICAL };
 
 	uint32_t geometry_type = types[luaL_checkoption(L, -1, nullptr, names)];
 
@@ -140,26 +140,9 @@ static int NewGradient (lua_State * L)
 					return 0;
 				}
 			}, {
-				"destroy", [](lua_State * L)
-				{
-					BLGradientCore * gradient = GetGradient(L);
-
-					blGradientDestroy(gradient);
-					Destroy(gradient);
-
-					return 1;
-				}
+				BLEND2D_DESTROY(Gradient)
 			}, {
-				"__gc", [](lua_State * L)
-				{
-					bool intact;
-
-					BLGradientCore * gradient = GetGradient(L, 1, &intact);
-
-					if (intact) blGradientDestroy(gradient);
-
-					return 0;
-				}
+				BLEND2D_GC(Gradient)
 			}, {
 				"__index", Index
 			}, {

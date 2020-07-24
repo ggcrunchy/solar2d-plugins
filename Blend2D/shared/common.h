@@ -33,17 +33,21 @@ int add_image (lua_State * L);
 int add_path (lua_State * L);
 int add_pattern (lua_State * L);
 
-struct BLContextCore * GetContext (lua_State * L, int arg = 1, bool * intact_ptr = nullptr);
-struct BLFontCore * GetFont (lua_State * L, int arg = 1, bool * intact_ptr = nullptr);
-struct BLFontFaceCore * GetFontFace (lua_State * L, int arg = 1, bool * intact_ptr = nullptr);
-struct BLGlyphBufferCore * GetGlyphBuffer (lua_State * L, int arg = 1, bool * intact_ptr = nullptr);
-struct BLGradientCore * GetGradient (lua_State * L, int arg = 1, bool * intact_ptr = nullptr);
-struct BLImageCodecCore * GetImageCodec (lua_State * L, int arg = 1, bool * intact_ptr = nullptr);
-struct BLImageCore * GetImage (lua_State * L, int arg = 1, bool * intact_ptr = nullptr);
-struct BLPathCore * GetPath (lua_State * L, int arg = 1, bool * intact_ptr = nullptr);
-struct BLPatternCore * GetPattern (lua_State * L, int arg = 1, bool * intact_ptr = nullptr);
+#define INDEX_DESTROY lua_upvalueindex(1000) // upvalues are lowest pseudo-indices, max out at 250 (lower in practice)
+
+struct BLContextCore * GetContext (lua_State * L, int arg = 1);
+struct BLFontCore * GetFont (lua_State * L, int arg = 1);
+struct BLFontFaceCore * GetFontFace (lua_State * L, int arg = 1);
+struct BLGlyphBufferCore * GetGlyphBuffer (lua_State * L, int arg = 1);
+struct BLGradientCore * GetGradient (lua_State * L, int arg = 1);
+struct BLImageCodecCore * GetImageCodec (lua_State * L, int arg = 1);
+struct BLImageCore * GetImage (lua_State * L, int arg = 1);
+struct BLPathCore * GetPath (lua_State * L, int arg = 1);
+struct BLPatternCore * GetPattern (lua_State * L, int arg = 1);
 
 bool IsGradient (lua_State * L, int arg);
 bool IsImage (lua_State * L, int arg);
 bool IsPath (lua_State * L, int arg);
 bool IsPattern (lua_State * L, int arg);
+
+int Return (lua_State * L, uint32_t result);

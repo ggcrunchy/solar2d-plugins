@@ -28,9 +28,9 @@
 
 #define FONT_MNAME "blend2d.font"
 
-BLFontCore * GetFont (lua_State * L, int arg, bool * intact_ptr)
+BLFontCore * GetFont (lua_State * L, int arg)
 {
-	return Get<BLFontCore>(L, arg, FONT_MNAME, intact_ptr);
+	return Get<BLFontCore>(L, arg, FONT_MNAME);
 }
 
 static int NewFont (lua_State * L)
@@ -50,26 +50,9 @@ static int NewFont (lua_State * L)
 					return 0;
 				}
 			}, {
-				"destroy", [](lua_State * L)
-				{
-					BLFontCore * font = GetFont(L);
-
-					blFontDestroy(font);
-					Destroy(font);
-
-					return 1;
-				}
+				BLEND2D_DESTROY(Font)
 			}, {
-				"__gc", [](lua_State * L)
-				{
-					bool intact;
-
-					BLFontCore * font = GetFont(L, 1, &intact);
-
-					if (intact) blFontDestroy(font);
-
-					return 0;
-				}
+				BLEND2D_GC(Font)
 			}, {
 				"getTextMetrics", [](lua_State * L)
 				{

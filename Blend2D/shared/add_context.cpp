@@ -28,78 +28,32 @@
 
 #define CONTEXT_MNAME "blend2d.context"
 
-BLContextCore * GetContext (lua_State * L, int arg, bool * intact_ptr)
+BLContextCore * GetContext (lua_State * L, int arg)
 {
-	return Get<BLContextCore>(L, arg, CONTEXT_MNAME, intact_ptr);
+	return Get<BLContextCore>(L, arg, CONTEXT_MNAME);
 }
 
 BLCompOp GetCompOp (lua_State * L, int arg)
 {
-	const char * names[] = { "SRC_OVER", "SRC_COPY", "CLEAR", "DIFFERENCE", nullptr };
-	BLCompOp ops[] = { BL_COMP_OP_SRC_OVER, BL_COMP_OP_SRC_COPY, BL_COMP_OP_CLEAR, BL_COMP_OP_DIFFERENCE };
-/*
-	// BL_DEFINE_ENUM(BLCompOp) {
-  //! Source-over [default].
-  BL_COMP_OP_SRC_OVER = 0,
-  //! Source-copy.
-  BL_COMP_OP_SRC_COPY = 1,
-  //! Source-in.
-  BL_COMP_OP_SRC_IN = 2,
-  //! Source-out.
-  BL_COMP_OP_SRC_OUT = 3,
-  //! Source-atop.
-  BL_COMP_OP_SRC_ATOP = 4,
-  //! Destination-over.
-  BL_COMP_OP_DST_OVER = 5,
-  //! Destination-copy [nop].
-  BL_COMP_OP_DST_COPY = 6,
-  //! Destination-in.
-  BL_COMP_OP_DST_IN = 7,
-  //! Destination-out.
-  BL_COMP_OP_DST_OUT = 8,
-  //! Destination-atop.
-  BL_COMP_OP_DST_ATOP = 9,
-  //! Xor.
-  BL_COMP_OP_XOR = 10,
-  //! Clear.
-  BL_COMP_OP_CLEAR = 11,
-  //! Plus.
-  BL_COMP_OP_PLUS = 12,
-  //! Minus.
-  BL_COMP_OP_MINUS = 13,
-  //! Modulate.
-  BL_COMP_OP_MODULATE = 14,
-  //! Multiply.
-  BL_COMP_OP_MULTIPLY = 15,
-  //! Screen.
-  BL_COMP_OP_SCREEN = 16,
-  //! Overlay.
-  BL_COMP_OP_OVERLAY = 17,
-  //! Darken.
-  BL_COMP_OP_DARKEN = 18,
-  //! Lighten.
-  BL_COMP_OP_LIGHTEN = 19,
-  //! Color dodge.
-  BL_COMP_OP_COLOR_DODGE = 20,
-  //! Color burn.
-  BL_COMP_OP_COLOR_BURN = 21,
-  //! Linear burn.
-  BL_COMP_OP_LINEAR_BURN = 22,
-  //! Linear light.
-  BL_COMP_OP_LINEAR_LIGHT = 23,
-  //! Pin light.
-  BL_COMP_OP_PIN_LIGHT = 24,
-  //! Hard-light.
-  BL_COMP_OP_HARD_LIGHT = 25,
-  //! Soft-light.
-  BL_COMP_OP_SOFT_LIGHT = 26,
-  //! Difference.
-  BL_COMP_OP_DIFFERENCE = 27,
-  //! Exclusion.
-  BL_COMP_OP_EXCLUSION = 28,
-
-  //! Count of composition & blending operators.
-  BL_COMP_OP_COUNT = 29*/
+	const char * names[BL_COMP_OP_COUNT + 1] = {
+		"SRC_OVER", "SRC_COPY", "SRC_IN", "SRC_OUT", "SRC_ATOP",
+		"DST_OVER", "DST_COPY", "DST_IN", "DST_OUT", "DST_ATOP",
+		"XOR", "CLEAR", "PLUS", "MINUS", "MODULATE", "MULTIPLY",
+		"SCREEN", "OVERLAY", "DARKEN", "LIGHTEN",
+		"COLOR_DODGE", "COLOR_BURN", "LINEAR_BURN",
+		"LINEAR_LIGHT", "PIN_LIGHT", "HARD_LIGHT", "SOFT_LIGHT",
+		"DIFFERENCE", "EXCLUSION",
+		nullptr
+	};
+	BLCompOp ops[BL_COMP_OP_COUNT] = {
+		BL_COMP_OP_SRC_OVER, BL_COMP_OP_SRC_COPY, BL_COMP_OP_SRC_IN, BL_COMP_OP_SRC_OUT, BL_COMP_OP_SRC_ATOP,
+		BL_COMP_OP_DST_OVER, BL_COMP_OP_DST_COPY, BL_COMP_OP_DST_IN, BL_COMP_OP_DST_OUT, BL_COMP_OP_DST_ATOP,
+		BL_COMP_OP_XOR, BL_COMP_OP_CLEAR, BL_COMP_OP_PLUS, BL_COMP_OP_MINUS, BL_COMP_OP_MODULATE, BL_COMP_OP_MULTIPLY,
+		BL_COMP_OP_SCREEN, BL_COMP_OP_OVERLAY, BL_COMP_OP_DARKEN, BL_COMP_OP_LIGHTEN,
+		BL_COMP_OP_COLOR_DODGE, BL_COMP_OP_COLOR_BURN, BL_COMP_OP_LINEAR_BURN,
+		BL_COMP_OP_LINEAR_LIGHT, BL_COMP_OP_PIN_LIGHT, BL_COMP_OP_HARD_LIGHT, BL_COMP_OP_SOFT_LIGHT,
+		BL_COMP_OP_DIFFERENCE, BL_COMP_OP_EXCLUSION
+	};
 
 	return ops[luaL_checkoption(L, arg, "SRC_OVER", names)];
 }
@@ -137,15 +91,7 @@ static int NewContext (lua_State * L)
 					return 0;
 				}
 			}, {
-				"destroy", [](lua_State * L)
-				{
-					BLContextCore * context = GetContext(L);
-
-					blContextDestroy(context);
-					Destroy(context);
-
-					return 1;
-				}
+				BLEND2D_DESTROY(Context)
 			}, {
 				"end", [](lua_State * L)
 				{
@@ -227,16 +173,7 @@ static int NewContext (lua_State * L)
 					return 0;
 				}
 			}, {
-				"__gc", [](lua_State * L)
-				{
-					bool intact;
-
-					BLContextCore * context = GetContext(L, 1, &intact);
-
-					if (intact) blContextDestroy(context);
-
-					return 0;
-				}
+				BLEND2D_GC(Context)
 			}, {
 				"__index", Index
 			}, {

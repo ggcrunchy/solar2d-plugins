@@ -28,9 +28,9 @@
 
 #define CODEC_MNAME "blend2d.codec"
 
-BLImageCodecCore * GetImageCodec (lua_State * L, int arg, bool * intact_ptr)
+BLImageCodecCore * GetImageCodec (lua_State * L, int arg)
 {
-	return Get<BLImageCodecCore>(L, arg, CODEC_MNAME, intact_ptr);
+	return Get<BLImageCodecCore>(L, arg, CODEC_MNAME);
 }
 
 static int NewCodec (lua_State * L)
@@ -43,15 +43,7 @@ static int NewCodec (lua_State * L)
 	{
 		luaL_Reg codec_funcs[] = {
 			{
-				"destroy", [](lua_State * L)
-				{
-					BLImageCodecCore * codec = GetImageCodec(L);
-
-					blImageCodecDestroy(codec);
-					Destroy(codec);
-
-					return 1;
-				}
+				BLEND2D_DESTROY(ImageCodec)
 			}, {
 				"findByName", [](lua_State * L)
 				{
@@ -60,20 +52,9 @@ static int NewCodec (lua_State * L)
 					return 0;
 				}
 			}, {
-				"__gc", [](lua_State * L)
-				{
-					bool intact;
-
-					BLImageCodecCore * codec = GetImageCodec(L, 1, &intact);
-
-					if (intact) blImageCodecDestroy(codec);
-
-					return 0;
-				}
+				BLEND2D_GC(ImageCodec)
 			}, {
 				"__index", Index
-			}, {
-
 			},
 			{ nullptr, nullptr }
 		};

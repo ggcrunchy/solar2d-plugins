@@ -29,9 +29,9 @@
 
 #define PATH_MNAME "blend2d.path"
 
-BLPathCore * GetPath (lua_State * L, int arg, bool * intact_ptr)
+BLPathCore * GetPath (lua_State * L, int arg)
 {
-	return Get<BLPathCore>(L, arg, PATH_MNAME, intact_ptr);
+	return Get<BLPathCore>(L, arg, PATH_MNAME);
 }
 
 bool IsPath (lua_State * L, int arg)
@@ -75,26 +75,9 @@ static int NewPath (lua_State * L)
 					return 0;
 				}
 			}, {
-				"destroy", [](lua_State * L)
-				{
-					BLPathCore * path = GetPath(L);
-
-					blPathDestroy(path);
-					Destroy(path);
-
-					return 1;
-				}
+				BLEND2D_DESTROY(Path)
 			}, {
-				"__gc", [](lua_State * L)
-				{
-					bool intact;
-
-					BLPathCore * path = GetPath(L, 1, &intact);
-
-					if (intact) blPathDestroy(path);
-
-					return 0;
-				}
+				BLEND2D_GC(Path)
 			}, {
 				"__index", Index
 			}, {

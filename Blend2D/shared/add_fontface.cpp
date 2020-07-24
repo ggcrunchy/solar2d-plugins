@@ -28,9 +28,9 @@
 
 #define FONTFACE_MNAME "blend2d.fontface"
 
-BLFontFaceCore * GetFontFace (lua_State * L, int arg, bool * intact_ptr)
+BLFontFaceCore * GetFontFace (lua_State * L, int arg)
 {
-	return Get<BLFontFaceCore>(L, arg, FONTFACE_MNAME, intact_ptr);
+	return Get<BLFontFaceCore>(L, arg, FONTFACE_MNAME);
 }
 
 static int NewFontFace (lua_State * L)
@@ -63,26 +63,9 @@ static int NewFontFace (lua_State * L)
 					}
 				}
 			}, {
-				"destroy", [](lua_State * L)
-				{
-					BLFontFaceCore * font_face = GetFontFace(L);
-
-					blFontFaceDestroy(font_face);
-					Destroy(font_face);
-
-					return 1;
-				}
+				BLEND2D_DESTROY(FontFace)
 			}, {
-				"__gc", [](lua_State * L)
-				{
-					bool intact;
-
-					BLFontFaceCore * font_face = GetFontFace(L, 1, &intact);
-
-					if (intact) blFontFaceDestroy(font_face);
-
-					return 0;
-				}
+				BLEND2D_GC(FontFace)
 			}, {
 				"__index", Index
 			}, {
