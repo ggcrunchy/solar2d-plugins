@@ -488,7 +488,7 @@ template<typename T> void NewByteSource (lua_State * L, const char * mname, void
 	ByteXS::AddBytesMetatable(L, mname, &opts);
 }
 
-CORONA_EXPORT int luaopen_plugin_Bytemapp (lua_State * L)
+CORONA_EXPORT int luaopen_plugin_Bytemap (lua_State * L)
 {
 	lua_newtable(L);// bytemap
 
@@ -540,10 +540,23 @@ CORONA_EXPORT int luaopen_plugin_Bytemapp (lua_State * L)
 
         CoronaExternalBitmapFormat format = GetFormat(L, -1);
 
-		lua_getfield(L, 1, "is_absolute");	// params, dirs, format?, is_absolute
-		lua_getfield(L, 1, "filename");	// params, dirs, format?, is_absolute, filename
-        lua_getfield(L, 1, "baseDir");  // params, dirs, format?, is_absolute, filename, base_dir
-		luaL_argcheck(L, lua_isstring(L, -2), -2, "Expected filename");
+		lua_getfield(L, 1, "from_memory"); // params, dirs, format?, from_memory?
+
+		if (lua_isstring(L, -1))
+		{
+			lua_pushlightuserdata(L, dirs);	// params, dirs, format?, from_memory, dirs
+			lua_insert(L, -2); // params, dirs, format?, dirs, from_memory
+			lua_pushnil(L); // params, dirs, format?, dirs, from_memory, nil
+		}
+
+		else
+		{
+			lua_pop(L, 1); // params, dirs, format?
+			lua_getfield(L, 1, "is_absolute");	// params, dirs, format?, is_absolute
+			lua_getfield(L, 1, "filename");	// params, dirs, format?, is_absolute, filename
+			lua_getfield(L, 1, "baseDir");  // params, dirs, format?, is_absolute, filename, base_dir
+			luaL_argcheck(L, lua_isstring(L, -2), -2, "Expected filename");
+		}
 
         return LuaXS::ResultOrNil(L, dirs->WithFileContentsDo(L, -2, -3, [L, format](ByteReader & bytes) {
             int w, h, comp, ncomps = 4;
