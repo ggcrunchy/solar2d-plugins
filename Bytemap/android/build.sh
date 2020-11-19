@@ -54,7 +54,7 @@ fi
 if [ "clean" == "$BUILD_TYPE" ]
 then
 	echo "== Clean build =="
-	rm -rf $path/obj/ $path/libs/
+	rm -rf $path/obj/ $path/libs/ $path/data.tgz
 	FLAGS="-B"
 else
 	echo "== Incremental build =="
@@ -102,4 +102,8 @@ popd > /dev/null
 ######################
 
 echo Done.
-echo $path/plugin/src/main/jniLibs/armeabi-v7a/libplugin.Bytemap.so
+echo $path/jniLibs/armeabi-v7a/libplugin.$TARGET_NAME.so
+
+echo Packing binaries...
+tar -czvf data.tgz -C $path jniLibs -C $path/jniLibs/armeabi-v7a libplugin.$TARGET_NAME.so
+echo $path/data.tgz.
