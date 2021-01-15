@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\shared\theoraplay.c" />
+    <ClCompile Include="..\shared\plugin.theora.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\shared\theoraplay.h" />
+    <ClInclude Include="..\shared\theoraplay_cvtrgb.h" />
+    <ClInclude Include="..\shared\loki\RefToValue.h">
+      <Filter>loki</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\loki\ScopeGuard.h">
+      <Filter>loki</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="loki">
+      <UniqueIdentifier>{7d30989e-2ce8-4e58-b086-d5632dbc888a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -530,6 +530,15 @@ CORONA_EXPORT int luaopen_plugin_Bytemap (lua_State * L)
 
 	lua_setfield(L, -5, "addLoader");	// bytemap = { newTexture, addLoader = addLoader }, proxy, dirs, bmap_ref
 
+	lua_createtable(L, 0, 1);	// bytemap, proxy, dirs, bmap_ref, options
+	lua_pushvalue(L, -1);	// bytemap, proxy, dirs, bmap_ref, options, options
+	lua_pushcclosure(L, [](lua_State * L) {
+		lua_pushboolean(L, 1); // true
+		lua_setfield(L, lua_upvalueindex(1), "premultiply_alpha");	// (empty); upvalues.premultiply_alpha = true
+		return 0;
+	}, 1);	// bytemap, proxy, dirs, bmap_ref, options, usePremultipliedAlpha
+	lua_setfield(L, -6, "usePremultipliedAlpha");	// bytemap = { newTexture, addLoader, usePremultipliedAlpha = usePremultipliedAlpha }, proxy, dirs, bmap_ref, options
+
 	lua_pushcclosure(L, [](lua_State * L) {
 		luaL_argcheck(L, lua_istable(L, 1), 1, "Non-table params for loadTexture");
 		lua_pushvalue(L, lua_upvalueindex(2));	// params, dirs
@@ -582,6 +591,23 @@ CORONA_EXPORT int luaopen_plugin_Bytemap (lua_State * L)
                     proxy->mBytes = uc;
                     proxy->mSize = size_t(w * h * ncomps);
 
+					if (ncomps == 4)
+					{
+						lua_getfield(L, lua_upvalueindex(4), "premultiply_alpha");	// params, dirs, format?, is_absolute, filename, bmap, SetBytes, bmap, proxy, premultiply_alpha
+
+						if (lua_toboolean(L, -1))
+						{
+							for (int i = 0, area = w * h * ncomps; i < area; i += 4)
+							{
+								uc[i + 0] = (unsigned char)((uc[i + 0] * uc[i + 3]) >> 8);
+								uc[i + 1] = (unsigned char)((uc[i + 1] * uc[i + 3]) >> 8);
+								uc[i + 2] = (unsigned char)((uc[i + 2] * uc[i + 3]) >> 8);
+							}
+						}
+
+						lua_pop(L, 1);	// params, dirs, format?, is_absolute, filename, bmap, SetBytes, bmap, proxy
+					}
+
                     lua_pcall(L, 2, 0, 0);	// params, dirs, format?, is_absolute, filename, bmap
                 }
             }
@@ -632,7 +658,7 @@ CORONA_EXPORT int luaopen_plugin_Bytemap (lua_State * L)
 
             return bOK;
         }));// params, format?, is_absolute, filename, bmap / nil
-	}, 3);	// bytemap, loadTexture
+	}, 4);	// bytemap, loadTexture
 	lua_setfield(L, -2, "loadTexture");	// bytemap = { newTexture, addLoader, loadTexture = loadTexture }
 
 	return 1;

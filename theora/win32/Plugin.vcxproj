@@ -11,18 +11,22 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\shared\plugin.TheoraPlay.cpp" />
+    <ClCompile Include="..\shared\plugin.theora.cpp" />
     <ClCompile Include="..\shared\theoraplay.c" />
+    <ClCompile Include="..\shared\video_encoder.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\shared\loki\RefToValue.h" />
+    <ClInclude Include="..\shared\loki\ScopeGuard.h" />
     <ClInclude Include="..\shared\theoraplay.h" />
     <ClInclude Include="..\shared\theoraplay_cvtrgb.h" />
+    <ClInclude Include="..\shared\video_encoder.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{79F0CACC-457B-4A25-BC54-81277688C361}</ProjectGuid>
     <RootNamespace>Plugin</RootNamespace>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>7.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -57,7 +61,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(Configuration)\</OutDir>
-    <TargetName>TheoraPlay</TargetName>
+    <TargetName>theora</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <PreBuildEvent />
