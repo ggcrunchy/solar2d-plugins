@@ -1,6 +1,9 @@
 /* public domain Simple, Minimalistic, No Allocations MPEG writer - http://jonolick.com
  *
  * Latest revisions:
+ * 	1.02 (22-03-2017) Fixed AC encoding bug. 
+ *                    Fixed color space bug (thx r- lyeh!)
+ * 	1.01 (18-10-2016) warning fixes
  * 	1.00 (25-09-2016) initial release
  *
  * Basic usage:
@@ -62,15 +65,15 @@ static const unsigned char s_jo_HTAC[32][40][2] = {
 {{8,7},{42,13}},  {{14,8},{34,13}},  {{10,8},{34,14}},  {{78,9},{32,14}},  {{70,9},{52,17}},  {{68,9},{50,17}},  {{64,9},{48,17}},  {{28,11},{46,17}},  {{26,11},{44,17}},  {{16,11},{42,17}},
 {{62,13}}, {{52,13}}, {{50,13}}, {{46,13}}, {{44,13}}, {{62,14}}, {{60,14}}, {{58,14}}, {{56,14}}, {{54,14}}, {{62,17}}, {{60,17}}, {{58,17}}, {{56,17}}, {{54,17}},
 };
-static const /*float*/double s_jo_quantTbl[64] = {
-	0.015625,0.005632,0.005035,0.004832,0.004808,0.005892,0.007964,0.013325,
-	0.005632,0.004061,0.003135,0.003193,0.003338,0.003955,0.004898,0.008828,
-	0.005035,0.003135,0.002816,0.003013,0.003299,0.003581,0.005199,0.009125,
-	0.004832,0.003484,0.003129,0.003348,0.003666,0.003979,0.005309,0.009632,
-	0.005682,0.003466,0.003543,0.003666,0.003906,0.004546,0.005774,0.009439,
-	0.006119,0.004248,0.004199,0.004228,0.004546,0.005062,0.006124,0.009942,
-	0.008883,0.006167,0.006096,0.005777,0.006078,0.006391,0.007621,0.012133,
-	0.016780,0.011263,0.009907,0.010139,0.009849,0.010297,0.012133,0.019785,
+static const float s_jo_quantTbl[64] = {
+	0.015625f,0.005632f,0.005035f,0.004832f,0.004808f,0.005892f,0.007964f,0.013325f,
+	0.005632f,0.004061f,0.003135f,0.003193f,0.003338f,0.003955f,0.004898f,0.008828f,
+	0.005035f,0.003135f,0.002816f,0.003013f,0.003299f,0.003581f,0.005199f,0.009125f,
+	0.004832f,0.003484f,0.003129f,0.003348f,0.003666f,0.003979f,0.005309f,0.009632f,
+	0.005682f,0.003466f,0.003543f,0.003666f,0.003906f,0.004546f,0.005774f,0.009439f,
+	0.006119f,0.004248f,0.004199f,0.004228f,0.004546f,0.005062f,0.006124f,0.009942f,
+	0.008883f,0.006167f,0.006096f,0.005777f,0.006078f,0.006391f,0.007621f,0.012133f,
+	0.016780f,0.011263f,0.009907f,0.010139f,0.009849f,0.010297f,0.012133f,0.019785f,
 };
 static const unsigned char s_jo_ZigZag[] = { 0,1,5,6,14,15,27,28,2,4,7,13,16,26,29,42,3,8,12,17,25,30,41,43,9,11,18,24,31,40,44,53,10,19,23,32,39,45,52,54,20,22,33,38,46,51,55,60,21,34,37,47,50,56,59,61,35,36,48,49,57,58,62,63 };
 
@@ -145,7 +148,7 @@ static int jo_processDU(jo_bits_t *bits, float A[64], const unsigned char htdc[9
 	}
 	int Q[64];
 	for(int i=0; i<64; ++i) {
-		float v = A[i]*float(s_jo_quantTbl[i]); // <- STEVE CHANGE
+		float v = A[i]*s_jo_quantTbl[i];
 		Q[s_jo_ZigZag[i]] = (int)(v < 0 ? ceilf(v - 0.5f) : floorf(v + 0.5f));
 	}
 
@@ -172,7 +175,7 @@ static int jo_processDU(jo_bits_t *bits, float A[64], const unsigned char htdc[9
 		int AC = Q[i++];
 		int aAC = AC < 0 ? -AC : AC;
 		int code = 0, size = 0;
-		if (run<32 && aAC<=41) {
+		if (run<32 && aAC<=40) {
 			code = s_jo_HTAC[run][aAC-1][0];
 			size = s_jo_HTAC[run][aAC-1][1];
 			if (AC < 0) code += 1;
@@ -195,7 +198,7 @@ static int jo_processDU(jo_bits_t *bits, float A[64], const unsigned char htdc[9
 	return Q[0];
 }
 
-void jo_write_mpeg(/*FILE *fp*/JO_File * fp, unsigned char *rgbx, int width, int height, int fps) { // <- STEVE CHANGE
+void jo_write_mpeg(/*FILE *fp*/JO_File * fp, const /*void*/unsigned char *rgbx, int width, int height, int fps) { // <- STEVE CHANGE
 	int lastDCY = 128, lastDCCR = 128, lastDCCB = 128;
 	jo_bits_t bits = {fp};
 // STEVE CHANGE
@@ -204,7 +207,7 @@ void jo_write_mpeg(/*FILE *fp*/JO_File * fp, unsigned char *rgbx, int width, int
 	// 12 bits for width, height
 	fp->PutC((width>>4)&0xFF);
 	fp->PutC(((width&0xF)<<4) | ((height>>8) & 0xF));
-	fp->PutC(height & 0xFF);
+	fp->PutC(height & 0xFF); 
 	// aspect ratio, framerate
 	if(fps <= 24) fp->PutC(0x12);
 	else if(fps <= 25) fp->PutC(0x13);
@@ -229,11 +232,11 @@ void jo_write_mpeg(/*FILE *fp*/JO_File * fp, unsigned char *rgbx, int width, int
 				int x = hblock*16+(i&15);
 				x = x >= width ? width-1 : x;
 				y = y >= height ? height-1 : y;
-				unsigned char *c = rgbx + y*width*4+x*4;
+				const unsigned char *c = rgbx + y*width*4+x*4;
 				float r = c[0], g = c[1], b = c[2];
-				Y[i] = (0.59f*r + 0.30f*g + 0.11f*b) * (219.f/255) + 16;
-				CBx[i] = (-0.17f*r - 0.33f*g + 0.50f*b) * (224.f/255) + 128;
-				CRx[i] = (0.50f*r - 0.42f*g - 0.08f*b) * (224.f/255) + 128;
+                Y[i] = (0.299f*r + 0.587f*g + 0.114f*b) * (219.f/255) + 16;
+                CBx[i] = (-0.299f*r - 0.587f*g + 0.886f*b) * (224.f/255) + 128;
+                CRx[i] = (0.701f*r - 0.587f*g - 0.114f*b) * (224.f/255) + 128;
 			}
 
 			// Downsample Cb,Cr (420 format)
@@ -262,4 +265,3 @@ void jo_write_mpeg(/*FILE *fp*/JO_File * fp, unsigned char *rgbx, int width, int
 	fp->Write("\x00\x00\x01\xb7", 4); // End of Sequence // <- STEVE CHANGE
 }
 #endif
-

@@ -23,6 +23,7 @@
 
 #include "CoronaLua.h"
 #include "CoronaGraphics.h"
+#include "ByteReader.h"
 #include "theoraplay.h"
 #include "video_encoder.h"
 #include <vector>
@@ -289,20 +290,18 @@ static TheoraWriter * Writer (lua_State * L)
 	return (TheoraWriter *)luaL_checkudata(L, 1, "theora.writer");
 }
 
-const unsigned char * GetBytes (lua_State * L, std::vector<unsigned char> & fallback, int width, int height)
+const unsigned char * GetBytes (const ByteReader & reader, std::vector<unsigned char> & fallback, int width, int height)
 {
-	const char * str = lua_tostring(L, 2);
 	size_t needed = size_t(width * height * 3);
-	size_t size = lua_objlen(L, 2);
 
-	if (size >= needed) return reinterpret_cast<const unsigned char *>(str);
+	if (reader.mCount >= needed) return static_cast<const unsigned char *>(reader.mBytes);
 
 	else
 	{
 		fallback.resize(needed);
 
-		memcpy(fallback.data(), str, size);
-		memset(fallback.data() + size, 0, size - needed);
+		memcpy(fallback.data(), reader.mBytes, reader.mCount);
+		memset(fallback.data() + reader.mCount, 0, reader.mCount - needed);
 
 		return fallback.data();
 	}
@@ -379,7 +378,6 @@ CORONA_EXPORT int luaopen_plugin_theora (lua_State * L)
 		lua_getfield(L, 1, "filename");	// params, filename
 		luaL_checktype(L, -1, LUA_TSTRING);
 		lua_insert(L, 1);	// filename, params
-
 		lua_getfield(L, 2, "width");// filename, params, width
 		lua_getfield(L, 2, "height");	// filename, params, width, height
 		lua_getfield(L, 2, "frameRate");// filename, params, width, height, frameRate?
@@ -416,7 +414,7 @@ CORONA_EXPORT int luaopen_plugin_theora (lua_State * L)
 				}, {
 					"dupFrame", [](lua_State * L)
 					{
-						luaL_checkstring(L, 2);
+						ByteReader reader{L, 2};
 
 						int time = luaL_checkint(L, 3), ok = 1;
 
@@ -424,7 +422,7 @@ CORONA_EXPORT int luaopen_plugin_theora (lua_State * L)
 							std::vector<unsigned char> fallback;
 
 							TheoraWriter * writer = Writer(L);
-							const unsigned char * bytes = GetBytes(L, fallback, writer->mWidth, writer->mHeight);
+							const unsigned char * bytes = GetBytes(reader, fallback, writer->mWidth, writer->mHeight);
 
 							writer->dupFrame(bytes, time);
 						} catch (const char * error) {
@@ -447,7 +445,7 @@ CORONA_EXPORT int luaopen_plugin_theora (lua_State * L)
 				}, {
 					"newFrame", [](lua_State * L)
 					{
-						luaL_checkstring(L, 2);
+						ByteReader reader{L, 2};
 
 						int ok = 1;
 
@@ -455,7 +453,7 @@ CORONA_EXPORT int luaopen_plugin_theora (lua_State * L)
 							std::vector<unsigned char> fallback;
 
 							TheoraWriter * writer = Writer(L);
-							const unsigned char * bytes = GetBytes(L, fallback, writer->mWidth, writer->mHeight);
+							const unsigned char * bytes = GetBytes(reader, fallback, writer->mWidth, writer->mHeight);
 
 							writer->newFrame(bytes);
 						} catch (const char * error) {
