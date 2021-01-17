@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\shared\latlon.cpp" />
+    <ClCompile Include="..\shared\model\cylinder.cpp" />
+    <ClCompile Include="..\shared\model\line.cpp" />
+    <ClCompile Include="..\shared\model\plane.cpp" />
+    <ClCompile Include="..\shared\model\sphere.cpp" />
+    <ClCompile Include="..\shared\module\abs.cpp" />
+    <ClCompile Include="..\shared\module\add.cpp" />
+    <ClCompile Include="..\shared\module\billow.cpp" />
+    <ClCompile Include="..\shared\module\blend.cpp" />
+    <ClCompile Include="..\shared\module\cache.cpp" />
+    <ClCompile Include="..\shared\module\checkerboard.cpp" />
+    <ClCompile Include="..\shared\module\clamp.cpp" />
+    <ClCompile Include="..\shared\module\const.cpp" />
+    <ClCompile Include="..\shared\module\curve.cpp" />
+    <ClCompile Include="..\shared\module\cylinders.cpp" />
+    <ClCompile Include="..\shared\module\displace.cpp" />
+    <ClCompile Include="..\shared\module\exponent.cpp" />
+    <ClCompile Include="..\shared\module\invert.cpp" />
+    <ClCompile Include="..\shared\module\max.cpp" />
+    <ClCompile Include="..\shared\module\min.cpp" />
+    <ClCompile Include="..\shared\module\modulebase.cpp" />
+    <ClCompile Include="..\shared\module\multiply.cpp" />
+    <ClCompile Include="..\shared\module\perlin.cpp" />
+    <ClCompile Include="..\shared\module\power.cpp" />
+    <ClCompile Include="..\shared\module\ridgedmulti.cpp" />
+    <ClCompile Include="..\shared\module\rotatepoint.cpp" />
+    <ClCompile Include="..\shared\module\scalebias.cpp" />
+    <ClCompile Include="..\shared\module\scalepoint.cpp" />
+    <ClCompile Include="..\shared\module\select.cpp" />
+    <ClCompile Include="..\shared\module\spheres.cpp" />
+    <ClCompile Include="..\shared\module\terrace.cpp" />
+    <ClCompile Include="..\shared\module\translatepoint.cpp" />
+    <ClCompile Include="..\shared\module\turbulence.cpp" />
+    <ClCompile Include="..\shared\module\voronoi.cpp" />
+    <ClCompile Include="..\shared\noisegen.cpp" />
+    <ClCompile Include="..\shared\noiseutils\noiseutils.cpp" />
+    <ClCompile Include="..\shared\plugin.libnoise.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\shared\basictypes.h" />
+    <ClInclude Include="..\shared\exception.h" />
+    <ClInclude Include="..\shared\interp.h" />
+    <ClInclude Include="..\shared\latlon.h" />
+    <ClInclude Include="..\shared\mathconsts.h" />
+    <ClInclude Include="..\shared\misc.h" />
+    <ClInclude Include="..\shared\model\cylinder.h" />
+    <ClInclude Include="..\shared\model\line.h" />
+    <ClInclude Include="..\shared\model\model.h" />
+    <ClInclude Include="..\shared\model\plane.h" />
+    <ClInclude Include="..\shared\model\sphere.h" />
+    <ClInclude Include="..\shared\module\abs.h" />
+    <ClInclude Include="..\shared\module\add.h" />
+    <ClInclude Include="..\shared\module\billow.h" />
+    <ClInclude Include="..\shared\module\blend.h" />
+    <ClInclude Include="..\shared\module\cache.h" />
+    <ClInclude Include="..\shared\module\checkerboard.h" />
+    <ClInclude Include="..\shared\module\clamp.h" />
+    <ClInclude Include="..\shared\module\const.h" />
+    <ClInclude Include="..\shared\module\curve.h" />
+    <ClInclude Include="..\shared\module\cylinders.h" />
+    <ClInclude Include="..\shared\module\displace.h" />
+    <ClInclude Include="..\shared\module\exponent.h" />
+    <ClInclude Include="..\shared\module\invert.h" />
+    <ClInclude Include="..\shared\module\max.h" />
+    <ClInclude Include="..\shared\module\min.h" />
+    <ClInclude Include="..\shared\module\module.h" />
+    <ClInclude Include="..\shared\module\modulebase.h" />
+    <ClInclude Include="..\shared\module\multiply.h" />
+    <ClInclude Include="..\shared\module\perlin.h" />
+    <ClInclude Include="..\shared\module\power.h" />
+    <ClInclude Include="..\shared\module\ridgedmulti.h" />
+    <ClInclude Include="..\shared\module\rotatepoint.h" />
+    <ClInclude Include="..\shared\module\scalebias.h" />
+    <ClInclude Include="..\shared\module\scalepoint.h" />
+    <ClInclude Include="..\shared\module\select.h" />
+    <ClInclude Include="..\shared\module\spheres.h" />
+    <ClInclude Include="..\shared\module\terrace.h" />
+    <ClInclude Include="..\shared\module\translatepoint.h" />
+    <ClInclude Include="..\shared\module\turbulence.h" />
+    <ClInclude Include="..\shared\module\voronoi.h" />
+    <ClInclude Include="..\shared\noise.h" />
+    <ClInclude Include="..\shared\noisegen.h" />
+    <ClInclude Include="..\shared\noiseutils\noiseutils.h" />
+    <ClInclude Include="..\shared\vectortable.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{79F0CACC-457B-4A25-BC54-81277688C361}</ProjectGuid>
+    <RootNamespace>Plugin</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>7.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v141_xp</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120_xp</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>12.0.30501.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(Configuration)\</OutDir>
+    <TargetName>plugin_video</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(Configuration)\</OutDir>
+    <TargetName>libnoise</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <PreBuildEvent />
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>CoronaEnterprise\Corona\shared\include;CoronaEnterprise\Corona\shared\include\Corona;CoronaEnterprise\Corona\shared\include\lua;../shared/include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>CoronaEnterprise\Corona\win\lib\*.lib;libs/win32/*.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <PostBuildEvent />
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <PreBuildEvent />
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(CORONA_ROOT)/Corona/shared/include/Corona;$(CORONA_ROOT)/Corona/shared/include/lua;%(AdditionalIncludeDirectories);$(SolutionDir)../../ByteReader;$(SolutionDir)../../solar2d_native_utils;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);LUA_BUILD_AS_DLL;LUA_LIB;_CRT_SECURE_NO_WARNINGS;__HAVE_OGG</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(CORONA_ROOT)\Corona\win\lib\*.lib;%(AdditionalDependencies);;$(Configuration)\solar2d_native_utils.lib</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+      <DelayLoadDLLs>
+      </DelayLoadDLLs>
+    </Link>
+    <PostBuildEvent />
+    <PostBuildEvent>
+      <Command>set PLUGIN_DIR=$(appdata)\Solar2DPlugins\com.xibalbastudios\plugin.$(TargetName)\win32-sim
+setlocal enableextensions
+mkdir %PLUGIN_DIR%
+set FILENAME=plugin_$(TargetName).dll
+set FULL_NAME=%PLUGIN_DIR%\%FILENAME%
+copy "$(OutDir)$(TargetName).dll" "%FULL_NAME%"
+del "%PLUGIN_DIR%\data.tgz"
+tar -czf "%PLUGIN_DIR%\data.tgz" -C "%PLUGIN_DIR%" %FILENAME%
+del "%FULL_NAME%"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

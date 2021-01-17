@@ -527,18 +527,7 @@ CORONA_EXPORT int luaopen_plugin_Bytemap (lua_State * L)
 
 		return 0;
 	}, 1); // bytemap, proxy, dirs, bmap_ref, addLoader
-
-	lua_setfield(L, -5, "addLoader");	// bytemap = { newTexture, addLoader = addLoader }, proxy, dirs, bmap_ref
-
-	lua_createtable(L, 0, 1);	// bytemap, proxy, dirs, bmap_ref, options
-	lua_pushvalue(L, -1);	// bytemap, proxy, dirs, bmap_ref, options, options
-	lua_pushcclosure(L, [](lua_State * L) {
-		lua_pushboolean(L, 1); // true
-		lua_setfield(L, lua_upvalueindex(1), "premultiply_alpha");	// (empty); upvalues.premultiply_alpha = true
-		return 0;
-	}, 1);	// bytemap, proxy, dirs, bmap_ref, options, usePremultipliedAlpha
-	lua_setfield(L, -6, "usePremultipliedAlpha");	// bytemap = { newTexture, addLoader, usePremultipliedAlpha = usePremultipliedAlpha }, proxy, dirs, bmap_ref, options
-
+	lua_setfield(L, -5, "addLoader");	// bytemap = { newTexture, addLoader = addLoader }
 	lua_pushcclosure(L, [](lua_State * L) {
 		luaL_argcheck(L, lua_istable(L, 1), 1, "Non-table params for loadTexture");
 		lua_pushvalue(L, lua_upvalueindex(2));	// params, dirs
@@ -549,6 +538,11 @@ CORONA_EXPORT int luaopen_plugin_Bytemap (lua_State * L)
 
         CoronaExternalBitmapFormat format = GetFormat(L, -1);
 
+		lua_getfield(L, 1, "no_premultiplied_alpha");	// params, dirs, format?, no_premultiplied_alpha
+
+		bool bNoPremultipliedAlpha = lua_toboolean(L, -1) != 0;
+
+		lua_pop(L, 1);	// params, dirs, format?
 		lua_getfield(L, 1, "from_memory"); // params, dirs, format?, from_memory?
 
 		if (lua_isstring(L, -1))
@@ -567,7 +561,7 @@ CORONA_EXPORT int luaopen_plugin_Bytemap (lua_State * L)
 			luaL_argcheck(L, lua_isstring(L, -2), -2, "Expected filename");
 		}
 
-        return LuaXS::ResultOrNil(L, dirs->WithFileContentsDo(L, -2, -3, [L, format](ByteReader & bytes) {
+        return LuaXS::ResultOrNil(L, dirs->WithFileContentsDo(L, -2, -3, [L, format, bNoPremultipliedAlpha](ByteReader & bytes) {
             int w, h, comp, ncomps = 4;
 
             if (kExternalBitmapFormat_Mask == format) ncomps = 1;
@@ -591,21 +585,14 @@ CORONA_EXPORT int luaopen_plugin_Bytemap (lua_State * L)
                     proxy->mBytes = uc;
                     proxy->mSize = size_t(w * h * ncomps);
 
-					if (ncomps == 4)
+					if (4 == ncomps && !bNoPremultipliedAlpha)
 					{
-						lua_getfield(L, lua_upvalueindex(4), "premultiply_alpha");	// params, dirs, format?, is_absolute, filename, bmap, SetBytes, bmap, proxy, premultiply_alpha
-
-						if (lua_toboolean(L, -1))
+						for (int i = 0; i < proxy->mSize; i += 4)
 						{
-							for (int i = 0, area = w * h * ncomps; i < area; i += 4)
-							{
-								uc[i + 0] = (unsigned char)((uc[i + 0] * uc[i + 3]) >> 8);
-								uc[i + 1] = (unsigned char)((uc[i + 1] * uc[i + 3]) >> 8);
-								uc[i + 2] = (unsigned char)((uc[i + 2] * uc[i + 3]) >> 8);
-							}
-						}
+							unsigned int alpha = uc[i + 3];
 
-						lua_pop(L, 1);	// params, dirs, format?, is_absolute, filename, bmap, SetBytes, bmap, proxy
+							for (int j = 0; j < 3; ++j) uc[i + j] = (unsigned char)((alpha * uc[i + j]) >> 8);
+						}
 					}
 
                     lua_pcall(L, 2, 0, 0);	// params, dirs, format?, is_absolute, filename, bmap
@@ -658,7 +645,7 @@ CORONA_EXPORT int luaopen_plugin_Bytemap (lua_State * L)
 
             return bOK;
         }));// params, format?, is_absolute, filename, bmap / nil
-	}, 4);	// bytemap, loadTexture
+	}, 3);	// bytemap, loadTexture
 	lua_setfield(L, -2, "loadTexture");	// bytemap = { newTexture, addLoader, loadTexture = loadTexture }
 
 	return 1;

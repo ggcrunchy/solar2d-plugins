@@ -1,0 +1,240 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\shared\plugin.libnoise.cpp" />
+    <ClCompile Include="..\shared\module\abs.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\module\add.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\module\billow.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\module\blend.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\module\cache.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\module\checkerboard.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\module\clamp.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\module\const.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\module\curve.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\module\cylinders.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\module\displace.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\module\exponent.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\module\invert.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\module\max.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\module\min.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\module\modulebase.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\module\multiply.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\module\perlin.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\module\power.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\module\ridgedmulti.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\module\rotatepoint.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\module\scalebias.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\module\scalepoint.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\module\select.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\module\spheres.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\module\terrace.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\module\translatepoint.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\module\turbulence.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\module\voronoi.cpp">
+      <Filter>module</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\model\cylinder.cpp">
+      <Filter>model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\model\line.cpp">
+      <Filter>model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\model\plane.cpp">
+      <Filter>model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\model\sphere.cpp">
+      <Filter>model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\latlon.cpp" />
+    <ClCompile Include="..\shared\noisegen.cpp" />
+    <ClCompile Include="..\shared\noiseutils\noiseutils.cpp">
+      <Filter>noiseutils</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="model">
+      <UniqueIdentifier>{8b2af644-5e95-4593-a2ac-d7b07207917c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="module">
+      <UniqueIdentifier>{556d18f9-a813-4109-9e3c-3445dd170884}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="noiseutils">
+      <UniqueIdentifier>{82a36cf0-87b6-4e50-9879-db9602045d3a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\shared\module\abs.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\module\add.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\module\billow.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\module\blend.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\module\cache.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\module\checkerboard.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\module\clamp.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\module\const.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\module\curve.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\module\cylinders.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\module\displace.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\module\exponent.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\module\invert.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\module\max.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\module\min.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\module\module.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\module\modulebase.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\module\multiply.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\module\perlin.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\module\power.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\module\ridgedmulti.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\module\rotatepoint.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\module\scalebias.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\module\scalepoint.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\module\select.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\module\spheres.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\module\terrace.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\module\translatepoint.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\module\turbulence.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\module\voronoi.h">
+      <Filter>module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\model\cylinder.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\model\line.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\model\model.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\model\plane.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\model\sphere.h">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\basictypes.h" />
+    <ClInclude Include="..\shared\exception.h" />
+    <ClInclude Include="..\shared\interp.h" />
+    <ClInclude Include="..\shared\latlon.h" />
+    <ClInclude Include="..\shared\mathconsts.h" />
+    <ClInclude Include="..\shared\misc.h" />
+    <ClInclude Include="..\shared\noise.h" />
+    <ClInclude Include="..\shared\noisegen.h" />
+    <ClInclude Include="..\shared\vectortable.h" />
+    <ClInclude Include="..\shared\noiseutils\noiseutils.h">
+      <Filter>noiseutils</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

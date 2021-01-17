@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Plugin", "Plugin.vcxproj", "{79F0CACC-457B-4A25-BC54-81277688C361}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "solar2d_native_utils", "..\..\solar2d_native_utils\win32\solar2d_native_utils.vcxproj", "{BF4DE651-2791-489F-9246-E70BD64F314E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Debug|x64 = Debug|x64
+		Release|Win32 = Release|Win32
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{79F0CACC-457B-4A25-BC54-81277688C361}.Debug|Win32.ActiveCfg = Debug|Win32
+		{79F0CACC-457B-4A25-BC54-81277688C361}.Debug|Win32.Build.0 = Debug|Win32
+		{79F0CACC-457B-4A25-BC54-81277688C361}.Debug|x64.ActiveCfg = Debug|Win32
+		{79F0CACC-457B-4A25-BC54-81277688C361}.Release|Win32.ActiveCfg = Release|Win32
+		{79F0CACC-457B-4A25-BC54-81277688C361}.Release|Win32.Build.0 = Release|Win32
+		{79F0CACC-457B-4A25-BC54-81277688C361}.Release|x64.ActiveCfg = Release|Win32
+		{BF4DE651-2791-489F-9246-E70BD64F314E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BF4DE651-2791-489F-9246-E70BD64F314E}.Debug|Win32.Build.0 = Debug|Win32
+		{BF4DE651-2791-489F-9246-E70BD64F314E}.Debug|x64.ActiveCfg = Debug|Win32
+		{BF4DE651-2791-489F-9246-E70BD64F314E}.Release|Win32.ActiveCfg = Release|Win32
+		{BF4DE651-2791-489F-9246-E70BD64F314E}.Release|Win32.Build.0 = Release|Win32
+		{BF4DE651-2791-489F-9246-E70BD64F314E}.Release|x64.ActiveCfg = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1DB129C9-CA5D-4F0E-A4FB-07218FE4E40C}
+	EndGlobalSection
+EndGlobal
