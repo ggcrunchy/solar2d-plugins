@@ -11,6 +11,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\shared\add_models.cpp" />
+    <ClCompile Include="..\shared\add_modulebase.cpp" />
+    <ClCompile Include="..\shared\add_modules.cpp" />
+    <ClCompile Include="..\shared\add_properties.cpp" />
+    <ClCompile Include="..\shared\add_utils.cpp" />
     <ClCompile Include="..\shared\latlon.cpp" />
     <ClCompile Include="..\shared\model\cylinder.cpp" />
     <ClCompile Include="..\shared\model\line.cpp" />
@@ -51,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\shared\basictypes.h" />
+    <ClInclude Include="..\shared\common.h" />
     <ClInclude Include="..\shared\exception.h" />
     <ClInclude Include="..\shared\interp.h" />
     <ClInclude Include="..\shared\latlon.h" />

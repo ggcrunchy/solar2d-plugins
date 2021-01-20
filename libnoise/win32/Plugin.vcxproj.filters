@@ -106,6 +106,11 @@
     <ClCompile Include="..\shared\noiseutils\noiseutils.cpp">
       <Filter>noiseutils</Filter>
     </ClCompile>
+    <ClCompile Include="..\shared\add_utils.cpp" />
+    <ClCompile Include="..\shared\add_models.cpp" />
+    <ClCompile Include="..\shared\add_modules.cpp" />
+    <ClCompile Include="..\shared\add_properties.cpp" />
+    <ClCompile Include="..\shared\add_modulebase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="model">
@@ -236,5 +241,6 @@
     <ClInclude Include="..\shared\noiseutils\noiseutils.h">
       <Filter>noiseutils</Filter>
     </ClInclude>
+    <ClInclude Include="..\shared\common.h" />
   </ItemGroup>
 </Project>

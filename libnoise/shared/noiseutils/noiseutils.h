@@ -133,7 +133,8 @@ namespace noise
           red (r), green (g), blue (b), alpha (a)
         {
         }
-
+// STEVE CHANGE (reordering)
+/*
         /// Value of the alpha (transparency) channel.
         noise::uint8 alpha;
 
@@ -145,6 +146,9 @@ namespace noise
 
         /// Value of the red channel.
         noise::uint8 red;
+*/
+        noise::uint8 red, green, blue, alpha;
+// /STEVE CHANGE
 
     };
 
