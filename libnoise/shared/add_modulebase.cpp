@@ -31,9 +31,11 @@ noise::module::Module * Module (lua_State * L, int arg)
 {
 	luaL_checktype(L, arg, LUA_TUSERDATA);
 	lua_getmetatable(L, arg);	// ..., ud, ..., mt
-	lua_gettable(L, lua_upvalueindex(1));	// ..., ud, ..., exists?
-	luaL_argcheck(L, arg, lua_toboolean(L, -1), "Not a module");
-	lua_pop(L, 1);	// ..., ud, ...
+	lua_getfield(L, LUA_REGISTRYINDEX, MT_NAME(modules));	// ..., ud, ..., mt, module_list
+	lua_insert(L, -2);	// ..., ud, ..., module_list, mt
+	lua_gettable(L, -2);// ..., ud, ..., module_list, exists?
+	luaL_argcheck(L, lua_toboolean(L, -1), arg, "Not a module");
+	lua_pop(L, 2);	// ..., ud, ...
 
 	return LuaXS::UD<noise::module::Module>(L, arg);
 }
@@ -45,7 +47,8 @@ noise::module::Module * Module (lua_State * L, int arg)
 void AddModuleBase (lua_State * L)
 {
 	lua_createtable(L, 0, 3);	// mt
-	lua_newtable(L);// mt, list
+	lua_pushvalue(L, -1);	// mt, mt
+	lua_setfield(L, -2, "__index");	// mt = { __index = mt }
 
 	luaL_Reg funcs[] = {
 		{
@@ -91,10 +94,5 @@ void AddModuleBase (lua_State * L)
 		{ nullptr, nullptr }
 	};
 
-	for (int i = 0; funcs[i].func; ++i)
-	{
-		lua_pushvalue(L, -1);	// mt, list, list
-		lua_pushcclosure(L, funcs[i].func, 1);	// mt, list, func
-		lua_setfield(L, -3, funcs[i].name);	// mt = { ..., name = func }, list
-	}
+	luaL_register(L, nullptr, funcs);
 }

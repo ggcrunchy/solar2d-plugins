@@ -110,8 +110,7 @@ static int AddGradientColor (lua_State * L)
 {
     auto * color = LuaXS::NewTyped<noise::utils::GradientColor>(L);   // gcolor
 
-    if (luaL_newmetatable(L, MT_NAME(GradientColor)))    // gcolor, mt
-    {
+    LuaXS::AttachMethods(L, MT_NAME(GradientColor), [](lua_State * L) {
         luaL_Reg funcs[] = {
             {
                 "AddGradientPoint", [](lua_State * L)
@@ -129,9 +128,9 @@ static int AddGradientColor (lua_State * L)
                 "GetBytes", [](lua_State * L)
                 {
                     auto * color = GradientColor(L);
-                    int count = color->GetGradientPointCount();
+                    int n = color->GetGradientPointCount();
 
-                    if (count > 0) lua_pushlstring(L, reinterpret_cast<const char *>(color->GetGradientPointArray()), sizeof(noise::utils::GradientPoint) * count); // gcolor, bytes
+                    if (n > 0) lua_pushlstring(L, reinterpret_cast<const char *>(color->GetGradientPointArray()), sizeof(noise::utils::GradientPoint) * n); // gcolor, bytes
                     else lua_pushliteral(L, "");// gcolor, ""
 
                     return 1;
@@ -143,9 +142,7 @@ static int AddGradientColor (lua_State * L)
         };
 
         luaL_register(L, nullptr, funcs);
-    }
-
-    lua_setmetatable(L, -2);// gcolor; gcolor.metatable = mt
+    });
 
     return 1;
 }
@@ -161,8 +158,8 @@ T * NewMaybeSized (lua_State * L)
 
     if (!lua_isnoneornil(L, 1))
     {
-        w = luaL_checkint(L, 1);
-        h = luaL_checkint(L, 2);
+        w = LuaXS::Int(L, 1);
+        h = LuaXS::Int(L, 2);
 
         luaL_argcheck(L, w > 0, 1, "Invalid width");
         luaL_argcheck(L, h > 0, 2, "Invalid height");
@@ -178,8 +175,8 @@ T * LuaNewMaybeSized (lua_State * L)
 
     if (!lua_isnoneornil(L, 1))
     {
-        w = luaL_checkint(L, 1);
-        h = luaL_checkint(L, 2);
+        w = LuaXS::Int(L, 1);
+        h = LuaXS::Int(L, 2);
 
         luaL_argcheck(L, w > 0, 1, "Invalid width");
         luaL_argcheck(L, h > 0, 2, "Invalid height");
@@ -187,6 +184,30 @@ T * LuaNewMaybeSized (lua_State * L)
 
 	return w > 0 ? LuaXS::NewTyped<T>(L, w, h) : LuaXS::NewTyped<T>(L);
 }
+
+//
+//
+//
+
+template<typename T>
+int PushLengthString (lua_State * L, const T * slab, int n)
+{
+    lua_pushlstring(L, reinterpret_cast<const char *>(slab), sizeof(T) * n); // ..., bytes
+
+    return 1;
+}
+
+template<typename T, T * (*getter)(lua_State *)>
+int GetSlabBytes (lua_State * L)
+{
+    auto * object = getter(L);
+
+    if (lua_isnoneornil(L, 2)) return PushLengthString(L, object->GetSlabPtr(), object->GetStride() * object->GetHeight());   // object, bytes
+    else if (!lua_isnoneornil(L, 3)) return PushLengthString(L, object->GetSlabPtr(LuaXS::Int(L, 2) - 1, LuaXS::Int(L, 3) - 1), 1);// object, x, y, bytes
+    else return PushLengthString(L, object->GetSlabPtr(LuaXS::Int(L, 2) - 1), object->GetStride());   // object, row, bytes
+}
+
+#define GET_BYTES(getter) GetSlabBytes<noise::utils::##getter, &getter>
 
 //
 //
@@ -216,84 +237,40 @@ static noise::utils::Color GetColor (lua_State * L, int arg) // kludge to allow 
 //
 //
 
-#define IMAGE_GET_INTEGER(name) static int Image_Get##name (lua_State * L)  \
-{                                               \
-    lua_pushinteger(L, Image(L)->Get##name());  \
-                                                \
-    return 1;                                   \
+#define GET_COLOR(getter, name) "Get" #name, [](lua_State * L) \
+{                                           \
+    PushColor(L, getter(L)->Get##name());   \
+                                            \
+    return 1;                               \
 }
 
-#define IMAGE_WITH_COLOR(name) static int Image_##name (lua_State * L) \
+#define GET_COLOR_AT(getter, name) "Get" #name, [](lua_State * L) \
+{                                                                                   \
+    return PushColor(L, getter(L)->Get##name(LuaXS::Int(L, 2), LuaXS::Int(L, 3)));  \
+}
+
+#define WITH_COLOR(getter, name, mname) name, [](lua_State * L) \
 {                                       \
-    Image(L)->##name(GetColor(L, 2));   \
+    getter(L)->##mname(GetColor(L, 2));  \
                                         \
     return 0;                           \
 }
 
-//
-//
-//
+#define COLOR_METHOD(getter, name) WITH_COLOR(getter, #name, name)
+#define SET_COLOR(getter, name) WITH_COLOR(getter, "Set" #name, Set##name)
 
-IMAGE_WITH_COLOR(Clear)
-IMAGE_GET_INTEGER(Height)
-IMAGE_GET_INTEGER(Stride)
-IMAGE_GET_INTEGER(Width)
-IMAGE_WITH_COLOR(SetBorderValue)
-
-static int Image_GetBorderValue (lua_State * L)
-{
-    return PushColor(L, Image(L)->GetBorderValue());
+#define SET_COLOR_AT(getter, name) "Set" #name, [](lua_State * L) \
+{                                                                               \
+    getter(L)->Set##name(LuaXS::Int(L, 2), LuaXS::Int(L, 3), GetColor(L, 4));   \
+                                                                                \
+    return 0;                                                                   \
 }
 
-static int Image_GetBytes (lua_State * L)
-{
-    auto * image = Image(L);
-    noise::utils::Color * slab;
-    int n;
-
-    if (!lua_isnoneornil(L, 2))
-    {
-        if (!lua_isnoneornil(L, 3))
-        {
-            slab = image->GetSlabPtr(luaL_checkint(L, 2) - 1, luaL_checkint(L, 3) - 1);
-            n = 3; // TODO: 4?
-        }
-
-        else
-        {
-            slab = image->GetSlabPtr(luaL_checkint(L, 2) - 1);
-            n = image->GetStride();
-        }
-    }
-
-    else
-    {
-        slab = image->GetSlabPtr();
-        n = image->GetStride() * image->GetHeight();
-    }
-
-    lua_pushlstring(L, reinterpret_cast<const char *>(slab), sizeof(noise::utils::Color) * n); // image[, x / row[, y]], bytes
-
-    return 1;
-}
-
-static int Image_GetValue (lua_State * L)
-{
-    return PushColor(L, Image(L)->GetValue(LuaXS::Int(L, 2), LuaXS::Int(L, 3)));// image, x, y, value
-}
-
-static int Image_SetSize (lua_State * L)
-{
-    Image(L)->SetSize(LuaXS::Int(L, 2), LuaXS::Int(L, 3));
-
-    return 0;
-}
-
-static int Image_SetValue (lua_State * L)
-{
-    Image(L)->SetValue(LuaXS::Int(L, 2), LuaXS::Int(L, 3), GetColor(L, 4));
-
-    return 0;
+#define SET_SIZE(getter, name) "Set" #name, [](lua_State * L) \
+{                                                               \
+    getter(L)->Set##name(LuaXS::Int(L, 2), LuaXS::Int(L, 3));   \
+                                                                \
+    return 0;                                                   \
 }
 
 //
@@ -329,7 +306,9 @@ static void Image_Dispose (void * context)
 	delete image;
 }
 
-#define IMAGE_FIELD(name) #name, Image_##name
+//
+//
+//
 
 static int Image_GetField (lua_State * L, const char * field, void * context)
 {
@@ -337,25 +316,25 @@ static int Image_GetField (lua_State * L, const char * field, void * context)
 
     luaL_Reg methods[] = {
         {
-            IMAGE_FIELD(Clear)
+            COLOR_METHOD(Image, Clear)
         }, {
-            IMAGE_FIELD(GetBorderValue)
+            GET_COLOR(Image, BorderValue)
         }, {
-            IMAGE_FIELD(GetBytes)
+            "GetBytes", GET_BYTES(Image)
         }, {
-            IMAGE_FIELD(GetHeight)
+            GET_VALUE(Image, Height, integer)
         }, {
-            IMAGE_FIELD(GetStride)
+            GET_VALUE(Image, Stride, integer)
         }, {
-            IMAGE_FIELD(GetValue)
+            GET_COLOR_AT(Image, Value)
         }, {
-            IMAGE_FIELD(GetWidth)
+            GET_VALUE(Image, Width, integer)
         }, {
-            IMAGE_FIELD(SetBorderValue)
+            SET_COLOR(Image, BorderValue)
         }, {
-            IMAGE_FIELD(SetSize)
+            SET_SIZE(Image, Size)
         }, {
-            IMAGE_FIELD(SetValue)
+            SET_COLOR_AT(Image, Value)
         },
         { nullptr, nullptr }
     };
@@ -372,6 +351,10 @@ static int Image_GetField (lua_State * L, const char * field, void * context)
 
 	return 0;
 }
+
+//
+//
+//
 
 static int AddImage (lua_State * L)
 {
@@ -407,47 +390,63 @@ static int AddNoiseMap (lua_State * L)
 {
     auto * map = LuaNewMaybeSized<noise::utils::NoiseMap>(L);   // [w, h, ]map
 
-    if (luaL_newmetatable(L, MT_NAME(NoiseMap)))    // [w, h, ]map, mt
-    {
+    LuaXS::AttachMethods(L, MT_NAME(NoiseMap), [](lua_State * L) {
         luaL_Reg funcs[] = {
             {
                 DO_1_ARG(NoiseMap, Clear, Float)
             }, {
                 GET_VALUE(NoiseMap, BorderValue, number)
             }, {
-                "GetBytes", [](lua_State * L)
-                {
-            /*
-                    const float* GetConstSlabPtr () const
-                    const float* GetConstSlabPtr (int row) const
-                    const float* GetConstSlabPtr (int x, int y) const
-            */
-                    return 0; // TODO!
-                }
+                "GetBytes", GET_BYTES(NoiseMap)
             }, {
                 GET_VALUE(NoiseMap, Height, integer)
             }, {
                 GET_VALUE(NoiseMap, Stride, integer)
             }, {
-                "GetValue", [](lua_State * L) { return 0; } // TODO!
+                "GetValue", [](lua_State * L)
+                {
+                    lua_pushnumber(L, NoiseMap(L)->GetValue(LuaXS::Int(L, 2), LuaXS::Int(L, 3)));
+
+                    return 1;
+                }
             }, {
                 GET_VALUE(NoiseMap, Width, integer)
             }, {
                 SET_VALUE(NoiseMap, BorderValue, float)
             }, {
-                "SetSize", [](lua_State * L) { return 0; } // TODO!
+                SET_SIZE(NoiseMap, Size)
             }, {
-                "SetValue", [](lua_State * L) { return 0; } // TODO!
+                "SetValue", [](lua_State * L)
+                {
+                    NoiseMap(L)->SetValue(LuaXS::Int(L, 2), LuaXS::Int(L, 3), LuaXS::Float(L, 4));
+
+                    return 0;
+                }
             },
             { nullptr, nullptr }
         };
 
         luaL_register(L, nullptr, funcs);
-    }
-
-    lua_setmetatable(L, -2);// [w, h, ]map; map.metatable = mt
+    });
 
     return 1;
+}
+
+//
+//
+//
+
+#define SET_RESOURCE(getter, other_getter, name, index) "Set" #name, [](lua_State * L) \
+{                                                   \
+    lua_settop(L, 2); /* target, resource */        \
+    auto * target = getter(L);                      \
+    lua_insert(L, 1); /* resource, target */        \
+	auto * res = other_getter(L);                   \
+    target->Set##name(*res);                        \
+    lua_insert(L, 1); /* target, resource */        \
+	AuxSetInEnvironment(L, index);	/* target */    \
+                                                    \
+    return 0;                                       \
 }
 
 //
@@ -457,13 +456,15 @@ static int AddNoiseMap (lua_State * L)
 template<typename T, T * (*getter)(lua_State *)>
 void NoiseMapBuilder (lua_State * L)
 {
-    enum { kSourceModuleIndex };
+    enum { kSourceModuleIndex, kDestNoiseMapIndex };
 
 	luaL_Reg funcs[] = {
 		{
-			GET_VALUE(getter, GetDestHeight, number)
+            DO(getter, Build)
+        }, {
+			GET_VALUE(getter, DestHeight, number)
 		}, {
-			GET_VALUE(getter, GetDestWidth, integer)
+			GET_VALUE(getter, DestWidth, number)
 		}, {
             "SetBounds", [](lua_State * L)
             {
@@ -472,17 +473,9 @@ void NoiseMapBuilder (lua_State * L)
                 return 0;
             }
         }, {
-            "SetDestNoiseMap", [](lua_State * L)
-            {
-                //TODO!
-                return 0;
-            }
+            SET_RESOURCE(getter, NoiseMap, DestNoiseMap, kDestNoiseMapIndex)
         }, {
-			"SetDestSize", [](lua_State * L)
-            {
-                // TODO (int w, h)
-                return 0;
-            }
+			SET_SIZE(getter, DestSize)
 		}, {
 			SET_MODULE(getter, Source)
 		},
@@ -491,6 +484,8 @@ void NoiseMapBuilder (lua_State * L)
 
 	luaL_register(L, nullptr, funcs);
 }
+
+#define NOISE_MAP_BUILDER(name) NoiseMapBuilder<noise::utils::NoiseMapBuilder##name, &NoiseMapBuilder##name>(L)
 
 template<typename T>
 void NewWithEnv (lua_State * L)
@@ -511,8 +506,9 @@ static int AddNoiseMapBuilderCylinder (lua_State * L)
 {
     NewWithEnv<noise::utils::NoiseMapBuilderCylinder>(L);   // builder
 
-    if (luaL_newmetatable(L, MT_NAME(NoiseMapBuilderCylinder))) // builder, mt
-    {
+    LuaXS::AttachMethods(L, MT_NAME(NoiseMapBuilderCylinder), [](lua_State * L) {
+        NOISE_MAP_BUILDER(Cylinder);
+
         luaL_Reg funcs[] = {
             {
                 GET_VALUE(NoiseMapBuilderCylinder, LowerAngleBound, number)
@@ -527,9 +523,7 @@ static int AddNoiseMapBuilderCylinder (lua_State * L)
         };
 
         luaL_register(L, nullptr, funcs);
-    }
-
-    lua_setmetatable(L, -2);// builder; builder.metatable = mt
+    });
 
     return 1;
 }
@@ -555,8 +549,9 @@ static int AddNoiseMapBuilderPlane (lua_State * L)
 {
     NewWithEnv<noise::utils::NoiseMapBuilderPlane>(L);   // builder
 
-    if (luaL_newmetatable(L, MT_NAME(NoiseMapBuilderPlane))) // builder, mt
-    {
+    LuaXS::AttachMethods(L, MT_NAME(NoiseMapBuilderPlane), [](lua_State * L) {
+        NOISE_MAP_BUILDER(Plane);
+
         luaL_Reg funcs[] = {
             {
                 ENABLE_DEF_TRUE(NoiseMapBuilderPlane, Seamless)
@@ -575,9 +570,7 @@ static int AddNoiseMapBuilderPlane (lua_State * L)
         };
 
         luaL_register(L, nullptr, funcs);
-    }
-
-    lua_setmetatable(L, -2);// builder; builder.metatable = mt
+    });
 
     return 1;
 }
@@ -592,8 +585,9 @@ static int AddNoiseMapBuilderSphere (lua_State * L)
 {
     NewWithEnv<noise::utils::NoiseMapBuilderSphere>(L);   // builder
 
-    if (luaL_newmetatable(L, MT_NAME(NoiseMapBuilderSphere))) // builder, mt
-    {
+    LuaXS::AttachMethods(L, MT_NAME(NoiseMapBuilderSphere), [](lua_State * L) {
+        NOISE_MAP_BUILDER(Sphere);
+
         luaL_Reg funcs[] = {
             {
                 GET_VALUE(NoiseMapBuilderSphere, EastLonBound, number)
@@ -608,9 +602,7 @@ static int AddNoiseMapBuilderSphere (lua_State * L)
         };
 
         luaL_register(L, nullptr, funcs);
-    }
-
-    lua_setmetatable(L, -2);// builder; builder.metatable = mt
+    });
 
     return 1;
 }
@@ -622,6 +614,8 @@ static int AddNoiseMapBuilderSphere (lua_State * L)
 template<typename T, T * (*getter)(lua_State *)>
 void Renderer (lua_State * L)
 {
+    enum { kDestImageIndex, kSourceNoiseMapIndex };
+
     luaL_Reg funcs[] = {
         {
             ENABLE_DEF_TRUE(getter, Wrap)
@@ -630,9 +624,9 @@ void Renderer (lua_State * L)
         }, {
             DO(getter, Render)
         }, {
-            "SetDestImage", [](lua_State * L) { return 0; } // TODO
+            SET_RESOURCE(getter, Image, DestImage, kDestImageIndex)
         }, {
-            "SetSourceNoiseMap", [](lua_State * L) { return 0; } // TODO
+            SET_RESOURCE(getter, NoiseMap, SourceNoiseMap, kSourceNoiseMapIndex)
         },
         { nullptr, nullptr }
     };
@@ -648,10 +642,11 @@ UTILS_GETTER(RendererImage)
 
 static int AddRendererImage (lua_State * L)
 {
+    enum { kBackgroundImageIndex = 2 }; // n.b. follows those in Renderer
+
     NewWithEnv<noise::utils::RendererImage>(L);   // renderer
 
-    if (luaL_newmetatable(L, MT_NAME(RendererImage)))   // renderer, mt
-    {
+    LuaXS::AttachMethods(L, MT_NAME(RendererImage), [](lua_State * L) {
         Renderer<noise::utils::RendererImage, &RendererImage>(L);
 
         luaL_Reg funcs[] = {
@@ -673,10 +668,7 @@ static int AddRendererImage (lua_State * L)
             }, {
                 GET_VALUE(RendererImage, LightBrightness, number)
             }, {
-                "GetLightColor", [](lua_State * L)
-                {
-                    return PushColor(L, RendererImage(L)->GetLightColor()); // renderer, color
-                }
+               GET_COLOR(RendererImage, LightColor)
             }, {
                 GET_VALUE(RendererImage, LightContrast, number)
             }, {
@@ -686,18 +678,13 @@ static int AddRendererImage (lua_State * L)
             }, {
                 PREDICATE(RendererImage, LightEnabled)
             }, {
-                "SetBackgroundImage", [](lua_State * L) { return 0; } // TODO!
+                SET_RESOURCE(RendererImage, Image, BackgroundImage, kBackgroundImageIndex)
             }, {
                 SET_VALUE(RendererImage, LightAzimuth, number)
             }, {
                 SET_VALUE(RendererImage, LightBrightness, number)
             }, {
-                "SetLightColor", [](lua_State * L)
-                {
-                    RendererImage(L)->SetLightColor(GetColor(L, 2));
-
-                    return 0;
-                }
+                SET_COLOR(RendererImage, LightColor)
             }, {
                 SET_VALUE(RendererImage, LightContrast, number)
             }, {
@@ -709,9 +696,7 @@ static int AddRendererImage (lua_State * L)
         };
 
         luaL_register(L, nullptr, funcs);
-    }
-
-    lua_setmetatable(L, -2);// renderer; renderer.metatable = mt
+    });
 
     return 1;
 }
@@ -726,8 +711,7 @@ static int AddRendererNormalMap (lua_State * L)
 {
     NewWithEnv<noise::utils::RendererNormalMap>(L); // renderer
 
-    if (luaL_newmetatable(L, MT_NAME(RendererNormalMap)))   // renderer, mt
-    {
+    LuaXS::AttachMethods(L, MT_NAME(RendererNormalMap), [](lua_State * L) {
         Renderer<noise::utils::RendererNormalMap, &RendererNormalMap>(L);
 
         luaL_Reg funcs[] = {
@@ -740,9 +724,7 @@ static int AddRendererNormalMap (lua_State * L)
         };
 
         luaL_register(L, nullptr, funcs);
-    }
-
-    lua_setmetatable(L, -2);// renderer; renderer.metatable = mt
+    });
 
     return 1;
 }

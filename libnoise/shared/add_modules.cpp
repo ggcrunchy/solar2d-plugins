@@ -27,12 +27,10 @@
 //
 //
 
-typedef void (*AddMethods)(lua_State *);
-
-template<typename T, AddMethods add>
+template<typename T, void (*add)(lua_State *)>
 int Factory (lua_State * L)
 {
-	T * mod = static_cast<T *>(lua_newuserdata(L, sizeof(T)));	// module
+	T * mod = LuaXS::NewTyped<T>(L);// module
 
 	if (mod->GetSourceModuleCount() > 0)
 	{
@@ -40,12 +38,19 @@ int Factory (lua_State * L)
 		lua_setfenv(L, -2);	// module; module.environment = env
 	}
 
-	if (luaL_newmetatable(L, lua_tostring(L, lua_upvalueindex(3))))	// module, mt
-	{
-		add(L);
-	}
+	const char * name = lua_tostring(L, lua_upvalueindex(2));
 
-	lua_setmetatable(L, -2);// module; module.metatable = mt
+	LuaXS::AttachMethods(L, name, [](lua_State * L) {
+		add(L);
+
+		lua_pushvalue(L, lua_upvalueindex(1));	// module, mt, module_mt
+		lua_setmetatable(L, -2);// module, mt; mt.metatable = module_mt
+		lua_getfield(L, LUA_REGISTRYINDEX, MT_NAME(modules));	// module, mt, module_list
+		lua_pushvalue(L, -2);	// module, mt, module_list, mt
+		lua_pushboolean(L, 1);	// module, mt, module_list, mt, true
+		lua_settable(L, -3);// module, mt, module_list = { ..., [mt] = true }
+		lua_pop(L, 1);	// module, mt
+	});
 
 	return 1;
 }
@@ -653,7 +658,7 @@ static void AddVoronoi (lua_State * L)
 
 static void NoOp (lua_State * L) {}
 
-#define FACTORY(name, adder) Factory<noise::module::##name, adder>
+#define FACTORY(name, adder) Factory<noise::module::##name, &adder>
 #define MODULE(name) #name, FACTORY(name, NoOp)
 #define MODULE_WITH_ADDER(name) #name, FACTORY(name, Add##name)
 
@@ -698,14 +703,13 @@ void AddModules (lua_State * L)
 
 	for (int i = 0; factories[i].func; ++i)
 	{
-		lua_pushvalue(L, -2);	// libnoise, mt, list, mt
-		lua_pushvalue(L, -2);	// libnoise, mt, list, mt, list
-		lua_pushliteral(L, MT_PREFIX);	// libnoise, mt, list, mt, list, prefix
-		lua_pushstring(L, factories[i].name);// libnoise, mt, list, mt, list, prefix, name
-		lua_concat(L, 2);	// libnoise, mt, list, mt, list, prefix .. name
-		lua_pushcclosure(L, factories[i].func, 3);	// libnoise, mt, list, factory
-		lua_setfield(L, -4, factories[i].name);	// libnoise = { ..., name = factory }, mt, list
+		lua_pushvalue(L, -1);	// libnoise, mt, mt
+		lua_pushliteral(L, MT_PREFIX);	// libnoise, mt, mt, prefix
+		lua_pushstring(L, factories[i].name);// libnoise, mt, mt, prefix, name
+		lua_concat(L, 2);	// libnoise, mt, mt, prefix .. name
+		lua_pushcclosure(L, factories[i].func, 2);	// libnoise, mt, factory
+		lua_setfield(L, -3, factories[i].name);	// libnoise = { ..., name = factory }, mt
 	}
 
-	lua_pop(L, 2);	// libnoise
+	lua_pop(L, 1);	// libnoise
 }

@@ -74,8 +74,7 @@ static int AddCylinderModel (lua_State * L)
 {
 	NewModel<noise::model::Cylinder>(L);	// model
 
-	if (luaL_newmetatable(L, MT_NAME(cylinder_model)))	// model, mt
-	{
+	LuaXS::AttachMethods(L, MT_NAME(cylinder_model), [](lua_State * L) {
 		luaL_Reg funcs[] = {
 			{
 				MODEL_GET_MODULE(Cylinder)
@@ -88,7 +87,7 @@ static int AddCylinderModel (lua_State * L)
 		};
 
 		luaL_register(L, nullptr, funcs);
-	}
+	});
 
 	return 1;
 }
@@ -103,8 +102,7 @@ static int AddLineModel (lua_State * L)
 {
 	NewModel<noise::model::Line>(L);// model
 
-	if (luaL_newmetatable(L, MT_NAME(line_model)))	// model, mt
-	{
+	LuaXS::AttachMethods(L, MT_NAME(line_model), [](lua_State * L) {
 		luaL_Reg funcs[] = {
 			{
 				GET_VALUE(Line, Attenuate, boolean)
@@ -130,7 +128,7 @@ static int AddLineModel (lua_State * L)
 		};
 
 		luaL_register(L, nullptr, funcs);
-	}
+	});
 
 	return 1;
 }
@@ -145,8 +143,7 @@ static int AddPlaneModel (lua_State * L)
 {
 	NewModel<noise::model::Plane>(L);	// model
 
-	if (luaL_newmetatable(L, MT_NAME(plane_model)))	// model, mt
-	{
+	LuaXS::AttachMethods(L, MT_NAME(plane_model), [](lua_State * L) {
 		luaL_Reg funcs[] = {			{
 				MODEL_GET_MODULE(Plane)
 			}, {
@@ -158,7 +155,7 @@ static int AddPlaneModel (lua_State * L)
 		};
 
 		luaL_register(L, nullptr, funcs);
-	}
+	});
 
 	return 1;
 }
@@ -173,8 +170,7 @@ static int AddSphereModel (lua_State * L)
 {
 	NewModel<noise::model::Sphere>(L);	// model
 
-	if (luaL_newmetatable(L, MT_NAME(sphere_model)))	// model, mt
-	{
+	LuaXS::AttachMethods(L, MT_NAME(sphere_model), [](lua_State * L) {
 		luaL_Reg funcs[] = {			{
 				MODEL_GET_MODULE(Sphere)
 			}, {
@@ -186,7 +182,7 @@ static int AddSphereModel (lua_State * L)
 		};
 
 		luaL_register(L, nullptr, funcs);
-	}
+	});
 
 	return 1;
 }

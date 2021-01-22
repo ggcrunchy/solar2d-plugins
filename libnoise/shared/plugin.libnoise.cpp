@@ -64,9 +64,11 @@ void AuxSetInEnvironment (lua_State * L, int index, int other_pos)
 CORONA_EXPORT int luaopen_plugin_libnoise (lua_State* L)
 {
 	lua_newtable(L);// libnoise
+	lua_newtable(L);// libnoise, module_list
+	lua_setfield(L, LUA_REGISTRYINDEX, MT_NAME(modules)); // libnoise; registry.modules = module_list
 
-	AddModuleBase(L);	// libnoise, module_mt, module_list
-	AddModules(L);	// libnoise
+	AddModuleBase(L);	// libnoise, module_mt
+	AddModules(L);// libnoise
 	AddProperties(L);
 	AddModels(L);
 	AddUtils(L);
