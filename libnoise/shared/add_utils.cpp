@@ -95,7 +95,11 @@ static int PushColor (lua_State * L, const noise::utils::Color & color)
 template<typename F>
 int AddGradientPoint (lua_State * L, F && getter)
 {
-    getter(L)->AddGradientPoint(lua_tonumber(L, 2), GetColor(L, 3));
+    try {
+        getter(L)->AddGradientPoint(lua_tonumber(L, 2), GetColor(L, 3));
+    } catch (noise::ExceptionInvalidParam &) {
+        // TODO: out-of-sequence error...
+    }
 
     return 0;
 }

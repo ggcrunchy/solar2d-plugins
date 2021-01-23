@@ -197,7 +197,8 @@ static void AddBlend (lua_State * L)
 			GET_MODULE(Blend, Control)
 		}, {
 			SET_MODULE(Blend, Control)
-		}
+		},
+		{ nullptr, nullptr }
 	};
 
 	luaL_register(L, nullptr, funcs);
@@ -218,7 +219,8 @@ static void AddClamp (lua_State * L)
 			GET_VALUE(Clamp, UpperBound, number)
 		}, {
 			DO_2_DOUBLES(Clamp, SetBounds)
-		}
+		},
+		{ nullptr, nullptr }
 	};
 
 	luaL_register(L, nullptr, funcs);
@@ -237,7 +239,8 @@ static void AddConst (lua_State * L)
 			GET_VALUE(Const, ConstValue, number)
 		}, {
 			SET_VALUE(Const, ConstValue, number)
-		}
+		},
+		{ nullptr, nullptr }
 	};
 
 	luaL_register(L, nullptr, funcs);
@@ -299,7 +302,8 @@ static void AddCylinders (lua_State * L)
 			GET_VALUE(Cylinders, Frequency, number)
 		}, {
 			SET_VALUE(Cylinders, Frequency, number)
-		}
+		},
+		{ nullptr, nullptr }
 	};
 
 	luaL_register(L, nullptr, funcs);
@@ -368,7 +372,8 @@ static void AddExponent (lua_State * L)
 			GET_VALUE(Exponent, Exponent, number)
 		}, {
 			SET_VALUE(Exponent, Exponent, number)
-		}
+		},
+		{ nullptr, nullptr }
 	};
 
 	luaL_register(L, nullptr, funcs);
@@ -419,7 +424,8 @@ static void AddRotatePoint (lua_State * L)
 			SET_VALUE(RotatePoint, YAngle, number)
 		}, {
 			SET_VALUE(RotatePoint, ZAngle, number)
-		}
+		},
+		{ nullptr, nullptr }
 	};
 
 	luaL_register(L, nullptr, funcs);
@@ -442,7 +448,8 @@ static void AddScaleBias (lua_State * L)
 			SET_VALUE(ScaleBias, Bias, number)
 		}, {
 			SET_VALUE(ScaleBias, Scale, number)
-		}
+		},
+		{ nullptr, nullptr }
 	};
 
 	luaL_register(L, nullptr, funcs);
@@ -471,7 +478,8 @@ static void AddScalePoint (lua_State * L)
 			SET_VALUE(ScalePoint, YScale, number)
 		}, {
 			SET_VALUE(ScalePoint, ZScale, number)
-		}
+		},
+		{ nullptr, nullptr }
 	};
 
 	luaL_register(L, nullptr, funcs);
@@ -501,6 +509,8 @@ static void AddSelect (lua_State * L)
 		},
 		{ nullptr, nullptr }
 	};
+
+	luaL_register(L, nullptr, funcs);
 }
 
 //
@@ -516,7 +526,8 @@ static void AddSpheres (lua_State * L)
 			GET_VALUE(Spheres, Frequency, number)
 		}, {
 			SET_VALUE(Spheres, Frequency, number)
-		}
+		},
+		{ nullptr, nullptr }
 	};
 
 	luaL_register(L, nullptr, funcs);
@@ -590,7 +601,8 @@ static void AddTranslatePoint (lua_State * L)
 			SET_VALUE(TranslatePoint, YTranslation, number)
 		}, {
 			SET_VALUE(TranslatePoint, ZTranslation, number)
-		}
+		},
+		{ nullptr, nullptr }
 	};
 
 	luaL_register(L, nullptr, funcs);
@@ -612,10 +624,11 @@ static void AddTurbulence (lua_State * L)
 		}, {
 			GET_VALUE(Turbulence, RoughnessCount, integer)
 		}, {
-			SET_VALUE(Turbulence, Frequency, number)
+			SET_VALUE(Turbulence, Power, number)
 		}, {
 			SET_VALUE(Turbulence, Roughness, integer)
-		}
+		},
+		{ nullptr, nullptr }
 	};
 
 	luaL_register(L, nullptr, funcs);
@@ -629,24 +642,19 @@ GETTER(Voronoi)
 
 static void AddVoronoi (lua_State * L)
 {
+	ADD_NOISE_FUNCS(Voronoi, 1)
+
 	luaL_Reg funcs[] = {
 		{
 			DO_1_ARG(Voronoi, EnableDistance, Bool)
 		}, {
 			GET_VALUE(Voronoi, Displacement, number)
 		}, {
-			GET_VALUE(Voronoi, Frequency, number)
-		}, {
-			GET_VALUE(Voronoi, Seed, integer)
-		}, {
 			PREDICATE(Voronoi, DistanceEnabled)
 		}, {
 			SET_VALUE(Voronoi, Displacement, number)
-		}, {
-			SET_VALUE(Voronoi, Frequency, number)
-		}, {
-			SET_VALUE(Voronoi, Seed, integer)
-		}
+		},
+		{ nullptr, nullptr }
 	};
 
 	luaL_register(L, nullptr, funcs);
