@@ -24,25 +24,16 @@
 #include "ByteReader.h"
 #include "utils/Byte.h"
 #include "utils/LuaEx.h"
-#include "utils/Memory.h"
 #include "utils/Thread.h"
 #include <vector>
 
-ThreadXS::TLS<MemoryXS::ScopedListSystem *> tls_streamlines;
+ThreadXS::TLS<lua_State *> tls_Lua;
 
-void FailAssert (const char * what) { tls_streamlines->FailAssert(what); }
-void * MallocMS (size_t size) { return tls_streamlines->Malloc(size); }
-void * CallocMS (size_t num, size_t _) { return tls_streamlines->Calloc(num, 1); }
-void * ReallocMS (void * ptr, size_t size) { return tls_streamlines->Realloc(ptr, size); }
-void FreeMS (void * ptr) { tls_streamlines->Free(ptr); }
+#if defined(assert)
+#undef assert
+#endif
 
-#define ASSERT(cond) if (!(cond)) FailAssert(#cond)
-
-#define PAR_MALLOC(T, N) ((T*) MallocMS(N * sizeof(T)))
-#define PAR_CALLOC(T, N) ((T*) CallocMS(N * sizeof(T), 1))
-#define PAR_REALLOC(T, BUF, N) ((T*) ReallocMS(BUF, sizeof(T) * (N)))
-#define PAR_FREE(BUF) FreeMS(BUF)
-
+#define assert(cond) if (!(cond)) luaL_error(tls_Lua, #cond)
 #define PAR_STREAMLINES_IMPLEMENTATION
 
 #include "par_streamlines.h"
@@ -189,7 +180,7 @@ static int NewProxy (lua_State * L)
 							lua_pushliteral(L, "spine_lengths");	// proxy, "spine_lengths"
 							break;
 						case Proxy::eTriangleIndices:
-							lua_pushliteral(L, "triangle_indices");	// proxy, "tirangle_indices"
+							lua_pushliteral(L, "triangle_indices");	// proxy, "triangle_indices"
 						}
 					}
 
@@ -304,7 +295,7 @@ static const parsl_mesh * GetMesh (lua_State * L)
 	return mesh;
 }
 
-static int WrapMesh (lua_State * L, const parsl_mesh * mesh, MemoryXS::ScopedList & mem)
+static int WrapMesh (lua_State * L, const parsl_mesh * mesh)
 {
 	// A two-tiered environment is used to manage the context, its mesh, and any proxies. The
 	// layout goes:
@@ -350,8 +341,6 @@ static int WrapMesh (lua_State * L, const parsl_mesh * mesh, MemoryXS::ScopedLis
 		lua_replace(L, -3);	// context, ..., mesh, menv
 		lua_setfenv(L, -2);	// context, ..., mesh; mesh.env = menv
 	}
-
-	mem.RemoveAll();
 
 	LuaXS::AttachMethods(L, "streamlines.mesh", [](lua_State * L) {
 		luaL_Reg mesh_funcs[] = {
@@ -609,7 +598,7 @@ static parsl_spine_list GetSpineList (lua_State * L, SpineList & temp)
 	return list;
 }
 
-static int NewContext (lua_State * L, parsl_context * context, MemoryXS::ScopedList & mem)
+static int NewContext (lua_State * L, parsl_context * context)
 {
     LuaXS::NewTyped<parsl_context *>(L, context);  // ..., context
 
@@ -620,8 +609,6 @@ static int NewContext (lua_State * L, parsl_context * context, MemoryXS::ScopedL
 
 	lua_rawseti(L, -2, 1);	// ..., context, cenv = { menv }
 	lua_setfenv(L, -2);	// ..., context; context.env = env
-
-	mem.RemoveAll();
 
     LuaXS::AttachMethods(L, "streamlines.context", [](lua_State * L) {
 		luaL_reg context_methods[] = {
@@ -642,20 +629,18 @@ static int NewContext (lua_State * L, parsl_context * context, MemoryXS::ScopedL
 				{
 					SpineList temp;
 
-					auto bm = tls_streamlines->Bookmark();
 					parsl_mesh * mesh = parsl_mesh_from_curves_cubic(GetContext(L), GetSpineList(L, temp));
 
-					return WrapMesh(L, mesh, bm);
+					return WrapMesh(L, mesh);
 				}
 			}, {
 				"mesh_from_curves_quadratic", [](lua_State * L)
 				{
 					SpineList temp;
 
-					auto bm = tls_streamlines->Bookmark();
 					parsl_mesh * mesh = parsl_mesh_from_curves_quadratic(GetContext(L), GetSpineList(L, temp));
 
-					return WrapMesh(L, mesh, bm);
+					return WrapMesh(L, mesh);
 					
 				}
 			}, {
@@ -663,19 +648,15 @@ static int NewContext (lua_State * L, parsl_context * context, MemoryXS::ScopedL
 				{
 					SpineList temp;
 
-					auto bm = tls_streamlines->Bookmark();
 					parsl_mesh * mesh = parsl_mesh_from_lines(GetContext(L), GetSpineList(L, temp));
 
-					return WrapMesh(L, mesh, bm);
+					return WrapMesh(L, mesh);
 				}
 			}, {
 				"mesh_from_streamlines", [](lua_State * L)
 				{
-					luaL_getmetafield(L, 2, "__call");	// context, advect, first_tick, num_ticks, __call
+					int has_call = luaL_getmetafield(L, 2, "__call");	// context, advect, first_tick, num_ticks[, __call]
 
-					bool has_call = !lua_isnil(L, -1);
-
-					lua_pop(L, 1);	// context, advect, first_tick, num_ticks
 					luaL_argcheck(L, has_call || lua_isfunction(L, 2), 2, "Uncallable `advect`");
 
 					int first_tick = luaL_checkinteger(L, 3);
@@ -683,35 +664,23 @@ static int NewContext (lua_State * L, parsl_context * context, MemoryXS::ScopedL
 
 					luaL_argcheck(L, first_tick >= 0, 3, "First tick must be non-negative integer");
 					luaL_argcheck(L, num_ticks > 0, 3, "Number of ticks must be positive integer");
+					lua_settop(L, 2);	// context, advect
 
-					struct AdvectState {
-						lua_State * mL;
-						bool mOK;
-					} state = { L, true };
-					
-					auto bm = tls_streamlines->Bookmark();
 					parsl_mesh * mesh = parsl_mesh_from_streamlines(GetContext(L), [](parsl_position * point, void * ud) {
-						AdvectState * as = static_cast<AdvectState *>(ud);
+						lua_State * L = static_cast<lua_State *>(ud);
 
-						if (!as->mOK) return;
+						lua_pushvalue(L, -1);	// context, advect, advect
+						lua_pushnumber(L, point->x);// context, advect, advect, x
+						lua_pushnumber(L, point->y);// context, advect, advect, x, y
+						lua_call(L, 2, 2);	// context, advect, newx?, newy?]
 
-						lua_pushnumber(as->mL, point->x);	// context, advect, first_tick, num_ticks, x
-						lua_pushnumber(as->mL, point->y);	// context, advect, first_tick, num_ticks, x, y
+						point->x = float(luaL_checknumber(L, -2));
+						point->y = float(luaL_checknumber(L, -1));
 
-						if (lua_pcall(as->mL, 2, 2, 0) != 0)	// context, advect, first_tick, num_ticks, newx? / err[, newy?]
-						{
-							if (lua_type(as->mL, -2) == LUA_TNUMBER) point->x = float(lua_tonumber(as->mL, -2));
-							if (lua_type(as->mL, -1) == LUA_TNUMBER) point->y = float(lua_tonumber(as->mL, -1));
+						lua_pop(L, 2);	// context, advect
+					}, uint32_t(first_tick), uint32_t(num_ticks), L);
 
-							lua_pop(as->mL, 2);	// context, advect, first_tick, num_ticks
-						}
-
-						else as->mOK = false;
-					}, uint32_t(first_tick), uint32_t(num_ticks), &state);
-
-					if (!state.mOK) return 1;
-
-					return WrapMesh(L, mesh, bm);
+					return WrapMesh(L, mesh);
 				}
 			},
 			{ nullptr, nullptr }
@@ -725,11 +694,11 @@ static int NewContext (lua_State * L, parsl_context * context, MemoryXS::ScopedL
 
 CORONA_EXPORT int luaopen_plugin_streamlines (lua_State * L)
 {
-	tls_streamlines = MemoryXS::ScopedListSystem::New(L);
+	tls_Lua = L;
 
 	lua_newtable(L);// sl
 
-	luaL_Reg streamlines_funcs[] = {
+	luaL_Reg funcs[] = {
 		{
 			"create_context", [](lua_State * L)
 			{
@@ -783,10 +752,9 @@ CORONA_EXPORT int luaopen_plugin_streamlines (lua_State * L)
 
 				luaL_argcheck(L, config.thickness, 1, "Must have positive thickness");
 				
-				auto bm = tls_streamlines->Bookmark();
 				parsl_context * context = parsl_create_context(config);
 
-				return NewContext(L, context, bm);// thickness[, flags, u_mode, curves_max_flatness, seed_spacing, seed_viewport[, left, right, top, bottom], miter_limit], context
+				return NewContext(L, context);	// thickness[, flags, u_mode, curves_max_flatness, seed_spacing, seed_viewport[, left, right, top, bottom], miter_limit], context
 			}
 		}, {
 			"NewProxy", NewProxy
@@ -794,7 +762,7 @@ CORONA_EXPORT int luaopen_plugin_streamlines (lua_State * L)
 		{ nullptr, nullptr }
 	};
 
-	luaL_register(L, nullptr, streamlines_funcs);
+	luaL_register(L, nullptr, funcs);
 
 	return 1;
 }

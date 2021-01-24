@@ -165,15 +165,11 @@ parsl_mesh* parsl_mesh_from_curves_quadratic(parsl_context* context,
 // -----------------------------------------------------------------------------
 #ifdef PAR_STREAMLINES_IMPLEMENTATION
 
-#include <assert.h>
+//#include <assert.h> <- STEVE CHANGE
 #include <limits.h>
 #include <math.h>
 #include <memory.h>
 #include <stdlib.h>
-
-static float parsl__dot(parsl_position a, parsl_position b) {
-    return a.x * b.x + a.y * b.y;
-}
 
 // STEVE CHANGE
 #ifdef _WIN32
@@ -182,6 +178,10 @@ static float parsl__dot(parsl_position a, parsl_position b) {
 	#define VAR_CONS(type) (type)
 #endif
 // /STEVE CHANGE
+
+static float parsl__dot(parsl_position a, parsl_position b) {
+    return a.x * b.x + a.y * b.y;
+}
 
 static parsl_position parsl__sub(parsl_position a, parsl_position b) {
     return VAR_CONS(parsl_position) { a.x - b.x, a.y - b.y }; // <- STEVE CHANGE
@@ -216,9 +216,9 @@ static parsl_position parsl_mul(parsl_position v, float s) {
 #ifndef PAR_ARRAY
 #define PAR_ARRAY
 #define pa_free(a) ((a) ? PAR_FREE(pa___raw(a)), 0 : 0)
-#define pa_push(a, v) (pa___maybegrow(a, 1), (a)[pa___n(a)++] = (v))
+#define pa_push(a, v) (pa___maybegrow(a, (int) 1), (a)[pa___n(a)++] = (v))
 #define pa_count(a) ((a) ? pa___n(a) : 0)
-#define pa_add(a, n) (pa___maybegrow(a, n), pa___n(a) += (n))
+#define pa_add(a, n) (pa___maybegrow(a, (int) n), pa___n(a) += (n))
 #define pa_last(a) ((a)[pa___n(a) - 1])
 #define pa_end(a) (a + pa_count(a))
 #define pa_clear(arr) if (arr) pa___n(arr) = 0
@@ -226,10 +226,10 @@ static parsl_position parsl_mul(parsl_position v, float s) {
 #define pa___raw(a) ((int*) (a) -2)
 #define pa___m(a) pa___raw(a)[0]
 #define pa___n(a) pa___raw(a)[1]
-#define pa___needgrow(a, n) ((a) == 0 || pa___n(a) + (n) >= pa___m(a))
+#define pa___needgrow(a, n) ((a) == 0 || pa___n(a) + ((int) n) >= pa___m(a))
 #define pa___maybegrow(a, n) (pa___needgrow(a, (n)) ? pa___grow(a, n) : 0)
 #define pa___grow(a, n) (*((void**)& (a)) = pa___growf((void*) (a), (n), \
-        sizeof(*(a))))
+    sizeof(*(a))))
 
 // ptr[-2] is capacity, ptr[-1] is size.
 static void* pa___growf(void* arr, int increment, int itemsize)
@@ -305,7 +305,7 @@ parsl_mesh* parsl_mesh_from_lines(parsl_context* context,
     mesh->num_triangles = 0;
 
     for (uint32_t spine = 0; spine < spines.num_spines; spine++) {
-        ASSERT(spines.spine_lengths[spine] > 1); // <- STEVE CHANGE
+        assert(spines.spine_lengths[spine] > 1);
         mesh->num_vertices += 2 * spines.spine_lengths[spine];
         mesh->num_triangles += 2 * (spines.spine_lengths[spine] - 1);
         if (closed) {
@@ -345,8 +345,9 @@ parsl_mesh* parsl_mesh_from_lines(parsl_context* context,
         float dx = src_position[1].x - src_position[0].x;
         float dy = src_position[1].y - src_position[0].y;
         float segment_length = sqrtf(dx * dx + dy * dy);
-        const float nx = -dy / segment_length;
-        const float ny = dx / segment_length;
+        float invlen = segment_length ? 1.0f / segment_length : 0.0f;
+        const float nx = -dy * invlen;
+        const float ny = dx * invlen;
 
         const Position first_src_position = src_position[0];
         const Position last_src_position = src_position[spine_length - 1];
@@ -358,8 +359,9 @@ parsl_mesh* parsl_mesh_from_lines(parsl_context* context,
             const float dx = src_position[0].x - last_src_position.x;
             const float dy = src_position[0].y - last_src_position.y;
             const float segment_length = sqrtf(dx * dx + dy * dy);
-            const float pnx = -dy / segment_length;
-            const float pny = dx / segment_length;
+            float invlen = segment_length ? 1.0f / segment_length : 0.0f;
+            const float pnx = -dy * invlen;
+            const float pny = dx * invlen;
 
             // NOTE: sin(pi / 2 - acos(X) / 2) == sqrt(1 + X) / sqrt(2)
             float extent = 0.5 * thickness;
@@ -373,7 +375,8 @@ parsl_mesh* parsl_mesh_from_lines(parsl_context* context,
 
             ex = pnx + nx;
             ey = pny + ny;
-            const float invlen = 1.0f / sqrtf(ex * ex + ey * ey);
+            const float len = sqrtf(ex * ex + ey * ey);
+            invlen = len == 0.0 ? 0.0 : (1.0f / len);
             ex *= invlen * extent;
             ey *= invlen * extent;
         }
@@ -414,8 +417,9 @@ parsl_mesh* parsl_mesh_from_lines(parsl_context* context,
             const float dx = src_position[1].x - src_position[0].x;
             const float dy = src_position[1].y - src_position[0].y;
             const float segment_length = sqrtf(dx * dx + dy * dy);
-            const float nx = -dy / segment_length;
-            const float ny = dx / segment_length;
+            float invlen = segment_length ? 1.0f / segment_length : 0.0f;
+            const float nx = -dy * invlen;
+            const float ny = dx * invlen;
 
             // NOTE: sin(pi / 2 - acos(X) / 2) == sqrt(1 + X) / sqrt(2)
             float extent = 0.5 * thickness;
@@ -429,7 +433,8 @@ parsl_mesh* parsl_mesh_from_lines(parsl_context* context,
 
             float ex = pnx + nx;
             float ey = pny + ny;
-            const float invlen = 1.0f / sqrtf(ex * ex + ey * ey);
+            const float len = sqrtf(ex * ex + ey * ey);
+            invlen = len == 0.0 ? 0.0 : (1.0f / len);
             ex *= invlen * extent;
             ey *= invlen * extent;
 
@@ -486,8 +491,9 @@ parsl_mesh* parsl_mesh_from_lines(parsl_context* context,
             const float dx = first_src_position.x - src_position[0].x;
             const float dy = first_src_position.y - src_position[0].y;
             segment_length = sqrtf(dx * dx + dy * dy);
-            const float nx = -dy / segment_length;
-            const float ny = dx / segment_length;
+            float invlen = segment_length ? 1.0f / segment_length : 0.0f;
+            const float nx = -dy * invlen;
+            const float ny = dx * invlen;
 
             // NOTE: sin(pi / 2 - acos(X) / 2) == sqrt(1 + X) / sqrt(2)
             float extent = 0.5 * thickness;
@@ -501,7 +507,8 @@ parsl_mesh* parsl_mesh_from_lines(parsl_context* context,
 
             ex = pnx + nx;
             ey = pny + ny;
-            const float invlen = 1.0f / sqrtf(ex * ex + ey * ey);
+            const float len = sqrtf(ex * ex + ey * ey);
+            invlen = len == 0.0 ? 0.0 : (1.0f / len);
             ex *= invlen * extent;
             ey *= invlen * extent;
         }
@@ -640,9 +647,9 @@ parsl_mesh* parsl_mesh_from_lines(parsl_context* context,
         }
     }
 
-    ASSERT(src_position - spines.vertices == spines.num_vertices); // <- STEVE CHANGE
-    ASSERT(dst_positions - mesh->positions == mesh->num_vertices); // <- STEVE CHANGE
-    ASSERT(dst_indices - mesh->triangle_indices == // <- STEVE CHANGE
+    assert(src_position - spines.vertices == spines.num_vertices);
+    assert(dst_positions - mesh->positions == mesh->num_vertices);
+    assert(dst_indices - mesh->triangle_indices ==
         mesh->num_triangles * ind_per_tri);
 
     if (context->config.flags & PARSL_FLAG_RANDOM_OFFSETS) {
@@ -785,8 +792,8 @@ parsl_mesh* parsl_mesh_from_curves_cubic(parsl_context* context,
 
         // Source vertices look like: P1 C1 C2 P2 [C2 P2]*
         uint32_t spine_length = source_spines.spine_lengths[spine];
-        ASSERT(spine_length >= 4); // <- STEVE CHANGE
-        ASSERT((spine_length % 2) == 0); // <- STEVE CHANGE
+        assert(spine_length >= 4);
+        assert((spine_length % 2) == 0);
         uint32_t num_piecewise = 1 + (spine_length - 4) / 2;
 
         // First piecewise curve.
@@ -875,7 +882,7 @@ parsl_mesh* parsl_mesh_from_curves_cubic(parsl_context* context,
 
         UNUSED() // __attribute__((unused)) <- STEVE CHANGE
         uint32_t num_written = ptarget - target_spine_start;
-        ASSERT(num_written == (uint32_t) target_spines->spine_lengths[spine]); // <- STEVE CHANGE
+        assert(num_written == (uint32_t) target_spines->spine_lengths[spine]);
     }
 
     // Source vertices look like: P1 C1 C2 P2 [C2 P2]*
@@ -906,7 +913,7 @@ parsl_mesh* parsl_mesh_from_curves_cubic(parsl_context* context,
         }
     }
 
-    ASSERT(ptarget - target_spines->vertices == total_required_spine_points); // <- STEVE CHANGE
+    assert(ptarget - target_spines->vertices == total_required_spine_points);
     parsl_mesh_from_lines(context, context->curve_spines);
     context->guideline_start = 0;
     return &context->result;
@@ -938,8 +945,8 @@ parsl_mesh* parsl_mesh_from_curves_quadratic(parsl_context* context,
 
         // Source vertices look like: PT C PT [C PT]*
         uint32_t spine_length = source_spines.spine_lengths[spine];
-        ASSERT(spine_length >= 3); // <- STEVE CHANGE
-        ASSERT((spine_length % 2) == 1); // <- STEVE CHANGE
+        assert(spine_length >= 3);
+        assert((spine_length % 2) == 1);
         uint32_t num_piecewise = 1 + (spine_length - 3) / 2;
 
         // First piecewise curve.
@@ -1017,7 +1024,7 @@ parsl_mesh* parsl_mesh_from_curves_quadratic(parsl_context* context,
 
         UNUSED() // __attribute__((unused)) <- STEVE CHANGE
         uint32_t num_written = ptarget - target_spine_start;
-        ASSERT(num_written == (uint32_t) target_spines->spine_lengths[spine]); // <- STEVE CHANGE
+        assert(num_written == (uint32_t) target_spines->spine_lengths[spine]);
     }
 
     // Source vertices look like: PT C PT [C PT]*
@@ -1040,7 +1047,7 @@ parsl_mesh* parsl_mesh_from_curves_quadratic(parsl_context* context,
         }
     }
 
-    ASSERT(ptarget - target_spines->vertices == total_required_spine_points); // <- STEVE CHANGE
+    assert(ptarget - target_spines->vertices == total_required_spine_points);
     parsl_mesh_from_lines(context, context->curve_spines);
     context->guideline_start = 0;
     return &context->result;
@@ -1079,9 +1086,9 @@ static parsl_position par__sample_annulus(float radius, parsl_position center,
 }
 
 #define GRIDF(vec) \
-    grid[(int) (vec.x * invcell) + ncols * (int) (vec.y * invcell)]
+    grid [(int) (vec.x * invcell) + ncols * (int) (vec.y * invcell)]
 
-#define GRIDI(vec) grid[(int) vec.y * ncols + (int) vec.x]
+#define GRIDI(vec) grid [(int) vec.y * ncols + (int) vec.x]
 
 static parsl_position* par__generate_pts(float width, float height,
     float radius, int seed, parsl_position* result) {

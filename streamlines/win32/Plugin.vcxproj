@@ -21,17 +21,18 @@
     <ProjectGuid>{79F0CACC-457B-4A25-BC54-81277688C361}</ProjectGuid>
     <RootNamespace>Plugin</RootNamespace>
     <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>7.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v120_xp</PlatformToolset>
+    <PlatformToolset>v141_xp</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v120_xp</PlatformToolset>
+    <PlatformToolset>v141_xp</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -55,7 +56,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(Configuration)\</OutDir>
-    <TargetName>plugin_streamlines</TargetName>
+    <TargetName>streamlines</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <PreBuildEvent />
@@ -100,8 +101,15 @@
     </Link>
     <PostBuildEvent />
     <PostBuildEvent>
-      <Command>set PLUGINS=$(appdata)/Corona Labs/Corona Simulator/Plugins/plugin/
-copy "$(OutDir)$(TargetName).dll" "%PLUGINS%streamlines.dll"</Command>
+      <Command>set PLUGIN_DIR=$(appdata)\Solar2DPlugins\com.xibalbastudios\plugin.$(TargetName)\win32-sim
+setlocal enableextensions
+mkdir %PLUGIN_DIR%
+set FILENAME=plugin_$(TargetName).dll
+set FULL_NAME=%PLUGIN_DIR%\%FILENAME%
+copy "$(OutDir)$(TargetName).dll" "%FULL_NAME%"
+del "%PLUGIN_DIR%\data.tgz"
+tar -czf "%PLUGIN_DIR%\data.tgz" -C "%PLUGIN_DIR%" %FILENAME%
+del "%FULL_NAME%"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -4,6 +4,7 @@
     <ClInclude Include="..\shared\par_streamlines.h">
       <Filter>par</Filter>
     </ClInclude>
+    <ClInclude Include="..\shared\par_msquares.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="par">
