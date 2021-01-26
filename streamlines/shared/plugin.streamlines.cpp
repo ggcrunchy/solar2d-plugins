@@ -282,7 +282,7 @@ static bool BindProxy (lua_State * L, int n, Proxy::Mode mode)
 	return false;
 }
 
-static const parsl_mesh * GetMesh (lua_State * L)
+static const parsl_mesh * GetMesh (lua_State * L, bool * wireframe = nullptr)
 {
 	const parsl_mesh * mesh = *LuaXS::CheckUD<const parsl_mesh *>(L, 1, "streamlines.mesh");
 
@@ -290,12 +290,20 @@ static const parsl_mesh * GetMesh (lua_State * L)
 	lua_rawgeti(L, -1, 1);	// mesh, ..., env, id
 
 	luaL_argcheck(L, WithID<>::Get(L) != Proxy::eNone, 1, "Mesh's underlying context has been collected");
-	lua_pop(L, 2);	// mesh, ...
+
+	if (wireframe)
+	{
+		lua_rawgeti(L, -2, 3);	// mesh, ..., env, id, wireframe
+
+		*wireframe = lua_toboolean(L, -1);
+	}
+
+	lua_pop(L, wireframe ? 3 : 2);	// mesh, ...
 
 	return mesh;
 }
 
-static int WrapMesh (lua_State * L, const parsl_mesh * mesh)
+static int WrapMesh (lua_State * L, const parsl_mesh * mesh, bool wireframe)
 {
 	// A two-tiered environment is used to manage the context, its mesh, and any proxies. The
 	// layout goes:
@@ -320,7 +328,7 @@ static int WrapMesh (lua_State * L, const parsl_mesh * mesh)
 		lua_replace(L, -3);// context, ..., mesh, menv
 		lua_rawgeti(L, -1, 1);	// context, ..., mesh, menv, id
 
-		WithID<>::Set(L, WithID<>::Get(L) + 1ULL); // context, ..., mesh, menv = { id + 1, mesh_ptr }
+		WithID<>::Set(L, WithID<>::Get(L) + 1ULL); // context, ..., mesh, menv = { id + 1, mesh_ptr[, wireframe] }
 
 		lua_pop(L, 1);	// context, ..., mesh
 	}
@@ -334,10 +342,17 @@ static int WrapMesh (lua_State * L, const parsl_mesh * mesh)
 		lua_pushlightuserdata(L, const_cast<parsl_mesh *>(mesh));	// context, ..., cenv, menv, mesh_ptr
 		lua_rawseti(L, -2, 2);	// context, ..., cenv, menv = { first_id, mesh_ptr }
 
+		if (wireframe)
+		{
+			lua_pushboolean(L, 1);	// context, ..., cenv, menv, true
+			lua_rawseti(L, -2, 3);	// context, ..., cenv, menv = { first_id, mesh_ptr, true }
+		}
+
 		LuaXS::NewTyped<const parsl_mesh *>(L, mesh);	// context, ..., cenv, menv, mesh
 
 		lua_pushvalue(L, -1);	// context, ..., cenv, menv, mesh, mesh
 		lua_rawseti(L, -3, 2);	// context, ..., cenv = { menv, mesh }, menv, mesh
+
 		lua_replace(L, -3);	// context, ..., mesh, menv
 		lua_setfenv(L, -2);	// context, ..., mesh; mesh.env = menv
 	}
@@ -476,7 +491,8 @@ static int WrapMesh (lua_State * L, const parsl_mesh * mesh)
 			}, {
 				"GetTriangles", [](lua_State * L)
 				{
-					const parsl_mesh * mesh = GetMesh(L);
+					bool wireframe = false;
+					const parsl_mesh * mesh = GetMesh(L, &wireframe);
 					uint32_t extra = 0U;
 
 					if (lua_istable(L, 2))
@@ -490,7 +506,7 @@ static int WrapMesh (lua_State * L, const parsl_mesh * mesh)
 
 					lua_settop(L, 2);	// mesh, opts / out
 
-					uint32_t n = mesh->num_triangles * 3U;
+					uint32_t n = mesh->num_triangles * (wireframe ? 4U : 3U);
 
 					if (BindProxy(L, n, Proxy::eTriangleIndices)) return 1;	// mesh, opts / out, indices / proxy
 
@@ -515,6 +531,11 @@ static int WrapMesh (lua_State * L, const parsl_mesh * mesh)
 static parsl_context * GetContext (lua_State * L)
 {
 	return *LuaXS::CheckUD<parsl_context *>(L, 1, "streamlines.context");
+}
+
+static bool IsWireframe (const parsl_context * context)
+{
+	return context->config.flags & PARSL_FLAG_WIREFRAME;
 }
 
 struct SpineList {
@@ -629,18 +650,20 @@ static int NewContext (lua_State * L, parsl_context * context)
 				{
 					SpineList temp;
 
-					parsl_mesh * mesh = parsl_mesh_from_curves_cubic(GetContext(L), GetSpineList(L, temp));
+					parsl_context * context = GetContext(L);
+					parsl_mesh * mesh = parsl_mesh_from_curves_cubic(context, GetSpineList(L, temp));
 
-					return WrapMesh(L, mesh);
+					return WrapMesh(L, mesh, IsWireframe(context));
 				}
 			}, {
 				"mesh_from_curves_quadratic", [](lua_State * L)
 				{
 					SpineList temp;
 
-					parsl_mesh * mesh = parsl_mesh_from_curves_quadratic(GetContext(L), GetSpineList(L, temp));
+					parsl_context * context = GetContext(L);
+					parsl_mesh * mesh = parsl_mesh_from_curves_quadratic(context, GetSpineList(L, temp));
 
-					return WrapMesh(L, mesh);
+					return WrapMesh(L, mesh, IsWireframe(context));
 					
 				}
 			}, {
@@ -648,9 +671,10 @@ static int NewContext (lua_State * L, parsl_context * context)
 				{
 					SpineList temp;
 
-					parsl_mesh * mesh = parsl_mesh_from_lines(GetContext(L), GetSpineList(L, temp));
+					parsl_context * context = GetContext(L);
+					parsl_mesh * mesh = parsl_mesh_from_lines(context, GetSpineList(L, temp));
 
-					return WrapMesh(L, mesh);
+					return WrapMesh(L, mesh, IsWireframe(context));
 				}
 			}, {
 				"mesh_from_streamlines", [](lua_State * L)
@@ -666,7 +690,8 @@ static int NewContext (lua_State * L, parsl_context * context)
 					luaL_argcheck(L, num_ticks > 0, 3, "Number of ticks must be positive integer");
 					lua_settop(L, 2);	// context, advect
 
-					parsl_mesh * mesh = parsl_mesh_from_streamlines(GetContext(L), [](parsl_position * point, void * ud) {
+					parsl_context * context = GetContext(L);
+					parsl_mesh * mesh = parsl_mesh_from_streamlines(context, [](parsl_position * point, void * ud) {
 						lua_State * L = static_cast<lua_State *>(ud);
 
 						lua_pushvalue(L, -1);	// context, advect, advect
@@ -680,7 +705,7 @@ static int NewContext (lua_State * L, parsl_context * context)
 						lua_pop(L, 2);	// context, advect
 					}, uint32_t(first_tick), uint32_t(num_ticks), L);
 
-					return WrapMesh(L, mesh);
+					return WrapMesh(L, mesh, IsWireframe(context));
 				}
 			},
 			{ nullptr, nullptr }
