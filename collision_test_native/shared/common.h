@@ -23,5 +23,7 @@
 
 #pragma once
 
-int NewAABox (lua_State * L);
+int NewAABox2 (lua_State * L);
+int NewAABox3 (lua_State * L);
 int NewVec2 (lua_State * L);
+int NewVec3 (lua_State * L);

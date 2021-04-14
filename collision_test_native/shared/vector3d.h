@@ -25,33 +25,33 @@
 
 #pragma once
 
-struct Vec2 {
+struct Vec3 {
 	union {
 		struct {
-			lua_Number x, y;
+			lua_Number x, y, z;
 		};
-		lua_Number arr[2];
+		lua_Number arr[3];
 	};
 
-	Vec2 operator + (const Vec2 & rhs) const { return { x + rhs.x, y + rhs.y }; }
-	Vec2 operator - (const Vec2 & rhs) const { return { x - rhs.x, y - rhs.y }; }
-	Vec2 operator - () const { return { -x, -y }; }
-	Vec2 operator * (lua_Number n) const { return { x * n, y * n }; }
-	bool operator < (const Vec2 & rhs) const { return x < rhs.x && y < rhs.y; }
-	bool operator > (const Vec2 & rhs) const { return x > rhs.x && y > rhs.y; }
+	Vec3 operator + (const Vec3 & rhs) const { return { x + rhs.x, y + rhs.y, z + rhs.z }; }
+	Vec3 operator - (const Vec3 & rhs) const { return { x - rhs.x, y - rhs.y, z - rhs.z }; }
+	Vec3 operator - () const { return { -x, -y, -z }; }
+	Vec3 operator * (lua_Number n) const { return { x * n, y * n, z * n }; }
+	bool operator < (const Vec3 & rhs) const { return x < rhs.x && y < rhs.y && z < rhs.z; }
+	bool operator > (const Vec3 & rhs) const { return x > rhs.x && y > rhs.y && z > rhs.z; }
 
-	Vec2 & operator += (const Vec2 & rhs) { *this = *this + rhs; return *this; }
-	Vec2 & operator -= (const Vec2 & rhs) { *this = *this - rhs; return *this; }
-	Vec2 & operator *= (lua_Number n) { *this = *this * n; return *this; }
-	
-	Vec2 Abs () const { return { abs(x), abs(y) }; }
-	Vec2 Max (const Vec2 & rhs) const { return { std::max(x, rhs.x), std::max(y, rhs.y) }; }
-	Vec2 Min (const Vec2 & rhs) const { return { std::min(x, rhs.x), std::min(y, rhs.y) }; }
+	Vec3 & operator += (const Vec3 & rhs) { *this = *this + rhs; return *this; }
+	Vec3 & operator -= (const Vec3 & rhs) { *this = *this - rhs; return *this; }
+	Vec3 & operator *= (lua_Number n) { *this = *this * n; return *this; }
 
-	lua_Number Determinant (const Vec2 & rhs) const { return x * rhs.y - y * rhs.x; }
-	lua_Number DotProduct (const Vec2 & rhs) const { return x * rhs.x + y * rhs.y; }
+	Vec3 Abs () const { return { abs(x), abs(y), abs(z) }; }
+	Vec3 Cross (const Vec3 & rhs) const { return { y * rhs.z - z * rhs.y, z * rhs.x - x * rhs.z, x * rhs.y - y * rhs.x }; }
+	Vec3 Max (const Vec3 & rhs) const { return { std::max(x, rhs.x), std::max(y, rhs.y), std::max(z, rhs.z) }; }
+	Vec3 Min (const Vec3 & rhs) const { return { std::min(x, rhs.x), std::min(y, rhs.y), std::min(z, rhs.z) }; }
+
+	lua_Number DotProduct (const Vec3 & rhs) const { return x * rhs.x + y * rhs.y + z * rhs.z; }
 	lua_Number Length () const { return sqrt(LengthSquared()); }
-	lua_Number LengthSquared () const { return x * x + y * y; }
+	lua_Number LengthSquared () const { return x * x + y * y + z * z; }
 
 	void Normalize ()
 	{
@@ -64,7 +64,7 @@ struct Vec2 {
 	static bool AlmostZero (lua_Number length) { return AlmostZeroSquared(length * length); }
 };
 
-const Vec2 & GetConstVec2 (lua_State * L, int arg = 1);
-Vec2 & GetVec2 (lua_State * L, int arg = 1);
+const Vec3 & GetConstVec3 (lua_State * L, int arg = 1);
+Vec3 & GetVec3 (lua_State * L, int arg = 1);
 
-int AuxNewVec2 (lua_State * L, const Vec2 & v);
+int AuxNewVec3 (lua_State * L, const Vec3 & v);

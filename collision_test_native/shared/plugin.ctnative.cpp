@@ -30,10 +30,13 @@ CORONA_EXPORT int luaopen_plugin_ctnative (lua_State* L)
 
 	luaL_Reg funcs[] = {
 		{
-			"AABox", NewAABox
-		},
-		{
+			"AABox2", NewAABox2
+		}, {
+			"AABox3", NewAABox3
+		}, {
 			"Vector2", NewVec2
+		}, {
+			"Vector3", NewVec3
 		},
 		{ nullptr, nullptr }
 	};

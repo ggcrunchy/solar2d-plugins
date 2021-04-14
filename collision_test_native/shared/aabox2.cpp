@@ -29,23 +29,23 @@ struct AABox {
 	Vec2 center{}, extent{};
 };
 
-#define AABOX_METATABLE "ctnative.aabox"
+#define AABOX2_METATABLE "ctnative.aabox2"
 
 static const AABox & GetConstAABox (lua_State * L, int arg = 1)
 {
-	return *static_cast<const AABox *>(luaL_checkudata(L, arg, AABOX_METATABLE));
+	return *static_cast<const AABox *>(luaL_checkudata(L, arg, AABOX2_METATABLE));
 }
 
 static AABox & GetAABox (lua_State * L, int arg = 1)
 {
-	return *static_cast<AABox *>(luaL_checkudata(L, arg, AABOX_METATABLE));
+	return *static_cast<AABox *>(luaL_checkudata(L, arg, AABOX2_METATABLE));
 }
 
-int NewAABox (lua_State * L)
+int NewAABox2 (lua_State * L)
 {
 	lua_newuserdata(L, sizeof(AABox)); // aa_box
 
-	if (luaL_newmetatable(L, AABOX_METATABLE)) // aa_box, aa_box_mt
+	if (luaL_newmetatable(L, AABOX2_METATABLE)) // aa_box, aa_box_mt
 	{
 		luaL_Reg methods[] = {
 			{
@@ -76,7 +76,7 @@ int NewAABox (lua_State * L)
 					const AABox & box = GetConstAABox(L);
 					const Vec2 & delta = GetConstVec2(L, 2) - box.center;
 
-					lua_toboolean(L, abs(delta.x) <= box.extent.x && abs(delta.y) <= box.extent.y); // box, point, contains?
+					lua_toboolean(L, !(delta.Abs() > box.extent)); // box, point, contains?
 
 					return 1;
 				}

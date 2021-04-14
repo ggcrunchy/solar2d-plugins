@@ -3,10 +3,13 @@
   <ItemGroup>
     <ClCompile Include="..\shared\plugin.ctnative.cpp" />
     <ClCompile Include="..\shared\vector2d.cpp" />
-    <ClCompile Include="..\shared\aabox.cpp" />
+    <ClCompile Include="..\shared\aabox2.cpp" />
+    <ClCompile Include="..\shared\aabox3.cpp" />
+    <ClCompile Include="..\shared\vector3d.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\shared\common.h" />
     <ClInclude Include="..\shared\vector2d.h" />
+    <ClInclude Include="..\shared\vector3d.h" />
   </ItemGroup>
 </Project>
