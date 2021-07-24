@@ -25,9 +25,17 @@
 #include "common.h"
 #include "vector2d.h"
 
+//
+//
+//
+
 struct AABox {
 	Vec2 center{}, extent{};
 };
+
+//
+//
+//
 
 #define AABOX2_METATABLE "ctnative.aabox2"
 
@@ -40,6 +48,10 @@ static AABox & GetAABox (lua_State * L, int arg = 1)
 {
 	return *static_cast<AABox *>(luaL_checkudata(L, arg, AABOX2_METATABLE));
 }
+
+//
+//
+//
 
 int NewAABox2 (lua_State * L)
 {

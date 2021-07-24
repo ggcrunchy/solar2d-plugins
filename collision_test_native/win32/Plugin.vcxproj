@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="..\shared\aabox2.cpp" />
     <ClCompile Include="..\shared\aabox3.cpp" />
+    <ClCompile Include="..\shared\plane.cpp" />
     <ClCompile Include="..\shared\plugin.ctnative.cpp" />
     <ClCompile Include="..\shared\vector2d.cpp" />
     <ClCompile Include="..\shared\vector3d.cpp" />

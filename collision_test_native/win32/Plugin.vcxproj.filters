@@ -6,6 +6,7 @@
     <ClCompile Include="..\shared\aabox2.cpp" />
     <ClCompile Include="..\shared\aabox3.cpp" />
     <ClCompile Include="..\shared\vector3d.cpp" />
+    <ClCompile Include="..\shared\plane.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\shared\common.h" />

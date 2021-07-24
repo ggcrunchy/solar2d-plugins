@@ -21,9 +21,17 @@
 * [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
 */
 
+#pragma once
+
+//
+//
+//
+
 #include <algorithm>
 
-#pragma once
+//
+//
+//
 
 struct Vec2 {
 	union {
@@ -51,7 +59,11 @@ struct Vec2 {
 	lua_Number Determinant (const Vec2 & rhs) const { return x * rhs.y - y * rhs.x; }
 	lua_Number DotProduct (const Vec2 & rhs) const { return x * rhs.x + y * rhs.y; }
 	lua_Number Length () const { return sqrt(LengthSquared()); }
-	lua_Number LengthSquared () const { return x * x + y * y; }
+	lua_Number LengthSquared () const { return DotProduct(*this); }
+	
+	void ProjectOntoVector (const Vec2 & w);
+	void SetProjectionOfPointOntoRay (const Vec2 & pos, const Vec2 & origin, const Vec2 & ray);
+	void SetProjectionOfPointOntoSegment (const Vec2 & pos, const Vec2 & p1, const Vec2 & p2);
 
 	void Normalize ()
 	{
@@ -63,6 +75,10 @@ struct Vec2 {
 	static bool AlmostZeroSquared (lua_Number squared_length) { return squared_length < 1e-12; }
 	static bool AlmostZero (lua_Number length) { return AlmostZeroSquared(length * length); }
 };
+
+//
+//
+//
 
 const Vec2 & GetConstVec2 (lua_State * L, int arg = 1);
 Vec2 & GetVec2 (lua_State * L, int arg = 1);

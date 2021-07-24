@@ -24,6 +24,27 @@
 #include "CoronaLua.h"
 #include "common.h"
 
+//
+//
+//
+
+bool IsType (lua_State * L, int arg, const char * name)
+{
+	if (!lua_getmetatable(L, arg)) return false; // ..., object, ...[, mt]
+
+	luaL_getmetatable(L, name);	// ..., object, ..., mt, type_mt
+
+	bool matches = lua_equal(L, -2, -1);
+
+	lua_pop(L, 2);	// ..., object, ...
+
+	return matches;
+}
+
+//
+//
+//
+
 CORONA_EXPORT int luaopen_plugin_ctnative (lua_State* L)
 {
 	lua_newtable(L); // ctnative
@@ -33,6 +54,8 @@ CORONA_EXPORT int luaopen_plugin_ctnative (lua_State* L)
 			"AABox2", NewAABox2
 		}, {
 			"AABox3", NewAABox3
+		}, {
+			"Plane", NewPlane
 		}, {
 			"Vector2", NewVec2
 		}, {

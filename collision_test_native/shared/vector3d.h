@@ -21,9 +21,17 @@
 * [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
 */
 
+#pragma once
+
+//
+//
+//
+
 #include <algorithm>
 
-#pragma once
+//
+//
+//
 
 struct Vec3 {
 	union {
@@ -45,13 +53,17 @@ struct Vec3 {
 	Vec3 & operator *= (lua_Number n) { *this = *this * n; return *this; }
 
 	Vec3 Abs () const { return { abs(x), abs(y), abs(z) }; }
-	Vec3 Cross (const Vec3 & rhs) const { return { y * rhs.z - z * rhs.y, z * rhs.x - x * rhs.z, x * rhs.y - y * rhs.x }; }
 	Vec3 Max (const Vec3 & rhs) const { return { std::max(x, rhs.x), std::max(y, rhs.y), std::max(z, rhs.z) }; }
 	Vec3 Min (const Vec3 & rhs) const { return { std::min(x, rhs.x), std::min(y, rhs.y), std::min(z, rhs.z) }; }
+	Vec3 CrossProduct (const Vec3 & rhs) const { return { y * rhs.z - z * rhs.y, z * rhs.x - x * rhs.z, x * rhs.y - y * rhs.x }; }
 
 	lua_Number DotProduct (const Vec3 & rhs) const { return x * rhs.x + y * rhs.y + z * rhs.z; }
 	lua_Number Length () const { return sqrt(LengthSquared()); }
-	lua_Number LengthSquared () const { return x * x + y * y + z * z; }
+	lua_Number LengthSquared () const { return DotProduct(*this); }
+	
+	void ProjectOntoVector (const Vec3 & w);
+	void SetProjectionOfPointOntoRay (const Vec3 & pos, const Vec3 & origin, const Vec3 & ray);
+	void SetProjectionOfPointOntoSegment (const Vec3 & pos, const Vec3 & p1, const Vec3 & p2);
 
 	void Normalize ()
 	{
@@ -64,7 +76,12 @@ struct Vec3 {
 	static bool AlmostZero (lua_Number length) { return AlmostZeroSquared(length * length); }
 };
 
+//
+//
+//
+
 const Vec3 & GetConstVec3 (lua_State * L, int arg = 1);
 Vec3 & GetVec3 (lua_State * L, int arg = 1);
+bool IsVec3 (lua_State * L, int arg);
 
 int AuxNewVec3 (lua_State * L, const Vec3 & v);

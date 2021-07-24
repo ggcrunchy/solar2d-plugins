@@ -25,6 +25,42 @@
 #include "common.h"
 #include "vector3d.h"
 
+//
+//
+//
+
+void Vec3::ProjectOntoVector (const Vec3 & w)
+{
+	lua_Number denominator = w.LengthSquared();
+
+	if (!Vec3::AlmostZeroSquared(denominator)) *this = w * (DotProduct(w) / denominator);
+	else *this = {};
+}
+
+void Vec3::SetProjectionOfPointOntoRay (const Vec3 & pos, const Vec3 & origin, const Vec3 & ray)
+{
+	const Vec3 to_point = pos - origin;
+	lua_Number denominator = ray.LengthSquared();
+
+	*this = origin;
+
+	if (!Vec3::AlmostZeroSquared(denominator)) *this += ray * (to_point.DotProduct(ray) / denominator);
+}
+
+void Vec3::SetProjectionOfPointOntoSegment (const Vec3 & pos, const Vec3 & p1, const Vec3 & p2)
+{
+	const Vec3 to_point = pos - p1, segment = p2 - p1;
+	lua_Number denominator = segment.LengthSquared();
+
+	*this = p1;
+
+	if (!Vec3::AlmostZeroSquared(denominator)) *this += segment * (to_point.DotProduct(segment) / denominator);
+}
+
+//
+//
+//
+
 #define VEC3_METATABLE "ctnative.vec3"
 
 const Vec3 & GetConstVec3 (lua_State * L, int arg)
@@ -37,10 +73,19 @@ Vec3 & GetVec3 (lua_State * L, int arg)
 	return *static_cast<Vec3 *>(luaL_checkudata(L, arg, VEC3_METATABLE));
 }
 
+bool IsVec3 (lua_State * L, int arg)
+{
+	return IsType(L, arg, VEC3_METATABLE);
+}
+
 static Vec3 MakeVec (lua_State * L, int arg1)
 {
 	return Vec3{ luaL_checknumber(L, arg1), luaL_checknumber(L, arg1 + 1), luaL_checknumber(L, arg1 + 2) };
 }
+
+//
+//
+//
 
 int AuxNewVec3 (lua_State * L, const Vec3 & v)
 {
@@ -54,40 +99,35 @@ int AuxNewVec3 (lua_State * L, const Vec3 & v)
 				{
 					return AuxNewVec3(L, GetConstVec3(L, 1) + GetConstVec3(L, 2));
 				}
-			},
-			{
+			}, {
 				"Add", [](lua_State * L)
 				{
 					GetVec3(L) += GetConstVec3(L, 2);
 
 					return 0;
 				}
-			},
-			{
+			}, {
 				"AddScaled", [](lua_State * L)
 				{
 					GetVec3(L) += GetConstVec3(L, 2) * luaL_checknumber(L, 3);
 
 					return 0;
 				}
-			},
-			{
+			}, {
 				"AddScaledXYZ", [](lua_State * L)
 				{
 					GetVec3(L) += MakeVec(L, 2) * luaL_checknumber(L, 5);
 
 					return 0;
 				}
-			},
-			{
+			}, {
 				"AddXYZ", [](lua_State * L)
 				{
 					GetVec3(L) += MakeVec(L, 2);
 
 					return 0;
 				}
-			},
-			{
+			}, {
 				"AssignTo", [](lua_State * L)
 				{
 					const Vec3 & v = GetConstVec3(L);
@@ -101,38 +141,31 @@ int AuxNewVec3 (lua_State * L, const Vec3 & v)
 
 					return 0;
 				}
-			},
-			{
+			}, {
 				"Component", [](lua_State * L)
 				{
 					// TODO: does this mean v should be understood as normalized?
 
 					return 0;
 				}
-			},
-			{
-				"Determinant", [](lua_State * L)
+			}, {
+				"CrossProduct", [](lua_State * L)
 				{
-					lua_pushnumber(L, GetConstVec3(L).Determinant(GetConstVec3(L, 2))); // v, w, det
-
-					return 1;
+					return AuxNewVec3(L, GetConstVec3(L).CrossProduct(GetConstVec3(L, 2)));	// v, w, cross
 				}
-			},
-			{
+			}, {
 				"__div", [](lua_State * L)
 				{
 					return AuxNewVec3(L, GetConstVec3(L, 1) * (1.0 / luaL_checknumber(L, 2)));
 				}
-			},
-			{
+			}, {
 				"DotProduct", [](lua_State * L)
 				{
 					lua_pushnumber(L, GetConstVec3(L).DotProduct(GetConstVec3(L, 2))); // v, w, dot
 
 					return 1;
 				}
-			},
-			{
+			}, {
 				"__index", [](lua_State * L)
 				{
 					if (lua_isstring(L, 2))
@@ -153,48 +186,42 @@ int AuxNewVec3 (lua_State * L, const Vec3 & v)
 
 					return 1;
 				}
-			},
-			{
+			}, {
 				"IsAlmostEqualTo", [](lua_State * L)
 				{
 					lua_pushboolean(L, Vec3::AlmostZeroSquared((GetConstVec3(L) - GetConstVec3(L, 2)).LengthSquared())); // v, almost_equal
 
 					return 1;
 				}
-			},
-			{
+			}, {
 				"IsAlmostOrthogonalTo", [](lua_State * L)
 				{
 					lua_pushboolean(L, Vec3::AlmostZero(GetConstVec3(L).DotProduct(GetConstVec3(L, 2)))); // v, almost_orthogonal
 
 					return 1;
 				}
-			},
-			{
+			}, {
 				"IsAlmostZero", [](lua_State * L)
 				{
 					lua_pushboolean(L, Vec3::AlmostZeroSquared(GetConstVec3(L).LengthSquared())); // v, almost_zero
 
 					return 1;
 				}
-			},
-			{
+			}, {
 				"Length", [](lua_State * L)
 				{
 					lua_pushnumber(L, GetConstVec3(L).Length()); // v, length
 
 					return 1;
 				}
-			},
-			{
+			}, {
 				"LengthSquared", [](lua_State * L)
 				{
 					lua_pushnumber(L, GetConstVec3(L).LengthSquared()); // v, length_squared
 
 					return 1;
 				}
-			},
-			{
+			}, {
 				"__mul", [](lua_State * L)
 				{
 					int ni = lua_isnumber(L, 1); // 1 if in stack position 1, else 0
@@ -203,8 +230,7 @@ int AuxNewVec3 (lua_State * L, const Vec3 & v)
 
 					return AuxNewVec3(L, v * n);
 				}
-			},
-			{
+			}, {
 				"Negate", [](lua_State * L)
 				{
 					Vec3 & v = GetVec3(L);
@@ -213,8 +239,7 @@ int AuxNewVec3 (lua_State * L, const Vec3 & v)
 
 					return 0;
 				}
-			},
-			{
+			}, {
 				"__newindex", [](lua_State * L)
 				{
 					if (lua_isstring(L, 2))
@@ -226,24 +251,28 @@ int AuxNewVec3 (lua_State * L, const Vec3 & v)
 
 					return 0;
 				}
-			},
-			{
+			}, {
 				"Normalize", [](lua_State * L)
 				{
 					GetVec3(L).Normalize();
 
 					return 0;
 				}
-			},
-			{
+			}, {
+				"ProjectOntoVector", [](lua_State * L)
+				{
+					GetVec3(L).ProjectOntoVector(GetConstVec3(L, 2));
+
+					return 0;
+				}
+			}, {
 				"ScaleBy", [](lua_State * L)
 				{
 					GetVec3(L) *= luaL_checknumber(L, 2);
 
 					return 0;
 				}
-			},
-			{
+			}, {
 				"ScaleToLength", [](lua_State * L)
 				{
 					Vec3 & v = GetVec3(L);
@@ -254,40 +283,35 @@ int AuxNewVec3 (lua_State * L, const Vec3 & v)
 
 					return 0;
 				}
-			},
-			{
+			}, {
 				"Set", [](lua_State * L)
 				{
 					GetVec3(L) = GetConstVec3(L, 2);
 
 					return 0;
 				}
-			},
-			{
+			}, {
 				"SetDifference", [](lua_State * L)
 				{
 					GetVec3(L) = GetConstVec3(L, 2) - GetConstVec3(L, 3);
 
 					return 0;
 				}
-			},
-			{
+			}, {
 				"SetDifferenceVectorXYZ", [](lua_State * L)
 				{
 					GetVec3(L) = GetConstVec3(L, 2) - MakeVec(L, 3);
 
 					return 0;
 				}
-			},
-			{
+			}, {
 				"SetDifferenceXYVector", [](lua_State * L)
 				{
 					GetVec3(L) = MakeVec(L, 2) - GetConstVec3(L, 4);
 
 					return 0;
 				}
-			},
-			{
+			}, {
 				"SetFrom", [](lua_State * L)
 				{
 					const char * xkey = luaL_optstring(L, 3, "x");
@@ -309,8 +333,7 @@ int AuxNewVec3 (lua_State * L, const Vec3 & v)
 
 					return 0;
 				}
-			},
-			{
+			}, {
 				"SetNormalized", [](lua_State * L)
 				{
 					Vec3 & v = GetVec3(L);
@@ -321,8 +344,7 @@ int AuxNewVec3 (lua_State * L, const Vec3 & v)
 
 					return 0;
 				}
-			},
-			{
+			}, {
 				"SetNormalizedXYZ", [](lua_State * L)
 				{
 					Vec3 & v = GetVec3(L);
@@ -333,131 +355,89 @@ int AuxNewVec3 (lua_State * L, const Vec3 & v)
 
 					return 0;
 				}
-			},
-			{
+			}, {
 				"SetProjectionOfPointOntoRay", [](lua_State * L)
 				{
-					Vec3 & v = GetVec3(L);
-					const Vec3 & origin = GetConstVec3(L, 3);
-					const Vec3 to_point = GetConstVec3(L, 2) - origin, ray = GetConstVec3(L, 4);
-					lua_Number denominator = ray.LengthSquared();
-
-					if (!Vec3::AlmostZeroSquared(denominator)) v = ray * (to_point.DotProduct(ray) / denominator);
-					else v = {};
-
-					v += origin;
+					GetVec3(L).SetProjectionOfPointOntoRay(GetConstVec3(L, 2), GetConstVec3(L, 3), GetConstVec3(L, 4));
 
 					return 0;
 				}
-			},
-			{
+			}, {
 				"SetProjectionOfPointOntoSegment", [](lua_State * L)
 				{
-					Vec3 & v = GetVec3(L);
-					const Vec3 & p1 = GetConstVec3(L, 3);
-					const Vec3 to_point = GetConstVec3(L, 2) - p1, segment = GetConstVec3(L, 4) - p1;
-					lua_Number denominator = segment.LengthSquared();
-
-					if (!Vec3::AlmostZeroSquared(denominator)) v = segment * (to_point.DotProduct(segment) / denominator);
-					else v = {};
-
-					v += p1;
+					GetVec3(L).SetProjectionOfPointOntoSegment(GetConstVec3(L, 2), GetConstVec3(L, 3), GetConstVec3(L, 4));
 
 					return 0;
 				}
-			},
-			{
-				"SetProjectionOntoVector", [](lua_State * L)
-				{
-					Vec3 & v = GetVec3(L);
-					const Vec3 & w = GetConstVec3(L, 2);
-					lua_Number denominator = w.LengthSquared();
-
-					if (!Vec3::AlmostZeroSquared(denominator)) v = w * (v.DotProduct(w) / denominator);
-					else v = {};
-
-					return 0;
-				}
-			},
-			{
+			}, {
 				"SetScaled", [](lua_State * L)
 				{
 					GetVec3(L) = GetConstVec3(L, 2) * luaL_checknumber(L, 3);
 
 					return 0;
 				}
-			},
-			{
+			}, {
 				"SetScaledXYZ", [](lua_State * L)
 				{
 					GetVec3(L) = MakeVec(L, 2) * luaL_checknumber(L, 5);
 
 					return 0;
 				}
-			},
-			{
+			}, {
 				"SetSum", [](lua_State * L)
 				{
 					GetVec3(L) = GetConstVec3(L, 2) + GetConstVec3(L, 3);
 
 					return 0;
 				}
-			},
-			{
+			}, {
 				"SetXY", [](lua_State * L)
 				{
 					GetVec3(L) = MakeVec(L, 2);
 
 					return 0;
 				}
-			},
-			{
+			}, {
 				"SetZero", [](lua_State * L)
 				{
 					GetVec3(L) = {};
 
 					return 0;
 				}
-			},
-			{
+			}, {
 				"__sub", [](lua_State * L)
 				{
 					return AuxNewVec3(L, GetConstVec3(L, 1) - GetConstVec3(L, 2));
 				}
-			},
-			{
+			}, {
 				"Sub", [](lua_State * L)
 				{
 					GetVec3(L) -= GetConstVec3(L, 2);
 
 					return 0;
 				}
-			},
-			{
+			}, {
 				"SubScaled", [](lua_State * L)
 				{
 					GetVec3(L) -= GetConstVec3(L, 2) * luaL_checknumber(L, 3);
 
 					return 0;
 				}
-			},
-			{
+			}, {
 				"SubScaledXYZ", [](lua_State * L)
 				{
 					GetVec3(L) -= MakeVec(L, 2) * luaL_checknumber(L, 5);
 
 					return 0;
 				}
-			},
-			{
+			}, {
 				"SubXYZ", [](lua_State * L)
 				{
 					GetVec3(L) -= MakeVec(L, 2);
 
 					return 0;
 				}
-			},
-			{
+			}, {
 				"__unm", [](lua_State * L)
 				{
 					return AuxNewVec3(L, -GetConstVec3(L));
@@ -473,6 +453,10 @@ int AuxNewVec3 (lua_State * L, const Vec3 & v)
 
 	return 1;
 }
+
+//
+//
+//
 
 int NewVec3 (lua_State * L)
 {
