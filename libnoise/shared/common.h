@@ -45,21 +45,21 @@ void AuxSetInEnvironment (lua_State * L, int index = -1, int other_pos = 3);
 
 #define DO(mod, name) #name, [](lua_State * L)	\
 		{						\
-			mod(L)->##name();	\
+			mod(L)->name();	\
 								\
 			return 0;			\
 		}
 
 #define DO_1_ARG(mod, name, what) #name, [](lua_State * L)	\
 		{											\
-			mod(L)->##name(LuaXS::##what(L, 2));	\
+			mod(L)->name(LuaXS::what(L, 2));	\
 													\
 			return 0;								\
 		}
 
 #define DO_2_DOUBLES(mod, name) #name, [](lua_State * L)	\
 		{																\
-			mod(L)->##name(LuaXS::Double(L, 2), LuaXS::Double(L, 3));	\
+			mod(L)->name(LuaXS::Double(L, 2), LuaXS::Double(L, 3));	\
 																		\
 			return 0;													\
 		}
@@ -90,7 +90,7 @@ void AuxSetInEnvironment (lua_State * L, int index = -1, int other_pos = 3);
 		{													\
 			auto * m = mod(L);								\
 			auto * other = Module(L, 2);					\
-			m->##setter(*other);							\
+			m->setter(*other);							    \
 			AuxSetInEnvironment(L, index); /* m, index */	\
 															\
 			return 0;										\

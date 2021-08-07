@@ -160,15 +160,15 @@ void Noise3 (lua_State * L)
 	luaL_register(L, nullptr, funcs);
 }
 
-#define ADD_NOISE_FUNCS(name, level) Noise##level<noise::module::##name, name>(L);
+#define ADD_NOISE_FUNCS(name, level) Noise##level<noise::module::name, name>(L);
 
 //
 //
 //
 
-#define GETTER(name) static noise::module::##name * name (lua_State * L)	\
+#define GETTER(MNAME) static noise::module::MNAME * MNAME (lua_State * L)	\
 {																		\
-	return LuaXS::CheckUD<noise::module::##name>(L, 1, MT_NAME(name));	\
+	return LuaXS::CheckUD<noise::module::MNAME>(L, 1, MT_NAME(MNAME));	\
 }
 
 //
@@ -666,7 +666,7 @@ static void AddVoronoi (lua_State * L)
 
 static void NoOp (lua_State * L) {}
 
-#define FACTORY(name, adder) Factory<noise::module::##name, &adder>
+#define FACTORY(name, adder) Factory<noise::module::name, &adder>
 #define MODULE(name) #name, FACTORY(name, NoOp)
 #define MODULE_WITH_ADDER(name) #name, FACTORY(name, Add##name)
 

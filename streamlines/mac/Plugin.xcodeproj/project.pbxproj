@@ -9,22 +9,10 @@
 /* Begin PBXBuildFile section */
 		CE0FB7D520AF89D400B5DAED /* ByteReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0FB7D320AF89D400B5DAED /* ByteReader.cpp */; };
 		CE0FB7D620AF89D400B5DAED /* ByteReader.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0FB7D420AF89D400B5DAED /* ByteReader.h */; };
-		CE0FB7E720AF89E400B5DAED /* Memory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0FB7D720AF89E300B5DAED /* Memory.cpp */; };
-		CE0FB7E820AF89E400B5DAED /* Platform.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0FB7D820AF89E300B5DAED /* Platform.h */; };
 		CE0FB7E920AF89E400B5DAED /* Thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0FB7D920AF89E300B5DAED /* Thread.cpp */; };
-		CE0FB7EA20AF89E400B5DAED /* SIMD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0FB7DA20AF89E300B5DAED /* SIMD.cpp */; };
 		CE0FB7EB20AF89E400B5DAED /* Thread.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0FB7DB20AF89E300B5DAED /* Thread.h */; };
 		CE0FB7EC20AF89E400B5DAED /* LuaEx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0FB7DC20AF89E300B5DAED /* LuaEx.cpp */; };
 		CE0FB7ED20AF89E400B5DAED /* LuaEx.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0FB7DD20AF89E300B5DAED /* LuaEx.h */; };
-		CE0FB7EE20AF89E400B5DAED /* Blob.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0FB7DE20AF89E300B5DAED /* Blob.cpp */; };
-		CE0FB7EF20AF89E400B5DAED /* Path.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0FB7DF20AF89E300B5DAED /* Path.cpp */; };
-		CE0FB7F020AF89E400B5DAED /* SIMD.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0FB7E020AF89E300B5DAED /* SIMD.h */; };
-		CE0FB7F120AF89E400B5DAED /* Blob.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0FB7E120AF89E300B5DAED /* Blob.h */; };
-		CE0FB7F220AF89E400B5DAED /* Compat.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0FB7E220AF89E300B5DAED /* Compat.h */; };
-		CE0FB7F320AF89E400B5DAED /* Byte.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0FB7E320AF89E300B5DAED /* Byte.cpp */; };
-		CE0FB7F420AF89E400B5DAED /* Path.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0FB7E420AF89E300B5DAED /* Path.h */; };
-		CE0FB7F520AF89E400B5DAED /* Byte.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0FB7E520AF89E400B5DAED /* Byte.h */; };
-		CE0FB7F620AF89E400B5DAED /* Memory.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0FB7E620AF89E400B5DAED /* Memory.h */; };
 		CEE59D8E2126B1DD0013C99C /* Namespace.h in Headers */ = {isa = PBXBuildFile; fileRef = CEE59D8D2126B1DD0013C99C /* Namespace.h */; };
 		CEE66CA9230CA86E006C7029 /* par_streamlines.h in Headers */ = {isa = PBXBuildFile; fileRef = CEE66CA7230CA86E006C7029 /* par_streamlines.h */; };
 		CEE66CAA230CA86E006C7029 /* plugin.streamlines.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CEE66CA8230CA86E006C7029 /* plugin.streamlines.cpp */; };
@@ -36,6 +24,8 @@
 			compilerSpec = com.apple.compilers.proxy.script;
 			filePatterns = "*.lua";
 			fileType = pattern.proxy;
+			inputFiles = (
+			);
 			isEditable = 1;
 			outputFiles = (
 				"$TARGET_TEMP_DIR/$(INPUT_FILE_BASE).c",
@@ -45,25 +35,13 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXFileReference section */
-		A49186401641DDB800A39286 /* plugin_streamlines.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = plugin_streamlines.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		A49186401641DDB800A39286 /* streamlines.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = streamlines.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE0FB7D320AF89D400B5DAED /* ByteReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ByteReader.cpp; path = ../../ByteReader/ByteReader.cpp; sourceTree = "<group>"; };
 		CE0FB7D420AF89D400B5DAED /* ByteReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ByteReader.h; path = ../../ByteReader/ByteReader.h; sourceTree = "<group>"; };
-		CE0FB7D720AF89E300B5DAED /* Memory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Memory.cpp; path = ../../solar2d_native_utils/utils/Memory.cpp; sourceTree = "<group>"; };
-		CE0FB7D820AF89E300B5DAED /* Platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Platform.h; path = ../../solar2d_native_utils/utils/Platform.h; sourceTree = "<group>"; };
 		CE0FB7D920AF89E300B5DAED /* Thread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Thread.cpp; path = ../../solar2d_native_utils/utils/Thread.cpp; sourceTree = "<group>"; };
-		CE0FB7DA20AF89E300B5DAED /* SIMD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SIMD.cpp; path = ../../solar2d_native_utils/utils/SIMD.cpp; sourceTree = "<group>"; };
 		CE0FB7DB20AF89E300B5DAED /* Thread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Thread.h; path = ../../solar2d_native_utils/utils/Thread.h; sourceTree = "<group>"; };
 		CE0FB7DC20AF89E300B5DAED /* LuaEx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LuaEx.cpp; path = ../../solar2d_native_utils/utils/LuaEx.cpp; sourceTree = "<group>"; };
 		CE0FB7DD20AF89E300B5DAED /* LuaEx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LuaEx.h; path = ../../solar2d_native_utils/utils/LuaEx.h; sourceTree = "<group>"; };
-		CE0FB7DE20AF89E300B5DAED /* Blob.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Blob.cpp; path = ../../solar2d_native_utils/utils/Blob.cpp; sourceTree = "<group>"; };
-		CE0FB7DF20AF89E300B5DAED /* Path.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Path.cpp; path = ../../solar2d_native_utils/utils/Path.cpp; sourceTree = "<group>"; };
-		CE0FB7E020AF89E300B5DAED /* SIMD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SIMD.h; path = ../../solar2d_native_utils/utils/SIMD.h; sourceTree = "<group>"; };
-		CE0FB7E120AF89E300B5DAED /* Blob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Blob.h; path = ../../solar2d_native_utils/utils/Blob.h; sourceTree = "<group>"; };
-		CE0FB7E220AF89E300B5DAED /* Compat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Compat.h; path = ../../solar2d_native_utils/utils/Compat.h; sourceTree = "<group>"; };
-		CE0FB7E320AF89E300B5DAED /* Byte.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Byte.cpp; path = ../../solar2d_native_utils/utils/Byte.cpp; sourceTree = "<group>"; };
-		CE0FB7E420AF89E300B5DAED /* Path.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Path.h; path = ../../solar2d_native_utils/utils/Path.h; sourceTree = "<group>"; };
-		CE0FB7E520AF89E400B5DAED /* Byte.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Byte.h; path = ../../solar2d_native_utils/utils/Byte.h; sourceTree = "<group>"; };
-		CE0FB7E620AF89E400B5DAED /* Memory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Memory.h; path = ../../solar2d_native_utils/utils/Memory.h; sourceTree = "<group>"; };
 		CEE59D8D2126B1DD0013C99C /* Namespace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Namespace.h; path = ../../solar2d_native_utils/utils/Namespace.h; sourceTree = "<group>"; };
 		CEE66CA7230CA86E006C7029 /* par_streamlines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = par_streamlines.h; path = ../shared/par_streamlines.h; sourceTree = "<group>"; };
 		CEE66CA8230CA86E006C7029 /* plugin.streamlines.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = plugin.streamlines.cpp; path = ../shared/plugin.streamlines.cpp; sourceTree = "<group>"; };
@@ -103,7 +81,7 @@
 		A482DA8515F9B7E70084DC42 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A49186401641DDB800A39286 /* plugin_streamlines.dylib */,
+				A49186401641DDB800A39286 /* streamlines.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -128,20 +106,8 @@
 			isa = PBXGroup;
 			children = (
 				CEE59D8D2126B1DD0013C99C /* Namespace.h */,
-				CE0FB7DE20AF89E300B5DAED /* Blob.cpp */,
-				CE0FB7E120AF89E300B5DAED /* Blob.h */,
-				CE0FB7E320AF89E300B5DAED /* Byte.cpp */,
-				CE0FB7E520AF89E400B5DAED /* Byte.h */,
-				CE0FB7E220AF89E300B5DAED /* Compat.h */,
 				CE0FB7DC20AF89E300B5DAED /* LuaEx.cpp */,
 				CE0FB7DD20AF89E300B5DAED /* LuaEx.h */,
-				CE0FB7D720AF89E300B5DAED /* Memory.cpp */,
-				CE0FB7E620AF89E400B5DAED /* Memory.h */,
-				CE0FB7DF20AF89E300B5DAED /* Path.cpp */,
-				CE0FB7E420AF89E300B5DAED /* Path.h */,
-				CE0FB7D820AF89E300B5DAED /* Platform.h */,
-				CE0FB7DA20AF89E300B5DAED /* SIMD.cpp */,
-				CE0FB7E020AF89E300B5DAED /* SIMD.h */,
 				CE0FB7D920AF89E300B5DAED /* Thread.cpp */,
 				CE0FB7DB20AF89E300B5DAED /* Thread.h */,
 			);
@@ -155,16 +121,9 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE0FB7F520AF89E400B5DAED /* Byte.h in Headers */,
-				CE0FB7F420AF89E400B5DAED /* Path.h in Headers */,
-				CE0FB7E820AF89E400B5DAED /* Platform.h in Headers */,
-				CE0FB7F220AF89E400B5DAED /* Compat.h in Headers */,
 				CEE66CA9230CA86E006C7029 /* par_streamlines.h in Headers */,
-				CE0FB7F120AF89E400B5DAED /* Blob.h in Headers */,
 				CEE59D8E2126B1DD0013C99C /* Namespace.h in Headers */,
 				CE0FB7ED20AF89E400B5DAED /* LuaEx.h in Headers */,
-				CE0FB7F020AF89E400B5DAED /* SIMD.h in Headers */,
-				CE0FB7F620AF89E400B5DAED /* Memory.h in Headers */,
 				CE0FB7EB20AF89E400B5DAED /* Thread.h in Headers */,
 				CE0FB7D620AF89D400B5DAED /* ByteReader.h in Headers */,
 			);
@@ -173,9 +132,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		A49186331641DDB800A39286 /* plugin_streamlines */ = {
+		A49186331641DDB800A39286 /* streamlines */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "plugin_streamlines" */;
+			buildConfigurationList = A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "streamlines" */;
 			buildPhases = (
 				A49186341641DDB800A39286 /* Sources */,
 				A49186381641DDB800A39286 /* Frameworks */,
@@ -187,9 +146,9 @@
 			);
 			dependencies = (
 			);
-			name = plugin_streamlines;
+			name = streamlines;
 			productName = ads;
-			productReference = A49186401641DDB800A39286 /* plugin_streamlines.dylib */;
+			productReference = A49186401641DDB800A39286 /* streamlines.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 /* End PBXNativeTarget section */
@@ -205,6 +164,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = A482DA7815F9B7E70084DC42;
@@ -212,7 +172,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A49186331641DDB800A39286 /* plugin_streamlines */,
+				A49186331641DDB800A39286 /* streamlines */,
 			);
 		};
 /* End PBXProject section */
@@ -240,13 +200,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				CEE66CAA230CA86E006C7029 /* plugin.streamlines.cpp in Sources */,
-				CE0FB7EE20AF89E400B5DAED /* Blob.cpp in Sources */,
-				CE0FB7E720AF89E400B5DAED /* Memory.cpp in Sources */,
 				CE0FB7EC20AF89E400B5DAED /* LuaEx.cpp in Sources */,
-				CE0FB7EF20AF89E400B5DAED /* Path.cpp in Sources */,
 				CE0FB7D520AF89D400B5DAED /* ByteReader.cpp in Sources */,
-				CE0FB7F320AF89E400B5DAED /* Byte.cpp in Sources */,
-				CE0FB7EA20AF89E400B5DAED /* SIMD.cpp in Sources */,
 				CE0FB7E920AF89E400B5DAED /* Thread.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -391,7 +346,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "plugin_streamlines" */ = {
+		A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "streamlines" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A491863E1641DDB800A39286 /* Debug */,

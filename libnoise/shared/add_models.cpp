@@ -27,17 +27,17 @@
 //
 //
 
-#define MODEL_GETTER(name) static noise::model::##name * name (lua_State * L)	\
+#define MODEL_GETTER(MNAME) static noise::model::MNAME * MNAME (lua_State * L)	\
 {																		\
-	return LuaXS::CheckUD<noise::model::##name>(L, 1, MT_NAME(name));	\
+	return LuaXS::CheckUD<noise::model::MNAME>(L, 1, MT_NAME(MNAME));	\
 }
 
 #define MODEL_GET_MODULE(model) "GetModule", AUX_GET_MODULE(model, 0)
 #define MODEL_SET_MODULE(model) "SetModule", AUX_SET_MODULE(model, SetModule, 0)
 
-#define DO_2_DOUBLES_RETURN_1(model, name)	#name, [](lua_State * L)	\
+#define DO_2_DOUBLES_RETURN_1(model, MNAME)	#MNAME, [](lua_State * L)	\
 	{																					\
-		lua_pushnumber(L, model(L)->##name(LuaXS::Double(L, 2), LuaXS::Double(L, 3)));	\
+		lua_pushnumber(L, model(L)->MNAME(LuaXS::Double(L, 2), LuaXS::Double(L, 3)));	\
 																						\
 		return 1;																		\
 	}

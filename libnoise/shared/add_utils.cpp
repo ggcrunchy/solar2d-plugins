@@ -34,9 +34,9 @@
 //
 //
 
-#define UTILS_GETTER(name) static noise::utils::##name * name (lua_State * L)	\
+#define UTILS_GETTER(MNAME) static noise::utils::MNAME * MNAME (lua_State * L)	\
 {																		\
-	return LuaXS::CheckUD<noise::utils::##name>(L, 1, MT_NAME(name));	\
+	return LuaXS::CheckUD<noise::utils::MNAME>(L, 1, MT_NAME(MNAME));	\
 }
 
 //
@@ -79,6 +79,25 @@ static int AddColor (lua_State * L)
     else LuaXS::NewTyped<noise::utils::Color>(L);   // color
 
     return SetColorMT(L);
+}
+
+//
+//
+//
+
+static noise::utils::Color GetColor (lua_State * L, int arg) // kludge to allow some other templates
+{
+    if (arg > 1)
+    {
+        lua_pushvalue(L, arg);  // ..., color, ..., color
+        lua_insert(L, 1);   // color, ..., color, ...
+    }
+
+    const noise::utils::Color & color = *Color(L);
+
+    if (arg > 1) lua_remove(L, 1);  // ..., color, ...
+
+    return color;
 }
 
 //
@@ -211,7 +230,7 @@ int GetSlabBytes (lua_State * L)
     else return PushLengthString(L, object->GetSlabPtr(LuaXS::Int(L, 2) - 1), object->GetStride());   // object, row, bytes
 }
 
-#define GET_BYTES(getter) GetSlabBytes<noise::utils::##getter, &getter>
+#define GET_BYTES(getter) GetSlabBytes<noise::utils::getter, &getter>
 
 //
 //
@@ -220,21 +239,6 @@ int GetSlabBytes (lua_State * L)
 static noise::utils::Image * Image (lua_State * L)
 {
     return LuaXS::ExtUD<noise::utils::Image>(L, 1);
-}
-
-static noise::utils::Color GetColor (lua_State * L, int arg) // kludge to allow some other templates
-{
-    if (arg > 1)
-    {
-        lua_pushvalue(L, arg);  // ..., color, ..., color
-        lua_insert(L, 1);   // color, ..., color, ...
-    }
-
-    const noise::utils::Color & color = *Color(L);
-
-    if (arg > 1) lua_remove(L, 1);  // ..., color, ...
-
-    return color;
 }
 
 //
@@ -255,7 +259,7 @@ static noise::utils::Color GetColor (lua_State * L, int arg) // kludge to allow 
 
 #define WITH_COLOR(getter, name, mname) name, [](lua_State * L) \
 {                                       \
-    getter(L)->##mname(GetColor(L, 2));  \
+    getter(L)->mname(GetColor(L, 2));   \
                                         \
     return 0;                           \
 }

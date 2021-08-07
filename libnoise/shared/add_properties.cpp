@@ -27,7 +27,7 @@
 //
 //
 
-#define PROPERTY(name) #name, noise::module::##name
+#define PROPERTY(NAME) #NAME, noise::module::NAME
 
 //
 //

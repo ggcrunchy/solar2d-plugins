@@ -22,7 +22,6 @@
 */
 
 #include "ByteReader.h"
-#include "utils/Byte.h"
 #include "utils/LuaEx.h"
 #include "utils/Thread.h"
 #include <vector>
