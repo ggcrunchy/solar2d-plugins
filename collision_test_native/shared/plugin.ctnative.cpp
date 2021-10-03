@@ -45,7 +45,7 @@ bool IsType (lua_State * L, int arg, const char * name)
 //
 //
 
-CORONA_EXPORT int luaopen_plugin_ctnative (lua_State* L)
+CORONA_EXPORT int luaopen_plugin_ctnative (lua_State * L)
 {
 	lua_newtable(L); // ctnative
 
