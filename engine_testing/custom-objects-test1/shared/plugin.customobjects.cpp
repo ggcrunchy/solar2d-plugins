@@ -52,7 +52,7 @@ NoOp( const CoronaDisplayObject *, void *, int * )
 }
 
 struct ScopeMessagePayload {
-    CoronaRenderer * rendererHandle;
+    const CoronaRenderer * rendererHandle;
     unsigned int drawSessionID;
 };
 
@@ -74,7 +74,7 @@ CORONA_EXPORT int luaopen_plugin_customobjects1 (lua_State * L)
                     // Customize draw method:
                     CoronaObjectDrawParams drawParams = {};
 
-                    drawParams.before = []( const CoronaDisplayObject * object, void * userData, CoronaRenderer * rendererHandle )
+                    drawParams.before = []( const CoronaDisplayObject * object, void * userData, const CoronaRenderer * rendererHandle )
                     {
                         const CoronaGroupObject * groupObject = reinterpret_cast< const CoronaGroupObject * >( object );
                         ScopeMessagePayload payload = { rendererHandle, sScopeDrawSessionID };
@@ -85,7 +85,7 @@ CORONA_EXPORT int luaopen_plugin_customobjects1 (lua_State * L)
                         }
                     };
 
-                    drawParams.after = []( const CoronaDisplayObject * object, void * userData, CoronaRenderer * rendererHandle )
+                    drawParams.after = []( const CoronaDisplayObject * object, void * userData, const CoronaRenderer * rendererHandle )
                     {
                         const CoronaGroupObject * groupObject = reinterpret_cast< const CoronaGroupObject * >( object );
                         ScopeMessagePayload payload = { rendererHandle, sScopeDrawSessionID++ };
@@ -135,7 +135,7 @@ CORONA_EXPORT int luaopen_plugin_customobjects1 (lua_State * L)
                     CoronaObjectDrawParams drawParams = {};
 
                     drawParams.ignoreOriginal = true;
-                    drawParams.after = []( const CoronaDisplayObject * object, void * userData, CoronaRenderer * rendererHandle )
+                    drawParams.after = []( const CoronaDisplayObject * object, void * userData, const CoronaRenderer * rendererHandle )
                     {
                         PrintObjectState * state = static_cast< PrintObjectState * >( userData );
                         
@@ -210,7 +210,7 @@ CORONA_EXPORT int luaopen_plugin_customobjects1 (lua_State * L)
                     // Customize onCreate method:
                     CoronaObjectOnCreateParams onCreateParams = {};
 
-                    onCreateParams.action = []( CoronaDisplayObject *, void ** userData )
+                    onCreateParams.action = []( const CoronaDisplayObject *, void ** userData )
                     {
                         *userData = new PrintObjectState;
                     };
@@ -218,7 +218,7 @@ CORONA_EXPORT int luaopen_plugin_customobjects1 (lua_State * L)
                     // Customize onFinalize method:
                     CoronaObjectOnFinalizeParams onFinalizeParams = {};
 
-                    onFinalizeParams.action = []( CoronaDisplayObject *, void * userData )
+                    onFinalizeParams.action = []( const CoronaDisplayObject *, void * userData )
                     {
                         delete static_cast< PrintObjectState * >( userData );
                     };

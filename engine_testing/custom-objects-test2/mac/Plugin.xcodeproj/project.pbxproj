@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		AA7A523326E1B3F900C00C03 /* plugin.customobjects.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA7A522E26E1B33800C00C03 /* plugin.customobjects.cpp */; };
+		AABE9A3927167B7900E47E49 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AABE9A3827167B7900E47E49 /* OpenGL.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -27,8 +28,9 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXFileReference section */
-		A49186401641DDB800A39286 /* customobjects1.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = customobjects1.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		A49186401641DDB800A39286 /* customobjects2.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = customobjects2.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA7A522E26E1B33800C00C03 /* plugin.customobjects.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = plugin.customobjects.cpp; path = ../shared/plugin.customobjects.cpp; sourceTree = "<group>"; };
+		AABE9A3827167B7900E47E49 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +38,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AABE9A3927167B7900E47E49 /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -62,7 +65,7 @@
 		A482DA8515F9B7E70084DC42 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A49186401641DDB800A39286 /* customobjects1.dylib */,
+				A49186401641DDB800A39286 /* customobjects2.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -70,6 +73,7 @@
 		A482DA8615F9B7E70084DC42 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AABE9A3827167B7900E47E49 /* OpenGL.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -87,9 +91,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		A49186331641DDB800A39286 /* customobjects1 */ = {
+		A49186331641DDB800A39286 /* customobjects2 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "customobjects1" */;
+			buildConfigurationList = A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "customobjects2" */;
 			buildPhases = (
 				A49186341641DDB800A39286 /* Sources */,
 				A49186381641DDB800A39286 /* Frameworks */,
@@ -101,9 +105,9 @@
 			);
 			dependencies = (
 			);
-			name = customobjects1;
+			name = customobjects2;
 			productName = ads;
-			productReference = A49186401641DDB800A39286 /* customobjects1.dylib */;
+			productReference = A49186401641DDB800A39286 /* customobjects2.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 /* End PBXNativeTarget section */
@@ -127,7 +131,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A49186331641DDB800A39286 /* customobjects1 */,
+				A49186331641DDB800A39286 /* customobjects2 */,
 			);
 		};
 /* End PBXProject section */
@@ -306,7 +310,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "customobjects1" */ = {
+		A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "customobjects2" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A491863E1641DDB800A39286 /* Debug */,
