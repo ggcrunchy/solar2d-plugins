@@ -36,7 +36,7 @@ include $(PREBUILT_SHARED_LIBRARY)
 # -----------------------------------------------------------------------------
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := libplugin.customobjects1
+LOCAL_MODULE := libplugin.customobjects2
 
 LOCAL_C_INCLUDES := \
 	$(SRC_DIR)
@@ -51,7 +51,7 @@ LOCAL_CFLAGS := \
 	-D_REENTRANT \
 	-DRtt_ANDROID_ENV
 
-LOCAL_LDLIBS := -llog
+LOCAL_LDLIBS := -llog -lGLESv2
 
 LOCAL_SHARED_LIBRARIES := \
 	liblua libcorona
