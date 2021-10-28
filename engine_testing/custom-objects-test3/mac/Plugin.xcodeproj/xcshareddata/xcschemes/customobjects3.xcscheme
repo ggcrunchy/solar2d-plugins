@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A49186331641DDB800A39286"
                BuildableName = "customobjects2.dylib"
-               BlueprintName = "customobjects2"
+               BlueprintName = "customobjects3"
                ReferencedContainer = "container:Plugin.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -52,7 +52,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A49186331641DDB800A39286"
             BuildableName = "customobjects2.dylib"
-            BlueprintName = "customobjects2"
+            BlueprintName = "customobjects3"
             ReferencedContainer = "container:Plugin.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

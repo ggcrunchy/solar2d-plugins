@@ -1,4 +1,4 @@
---- Method customization test.
+--- Custom command test.
 
 --
 -- Permission is hereby granted, free of charge, to any person obtaining

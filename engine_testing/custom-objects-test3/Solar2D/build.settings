@@ -1,0 +1,30 @@
+settings =
+{
+	android =
+	{
+	--        versionCode = "3"
+	},
+
+	orientation =
+	{
+			default = "landscape"
+	},
+
+	plugins = {
+		["plugin.customobjects3"] = { publisherId = "com.xibalbastudios" }
+	},
+
+	excludeFiles =
+    {
+        -- 
+        all = { "doc.css", "*.md", "config.ld" },
+
+        -- Exclude all Android icon files and .ogg files
+		-- TODO: Filter out auxiliary Android databases; needs some naming convention (right now, seems to be either root-level or ending in "_assets"?)
+        iphone = { "Icon-*dpi.png", "*.ogg" },
+
+        -- Exclude iOS "retina" image files and .m4a files
+		-- TODO: Filter out images, etc. that would get incorporated into the database (mentioned above for iphone); again, needs naming convention
+        android = { "Icon.png", "*@2x.png", "*.m4a" } 
+    }
+}

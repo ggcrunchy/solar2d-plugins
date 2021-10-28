@@ -84,7 +84,7 @@ DummyArgs( lua_State * L )
 }
 
 static void
-CopyWriter( unsigned char * out, const void * data, unsigned int size )
+CopyWriter( const CoronaCommandBuffer *, unsigned char * out, const void * data, unsigned int size )
 {
     memcpy( out, data, size );
 }
@@ -166,7 +166,7 @@ static void
 RegisterRendererLogic( lua_State * L, SharedColorMaskData * sharedData )
 {
     CoronaCommand command = {
-        [](const unsigned char * data, unsigned int size) {
+        [](const CoronaCommandBuffer *, const unsigned char * data, unsigned int size) {
             ColorMaskSettings mask;
 
             assert( size >= sizeof( ColorMaskSettings ) );
