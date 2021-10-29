@@ -159,7 +159,7 @@ void AddShared( lua_State * L)
                     }
                 };
                 
-                CoronaShaderDrawParams drawParams;
+                CoronaShaderDrawParams drawParams = {};
                 
                 drawParams.ignoreOriginal = true;
                 drawParams.before = []( const CoronaShader * shader, void * userData, const CoronaRenderer * renderer, const CoronaRenderData * renderData )
