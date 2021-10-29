@@ -27,6 +27,7 @@ local co3 = require("plugin.customobjects3")
 local curve = require("cubic.curve")
 
 --display.setDrawMode("wireframe")
+display.setDefault( 'isShaderCompilerVerbose', true )
 
 co3.registerUnsharedDataType() -- in practice, plugin itself would probably do this
 
@@ -101,7 +102,7 @@ graphics.defineEffect{
 			// Precalculated coefficients (t^3, t^2, t, 1) and derivatives, mapped
 			// by Hermite "geometry matrix" (just the constant coefficients of
 			// the point and tangent equations), at t = xpos / N
-      P_UV float xpos = floor(CoronaTexCoord.x * float(NUM_SLOTS - 1.) + .5);
+      P_UV float xpos = floor(CoronaTexCoord.x * float(NUM_SLOTS - 1) + .5);
 			P_POSITION vec4 cpos = GetUniformVector(xpos);
 			P_POSITION vec4 ctan = GetUniformVector(xpos + float(NUM_SLOTS));
 

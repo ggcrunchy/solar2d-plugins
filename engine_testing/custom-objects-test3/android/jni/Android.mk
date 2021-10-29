@@ -36,13 +36,13 @@ include $(PREBUILT_SHARED_LIBRARY)
 # -----------------------------------------------------------------------------
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := libplugin.customobjects2
+LOCAL_MODULE := libplugin.customobjects3
 
 LOCAL_C_INCLUDES := \
 	$(SRC_DIR)
 
 LOCAL_SRC_FILES := \
-	$(SRC_DIR)/plugin.customobjects.cpp
+	$(SRC_DIR)/plugin.customobjects.cpp $(SRC_DIR)/instancing_basic.cpp $(SRC_DIR)/instancing_shared.cpp $(SRC_DIR)/instancing_unshared.cpp
 	
 
 LOCAL_CFLAGS := \
@@ -51,7 +51,7 @@ LOCAL_CFLAGS := \
 	-D_REENTRANT \
 	-DRtt_ANDROID_ENV
 
-LOCAL_LDLIBS := -llog -lGLESv2
+LOCAL_LDLIBS := -llog
 
 LOCAL_SHARED_LIBRARIES := \
 	liblua libcorona
