@@ -11,13 +11,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\shared\instancing_basic.cpp" />
-    <ClCompile Include="..\shared\instancing_shared.cpp" />
-    <ClCompile Include="..\shared\instancing_unshared.cpp" />
+    <ClCompile Include="..\shared\DepthClear.cpp" />
+    <ClCompile Include="..\shared\DepthEnvironment.cpp" />
+    <ClCompile Include="..\shared\DepthLib.cpp" />
+    <ClCompile Include="..\shared\DepthState.cpp" />
     <ClCompile Include="..\shared\plugin.customobjects.cpp" />
+    <ClCompile Include="..\shared\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\shared\common.h" />
+    <ClInclude Include="..\shared\Depth.h" />
+    <ClInclude Include="..\shared\utils.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{79F0CACC-457B-4A25-BC54-81277688C361}</ProjectGuid>
@@ -58,7 +61,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(Configuration)\</OutDir>
-    <TargetName>customobjects3</TargetName>
+    <TargetName>customobjects4</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <PreBuildEvent />
