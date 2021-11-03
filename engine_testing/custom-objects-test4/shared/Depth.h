@@ -41,7 +41,6 @@ struct DepthSettings {
 
 struct DepthInfo {
 	double clear{1.};
-	CoronaMatrix4x4 projectionMatrix, viewMatrix;
 	DepthSettings settings;
 };
 

@@ -3,7 +3,7 @@ local metadata =
 	plugin =
 	{
 		format = 'sharedLibrary',
-		staticLibs = { 'plugin.customobjects2', },
+		staticLibs = { 'plugin.customobjects3', },
 		frameworks = {},
 		frameworksOptional = {},
 	},

@@ -36,13 +36,13 @@ include $(PREBUILT_SHARED_LIBRARY)
 # -----------------------------------------------------------------------------
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := libplugin.customobjects3
+LOCAL_MODULE := libplugin.customobjects4
 
 LOCAL_C_INCLUDES := \
 	$(SRC_DIR)
 
 LOCAL_SRC_FILES := \
-	$(SRC_DIR)/plugin.customobjects.cpp $(SRC_DIR)/instancing_basic.cpp $(SRC_DIR)/instancing_shared.cpp $(SRC_DIR)/instancing_unshared.cpp
+	$(SRC_DIR)/plugin.customobjects.cpp $(SRC_DIR)/utils.cpp $(SRC_DIR)/DepthClear.cpp $(SRC_DIR)/DepthEnvironment.cpp $(SRC_DIR)/DepthLib.cpp $(SRC_DIR)/DepthState.cpp
 	
 
 LOCAL_CFLAGS := \
@@ -51,7 +51,7 @@ LOCAL_CFLAGS := \
 	-D_REENTRANT \
 	-DRtt_ANDROID_ENV
 
-LOCAL_LDLIBS := -llog
+LOCAL_LDLIBS := -llog -lGLESv2
 
 LOCAL_SHARED_LIBRARIES := \
 	liblua libcorona

@@ -3,7 +3,7 @@ local glue = require'glue'
 
 local function readlines(file, callback)
 --	glue.fcall(function(finally)
-		local f = assert(io.open(file, 'r'))
+		local f = assert(io.open(system.pathForFile(file), 'r'))
 --		finally(function() f:close() end)
 print(file, f)
 if f then

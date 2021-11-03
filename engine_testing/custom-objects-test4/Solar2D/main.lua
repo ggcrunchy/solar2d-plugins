@@ -24,8 +24,42 @@
 --
 
 local co4 = require("plugin.customobjects4")
+local camera = require("camera")
 local obj_parser = require("obj_parser")
 
+-- Kludge to deal with some extra files on Android.
+if system.getInfo("platform") == "android" and system.getInfo("environment") == "device" then
+  local AssetReader = require("plugin.AssetReader")
+  local pathForFile = system.pathForFile
+
+  function system.pathForFile (name, dir)
+    if not dir or dir == system.ResourceDirectory then
+      if name:sub(-4) ~= ".jpg" and name:sub(-4) ~= ".png" then
+        local contents = AssetReader.Read(name)
+        
+        if not contents then
+          return nil
+        end
+        
+        dir = system.TemporaryDirectory
+        name = pathForFile(name, dir)
+        
+        local file = io.open(name, "w")
+        
+        if file then -- this seems a little saner than trying to rewrite the bits in glue / obj_parser
+          file:write(contents)
+          file:close()
+        end
+
+        return name
+      end
+    end
+
+    return pathForFile(name, dir)
+  end
+end
+
+-- Enable 3D and use our own matrices as transforms.
 graphics.defineShellTransform{
 	name = "3D",
 
@@ -42,6 +76,7 @@ graphics.defineShellTransform{
 	}
 }
 
+-- Random color-changing effect.
 graphics.defineEffect{
 	category = "filter", name = "test", shellTransform = "3D",
 
@@ -72,41 +107,43 @@ graphics.defineEffect{
 	]]
 }
 
+-- A non-3D object, before the scope...
 local r = display.newRect(display.contentCenterX, display.contentCenterY, 50, 50)
 
+-- ...then the scope itself, with various depth states enabled, including some obvious defaults.
 local g = co4.newScopeGroupObject()
 local depth_state = co4.newDepthStateObject(g)
 
-local eye = { -175, 20, 0 }
-local length = math.sqrt(eye[1]^2 + eye[2]^2)
-local dir = { -eye[1] / length, 0, -eye[2] / length }
-local angle = math.atan2(dir[2], dir[1])
-local center, up = { 0, 0, 0 }, { 0, 1, 0 }
+depth_state.enabled = true
+depth_state.cullFaceEnabled = true
+--depth_state.cullFace = "front" -- see note about polygon
 
-local keys = {}
-
-Runtime:addEventListener("key", function(event)
-	local keyName = event.keyName
-
-	if keyName == "left" or keyName == "right" or keyName == "up" or keyName == "down" then
-		if event.phase == "up" then
-			keys[keyName] = false
-		elseif event.phase == "down" then
-			keys[keyName] = true
-		end
-	end
-end)
-
-local keyprev
-
+-- Create a (fixed) projection and a view that will track the camera.
 local projection = co4.newMatrix()
 local view = co4.newMatrix()
 
-depth_state.enabled = true
-
 projection:populatePerspective{ fovy = math.rad(60), aspectRatio = 1.33, zNear = .1, zFar = 1000 }
-view:populateView{ eye = eye, center = center, up = up }
 
+-- Point a camera somewhere.
+local eye = { -175, 20, 0 }
+local center, up = { 0, 0, 0 }, { 0, 1, 0 }
+
+camera.Init({ center[1] - eye[1], center[2] - eye[2], center[3] - eye[3] }, up)
+camera.Update(-100, 0, 0, 0)
+
+local dir, side = {}, {}
+
+local function ReadCamera ()
+  camera.GetVectors(eye, dir, side, up)
+
+  center[1], center[2], center[3] = eye[1] + dir[1], eye[2] + dir[2], eye[3] + dir[3]
+
+  view:populateView{ eye = eye, center = center, up = up }
+end
+
+ReadCamera()
+
+-- Create a 3D mesh manually.
 local mesh = co4.newTransformableMesh{
 	parent = g,
 	x = 100,
@@ -135,6 +172,7 @@ mesh.fill = { type = "image", filename = "Image1.jpg" }
 
 mesh.fill.effect = "filter.custom.test"
 
+-- Create a second mesh from a model file.
 local vertices, provisionalUVs, indices = {}, {}, {}
 local vi_to_uvi = {}
 local handlers = {
@@ -192,7 +230,7 @@ vi_to_uvi[v] = t
 local Name = "squirrel"
 			 --"CrumpledDevelopable"
 
-obj_parser(system.pathForFile(Name .. ".obj"), handlers)
+obj_parser(Name .. ".obj.txt", handlers) -- as txt, otherwise Android build seems to reject
 
 local uvs = {}
 
@@ -214,12 +252,10 @@ local mesh2 = co4.newTransformableMesh{
 	hasZ = true
 }
 
+-- Create a polygon from some data.
 mesh2.fill = { type = "image", filename = Name .. ".jpg" }
 
 mesh2.fill.effect = "filter.custom.test"
-
-local halfW = 115--display.contentWidth * 0.5
-local halfH = 110--display.contentHeight * 0.5
  
 local pvertices = {
 	0,-110,		3,
@@ -234,15 +270,14 @@ local pvertices = {
 	-27,-35,	4
 	}
  
-local o = co4.newTransformablePolygon( g, halfW, halfH, pvertices, true )
+local o = co4.newTransformablePolygon( g, display.contentCenterX, display.contentCenterY + 200, pvertices, true )
 --o.fill = { type="image", filename="Image1.jpg" }
-o.strokeWidth = 10
+o.strokeWidth = 10 -- the stroke will get back-face culled (see depth_state.cullFace, above)
 o:setStrokeColor( 1, 0, 0 )
 
 o.fill.effect = "filter.custom.test"
 
-local prev
-
+-- Put each object in an initial state.
 local params1, params2 = { yaw = 0 }, { yaw = 0 }
 local model = co4.newMatrix()
 
@@ -253,6 +288,82 @@ local marr = model:getAsArray()
 o.fill.effect.model = marr
 mesh.fill.effect.model = marr
 mesh2.fill.effect.model = marr
+
+-- Add a full-screen object to capture some inputs...
+local back = display.newRect(display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight)
+
+back.isHitTestable, back.isVisible = true, false
+
+-- ...in particular, interpret drags as camera rotations.
+local prevx, prevy
+local total_dx, total_dy = 0, 0
+
+back:addEventListener("touch", function(event)
+    local phase = event.phase
+
+    if phase == "began" then
+      display.getCurrentStage():setFocus(event.target)
+
+      prevx, prevy = event.x, event.y
+    elseif phase == "moved" then
+      local dx, dy = event.x - prevx, event.y - prevy
+      
+      total_dx, total_dy = total_dx + dx, total_dy + dy
+      
+      prevx, prevy = event.x, event.y
+    else
+      display.getCurrentStage():setFocus(nil)
+    end
+
+    return true
+end)
+
+-- Listen to some keys for forward / backward and strafing motion.
+local keys = {}
+
+Runtime:addEventListener("key", function(event)
+	local keyName = event.keyName
+
+	if keyName == "left" or keyName == "right" or keyName == "up" or keyName == "down" then
+		if event.phase == "up" then
+			keys[keyName] = false
+		elseif event.phase == "down" then
+			keys[keyName] = true
+		end
+	end
+end)
+
+-- Add some buttons, since a keyboard won't always be handy.
+local buttons = {}
+
+for _, v in ipairs{
+  { x = 20, y = display.contentHeight - 100, name = "left" },
+  { x = 120, y = display.contentHeight - 100, name = "right" },
+  { x = 70, y = display.contentHeight - 170, name = "up" },
+  { x = 70, y = display.contentHeight - 30, name = "down" }
+} do
+  local button = display.newRoundedRect(v.x + display.screenOriginX + 50, v.y, 70, 50, 12)
+  
+  button.name = v.name
+  
+  button:setFillColor(0, 0, .9)
+  button:addEventListener("touch", function(event)
+    if event.phase == "began" then
+      display.getCurrentStage():setFocus(event.target)
+      
+      buttons[event.target.name] = true
+    elseif event.phase == "ended" then
+      display.getCurrentStage():setFocus(nil)
+
+      buttons[event.target.name] = false
+    end
+
+    return true
+  end)
+end
+
+-- Update object space matrices.
+local prev
 
 timer.performWithDelay(50, function(event)
 	local dt = prev and (event.time - prev) / 1000 or 0
@@ -271,7 +382,8 @@ timer.performWithDelay(50, function(event)
   mesh2.fill.effect.model = model:getAsArray()
 end, 0)
 
-local pv = co4.newMatrix()
+-- Set camera matrices for the objects...
+local pv = co4.newMatrix() -- projection * view
 
 pv:setProduct(projection, view)
 
@@ -281,20 +393,25 @@ o.fill.effect.view_projection = pv_arr
 mesh.fill.effect.view_projection = pv_arr
 mesh2.fill.effect.view_projection = pv_arr
 
+-- ...then update them over time.
+local keyprev
+
 timer.performWithDelay(30, function(event)
+  -- Update camera from input.
 	local dt = keyprev and (event.time - keyprev) / 1000 or 0
 
 	keyprev = event.time
 
-	local l, r = keys.left and 1 or 0, keys.right and -1 or 0
-	local u, d = keys.up and -1 or 0, keys.down and 1 or 0
+	local l, r = (keys.left or buttons.left) and 1 or 0, (keys.right or buttons.right) and -1 or 0
+	local u, d = (keys.up or buttons.up) and 1 or 0, (keys.down or buttons.down) and -1 or 0
 
-	angle = (angle + (l + r) * math.pi / 2 * dt) % (2 * math.pi)
-	length = math.max(25, length + (u + d) * 35 * dt)
-	eye[1], eye[2] = length * math.cos(angle), length * math.sin(angle)
+  camera.Update((u + d) * 125 * dt --[[ddir]], (l + r) * 135 * dt --[[dside]], total_dx * dt --[[dx]], total_dy * dt --[[dy]])
+  
+  total_dx, total_dy = 0, 0
+  
+  ReadCamera()
 
-	view:populateView{ eye = eye, center = center, up = up }
-
+  -- Update objects.
   pv:setProduct(projection, view)
 
   pv_arr = pv:getAsArray()
@@ -304,6 +421,7 @@ timer.performWithDelay(30, function(event)
   mesh2.fill.effect.view_projection = pv_arr
 end, 0)
 
+-- Put some other 2D object after the 3D stuff.
 local rrect = display.newRoundedRect(display.contentCenterX + 200, display.contentCenterY, 100, 500, 12)
 
 rrect:setFillColor(0, 1, 1)

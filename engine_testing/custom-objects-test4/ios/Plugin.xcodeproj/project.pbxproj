@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AAB38E182730B1A200F6EFCE /* DepthState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAB38E112730B1A200F6EFCE /* DepthState.cpp */; };
+		AAB38E192730B1A200F6EFCE /* DepthClear.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAB38E122730B1A200F6EFCE /* DepthClear.cpp */; };
+		AAB38E1A2730B1A200F6EFCE /* DepthEnvironment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAB38E142730B1A200F6EFCE /* DepthEnvironment.cpp */; };
+		AAB38E1B2730B1A200F6EFCE /* DepthLib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAB38E152730B1A200F6EFCE /* DepthLib.cpp */; };
+		AAB38E1C2730B1A200F6EFCE /* utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAB38E162730B1A200F6EFCE /* utils.cpp */; };
 		AAFC5B8326F91BB700A112DC /* plugin.customobjects.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAFC5B8226F91BB600A112DC /* plugin.customobjects.cpp */; };
 /* End PBXBuildFile section */
 
@@ -23,8 +28,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		A4E253B6166D6FB300DCDC2C /* libplugin_customobjects1.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libplugin_customobjects1.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A4E253B6166D6FB300DCDC2C /* libplugin_customobjects4.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libplugin_customobjects4.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA2ED77727062C3200CEE021 /* libplayer.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libplayer.a; path = "../../../../../../Applications/Corona-3649/Native/Corona/ios/lib/libplayer.a"; sourceTree = "<group>"; };
+		AAB38E112730B1A200F6EFCE /* DepthState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DepthState.cpp; path = ../shared/DepthState.cpp; sourceTree = "<group>"; };
+		AAB38E122730B1A200F6EFCE /* DepthClear.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DepthClear.cpp; path = ../shared/DepthClear.cpp; sourceTree = "<group>"; };
+		AAB38E132730B1A200F6EFCE /* utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = utils.h; path = ../shared/utils.h; sourceTree = "<group>"; };
+		AAB38E142730B1A200F6EFCE /* DepthEnvironment.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DepthEnvironment.cpp; path = ../shared/DepthEnvironment.cpp; sourceTree = "<group>"; };
+		AAB38E152730B1A200F6EFCE /* DepthLib.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DepthLib.cpp; path = ../shared/DepthLib.cpp; sourceTree = "<group>"; };
+		AAB38E162730B1A200F6EFCE /* utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = utils.cpp; path = ../shared/utils.cpp; sourceTree = "<group>"; };
+		AAB38E172730B1A200F6EFCE /* Depth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Depth.h; path = ../shared/Depth.h; sourceTree = "<group>"; };
 		AAFC5B8226F91BB600A112DC /* plugin.customobjects.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = plugin.customobjects.cpp; path = ../shared/plugin.customobjects.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -42,6 +54,13 @@
 		A447B609165D72A6009EA762 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				AAB38E172730B1A200F6EFCE /* Depth.h */,
+				AAB38E122730B1A200F6EFCE /* DepthClear.cpp */,
+				AAB38E142730B1A200F6EFCE /* DepthEnvironment.cpp */,
+				AAB38E152730B1A200F6EFCE /* DepthLib.cpp */,
+				AAB38E112730B1A200F6EFCE /* DepthState.cpp */,
+				AAB38E162730B1A200F6EFCE /* utils.cpp */,
+				AAB38E132730B1A200F6EFCE /* utils.h */,
 				AAFC5B8226F91BB600A112DC /* plugin.customobjects.cpp */,
 			);
 			name = Source;
@@ -59,7 +78,7 @@
 		A484111A15114F700074BD57 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A4E253B6166D6FB300DCDC2C /* libplugin_customobjects1.a */,
+				A4E253B6166D6FB300DCDC2C /* libplugin_customobjects4.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -75,9 +94,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A4E253B5166D6FB300DCDC2C /* plugin_customobjects1 */ = {
+		A4E253B5166D6FB300DCDC2C /* plugin_customobjects4 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A4E253BF166D6FB300DCDC2C /* Build configuration list for PBXNativeTarget "plugin_customobjects1" */;
+			buildConfigurationList = A4E253BF166D6FB300DCDC2C /* Build configuration list for PBXNativeTarget "plugin_customobjects4" */;
 			buildPhases = (
 				A4E253B2166D6FB300DCDC2C /* Sources */,
 				A4E253B3166D6FB300DCDC2C /* Frameworks */,
@@ -87,9 +106,9 @@
 			);
 			dependencies = (
 			);
-			name = plugin_customobjects1;
+			name = plugin_customobjects4;
 			productName = plugin_library;
-			productReference = A4E253B6166D6FB300DCDC2C /* libplugin_customobjects1.a */;
+			productReference = A4E253B6166D6FB300DCDC2C /* libplugin_customobjects4.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -113,7 +132,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A4E253B5166D6FB300DCDC2C /* plugin_customobjects1 */,
+				A4E253B5166D6FB300DCDC2C /* plugin_customobjects4 */,
 			);
 		};
 /* End PBXProject section */
@@ -124,6 +143,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				AAFC5B8326F91BB700A112DC /* plugin.customobjects.cpp in Sources */,
+				AAB38E192730B1A200F6EFCE /* DepthClear.cpp in Sources */,
+				AAB38E182730B1A200F6EFCE /* DepthState.cpp in Sources */,
+				AAB38E1C2730B1A200F6EFCE /* utils.cpp in Sources */,
+				AAB38E1A2730B1A200F6EFCE /* DepthEnvironment.cpp in Sources */,
+				AAB38E1B2730B1A200F6EFCE /* DepthLib.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,7 +308,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A4E253BF166D6FB300DCDC2C /* Build configuration list for PBXNativeTarget "plugin_customobjects1" */ = {
+		A4E253BF166D6FB300DCDC2C /* Build configuration list for PBXNativeTarget "plugin_customobjects4" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A4E253C0166D6FB300DCDC2C /* Debug */,

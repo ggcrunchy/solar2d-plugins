@@ -11,6 +11,7 @@ settings =
 	},
 
 	plugins = {
+    ["plugin.AssetReader"] = { publisherId = "com.xibalbastudios" },
 		["plugin.customobjects4"] = { publisherId = "com.xibalbastudios" }
 	},
 

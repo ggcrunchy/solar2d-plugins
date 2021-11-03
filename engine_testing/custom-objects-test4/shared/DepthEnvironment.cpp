@@ -54,7 +54,7 @@ DepthEnvironment * InitDepthEnvironment( lua_State * L )
         #else
             glClearDepth
         #endif
-            ( GLdouble( clear ) ); // TODO: is this expensive? if so, avoid when possible...
+            ( clear ); // TODO: is this expensive? if so, avoid when possible...
             glClear( GL_DEPTH_BUFFER_BIT );
 		};
 

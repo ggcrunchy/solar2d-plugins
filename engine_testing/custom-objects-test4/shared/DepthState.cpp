@@ -176,6 +176,11 @@ DrawParams()
 		{
 			env->working.settings.mask = _this->settings.mask;
 		}
+        
+        if (_this->hasCullFaceEnabled)
+        {
+            env->working.settings.cullFaceEnabled = _this->settings.cullFaceEnabled;
+        }
 
 		if (_this->hasEnabled)
 		{

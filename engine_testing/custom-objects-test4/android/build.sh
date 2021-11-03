@@ -6,7 +6,7 @@ set -o errexit
 
 path=`dirname $0`
 
-TARGET_NAME=customobjects3
+TARGET_NAME=customobjects4
 CONFIG=Debug
 DEVICE_TYPE=all
 BUILD_TYPE=clean

@@ -328,7 +328,7 @@ glue.autotable = autotable
 
 --check if a file exists and can be opened for reading or writing.
 function glue.canopen(name, mode)
-	local f = io.open(name, mode or 'rb')
+	local f = io.open(system.pathForFile(name), mode or 'rb')
 	if f then f:close() end
 	return f ~= nil and name or nil
 end
@@ -338,7 +338,7 @@ glue.fileexists = glue.canopen --for backwards compat.
 --read a file into a string (in binary mode by default).
 function glue.readfile(name, mode, open)
 	open = open or io.open
-	local f, err = open(name, mode=='t' and 'r' or 'rb')
+	local f, err = open(system.pathForFile(name), mode=='t' and 'r' or 'rb')
 	if not f then return nil, err end
 	local s, err = f:read'*a'
 	if s == nil then return nil, err end
