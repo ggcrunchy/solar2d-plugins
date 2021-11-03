@@ -122,7 +122,7 @@ depth_state.cullFaceEnabled = true
 local projection = co4.newMatrix()
 local view = co4.newMatrix()
 
-projection:populatePerspective{ fovy = math.rad(60), aspectRatio = 1.33, zNear = .1, zFar = 1000 }
+projection:populatePerspective{ fovy = math.rad(60), aspectRatio = 1.33, zNear = 10, zFar = 1000 }
 
 -- Point a camera somewhere.
 local eye = { -175, 20, 0 }
