@@ -4,6 +4,7 @@
     <ClCompile Include="..\shared\theoraplay.c" />
     <ClCompile Include="..\shared\plugin.theora.cpp" />
     <ClCompile Include="..\shared\video_encoder.cpp" />
+    <ClCompile Include="..\..\ByteReader\ByteReader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\shared\theoraplay.h" />
@@ -15,6 +16,7 @@
       <Filter>loki</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\video_encoder.h" />
+    <ClInclude Include="..\..\ByteReader\ByteReader.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="loki">
