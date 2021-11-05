@@ -149,12 +149,24 @@ static int Step (lua_State * L)
 
 		if (!player->mAudio) player->mAudio = THEORAPLAY_getAudio(player->mDecoder);
 		if (!player->mVideo) player->mVideo = THEORAPLAY_getVideo(player->mDecoder);
-
+        
 		if ((player->mAudio || player->mVideo) && step > 0U) // ??
 		{
 			unsigned int now = player->mElapsed + step;
 
-			// audio currently not very functional :P
+            if (player->mAudio) // audio currently not very functional :P
+            {
+                while (true)
+                {
+                    const THEORAPLAY_AudioPacket * next_audio = THEORAPLAY_getAudio(player->mDecoder);
+                    
+                    if (!next_audio) break;
+                    
+                    THEORAPLAY_freeAudio(player->mAudio);
+                    
+                    player->mAudio = next_audio;
+                }
+            }
 
 			if (player->mVideo)
 			{
@@ -213,6 +225,11 @@ static void HasVideoStream (lua_State * L, TheoraReader * player)
 	lua_pushboolean(L, THEORAPLAY_hasVideoStream(player->mDecoder));
 }
 
+static void IsDecoding (lua_State * L, TheoraReader * player)
+{
+    lua_pushboolean(L, THEORAPLAY_isDecoding(player->mDecoder));
+}
+
 static void IsPaused (lua_State * L, TheoraReader * player)
 {
 	lua_pushboolean(L, player->mIsPaused ? 1 : 0);
@@ -239,17 +256,19 @@ static void PushFormat (lua_State * L, TheoraReader * player)
 
 static int Theora_GetField (lua_State * L, const char * field, void * context)
 {
+    TheoraReader * reader = static_cast<TheoraReader *>(context);
 	int res = 1;
 
 	if (strcmp(field, "Step") == 0) res = PushCachedFunction(L, Step);
 	else if (strcmp(field, "Pause") == 0) res = PushCachedFunction(L, Pause);
-	else if (strcmp(field, "availableAudio") == 0) AvailableAudio(L, static_cast<TheoraReader *>(context));
-	else if (strcmp(field, "availableVideo") == 0) AvailableVideo(L, static_cast<TheoraReader *>(context));
-	else if (strcmp(field, "elapsed") == 0) Elapsed(L, static_cast<TheoraReader *>(context));
-	else if (strcmp(field, "format") == 0) PushFormat(L, static_cast<TheoraReader *>(context));
-	else if (strcmp(field, "hasAudio") == 0) HasAudioStream(L, static_cast<TheoraReader *>(context));
-	else if (strcmp(field, "hasVideo") == 0) HasVideoStream(L, static_cast<TheoraReader *>(context));
-	else if (strcmp(field, "paused") == 0) IsPaused(L, static_cast<TheoraReader *>(context));
+	else if (strcmp(field, "availableAudio") == 0) AvailableAudio(L, reader);
+	else if (strcmp(field, "availableVideo") == 0) AvailableVideo(L, reader);
+	else if (strcmp(field, "elapsed") == 0) Elapsed(L, reader);
+	else if (strcmp(field, "format") == 0) PushFormat(L, reader);
+	else if (strcmp(field, "hasAudio") == 0) HasAudioStream(L, reader);
+	else if (strcmp(field, "hasVideo") == 0) HasVideoStream(L, reader);
+    else if (strcmp(field, "isDecoding") == 0) IsDecoding(L, reader);
+	else if (strcmp(field, "paused") == 0) IsPaused(L, reader);
 	else res = 0;
 
 	return res;
@@ -347,7 +366,7 @@ CORONA_EXPORT int luaopen_plugin_theora (lua_State * L)
 
 			return 2;
 		}
-
+        
 		CoronaExternalTextureCallbacks callbacks = {};
 
 		callbacks.size = sizeof(CoronaExternalTextureCallbacks);
