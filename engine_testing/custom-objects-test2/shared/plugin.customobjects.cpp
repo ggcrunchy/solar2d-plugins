@@ -26,6 +26,7 @@
 #include "CoronaLog.h"
 #include "CoronaLua.h"
 
+#include <cassert>
 #include <string>
 #include <vector>
 
