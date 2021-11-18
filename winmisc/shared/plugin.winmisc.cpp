@@ -22,6 +22,7 @@
 */
 
 #include "CoronaLua.h"
+#include "utils/Blob.h"
 #include <windows.h>
 #include <cstdlib>
 #include <vector>
@@ -74,8 +75,31 @@ static bool GetBytesFromBitmap (lua_State * L, HDC hdc, HBITMAP hBitmap)
             const BYTE * input = bytes.data();
             LONG count = info.bmiHeader.biWidth * abs_height;
 
-            std::vector<BYTE> out(count * 3);
-            BYTE * output = out.data();
+            BYTE * output = NULL;
+            size_t size = count * 3;
+            bool used_blob = false;
+            int top = lua_gettop(L);
+
+            if (BlobXS::IsBlob(L, top) && (BlobXS::IsResizable(L, top) || BlobXS::GetSize(L, top) >= size))
+            {
+                used_blob = true;
+
+                if (BlobXS::GetSize(L,top) < size)
+                {
+                    used_blob = BlobXS::Resize(L, top, size);
+                }
+
+                if (used_blob) output = BlobXS::GetData(L, top);
+            }
+
+            std::vector<BYTE> out;
+
+            if (!output)
+            {
+                out.resize(size);
+
+                output = out.data();
+            }
 
             for (LONG i = 0; i < count; ++i)
             {
@@ -86,10 +110,11 @@ static bool GetBytesFromBitmap (lua_State * L, HDC hdc, HBITMAP hBitmap)
                 output += 3;
                 input += 4;
             }
+  
+            if (!used_blob) lua_pushlstring(L, reinterpret_cast<char *>(out.data()), out.size()); // [window, ]bad_blob, image
 
-            lua_pushlstring(L, reinterpret_cast<char *>(out.data()), out.size()); // image
-            lua_pushinteger(L, info.bmiHeader.biWidth); // image, width
-            lua_pushinteger(L, abs_height); // image, width, height
+            lua_pushinteger(L, info.bmiHeader.biWidth); // [window, ][bad_blob, ]image, width
+            lua_pushinteger(L, abs_height); // [window, ][bad_blob, ]image, width, height
         }
     }
 
@@ -296,25 +321,29 @@ CORONA_EXPORT int luaopen_plugin_winmisc (lua_State* L)
         }, {
             "GetImageDataFromClipboard", [](lua_State * L)
             {
+                lua_settop(L, 1); // bytes?
+
                 bool ok = false;
 
                 if (IsClipboardFormatAvailable(CF_BITMAP) && OpenClipboard(nullptr))
                 {
                     HDC hdc = GetDC(nullptr);
 
-                    ok = GetBytesFromBitmap(L, hdc, (HBITMAP)GetClipboardData(CF_BITMAP));
+                    ok = GetBytesFromBitmap(L, hdc, (HBITMAP)GetClipboardData(CF_BITMAP)); // bytes?[, data[, w, h]]
 
                     CloseClipboard();
                     ReleaseDC(nullptr, hdc);
                 }
 
-                if (!ok) lua_pushboolean(L, 0);  // false
+                if (!ok) lua_pushboolean(L, 0);  // bytes?, false
 
                 return ok ? 3 : 1;
             }
         }, {
             "GetImageDataFromScreen", [](lua_State * L)
             {
+                lua_settop(L, 1); // bytes?
+
                 int x = GetSystemMetrics(SM_XVIRTUALSCREEN);
                 int y = GetSystemMetrics(SM_YVIRTUALSCREEN);
                 int w = GetSystemMetrics(SM_CXVIRTUALSCREEN);
@@ -327,7 +356,7 @@ CORONA_EXPORT int luaopen_plugin_winmisc (lua_State* L)
                 HGDIOBJ old_obj = SelectObject(hDC, hBitmap);
                 BOOL    bRet = BitBlt(hDC, 0, 0, w, h, hScreen, x, y, SRCCOPY);
 
-                bool ok = GetBytesFromBitmap(L, hDC, hBitmap);
+                bool ok = GetBytesFromBitmap(L, hDC, hBitmap); // bytes?[, data[, w, h]]
 
                 // clean up
                 SelectObject(hDC, old_obj);
@@ -335,13 +364,15 @@ CORONA_EXPORT int luaopen_plugin_winmisc (lua_State* L)
                 ReleaseDC(nullptr, hScreen);
                 DeleteObject(hBitmap);
 
-                if (!ok) lua_pushboolean(L, 0);  // false
+                if (!ok) lua_pushboolean(L, 0);  // bytes?, false
 
                 return ok ? 3 : 1;
             }
         }, {
             "GetImageDataFromWindow", [](lua_State * L)
             {
+                lua_settop(L, 2); // window, bytes?
+
                 HWND    window = GetWindow(L);
                 HDC     hScreen = GetDC(window);
                 HDC     hDC = CreateCompatibleDC(hScreen);
@@ -355,7 +386,7 @@ CORONA_EXPORT int luaopen_plugin_winmisc (lua_State* L)
                 HGDIOBJ old_obj = SelectObject(hDC, hBitmap);
                 BOOL    bRet = BitBlt(hDC, 0, 0, w, h, hScreen, rect.left, rect.top, SRCCOPY);
 
-                bool ok = GetBytesFromBitmap(L, hDC, hBitmap);
+                bool ok = GetBytesFromBitmap(L, hDC, hBitmap); // window, window, bytes?[, data[, w, h]]
 
                 // clean up
                 SelectObject(hDC, old_obj);
@@ -363,7 +394,7 @@ CORONA_EXPORT int luaopen_plugin_winmisc (lua_State* L)
                 ReleaseDC(window, hScreen);
                 DeleteObject(hBitmap);
 
-                if (!ok) lua_pushboolean(L, 0);  // false
+                if (!ok) lua_pushboolean(L, 0);  // bytes?, false
 
                 return ok ? 3 : 1;
             }
