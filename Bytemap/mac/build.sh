@@ -44,10 +44,12 @@ checkError
 xcodebuild -project "$path/Plugin.xcodeproj" -configuration $CONFIG
 checkError
 
-PLUGINS_DIR="$HOME/Library/Application Support/Corona/Simulator/Plugins/plugin/"
+PLUGINS_DIR=~/Solar2DPlugins/com.xibalbastudios/plugin.$TARGET_NAME/mac-sim
 
-cp "$path/build/Release/$TARGET_NAME.$OUTPUT_SUFFIX" "$OUTPUT_DIR"
-cp "./$TARGET_NAME.$OUTPUT_SUFFIX" "$PLUGINS_DIR/$TARGET_NAME.dylib"
+mkdir -p "$PLUGINS_DIR"
 
-mkdir -p "$HOME/Solar2DPlugins/com.xibalbastudios/$TARGET_NAME/macos-sim"
-tar -czf "$HOME/Solar2DPlugins/com.xibalbastudios/$TARGET_NAME/macos-sim/data.tgz" "./$TARGET_NAME.dylib"
+cp "$path/build/$CONFIG/$TARGET_NAME.$OUTPUT_SUFFIX" "$OUTPUT_DIR/plugin_$TARGET_NAME.$OUTPUT_SUFFIX"
+
+tar -czf "data.tgz" "./plugin_$TARGET_NAME.$OUTPUT_SUFFIX"
+
+cp "data.tgz" "$PLUGINS_DIR/data.tgz"

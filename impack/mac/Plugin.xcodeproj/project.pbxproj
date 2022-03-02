@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AA8762842765AC0500BF11E0 /* SIMD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8762832765AC0500BF11E0 /* SIMD.cpp */; };
 		CE0C2AA41D8DFD9600EF95D2 /* image_ops.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0C2AA11D8DFD9600EF95D2 /* image_ops.cpp */; };
 		CE0C2AA51D8DFD9600EF95D2 /* image_utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0C2AA21D8DFD9600EF95D2 /* image_utils.cpp */; };
 		CE0C2AA61D8DFD9600EF95D2 /* image_utils.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0C2AA31D8DFD9600EF95D2 /* image_utils.h */; };
@@ -44,7 +45,6 @@
 		CED05F4A1E0210C800D1893D /* Memory.h in Headers */ = {isa = PBXBuildFile; fileRef = CED05F3B1E0210C800D1893D /* Memory.h */; };
 		CED05F4B1E0210C800D1893D /* Path.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CED05F3C1E0210C800D1893D /* Path.cpp */; };
 		CED05F4C1E0210C800D1893D /* Path.h in Headers */ = {isa = PBXBuildFile; fileRef = CED05F3D1E0210C800D1893D /* Path.h */; };
-		CED05F4D1E0210C800D1893D /* SIMD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CED05F3E1E0210C800D1893D /* SIMD.cpp */; };
 		CED05F4E1E0210C800D1893D /* SIMD.h in Headers */ = {isa = PBXBuildFile; fileRef = CED05F3F1E0210C800D1893D /* SIMD.h */; };
 		CED05F4F1E0210C800D1893D /* Thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CED05F401E0210C800D1893D /* Thread.cpp */; };
 		CED05F501E0210C800D1893D /* Thread.h in Headers */ = {isa = PBXBuildFile; fileRef = CED05F411E0210C800D1893D /* Thread.h */; };
@@ -217,6 +217,8 @@
 			compilerSpec = com.apple.compilers.proxy.script;
 			filePatterns = "*.lua";
 			fileType = pattern.proxy;
+			inputFiles = (
+			);
 			isEditable = 1;
 			outputFiles = (
 				"$TARGET_TEMP_DIR/$(INPUT_FILE_BASE).c",
@@ -226,7 +228,8 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXFileReference section */
-		A49186401641DDB800A39286 /* plugin_impack.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = plugin_impack.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		A49186401641DDB800A39286 /* impack.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = impack.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA8762832765AC0500BF11E0 /* SIMD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SIMD.cpp; path = ../../solar2d_native_utils/utils/SIMD.cpp; sourceTree = "<group>"; };
 		CE0C2AA11D8DFD9600EF95D2 /* image_ops.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = image_ops.cpp; path = ../shared/image_ops.cpp; sourceTree = "<group>"; };
 		CE0C2AA21D8DFD9600EF95D2 /* image_utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = image_utils.cpp; path = ../shared/image_utils.cpp; sourceTree = "<group>"; };
 		CE0C2AA31D8DFD9600EF95D2 /* image_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = image_utils.h; path = ../shared/image_utils.h; sourceTree = "<group>"; };
@@ -265,7 +268,6 @@
 		CED05F3B1E0210C800D1893D /* Memory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Memory.h; path = ../../solar2d_native_utils/utils/Memory.h; sourceTree = "<group>"; };
 		CED05F3C1E0210C800D1893D /* Path.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Path.cpp; path = ../../solar2d_native_utils/utils/Path.cpp; sourceTree = "<group>"; };
 		CED05F3D1E0210C800D1893D /* Path.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Path.h; path = ../../solar2d_native_utils/utils/Path.h; sourceTree = "<group>"; };
-		CED05F3E1E0210C800D1893D /* SIMD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SIMD.cpp; path = ../../solar2d_native_utils/utils/SIMD.cpp; sourceTree = "<group>"; };
 		CED05F3F1E0210C800D1893D /* SIMD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SIMD.h; path = ../../solar2d_native_utils/utils/SIMD.h; sourceTree = "<group>"; };
 		CED05F401E0210C800D1893D /* Thread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Thread.cpp; path = ../../solar2d_native_utils/utils/Thread.cpp; sourceTree = "<group>"; };
 		CED05F411E0210C800D1893D /* Thread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Thread.h; path = ../../solar2d_native_utils/utils/Thread.h; sourceTree = "<group>"; };
@@ -495,7 +497,7 @@
 		A482DA8515F9B7E70084DC42 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A49186401641DDB800A39286 /* plugin_impack.dylib */,
+				A49186401641DDB800A39286 /* impack.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -575,7 +577,7 @@
 				CED05F3B1E0210C800D1893D /* Memory.h */,
 				CED05F3C1E0210C800D1893D /* Path.cpp */,
 				CED05F3D1E0210C800D1893D /* Path.h */,
-				CED05F3E1E0210C800D1893D /* SIMD.cpp */,
+				AA8762832765AC0500BF11E0 /* SIMD.cpp */,
 				CED05F3F1E0210C800D1893D /* SIMD.h */,
 				CED05F401E0210C800D1893D /* Thread.cpp */,
 				CED05F411E0210C800D1893D /* Thread.h */,
@@ -906,9 +908,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		A49186331641DDB800A39286 /* plugin_impack */ = {
+		A49186331641DDB800A39286 /* impack */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "plugin_impack" */;
+			buildConfigurationList = A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "impack" */;
 			buildPhases = (
 				A49186341641DDB800A39286 /* Sources */,
 				A49186381641DDB800A39286 /* Frameworks */,
@@ -920,9 +922,9 @@
 			);
 			dependencies = (
 			);
-			name = plugin_impack;
+			name = impack;
 			productName = ads;
-			productReference = A49186401641DDB800A39286 /* plugin_impack.dylib */;
+			productReference = A49186401641DDB800A39286 /* impack.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 /* End PBXNativeTarget section */
@@ -938,6 +940,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = A482DA7815F9B7E70084DC42;
@@ -945,7 +948,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A49186331641DDB800A39286 /* plugin_impack */,
+				A49186331641DDB800A39286 /* impack */,
 			);
 		};
 /* End PBXProject section */
@@ -1026,6 +1029,7 @@
 				CEE59E942134FF120013C99C /* filters_msa.c in Sources */,
 				CEE59EAF2134FF120013C99C /* ssim_sse2.c in Sources */,
 				CEE59EE02134FF120013C99C /* bit_reader_utils.c in Sources */,
+				AA8762842765AC0500BF11E0 /* SIMD.cpp in Sources */,
 				CE0C2AA51D8DFD9600EF95D2 /* image_utils.cpp in Sources */,
 				CEE59ED92134FF120013C99C /* anim_encode.c in Sources */,
 				CEE59EAC2134FF120013C99C /* rescaler_neon.c in Sources */,
@@ -1097,7 +1101,6 @@
 				CEE59ECA2134FF120013C99C /* near_lossless_enc.c in Sources */,
 				CEE59EA42134FF120013C99C /* lossless_sse2.c in Sources */,
 				CEE59EA82134FF120013C99C /* rescaler.c in Sources */,
-				CED05F4D1E0210C800D1893D /* SIMD.cpp in Sources */,
 				CEE59EA32134FF120013C99C /* lossless_neon.c in Sources */,
 				CEE59EAA2134FF120013C99C /* rescaler_mips_dsp_r2.c in Sources */,
 				CEE59E822134FF120013C99C /* dec_clip_tables.c in Sources */,
@@ -1255,7 +1258,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "plugin_impack" */ = {
+		A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "impack" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A491863E1641DDB800A39286 /* Debug */,

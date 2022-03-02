@@ -26,49 +26,6 @@
 
 #define MATRIX_MT_NAME "graphics.matrix"
 
-static CoronaObjectParams *
-PopulateSharedState( lua_State * L )
-{
-    static CoronaObjectParams sParams;
-    
-    if (!sParams.useRef)
-    {
-        CoronaObjectParamsHeader paramsList = {};
-
-        DisableCullAndHitTest( paramsList );
-
-        CoronaObjectOnCreateParams onCreateParams = {};
-
-        onCreateParams.action = []( const CoronaDisplayObject * object, void ** )
-        {
-            CoronaObjectSetHasDummyStageBounds( object, true );
-        };
-
-        AddToParamsList( paramsList, &onCreateParams.header, kAugmentedMethod_OnCreate );
-
-        sParams.useRef = true;
-        sParams.u.ref = CoronaObjectsBuildMethodStream( L, paramsList.next );
-    }
-    
-    return &sParams;
-}
-
-static int
-TransformableMesh( lua_State * L )
-{
-    CoronaObjectParams * params = PopulateSharedState( L );
-
-	return CoronaObjectsPushMesh( L, NULL, params );
-}
-
-static int
-TransformablePolygon( lua_State * L )
-{
-    CoronaObjectParams * params = PopulateSharedState( L );
-
-	return CoronaObjectsPushPolygon( L, NULL, params );
-}
-
 static int NewMatrix( lua_State * L )
 {
     lua_newuserdata( L, sizeof( CoronaMatrix4x4 ) ); // matrix
@@ -276,8 +233,6 @@ void AddDepthFuncs( lua_State * L )
 		{ "newDepthClearObject", DepthClearObject },
 		{ "newDepthStateObject", DepthStateObject },
         { "newMatrix", NewMatrix },
-		{ "newTransformableMesh", TransformableMesh },
-		{ "newTransformablePolygon", TransformablePolygon },
 		{ NULL, NULL }
 	};
 

@@ -40,14 +40,22 @@ struct UnsharedMemoryResource {
 };
 
 struct UnsharedInstancingData {
+    UnsharedInstancingData * next{NULL};
     lua_State * luaState{NULL};
     UnsharedMemoryResource * resource{NULL};
     float * dataOffset{NULL};
     CoronaGeometryMappingLayout layout;
     BasicInstancingData instances{};
     unsigned long uploadCommand{0};
+    unsigned long uploadResourceBlock{0};
+    unsigned long resetShaderBoundBlock{0};
     bool initialized{false};
     bool shaderBound{false};
+};
+
+struct DataAndOffset {
+    UnsharedInstancingData * data;
+    float * offset; // not used, but makes the state distinct
 };
 
 static UnsharedInstancingData *
@@ -66,9 +74,8 @@ GetUnsharedData( void * userData )
 }
 
 static void
-UploadResource( const CoronaRenderer * renderer, void * userData )
+UploadResource( const CoronaRenderer * renderer, UnsharedInstancingData * unsharedInstanceData)
 {
-    UnsharedInstancingData * unsharedInstanceData = GetUnsharedData( userData );
     UnsharedMemoryResource * buffer = unsharedInstanceData->resource;
     size_t nfloats = (buffer->bakedVectorsCount + unsharedInstanceData->instances.count + 1) * 4;
 
@@ -78,7 +85,7 @@ UploadResource( const CoronaRenderer * renderer, void * userData )
 }
 
 static void
-CreateUnsharedBuffer( lua_State * L, unsigned long * uploadCommandID )
+CreateUnsharedBuffer( lua_State * L, unsigned long * uploadCommandID, unsigned long * uploadResourceBlockID, unsigned long * resetShaderBoundBlockID )
 {
     if (luaL_newmetatable( L, UNSHARED_BUFFER_MT_NAME )) // mt
     {
@@ -107,6 +114,48 @@ CreateUnsharedBuffer( lua_State * L, unsigned long * uploadCommandID )
         
         CoronaRendererRegisterCommand( L, &uploadCommand, uploadCommandID );
         
+        //
+        CoronaStateBlock uploadResourceBlock = {};
+        
+        uploadResourceBlock.blockSize = sizeof(DataAndOffset);
+        
+        uploadResourceBlock.stateDirty = []( const CoronaCommandBuffer * commandBuffer, const CoronaRenderer * renderer, const void * newContents, const void *, unsigned int, int restore, void * ) {
+            if (!restore)
+            {
+                const DataAndOffset * dataAndOffset = static_cast<const DataAndOffset *>( newContents );
+                
+                UploadResource( renderer, dataAndOffset->data );
+            }
+        };
+        
+        CoronaRendererRegisterStateBlock( L, &uploadResourceBlock, uploadResourceBlockID );
+ 
+        //
+        CoronaStateBlock resetShaderBoundBlock = {};
+        
+        resetShaderBoundBlock.blockSize = sizeof(UnsharedInstancingData *);
+        
+        resetShaderBoundBlock.stateDirty = []( const CoronaCommandBuffer * commandBuffer, const CoronaRenderer * renderer, const void *, const void * oldContents, unsigned int, int restore, void * ) {
+            if (restore)
+            {
+                using UnsharedInstancingDataPtr = UnsharedInstancingData *;
+                
+                UnsharedInstancingData * cur = *static_cast<const UnsharedInstancingDataPtr *>( oldContents );
+                
+                while (cur)
+                {
+                    UnsharedInstancingData * next = cur->next;
+                    
+                    cur->shaderBound = false;
+                    cur->next = NULL;
+                    
+                    cur = next;
+                }
+            }
+        };
+        
+        CoronaRendererRegisterStateBlock( L, &resetShaderBoundBlock, resetShaderBoundBlockID );
+
         // Add some buffer methods.
         lua_pushvalue( L, -1 ); // mt, mt
         lua_setfield( L, -2, "__index" ); // mt = { __index = mt }
@@ -228,7 +277,7 @@ void AddUnshared( lua_State * L)
                         
                         if (!unsharedInstanceData->resource)
                         {
-                            CreateUnsharedBuffer( L, &unsharedInstanceData->uploadCommand ); // ..., buffer
+                            CreateUnsharedBuffer( L, &unsharedInstanceData->uploadCommand, &unsharedInstanceData->uploadResourceBlock, &unsharedInstanceData->resetShaderBoundBlock ); // ..., buffer
                             
                             unsharedInstanceData->luaState = L; // needed when detaching; assumed to be stable
                             unsharedInstanceData->resource = (UnsharedMemoryResource *)luaL_checkudata( L, -1, UNSHARED_BUFFER_MT_NAME );
@@ -284,28 +333,18 @@ void AddUnshared( lua_State * L)
                         return;
                     }
                     
-                    // Set up the first load.
+                    // Set up and draw any loads.
                     unsharedInstanceData->dataOffset = buffer->payload.data() + buffer->bakedVectorsCount * 4;
                     
                     size_t instancesCount = vectorCount - 1;
 
-                    UpdateCount( unsharedInstanceData, instancesCount );
-
-                    // Was the shader already bound, i.e. this is not the first object (in a row) being drawn?
-                    if (unsharedInstanceData->shaderBound)
-                    {
-                        CoronaRendererDo( renderer, UploadResource, userData );
-                    }
-
-                    // Draw the first / only instance. If this was the first object with this shader,
-                    // a shader bind will happen before it renders.
-                    DrawN( shader, renderer, renderData, unsharedInstanceData );
-
-                    // Do any remaining loads.
                     while (instancesCount > 0)
                     {
                         UpdateCount( unsharedInstanceData, instancesCount );
-                        CoronaRendererDo( renderer, UploadResource, userData );
+
+                        DataAndOffset dao = { unsharedInstanceData, unsharedInstanceData->dataOffset };
+                        
+                        CoronaRendererWriteStateBlock( renderer, unsharedInstanceData->uploadResourceBlock, &dao, sizeof(DataAndOffset) );
                         
                         DrawN( shader, renderer, renderData, unsharedInstanceData );
                     }
@@ -329,28 +368,7 @@ void AddUnshared( lua_State * L)
                         }
                     }
                 };
-                
-                callbacks.shaderBind = []( const CoronaRenderer * renderer, void * userData )
-                {
-                    UnsharedInstancingData * unsharedInstanceData = GetUnsharedData( userData );
-                
-                    if (unsharedInstanceData->resource)
-                    {
-                        UploadResource( renderer, userData ); // n.b. using CoronaRendererDo() here will have odd results :)
-                    }
-                    
-                    unsharedInstanceData->shaderBound = true;
-                    
-                    // Restore "shader not bound" condition after traversing hierarchy.
-                    CoronaRendererOpParams params = {};
-                    
-                    params.u.renderer = renderer;
-                    
-                    CoronaRendererScheduleEndFrameOp( &params, []( const CoronaRenderer *, void * userData ) {
-                        *(bool *)userData = false;
-                    }, &unsharedInstanceData->shaderBound, NULL );
-                };
-                
+
                 callbacks.shaderDetach = []( const CoronaShader * shader, void * userData )
                 {
                     UnsharedInstancingData * unsharedInstanceData = GetUnsharedData( userData );

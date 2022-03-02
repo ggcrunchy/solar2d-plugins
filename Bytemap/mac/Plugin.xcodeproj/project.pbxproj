@@ -27,7 +27,6 @@
 		CE6E2BD61DF107F800AA7AF8 /* Memory.h in Headers */ = {isa = PBXBuildFile; fileRef = CE6E2BC71DF107F800AA7AF8 /* Memory.h */; };
 		CE6E2BD71DF107F800AA7AF8 /* Path.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE6E2BC81DF107F800AA7AF8 /* Path.cpp */; };
 		CE6E2BD81DF107F800AA7AF8 /* Path.h in Headers */ = {isa = PBXBuildFile; fileRef = CE6E2BC91DF107F800AA7AF8 /* Path.h */; };
-		CE6E2BD91DF107F800AA7AF8 /* SIMD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE6E2BCA1DF107F800AA7AF8 /* SIMD.cpp */; };
 		CE6E2BDA1DF107F800AA7AF8 /* SIMD.h in Headers */ = {isa = PBXBuildFile; fileRef = CE6E2BCB1DF107F800AA7AF8 /* SIMD.h */; };
 		CE6E2BDB1DF107F800AA7AF8 /* Thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE6E2BCC1DF107F800AA7AF8 /* Thread.cpp */; };
 		CE6E2BDC1DF107F800AA7AF8 /* Thread.h in Headers */ = {isa = PBXBuildFile; fileRef = CE6E2BCD1DF107F800AA7AF8 /* Thread.h */; };
@@ -73,7 +72,6 @@
 		CE6E2BC71DF107F800AA7AF8 /* Memory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Memory.h; path = ../../solar2d_native_utils/utils/Memory.h; sourceTree = "<group>"; };
 		CE6E2BC81DF107F800AA7AF8 /* Path.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Path.cpp; path = ../../solar2d_native_utils/utils/Path.cpp; sourceTree = "<group>"; };
 		CE6E2BC91DF107F800AA7AF8 /* Path.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Path.h; path = ../../solar2d_native_utils/utils/Path.h; sourceTree = "<group>"; };
-		CE6E2BCA1DF107F800AA7AF8 /* SIMD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SIMD.cpp; path = ../../solar2d_native_utils/utils/SIMD.cpp; sourceTree = "<group>"; };
 		CE6E2BCB1DF107F800AA7AF8 /* SIMD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SIMD.h; path = ../../solar2d_native_utils/utils/SIMD.h; sourceTree = "<group>"; };
 		CE6E2BCC1DF107F800AA7AF8 /* Thread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Thread.cpp; path = ../../solar2d_native_utils/utils/Thread.cpp; sourceTree = "<group>"; };
 		CE6E2BCD1DF107F800AA7AF8 /* Thread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Thread.h; path = ../../solar2d_native_utils/utils/Thread.h; sourceTree = "<group>"; };
@@ -157,7 +155,6 @@
 				CE6E2BC71DF107F800AA7AF8 /* Memory.h */,
 				CE6E2BC81DF107F800AA7AF8 /* Path.cpp */,
 				CE6E2BC91DF107F800AA7AF8 /* Path.h */,
-				CE6E2BCA1DF107F800AA7AF8 /* SIMD.cpp */,
 				CE6E2BCB1DF107F800AA7AF8 /* SIMD.h */,
 				CE6E2BCC1DF107F800AA7AF8 /* Thread.cpp */,
 				CE6E2BCD1DF107F800AA7AF8 /* Thread.h */,
@@ -272,7 +269,6 @@
 				CE05C5051D0F7D280001242B /* GetBytes.cpp in Sources */,
 				CE6E2BD51DF107F800AA7AF8 /* Memory.cpp in Sources */,
 				CE6E2BBA1DF107AC00AA7AF8 /* BindBlob.cpp in Sources */,
-				CE6E2BD91DF107F800AA7AF8 /* SIMD.cpp in Sources */,
 				CE6E2BBD1DF107E900AA7AF8 /* ByteReader.cpp in Sources */,
 				CE6E2BDB1DF107F800AA7AF8 /* Thread.cpp in Sources */,
 				CE6E2BD01DF107F800AA7AF8 /* Byte.cpp in Sources */,

@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A49186331641DDB800A39286"
-               BuildableName = "plugin_tinyfiledialogs.dylib"
-               BlueprintName = "plugin_tinyfiledialogs"
+               BuildableName = "libnoise.dylib"
+               BlueprintName = "libnoise"
                ReferencedContainer = "container:Plugin.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -51,8 +51,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A49186331641DDB800A39286"
-            BuildableName = "plugin_tinyfiledialogs.dylib"
-            BlueprintName = "plugin_tinyfiledialogs"
+            BuildableName = "libnoise.dylib"
+            BlueprintName = "libnoise"
             ReferencedContainer = "container:Plugin.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

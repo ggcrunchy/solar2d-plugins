@@ -144,11 +144,11 @@ struct ColorMaskSettings {
 };
 
 struct SharedColorMaskData {
-    unsigned long endFrameOp = {};
-    unsigned long command = {};
+    unsigned long blockID = {};
+    unsigned long commandID = {};
     CoronaRendererOp op;
     CoronaObjectParams params;
-    ColorMaskSettings current, working;
+    ColorMaskSettings current;
     std::vector< ColorMaskSettings > stack;
     unsigned int id;
     bool hasSetID{false};
@@ -178,35 +178,23 @@ RegisterRendererLogic( lua_State * L, SharedColorMaskData * sharedData )
         }, CopyWriter
     };
 
-    CoronaRendererRegisterCommand( L, &command, &sharedData->command );
-}
+    CoronaRendererRegisterCommand( L, &command, &sharedData->commandID );
 
-static void
-UpdateColorMask( const CoronaRenderer * renderer, void * userData )
-{
-    SharedColorMaskData * _this = static_cast< SharedColorMaskData * >( userData );
-
-    CoronaRendererIssueCommand( renderer, _this->command, &_this->working, sizeof( ColorMaskSettings ) );
+    ColorMaskSettings defSettings;
+    CoronaStateBlock color_mask_state = {};
     
-    CoronaRendererOpParams params = { renderer, 0 };
+    color_mask_state.defaultContents = &defSettings;
+    color_mask_state.blockSize = sizeof(ColorMaskSettings);
+    color_mask_state.userData = &sharedData->commandID;
     
-    if (!_this->endFrameOp)
-    {
-        CoronaRendererScheduleEndFrameOp( &params, [](const CoronaRenderer * renderer, void * userData) {
-            SharedColorMaskData * _this = static_cast< SharedColorMaskData * >( userData );
-            ColorMaskSettings defSettings; // TODO: configurable?
+    color_mask_state.stateDirty = []( const CoronaCommandBuffer *, const CoronaRenderer * renderer, const void * newContents, const void *, unsigned int, int, void * data ) {
+        ColorMaskSettings settings = *static_cast< const ColorMaskSettings * >( newContents );
+        
+        CoronaRendererIssueCommand( renderer, *(unsigned long *)data, &settings, sizeof(ColorMaskSettings) );
+    };
+    
+    CoronaRendererRegisterStateBlock( L, &color_mask_state, &sharedData->blockID );
 
-            if (memcmp( &_this->current, &defSettings, sizeof( ColorMaskSettings ) ) != 0)
-            {
-                CoronaRendererIssueCommand( renderer, _this->command, &defSettings, sizeof( ColorMaskSettings ) );
-            }
-            
-            _this->current = _this->working = defSettings;
-            _this->endFrameOp = 0UL;
-        }, _this, &_this->endFrameOp );
-    }
-            
-    _this->current = _this->working;
 }
 
 static CoronaObjectDrawParams
@@ -222,28 +210,25 @@ DrawParams()
 
         if (_this->hasRed)
         {
-            shared->working.red = _this->settings.red;
+            shared->current.red = _this->settings.red;
         }
 
         if (_this->hasGreen)
         {
-            shared->working.green = _this->settings.green;
+            shared->current.green = _this->settings.green;
         }
 
         if (_this->hasBlue)
         {
-            shared->working.blue = _this->settings.blue;
+            shared->current.blue = _this->settings.blue;
         }
 
         if (_this->hasAlpha)
         {
-            shared->working.alpha = _this->settings.alpha;
+            shared->current.alpha = _this->settings.alpha;
         }
 
-        if (memcmp( &shared->current, &shared->working, sizeof( ColorMaskSettings ) ) != 0)
-        {
-            CoronaRendererDo( renderer, UpdateColorMask, shared );
-        }
+        CoronaRendererWriteStateBlock( renderer, shared->blockID, &shared->current, sizeof(ColorMaskSettings) );
     };
 
     return drawParams;
@@ -340,7 +325,7 @@ SetValueParams()
 static void
 PushColorMask( SharedColorMaskData * shared, const ScopeMessagePayload & payload )
 {
-    shared->stack.push_back( shared->working );
+    shared->stack.push_back( shared->current );
 
     shared->id = payload.drawSessionID;
     shared->hasSetID = true;
@@ -353,14 +338,11 @@ PopColorMask( SharedColorMaskData * shared, const ScopeMessagePayload & payload 
 
     if (!shared->stack.empty())
     {
-        shared->working = shared->stack.back();
+        shared->current = shared->stack.back();
 
         shared->stack.pop_back();
 
-        if (memcmp( &shared->working, &shared->current, sizeof( ColorMaskSettings ) ) != 0)
-        {
-            CoronaRendererDo( payload.renderer, UpdateColorMask, shared );
-        }
+        CoronaRendererWriteStateBlock( payload.renderer, shared->blockID, &shared->current, sizeof(ColorMaskSettings) );
     }
 
     else

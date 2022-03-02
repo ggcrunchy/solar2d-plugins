@@ -591,7 +591,7 @@ CORONA_EXPORT int luaopen_plugin_Bytemap (lua_State * L)
 						{
 							unsigned int alpha = uc[i + 3];
 
-							for (int j = 0; j < 3; ++j) uc[i + j] = (unsigned char)((alpha * uc[i + j]) >> 8);
+							for (int j = 0; j < 3; ++j) uc[i + j] = (unsigned char)((alpha * uc[i + j]) / 255);
 						}
 					}
 

@@ -50,6 +50,8 @@ DrawParams()
 			shared->env->current.clear = _this->clear;
 		}
 
+        // TODO!
+        /*
 		CoronaRendererDo( renderer, []( const CoronaRenderer * renderer, void * userData ) {
 			DepthEnvironment * _this = static_cast< DepthEnvironment * >( userData );
 
@@ -57,6 +59,7 @@ DrawParams()
 
 			_this->anySinceClear = false; // TODO: MIGHT be usable to avoid unnecessary clears
 		}, shared->env );
+        */
 	};
 
 	return drawParams;

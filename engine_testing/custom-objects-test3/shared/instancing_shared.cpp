@@ -29,6 +29,7 @@
 struct ClassConstants {
     unsigned long uploadCommandID;
     unsigned long reuseCommandID;
+    unsigned long resetUpdatedBlockID;
     unsigned int vectorCount;
 };
 
@@ -45,6 +46,7 @@ struct TimestampEntry {
 };
 
 struct SharedInstancingData {
+    SharedInstancingData * next{NULL};
     lua_State * luaState{NULL};
     std::vector<TimestampEntry> stamps;
     SharedMemoryResource * resource{NULL};
@@ -253,13 +255,10 @@ void AddShared( lua_State * L)
                         CoronaRendererIssueCommand( renderer, buffer->constants->uploadCommandID, &data, size );
                         
                         // Restore "no offset" condition after traversing hierarchy.
-                        CoronaRendererOpParams params = {};
+                        unsigned int blockSize = sizeof(SharedInstancingData *);
                         
-                        params.u.renderer = renderer;
-                        
-                        CoronaRendererScheduleEndFrameOp( &params, []( const CoronaRenderer *, void * userData ) {
-                            *(bool *)userData = false;
-                        }, &sharedInstanceData->updated, NULL );
+                        CoronaRendererReadStateBlock( renderer, buffer->constants->resetUpdatedBlockID, &sharedInstanceData->next, &blockSize );
+                        CoronaRendererWriteStateBlock( renderer, buffer->constants->resetUpdatedBlockID, &sharedInstanceData, sizeof(SharedInstancingData *) );
                     }
                     
                     // Subsequent one, so reuse uploaded contents.
@@ -356,6 +355,33 @@ void AddShared( lua_State * L)
                     
                     CoronaRendererRegisterCommand( L, &reuseCommand, &classConstants->reuseCommandID );
                   
+                    // #4: the ID for writing a state block, to reset the updated
+                    // shared instancing data.
+                    CoronaStateBlock block = {};
+                    
+                    block.blockSize = sizeof(SharedInstancingData *);
+                    
+                    block.stateDirty = []( const CoronaCommandBuffer * commandBuffer, const CoronaRenderer * renderer, const void *, const void * oldContents, unsigned int, int restore, void * ) {
+                        if (restore)
+                        {
+                            using SharedInstancingDataPtr = SharedInstancingData *;
+                            
+                            SharedInstancingData * cur = *static_cast<const SharedInstancingDataPtr *>( oldContents );
+                            
+                            while (cur)
+                            {
+                                SharedInstancingData * next = cur->next;
+                                
+                                cur->updated = false;
+                                cur->next = NULL;
+                                
+                                cur = next;
+                            }
+                        }
+                    };
+                    
+                    CoronaRendererRegisterStateBlock( L, &block, &classConstants->resetUpdatedBlockID );
+                    
                     // Add some buffer methods.
                     lua_pushvalue( L, -1 ); // mt, mt
                     lua_setfield( L, -2, "__index" ); // mt = { _constants, __index = mt }

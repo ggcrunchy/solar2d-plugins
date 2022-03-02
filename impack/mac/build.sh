@@ -3,7 +3,7 @@
 path=`dirname $0`
 
 OUTPUT_DIR=$1
-TARGET_NAME=plugin_impack
+TARGET_NAME=impack
 OUTPUT_SUFFIX=dylib
 CONFIG=Release
 
@@ -44,7 +44,12 @@ checkError
 xcodebuild -project "$path/Plugin.xcodeproj" -configuration $CONFIG
 checkError
 
-PLUGINS_DIR="/Users/User/Library/Application Support/Corona/Simulator/Plugins/plugin/"
+PLUGINS_DIR=~/Solar2DPlugins/com.xibalbastudios/plugin.$TARGET_NAME/mac-sim
 
-cp "$path/build/Release/$TARGET_NAME.$OUTPUT_SUFFIX" "$OUTPUT_DIR"
-cp "./$TARGET_NAME.$OUTPUT_SUFFIX" "$PLUGINS_DIR/impack.dylib"
+mkdir -p "$PLUGINS_DIR"
+
+cp "$path/build/$CONFIG/$TARGET_NAME.$OUTPUT_SUFFIX" "$OUTPUT_DIR/plugin_$TARGET_NAME.$OUTPUT_SUFFIX"
+
+tar -czf "data.tgz" "./plugin_$TARGET_NAME.$OUTPUT_SUFFIX"
+
+cp "data.tgz" "$PLUGINS_DIR/data.tgz"

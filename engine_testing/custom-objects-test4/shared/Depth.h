@@ -45,11 +45,8 @@ struct DepthInfo {
 };
 
 struct DepthEnvironment {
-    static void EndFrame( const CoronaRenderer * renderer, void * userData );
-    
-	DepthInfo current, working;
+    DepthInfo current;
 	std::vector<DepthInfo> stack;
-    unsigned long clearOpID{0};
     unsigned long commandID{0};
 	unsigned int id;
 	double clear{1.}; // TODO: should add some way to set this, too...

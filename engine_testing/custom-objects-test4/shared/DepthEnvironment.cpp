@@ -23,15 +23,6 @@
 
 #include "Depth.h"
 
-void
-DepthEnvironment::EndFrame( const CoronaRenderer * renderer, void * userData )
-{
-    DepthEnvironment * _this = static_cast< DepthEnvironment * >( userData );
-    double clear = 1.;
-
-    CoronaRendererIssueCommand( renderer, _this->commandID, &clear, sizeof( double ) );
-}
-
 DepthEnvironment * InitDepthEnvironment( lua_State * L )
 {
 	static int sCookie;
@@ -59,19 +50,6 @@ DepthEnvironment * InitDepthEnvironment( lua_State * L )
 		};
 
 		CoronaRendererRegisterCommand( L, &command, &env.object->commandID );
-
-        CoronaRendererOpParams params;
-        
-        params.u.luaState = L;
-        params.useLuaState = true;
-        
-		CoronaRendererInstallClearOp( &params, []( const CoronaRenderer * renderer, void * userData ) {
-			DepthEnvironment * _this = static_cast< DepthEnvironment * >( userData );
-
-            // TODO: if enabled...
-            
-			CoronaRendererIssueCommand( renderer, _this->commandID, &_this->clear, sizeof( double ) );
-		}, env.object, &env.object->clearOpID );
 	}
 
 	return env.object;

@@ -22,7 +22,6 @@
 */
 
 #include "impack.h"
-#include "CoronaLibrary.h"
 #include "CoronaLua.h"
 #include "utils/LuaEx.h"
 
@@ -46,12 +45,8 @@ template<int N> static int CPOT (void)
 
 CORONA_EXPORT int luaopen_plugin_impack (lua_State * L)
 {
-	//
-	luaL_reg no_funcs[] = { { nullptr, nullptr } };
+    lua_newtable(L);    // impack
 
-	CoronaLibraryNew(L, "impack", "com.xibalbastudios", 1, 0, no_funcs, nullptr);	// impack
-
-	//
 	PathXS::Directories::Instantiate(L);	// impack, pd
 
 	luaL_Reg libs[] = {

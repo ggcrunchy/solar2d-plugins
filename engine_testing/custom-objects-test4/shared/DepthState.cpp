@@ -24,9 +24,8 @@
 #include "Depth.h"
 
 struct SharedDepthStateData {
-    static void EndFrame( const CoronaRenderer * renderer, void * userData );
-    
     unsigned long commandID{0};
+    unsigned long blockID{0};
 	CoronaObjectParams params;
 	DepthEnvironment * env;
 };
@@ -44,23 +43,10 @@ struct InstancedDepthStateData {
     unsigned short hasEnabled : 1;
 };
 
-void
-SharedDepthStateData::EndFrame( const CoronaRenderer * renderer, void * userData )
-{
-    SharedDepthStateData * _this = static_cast< SharedDepthStateData * >( userData );
-    DepthEnvironment * env = _this->env;
-    DepthSettings settings[] = { env->current.settings, DepthSettings{} };
-
-    CoronaRendererIssueCommand( renderer, _this->commandID, &settings, sizeof( settings ) );
-
-    env->current.settings = env->working.settings = DepthSettings{};
-}
-
 static void
 RegisterRendererLogic( lua_State * L, SharedDepthStateData * sharedData )
 {
     CoronaCommand command = {};
-    
     
     command.reader = []( const CoronaCommandBuffer *, const unsigned char * data, unsigned int size ) {
         DepthSettings settings[2];
@@ -113,27 +99,24 @@ RegisterRendererLogic( lua_State * L, SharedDepthStateData * sharedData )
     };
 
 	CoronaRendererRegisterCommand( L, &command, &sharedData->commandID );
-}
 
-static void
-UpdateDepthState( const CoronaRenderer * renderer, void * userData )
-{
-	SharedDepthStateData * _this = static_cast< SharedDepthStateData * >( userData );
-	DepthEnvironment * env = _this->env;
-
-	DepthSettings settings[] = { env->current.settings, env->working.settings };
-
-	CoronaRendererIssueCommand( renderer, _this->commandID, settings, sizeof( settings ) );
+    DepthSettings defSettings;
+    CoronaStateBlock depth_state = {};
     
-    CoronaRendererOpParams params = {};
+    depth_state.defaultContents = &defSettings;
+    depth_state.blockSize = sizeof(DepthSettings);
+    depth_state.userData = &sharedData->commandID;
     
-    params.u.renderer = renderer;
+    depth_state.stateDirty = []( const CoronaCommandBuffer * commandBuffer, const CoronaRenderer * renderer, const void * newContents, const void * oldContents, unsigned int, int, void * data ) {
+        const DepthSettings * oldSettings = static_cast< const DepthSettings * >( oldContents );
+        const DepthSettings * newSettings = static_cast< const DepthSettings * >( newContents );
+        
+        DepthSettings settings[] = { *oldSettings, *newSettings };
+        
+        CoronaRendererIssueCommand( renderer, *(unsigned long *)data, settings, sizeof(settings) );
+    };
     
-	CoronaRendererScheduleEndFrameOp( &params, &DepthEnvironment::EndFrame, env, NULL );
-    CoronaRendererScheduleEndFrameOp( &params, &SharedDepthStateData::EndFrame, _this, NULL );
-
-	env->current.settings = env->working.settings;
-	env->anySinceClear = true;
+    CoronaRendererRegisterStateBlock( L, &depth_state, &sharedData->blockID );
 }
 
 static CoronaObjectDrawParams
@@ -149,48 +132,45 @@ DrawParams()
 
 		if (_this->hasFunc)
 		{
-			env->working.settings.func = _this->settings.func;
+			env->current.settings.func = _this->settings.func;
 		}
 
 		if (_this->hasCullFace)
 		{
-			env->working.settings.cullFace = _this->settings.cullFace;
+			env->current.settings.cullFace = _this->settings.cullFace;
 		}
 
 		if (_this->hasFrontFace)
 		{
-			env->working.settings.frontFace = _this->settings.frontFace;
+			env->current.settings.frontFace = _this->settings.frontFace;
 		}
 
 		if (_this->hasNear)
 		{
-			env->working.settings.near = _this->settings.near;
+			env->current.settings.near = _this->settings.near;
 		}
 
 		if (_this->hasFar)
 		{
-			env->working.settings.far = _this->settings.far;
+			env->current.settings.far = _this->settings.far;
 		}
 
 		if (_this->hasMask)
 		{
-			env->working.settings.mask = _this->settings.mask;
+			env->current.settings.mask = _this->settings.mask;
 		}
         
         if (_this->hasCullFaceEnabled)
         {
-            env->working.settings.cullFaceEnabled = _this->settings.cullFaceEnabled;
+            env->current.settings.cullFaceEnabled = _this->settings.cullFaceEnabled;
         }
 
 		if (_this->hasEnabled)
 		{
-			env->working.settings.enabled = _this->settings.enabled;
+			env->current.settings.enabled = _this->settings.enabled;
 		}
 
-		if (memcmp( &env->current.settings, &env->working.settings, sizeof( DepthSettings ) ) != 0)
-		{
-			CoronaRendererDo( renderer, UpdateDepthState, _this->shared );
-		}
+        CoronaRendererWriteStateBlock( renderer, _this->shared->blockID, &env->current.settings, sizeof(DepthSettings) );
 	};
 
 	return drawParams;
@@ -497,7 +477,7 @@ SetValueParams()
 static void
 PushDepthState( DepthEnvironment * env, const ScopeMessagePayload & payload )
 {
-	env->stack.push_back( env->working );
+	env->stack.push_back( env->current );
 
 	env->id = payload.drawSessionID;
 	env->hasSetID = true;
@@ -510,14 +490,11 @@ PopDepthState( InstancedDepthStateData * _this, DepthEnvironment * env, const Sc
 
 	if (!env->stack.empty())
 	{
-		env->working = env->stack.back();
+		env->current = env->stack.back();
 
 		env->stack.pop_back();
 
-		if (memcmp( &env->working.settings, &env->current.settings, sizeof( DepthSettings ) ) != 0)
-		{
-			CoronaRendererDo( payload.renderer, UpdateDepthState, _this->shared );
-		}
+        CoronaRendererWriteStateBlock( payload.renderer, _this->shared->blockID, &env->current.settings, sizeof(DepthSettings) );
 	}
 
 	else

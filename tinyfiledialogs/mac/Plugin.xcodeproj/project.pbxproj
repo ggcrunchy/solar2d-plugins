@@ -18,6 +18,8 @@
 			compilerSpec = com.apple.compilers.proxy.script;
 			filePatterns = "*.lua";
 			fileType = pattern.proxy;
+			inputFiles = (
+			);
 			isEditable = 1;
 			outputFiles = (
 				"$TARGET_TEMP_DIR/$(INPUT_FILE_BASE).c",
@@ -27,7 +29,7 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXFileReference section */
-		A49186401641DDB800A39286 /* plugin_tinyfiledialogs.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = plugin_tinyfiledialogs.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		A49186401641DDB800A39286 /* tinyfiledialogs.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = tinyfiledialogs.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE28BCD91D7CBAA300F30E15 /* plugin.tinyfiledialogs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = plugin.tinyfiledialogs.cpp; path = ../shared/plugin.tinyfiledialogs.cpp; sourceTree = "<group>"; };
 		CE28BCDA1D7CBAA300F30E15 /* tinyfiledialogs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tinyfiledialogs.c; path = ../shared/tinyfiledialogs.c; sourceTree = "<group>"; };
 		CE28BCDB1D7CBAA300F30E15 /* tinyfiledialogs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tinyfiledialogs.h; path = ../shared/tinyfiledialogs.h; sourceTree = "<group>"; };
@@ -68,7 +70,7 @@
 		A482DA8515F9B7E70084DC42 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A49186401641DDB800A39286 /* plugin_tinyfiledialogs.dylib */,
+				A49186401641DDB800A39286 /* tinyfiledialogs.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -96,9 +98,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		A49186331641DDB800A39286 /* plugin_tinyfiledialogs */ = {
+		A49186331641DDB800A39286 /* tinyfiledialogs */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "plugin_tinyfiledialogs" */;
+			buildConfigurationList = A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "tinyfiledialogs" */;
 			buildPhases = (
 				A49186341641DDB800A39286 /* Sources */,
 				A49186381641DDB800A39286 /* Frameworks */,
@@ -110,9 +112,9 @@
 			);
 			dependencies = (
 			);
-			name = plugin_tinyfiledialogs;
+			name = tinyfiledialogs;
 			productName = ads;
-			productReference = A49186401641DDB800A39286 /* plugin_tinyfiledialogs.dylib */;
+			productReference = A49186401641DDB800A39286 /* tinyfiledialogs.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 /* End PBXNativeTarget section */
@@ -128,6 +130,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = A482DA7815F9B7E70084DC42;
@@ -135,7 +138,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A49186331641DDB800A39286 /* plugin_tinyfiledialogs */,
+				A49186331641DDB800A39286 /* tinyfiledialogs */,
 			);
 		};
 /* End PBXProject section */
@@ -268,6 +271,7 @@
 		A491863E1641DDB800A39286 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -288,6 +292,7 @@
 		A491863F1641DDB800A39286 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -319,7 +324,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "plugin_tinyfiledialogs" */ = {
+		A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "tinyfiledialogs" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A491863E1641DDB800A39286 /* Debug */,
