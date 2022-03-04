@@ -1,0 +1,213 @@
+--- Corona binding of Philip Allan Rideout's **msquares**.
+--
+-- To use the plugin, add the following in <code>build.settings</code>:
+--
+-- <pre><code class="language-lua">plugins = {
+--   ["plugin.msquares"] = { publisherId = "com.xibalbastudios" }
+-- }</code></pre>
+--
+-- Sample code is available [here](https://github.com/ggcrunchy/corona-plugin-docs/tree/master/msquares_sample).
+--
+-- The **Bytes** type&mdash;specified in a few of the bytemap methods&mdash;may be any object that implements [ByteReader](https://ggcrunchy.github.io/corona-plugin-docs/DOCS/ByteReader/policy.html),
+-- including strings.
+--
+-- **From par_msquares.h**:
+--
+-- Converts fp32 grayscale images, or 8-bit color images, into triangles.
+--
+-- For grayscale images, a threshold is specified to determine insideness.
+-- For color images, an exact color is specified to determine insideness.
+-- Color images can be r8, rg16, rgb24, or rgba32.
+--
+-- For a visual overview of the API and all the flags, see <http://github.prideout.net/marching-squares>.
+--
+-- The MIT License
+-- Copyright (c) 2015 Philip Rideout
+
+--
+-- Permission is hereby granted, free of charge, to any person obtaining
+-- a copy of this software and associated documentation files (the
+-- "Software"), to deal in the Software without restriction, including
+-- without limitation the rights to use, copy, modify, merge, publish,
+-- distribute, sublicense, and/or sell copies of the Software, and to
+-- permit persons to whom the Software is furnished to do so, subject to
+-- the following conditions:
+--
+-- The above copyright notice and this permission notice shall be
+-- included in all copies or substantial portions of the Software.
+--
+-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+-- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+-- MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+-- IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+-- CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+-- TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+-- SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+--
+-- [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
+--
+
+--- Generate meshes by marching over color data.
+-- @function color
+-- @tparam Bytes data Color data.
+--
+-- If less than `w * h * bpp` in size, an internal copy with padding zeroes is created, which is a potential performance hit.
+-- @uint w Width of bitmap...
+-- @uint h ...and height.
+-- @uint cell_size Size of marching squares cell. Both _w_ and _h_ must be a multiple of this size.
+-- @uint color Pixels that have this value are regarded as being inside.
+--
+-- This is a 32-bit value layed out either as `A|B|G|R` or `A|R|G|B`, with `A` in the high byte. (To convert these
+-- octets to Corona color components, divide by 255.)
+-- @uint bpp Bytes per pixel, from 1 to 4.
+-- @tparam ?|string|{string,...}|nil flags Flags describing the operation and its results.
+--
+-- As an array, some combination of the following:
+--
+-- * **"HEIGHTS"**: Requests that returned meshes have 3-tuple coordinates instead of 2-tuples.
+-- When using a color-based function, the Z coordinate represents the nearest pixel's alpha.
+-- * **"CONNECT"**: Adds extrusion triangles to each mesh other than the lowest mesh. (This
+-- implies the **HEIGHTS** flag, which will be added as a convenience if absent.)
+-- * **"DUAL"**: Returns a meshlist with two meshes: one for the inside, one for the outside.
+-- * **"SNAP"**: Applies a step function to the Z coordinates. (This implies the **HEIGHTS**
+-- and **DUAL** flags, which will be added as a convenience if absent.)
+-- * **"SWIZZLE"**: Indicates that _color_ is ABGR instead of ARGB.
+-- * **"INVERT"**: Reverses the "insideness" test.
+-- * **"SIMPLIFY"**: Enables quick & dirty (not best) simpification of the returned mesh.
+--
+-- As a string, any of the above.
+-- @treturn MeshList List of one or more resulting meshes.
+
+--- Generate per-color meshes by marching over color data.
+-- @function color_multi
+-- @tparam Bytes data As per @{color}, but may contain at most 256 distinct colors.
+-- @uint w Width of bitmap...
+-- @uint h ...and height.
+-- @uint cell_size As per @{color}.
+-- @uint bpp Bytes per pixel, from 1 to 4.
+-- @tparam ?|string|{string,...}|nil flags As per @{color}, but with the following addition:
+--
+-- * **"CLEAN"**: Ensures there are no T-junction vertices. (If present, **SIMPLIFY** is ignored.)
+--
+-- Additionally, the **SNAP**, **INVERT**, and **DUAL** flags are ignored.
+-- @treturn MeshList List of one or more resulting meshes.
+
+--- Generate meshes by marching over grayscale data.
+-- @function grayscale
+-- @tparam ?|Bytes|{number,...} data This may be an array of numbers in [0, 1].
+--
+-- In **Bytes** form, this will typically be contiguous array of 32-bit floats. When the octets flag is specified,
+-- however, _data_ is interpreted as an array of 8-bit unsigned integers that are remapped to [0, 1].
+--
+-- If fewer than `w * h` elements are available, an internal copy with padding zeroes is created, for a potential
+-- performance hit. (**N.B.** Non-float _data_ entails some of these conversions anyhow.)
+-- @uint w Width of bitmap...
+-- @uint h ...and height.
+-- @uint cell_size As per @{color}.
+-- @number threshold Values in _data_ greater than the threshold are regarded as inside.
+-- @tparam ?|string|{string,...}|nil flags As per @{color}, with the following addition:
+--
+-- * **"as\_octets"**: Interpret **Bytes**-type _data_ as 8-bit values, as described above.
+-- @treturn MeshList List of one or more resulting meshes.
+
+--- Using several thresholds, performs multiple marches over grayscale data. Several intermediate meshes are
+-- generated along the way and merged at the end.
+-- @function grayscale_multi
+-- @tparam ?|Bytes|{number,...} data As per @{grayscale}.
+-- @uint w Width of bitmap...
+-- @uint h ...and height.
+-- @uint cell_size As per @{color}.
+-- @tparam ?|Bytes|{number,...} thresholds One or more thresholds, which should be in order. Representation-wise, this is like _data_.
+--
+-- The following ranges are visited:
+--
+--  (-&infin;, threshold #1), [threshold #1, threshold #2), ..., [threshold #n, +&infin;)
+--
+-- For each range, values in _data_ &ge; _low_ and &lt; _high_ are regarded as inside the corresponding mesh.
+-- @tparam ?|string|{string,...}|nil flags As per @{grayscale}, with the following addition:
+--
+-- * **"threshold\_as\_octets"**: Interpret **Bytes**-type _thresholds_ as 8-bit values, cf. @{grayscale}.
+-- @treturn MeshList List of one or more resulting meshes.
+
+---
+-- @function Proxy:GetMode
+-- @treturn string One of **"none"**, **"points"**, or **"triangles"** describing the proxy's current binding.
+
+--- Explictly remove any reference to a @{MeshList:GetMesh|Mesh}, allowing it to be garbage-collected.
+--
+-- When a proxy is bound to another **Mesh**, this is done implicitly beforehand.
+--
+-- Without such a reference, the proxy is a 0-length empty **Bytes**.
+-- @function Proxy:Reset
+
+--- Create a proxy for use by @{Mesh:GetPoints} or @{Mesh:GetTriangles}.
+-- @function NewProxy
+-- @treturn Proxy Used to provide a **Bytes** view over a **Mesh**'s data.
+
+--- Get an immutable reference to one of the list's meshes.
+-- @function MeshList:GetMesh
+-- @uint index Mesh index, from 1 to `#self`.
+-- @treturn Mesh Mesh reference.
+
+---
+-- @function MeshList:__len
+-- @treturn uint Mesh count.
+
+--- Extract the polyline boundary, composed of one or more chains.
+--
+-- Counterclockwise chains are solid, clockwise chains are holes. So, when serializing
+-- to SVG, all chains can be aggregated in a single &lt;path&gt;, provided they each
+-- terminate with a **"Z"** and use the default fill rule.
+-- @function Mesh:GetBoundary
+-- @treturn ?|{{number,...},...}|nil One or more arrays of points of the form { ..., x, y, ... } or { ..., x, y, z, ... },
+-- according to the mesh's dimensions. See @{Mesh:GetPoints} regarding normalization.
+--
+-- In the case of a degenerate mesh (no points / triangles), returns **nil**.
+
+---
+-- @function Mesh:GetColor
+-- @treturn uint If the mesh was created by @{color_multi}, the mesh-specific color. (See the notes about _color_ is @{color}.) Otherwise, 0.
+
+---
+-- @function Mesh:GetDim
+-- @treturn uint Mesh dimensions, either 2 or 3.
+
+---
+-- @function Mesh:GetNumPoints
+-- @treturn uint Number of points.
+
+---
+-- @function Mesh:GetNumTriangles
+-- @treturn uint Number of triangles.
+
+---
+-- @function Mesh:GetPoints
+-- @ptable[opt] opts Getter options, which include:
+--
+-- * **out**: This may be a @{NewProxy|Proxy}, in which case it is bound to the mesh's points and returned.
+--
+-- Otherwise, points are supplied as a table, either using the one provided here or creating a new one.
+--
+-- **N.B.** With a custom table, any entries not overwritten will be left as-is. If necessary, use
+-- `self:GetNumTriangles() * self:GetDim()` to calculate the number of entries.
+-- @treturn ?|Proxy|table As a table, an array `{ x1, y1, ... }` or `{ x1, y1, z1, ... }`, according to the
+-- mesh's dimensions, whose values are **number**s. The _x_ and _y_ values will be normalized to [0, 1]
+-- (coordinates are scaled by `1 / max(width, height)`, using the bitmap dimensions, e.g. in @{color}).
+-- 
+--
+-- Otherwise, the **Proxy** supplied as `opts.out`.
+
+---
+-- @function Mesh:GetTriangles
+-- @ptable[opt] opts Getter options, which include:
+--
+-- * **one\_based**: Triangle indices are one-based, rather zero-based? Ignored for **Proxy** results.
+-- * **out**: This may be a @{NewProxy|Proxy}, in which case it is bound to the mesh's triangles and returned.
+--
+-- Otherwise, indices are supplied as a table, either using the one provided here or creating a new one.
+--
+-- **N.B.** With a custom table, any entries not overwritten will be left as-is. If necessary, use
+-- `self:GetNumTriangles() * 3` to calculate the number of entries.
+-- @treturn ?|Proxy|table As a table, an array `{ index1, index2, index3, ... }` whose values are **uint**s.
+--
+-- Otherwise, the **Proxy** supplied as `opts.out`.
