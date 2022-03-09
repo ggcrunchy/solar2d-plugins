@@ -46,7 +46,7 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := libplugin.theora
 
 LOCAL_C_INCLUDES := \
-	$(LOCAL_PATH)/$(SRC_DIR) \
+    $(LOCAL_PATH)/$(SRC_DIR) \
     $(LOCAL_PATH)/$(BR_DIR) \
     $(LOCAL_PATH)/$(OGG_INC) \
     $(LOCAL_PATH)/$(THEORA_INC) \
@@ -54,20 +54,20 @@ LOCAL_C_INCLUDES := \
     $(LOCAL_PATH)/$(VORBIS_SRC)
 
 LOCAL_SRC_FILES := \
-	$(SRC_DIR)/plugin.theora.cpp $(SRC_DIR)/theoraplay.c $(SRC_DIR)/video_encoder.cpp \
+    $(SRC_DIR)/plugin.theora.cpp $(SRC_DIR)/theoraplay.c $(SRC_DIR)/video_encoder.cpp \
     $(BR_DIR)/ByteReader.cpp $(OGG_SRC)/bitwise.c $(OGG_SRC)/framing.c \
     $(VORBIS_FLIST:$(LOCAL_PATH)/%=%) $(THEORA_FLIST:$(LOCAL_PATH)/%=%)
 
 LOCAL_CFLAGS := \
-	-DANDROID_NDK \
-	-DNDEBUG \
-	-D_REENTRANT \
-	-DRtt_ANDROID_ENV
+    -DANDROID_NDK \
+    -DNDEBUG \
+    -D_REENTRANT \
+    -DRtt_ANDROID_ENV
 
 LOCAL_LDLIBS := -llog
 
 LOCAL_SHARED_LIBRARIES := \
-	liblua libcorona
+    liblua libcorona
 
 ifeq ($(TARGET_ARCH),arm)
 LOCAL_CFLAGS+= -D_ARM_ASSEM_ -D_M_ARM
