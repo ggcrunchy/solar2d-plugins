@@ -107,7 +107,7 @@ if instancing then
   end
 
   -- Uncomment to test NO support:
-  ---[[
+  --[[
     instancing = false
   --]]
 end
@@ -870,7 +870,7 @@ if WantsToTestObjectWithNormals or WantsToTestNormalsOnly then
 
     -- Normals-as-color effect.
     graphics.defineEffect{
-      category = "filter", name = "normalsOnlyTest", shellTransform = "3DWithNormals", vertexExtension = "Normals",
+      category = "filter", name = "normalsOnlyTest", shellTransform = "3DWithNormals", vertexExtension = "NormalsOnly",
 
       uniformData = {
         {
