@@ -59,6 +59,8 @@ if system.getInfo("platform") == "android" and system.getInfo("environment") == 
   end
 end
 
+display.setDefault("enableDepth", true)
+
 -- Enable 3D and use our own matrices as transforms.
 graphics.defineShellTransform{
 	name = "3D",
@@ -143,8 +145,11 @@ end
 
 ReadCamera()
 
+display.setDefault("skipsCulling", true)
+display.setDefault("skipsHitTesting", true)
+
 -- Create a 3D mesh manually.
-local mesh = co4.newTransformableMesh{
+local mesh = display.newMesh{
 	parent = g,
 	x = 100,
 	y = 100,
@@ -241,7 +246,7 @@ for vi, uvi in pairs(vi_to_uvi) do -- MOST of these seem to be duplicates, so ju
 	uvs[vo + 2] = 1 - provisionalUVs[uvo + 2]
 end
 
-local mesh2 = co4.newTransformableMesh{
+local mesh2 = display.newMesh{
 	parent = g,
 	x = 30,
 	y = 10,
@@ -270,12 +275,15 @@ local pvertices = {
 	-27,-35,	4
 	}
  
-local o = co4.newTransformablePolygon( g, display.contentCenterX, display.contentCenterY + 200, pvertices, true )
+local o = display.newPolygon( g, display.contentCenterX, 50, pvertices, true )
 --o.fill = { type="image", filename="Image1.jpg" }
 o.strokeWidth = 10 -- the stroke will get back-face culled (see depth_state.cullFace, above)
 o:setStrokeColor( 1, 0, 0 )
 
 o.fill.effect = "filter.custom.test"
+
+display.setDefault("skipsCulling", false)
+display.setDefault("skipsHitTesting", false)
 
 -- Put each object in an initial state.
 local params1, params2 = { yaw = 0 }, { yaw = 0 }

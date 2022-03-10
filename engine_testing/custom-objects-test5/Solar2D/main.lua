@@ -565,13 +565,11 @@ if WantsToTestObjectWithNormals or WantsToTestNormalsOnly then
   local printedNormalDetails
 
   local function MakeMesh (params)
-      display.setDefault("ignoresStageBounds", true)
       display.setDefault("skipsCulling", true)
       display.setDefault("skipsHitTesting", true)
 
       local mesh = display.newMesh(params)
       
-      display.setDefault("ignoresStageBounds", false)
       display.setDefault("skipsCulling", false)
       display.setDefault("skipsHitTesting", false)
       
