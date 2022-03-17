@@ -34,19 +34,38 @@ local image = display.newImageRect( "Image1.jpg", display.viewableContentWidth, 
 
 image.x, image.y = display.contentCenterX, display.contentCenterY
 
-local captureTexture = graphics.newTexture{ type = "capture", width = display.viewableContentWidth, height = display.viewableContentHeight }
+local captureTexture = graphics.newTexture{ type = "capture", width = 200, height = 200 }
 
-local captureRect = captureTexture:newCaptureRect( display.contentCenterX, display.contentCenterY, 200, 200 )
-local circle = display.newCircle( captureRect.x, captureRect.y, 80 )
+local captureEvent = captureTexture:newCaptureEvent( display.contentCenterX, display.contentCenterY )
+local circle = display.newCircle( captureEvent.x, captureEvent.y, 100 )
+--circle.isVisible=false
+circle.yScale=-1
+local aa = display.newImageRect( captureTexture.filename, captureTexture.baseDir, 75, 75 )
 
+aa.x, aa.y = display.contentCenterX + 150, display.contentCenterY
+
+aa.strokeWidth = 3
+
+aa:setStrokeColor(1, 0, 0)
+aa.yScale=-1
+local rr=display.newRect(captureEvent.x,captureEvent.y,200,200)
+rr:setFillColor(0,0)
+rr:setStrokeColor(0,1,0)
+rr.strokeWidth=2
 local back = display.newRect( display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight )
 
 back.isVisible, back.isHitTestable = false, true
 
 back:addEventListener( "touch", function( event )
-  if event.phase == "began" then
-    captureRect.x, captureRect.y = event.x, event.y
+  if event.phase == "began" or event.phase == "moved" then
+    if event.phase == "began" then
+      display.getCurrentStage():setFocus(event.target)
+    end
+    captureEvent.x, captureEvent.y = event.x, event.y
     circle.x, circle.y = event.x, event.y
+    rr.x,rr.y=event.x,event.y
+  else
+    display.getCurrentStage():setFocus(nil)
   end
 
   return true
@@ -55,51 +74,15 @@ end)
 graphics.defineEffect{
   category = "filter", name = "wavy",
 
-  vertexData = {
-    { index = 0, name = "originX" },
-    { index = 1, name = "originY" },
-    { index = 2, name = "width" },
-    { index = 3, name = "height" }
-  },
-
-  vertex = [[
-    P_UV varying vec2 v_Coords;
-  
-    P_POSITION vec2 VertexKernel (P_POSITION vec2 pos)
-    {
-      P_UV vec2 uv = (pos - CoronaVertexUserData.xy) * CoronaTexelSize.xy;
-
-      v_Coords = vec2( uv.x, 1. - uv.y );
-
-      return pos;
-    }
-  ]],
-  
   fragment = [[
-    P_UV varying vec2 v_Coords;
-  
-    P_COLOR vec4 FragmentKernel (P_UV vec2)
+    P_COLOR vec4 FragmentKernel (P_UV vec2 uv)
     {
-      P_COLOR vec3 c1 = texture2D( CoronaSampler0, v_Coords ).rgb;
-      P_COLOR vec3 c2 = texture2D( CoronaSampler0, v_Coords + vec2( CoronaTexelSize.z, 0. ) ).rgb;
-      P_COLOR vec3 c3 = texture2D( CoronaSampler0, v_Coords + vec2( 0., CoronaTexelSize.w ) ).rgb;
+      P_COLOR vec3 c1 = texture2D( CoronaSampler0, vec2( uv.x, 1. - uv.y ) ).rgb;
 
-      return vec4( c1 /*(c1 + c2 + c3) / 3.*/, 1.);
+      return vec4( c1, 1. );
     }
   ]]
 }
-print("DF", display.screenOriginX, display.screenOriginY)
-print("??", captureTexture.pixelWidth, captureTexture.pixelHeight)
-print("!!", display.pixelWidth, display.pixelHeight)
-print("XX",display.pixelWidth*display.contentScaleX)
-print("SS",display.contentScaleX,display.contentScaleY)
-print("xxxx",display.contentWidth,display.safeActualContentWidth,display.actualContentWidth)
-print("yyyy",display.contentHeight,display.safeActualContentHeight,display.actualContentHeight)
-
 
 circle.fill = { type = "image", filename = captureTexture.filename, baseDir = captureTexture.baseDir }
-circle.fill.effect = "filter.custom.wavy"
-circle.fill.effect.originX = display.screenOriginX
-circle.fill.effect.originY = display.screenOriginY
-circle.fill.effect.width = display.contentWidth
-circle.fill.effect.height = display.contentHeight
+--circle.fill.effect = "filter.custom.wavy"
