@@ -53,6 +53,8 @@
 			compilerSpec = com.apple.compilers.proxy.script;
 			filePatterns = "*.lua";
 			fileType = pattern.proxy;
+			inputFiles = (
+			);
 			isEditable = 1;
 			outputFiles = (
 				"$TARGET_TEMP_DIR/$(INPUT_FILE_BASE).c",
@@ -62,7 +64,7 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXFileReference section */
-		A49186401641DDB800A39286 /* plugin_libtess2.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = plugin_libtess2.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		A49186401641DDB800A39286 /* libtess2.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libtess2.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE0FB74520AE334900B5DAED /* plugin.libtess2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = plugin.libtess2.cpp; path = ../shared/plugin.libtess2.cpp; sourceTree = "<group>"; };
 		CE0FB74720AE335600B5DAED /* dict.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = dict.c; path = ../shared/Source/dict.c; sourceTree = "<group>"; };
 		CE0FB74820AE335600B5DAED /* bucketalloc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = bucketalloc.c; path = ../shared/Source/bucketalloc.c; sourceTree = "<group>"; };
@@ -154,7 +156,7 @@
 		A482DA8515F9B7E70084DC42 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A49186401641DDB800A39286 /* plugin_libtess2.dylib */,
+				A49186401641DDB800A39286 /* libtess2.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -250,9 +252,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		A49186331641DDB800A39286 /* plugin_libtess2 */ = {
+		A49186331641DDB800A39286 /* libtess2 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "plugin_libtess2" */;
+			buildConfigurationList = A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "libtess2" */;
 			buildPhases = (
 				A49186341641DDB800A39286 /* Sources */,
 				A49186381641DDB800A39286 /* Frameworks */,
@@ -264,9 +266,9 @@
 			);
 			dependencies = (
 			);
-			name = plugin_libtess2;
+			name = libtess2;
 			productName = ads;
-			productReference = A49186401641DDB800A39286 /* plugin_libtess2.dylib */;
+			productReference = A49186401641DDB800A39286 /* libtess2.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 /* End PBXNativeTarget section */
@@ -282,6 +284,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = A482DA7815F9B7E70084DC42;
@@ -289,7 +292,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A49186331641DDB800A39286 /* plugin_libtess2 */,
+				A49186331641DDB800A39286 /* libtess2 */,
 			);
 		};
 /* End PBXProject section */
@@ -471,7 +474,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "plugin_libtess2" */ = {
+		A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "libtess2" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A491863E1641DDB800A39286 /* Debug */,

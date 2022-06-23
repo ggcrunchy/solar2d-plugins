@@ -125,7 +125,7 @@ static int GetBytesProxy (lua_State * L, const char * what)
 {
 	ByteXS::BytesMetatableOpts opts;
 
-	opts.mMore = [](lua_State * L)
+	opts.mMore = [](lua_State * L, void *)
 	{
 		lua_pushvalue(L, -3);	// ..., func, proxy, mt, func
 		lua_setfield(L, -2, "__bytes");	// ..., func, proxy, mt = { ..., __bytes = func }

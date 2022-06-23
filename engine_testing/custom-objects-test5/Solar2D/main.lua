@@ -23,6 +23,8 @@
 -- [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
 --
 
+display.setDefault( 'isShaderCompilerVerbose', true )
+
 local co4 = require("plugin.customobjects4") -- probably fine, actually...
 local camera = require("camera")
 local obj_parser = require("obj_parser")
@@ -132,8 +134,8 @@ local WantsToTestNormalsOnly = true
 if WantToTestVec2s then
   
   local VertexKernelHasReplicationAndID = [[
-    P_POSITION varying vec2 v_SecondVec2;
-    P_POSITION varying float v_ID;
+    varying P_POSITION vec2 v_SecondVec2;
+    varying P_POSITION float v_ID;
 
     P_POSITION vec2 VertexKernel (P_POSITION vec2 pos)
     {
@@ -141,15 +143,15 @@ if WantToTestVec2s then
       pos += CoronaShift;
 
       v_SecondVec2 = CoronaSecondVec2;
-      v_ID = CoronaInstanceID;
+      v_ID = CoronaInstanceFloat;
 
       return pos;
     }
   ]]
 
   local VertexKernelHasReplication = [[
-    P_POSITION varying vec2 v_SecondVec2;
-    P_POSITION varying float v_ID;
+    varying P_POSITION vec2 v_SecondVec2;
+    varying P_POSITION float v_ID;
 
     P_POSITION vec2 VertexKernel (P_POSITION vec2 pos)
     {
@@ -164,24 +166,24 @@ if WantToTestVec2s then
   ]]
 
   local VertexKernelHasID = [[
-    P_POSITION varying vec2 v_SecondVec2;
-    P_POSITION varying float v_ID;
+    varying P_POSITION vec2 v_SecondVec2;
+    varying P_POSITION float v_ID;
 
     P_POSITION vec2 VertexKernel (P_POSITION vec2 pos)
     {
       pos += CoronaFirstVec2;
-      pos.x += CoronaInstanceID * 100.;
+      pos.x += CoronaInstanceFloat * 100.;
 
       v_SecondVec2 = CoronaSecondVec2;
-      v_ID = CoronaInstanceID;
+      v_ID = CoronaInstanceFloat;
 
       return pos;
     }
   ]]
 
   local VertexKernelBasic = [[
-    P_POSITION varying vec2 v_SecondVec2;
-    P_POSITION varying float v_ID;
+    varying P_POSITION vec2 v_SecondVec2;
+    varying P_POSITION float v_ID;
 
     P_POSITION vec2 VertexKernel (P_POSITION vec2 pos)
     {
@@ -229,8 +231,8 @@ if WantToTestVec2s then
     vertex = VertexKernel,
 
     fragment = [[
-      P_POSITION varying vec2 v_SecondVec2;
-      P_POSITION varying float v_ID;
+      varying P_POSITION vec2 v_SecondVec2;
+      varying P_POSITION float v_ID;
 
       P_COLOR vec4 FragmentKernel (P_UV vec2 uv)
       {
@@ -316,7 +318,7 @@ if WantsToTestColorMix then
     MultiInstance = { name = "yOffset", type = "float", instancesToReplicate = 2 }
     
     VertexKernel = [[
-      P_POSITION varying vec3 v_RGB;
+      varying P_POSITION vec3 v_RGB;
 
       P_POSITION vec2 VertexKernel (P_POSITION vec2 pos)
       {
@@ -330,7 +332,7 @@ if WantsToTestColorMix then
     ]]
   else
     VertexKernel = [[
-      P_POSITION varying vec3 v_RGB;
+      varying P_POSITION vec3 v_RGB;
 
       P_POSITION vec2 VertexKernel (P_POSITION vec2 pos)
       {
@@ -360,7 +362,7 @@ if WantsToTestColorMix then
     vertex = VertexKernel,
 
     fragment = [[
-      P_POSITION varying vec3 v_RGB;
+      varying P_POSITION vec3 v_RGB;
 
       P_COLOR vec4 FragmentKernel (P_UV vec2 uv)
       {
@@ -628,7 +630,7 @@ if WantsToTestObjectWithNormals or WantsToTestNormalsOnly then
     }
 
     local VertexKernelHasReplication = [[
-        P_POSITION varying vec3 v_Normal;
+        varying P_POSITION vec3 v_Normal;
 
         P_POSITION vec3 VertexKernel (P_POSITION vec3 pos)
         {
@@ -641,21 +643,21 @@ if WantsToTestObjectWithNormals or WantsToTestNormalsOnly then
       ]]
 
     local VertexKernelHasID = [[
-      P_POSITION varying vec3 v_Normal;
+      varying P_POSITION vec3 v_Normal;
 
       P_POSITION vec3 VertexKernel (P_POSITION vec3 pos)
       {
         v_Normal = CoronaNormal;
 
-        pos.x += CoronaInstanceID * 125.;
-        pos.y += CoronaInstanceID * 30.;
+        pos.x += CoronaInstanceFloat * 125.;
+        pos.y += CoronaInstanceFloat * 30.;
 
         return pos;
       }
     ]]
 
     local VertexKernelBasic = [[
-      P_POSITION varying vec3 v_Normal;
+      varying P_POSITION vec3 v_Normal;
 
       P_POSITION vec3 VertexKernel (P_POSITION vec3 pos)
       {
@@ -695,13 +697,13 @@ if WantsToTestObjectWithNormals or WantsToTestNormalsOnly then
       vertex = VertexKernel,
 
       fragment = [[
-        P_POSITION varying vec3 v_Normal;
+        varying P_POSITION vec3 v_Normal;
 
         P_COLOR vec4 FragmentKernel (P_UV vec2 uv)
         {
           P_COLOR vec4 color = texture2D(CoronaSampler0, uv);
         
-          P_POSITION const vec3 up = normalize(vec3(.7, 1., .3));
+          const P_POSITION vec3 up = normalize(vec3(.7, 1., .3));
         
           color.rgb *= max(0., dot(up, v_Normal));
         
@@ -884,7 +886,7 @@ if WantsToTestObjectWithNormals or WantsToTestNormalsOnly then
       },
 
       vertex = [[
-        P_POSITION varying vec3 v_Normal;
+        varying P_POSITION vec3 v_Normal;
 
         P_POSITION vec3 VertexKernel (P_POSITION vec3 pos)
         {
@@ -895,7 +897,7 @@ if WantsToTestObjectWithNormals or WantsToTestNormalsOnly then
       ]],
 
       fragment = [[
-        P_POSITION varying vec3 v_Normal;
+        varying P_POSITION vec3 v_Normal;
 
         P_COLOR vec4 FragmentKernel (P_UV vec2 uv)
         {
@@ -903,7 +905,7 @@ if WantsToTestObjectWithNormals or WantsToTestNormalsOnly then
         }
       ]]
     }
-    
+
     mesh.fill.effect = "filter.custom.normalsOnlyTest"
     mesh.fill.effect.model = arr
     mesh.fill.effect.view_projection = pv:getAsArray()

@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A4E253B5166D6FB300DCDC2C"
-               BuildableName = "libplugin_customobjects1.a"
+               BuildableName = "libplugin_customobjects4.a"
                BlueprintName = "plugin_customobjects4"
                ReferencedContainer = "container:Plugin.xcodeproj">
             </BuildableReference>
@@ -51,7 +51,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A4E253B5166D6FB300DCDC2C"
-            BuildableName = "libplugin_customobjects1.a"
+            BuildableName = "libplugin_customobjects4.a"
             BlueprintName = "plugin_customobjects4"
             ReferencedContainer = "container:Plugin.xcodeproj">
          </BuildableReference>
