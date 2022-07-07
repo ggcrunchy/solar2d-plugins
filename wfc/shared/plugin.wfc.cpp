@@ -22,6 +22,8 @@
 */
 
 #include "CoronaLua.h"
+#include "ByteReader.h"
+#include "utils/Blob.h"
 
 #define WFC_IMPLEMENTATION
 #include "wfc.h"
@@ -40,7 +42,7 @@ static wfc_context * Get (lua_State * L)
 {
     return (wfc_context *)luaL_checkudata(L, 1, WFC_METATABLE_NAME);
 }
-#include "CoronaLog.h"
+
 static void AddMetatable (lua_State * L)
 {
     if (!luaL_newmetatable(L, WFC_METATABLE_NAME)) return; // ..., mt
@@ -91,20 +93,49 @@ static void AddMetatable (lua_State * L)
             "get_output_image", [](lua_State * L)
             {
                 wfc_context * WFC = Get(L);
+                wfc_image output = {};
                 
                 if (!WFC->mOutput)
                 {
                     if (WFC->mWFC && WFC->mRanOK)
                     {
-                        WFC->mOutput = wfc_output_image(WFC->mWFC);
+                        wfc_image image = {};
+                        const char * err = nullptr;
+                        
+                        if (BlobXS::IsBlob(L, 2))
+                        {
+                            size_t size = BlobXS::GetSize(L, 2);
+                            int count = WFC->mWFC->cell_cnt * WFC->mInput.component_cnt;
 
-                        if (!WFC->mOutput)
+                            if (BlobXS::IsLocked(L, 2)) err = "cannot send output to locked blob";
+                            else if (size < count)
+                            {
+                                if (!BlobXS::IsResizable(L, 2)) err = "fixed-size blob is too small";
+                                else if (!BlobXS::Resize(L, 2, count)) err = "unable to resize blob";
+                            }
+
+                            if (!err)
+                            {
+                                image.data = BlobXS::GetData(L, 2);
+                                image.width = WFC->mWFC->output_width;
+                                image.height = WFC->mWFC->output_height;
+                                image.component_cnt = WFC->mInput.component_cnt;
+                            }
+                        }
+
+                        wfc_image * result = !err ? wfc_output_image(WFC->mWFC, image.data ? &image : nullptr) : nullptr;
+
+                        if (!result)
                         {
                             lua_pushnil(L); // wfc, nil
-                            lua_pushliteral(L, "Failed to create output image"); // wfc, nil, error
+                            lua_pushfstring(L, "Failed to create output image (%s)", err ? err : "allocation"); // wfc, nil, error
                             
                             return 2;
                         }
+
+                       if (!image.data) WFC->mOutput = result;
+
+                       output = *result;
                     }
                     
                     else
@@ -116,12 +147,12 @@ static void AddMetatable (lua_State * L)
                     }
                 }
 
-                struct wfc_image & output = *WFC->mOutput;
+                if (WFC->mOutput) lua_pushlstring(L, reinterpret_cast<const char *>(output.data), size_t(output.width * output.height * output.component_cnt)); // wfc, output
+                else lua_pushboolean(L, 1); // wfc, ok
 
-                lua_pushlstring(L, reinterpret_cast<const char *>(output.data), size_t(output.width * output.height * output.component_cnt)); // wfc, output
-                lua_pushinteger(L, output.width); // wfc, output, width
-                lua_pushinteger(L, output.height); // wfc, output, width, height
-                lua_pushinteger(L, output.component_cnt); // wfc, output, width, height, component_count
+                lua_pushinteger(L, output.width); // wfc, output / ok, width
+                lua_pushinteger(L, output.height); // wfc, output / ok, width, height
+                lua_pushinteger(L, output.component_cnt); // wfc, output / ok, width, height, component_count
                 
                 return 4;
             }
@@ -179,10 +210,10 @@ static void AddMetatable (lua_State * L)
         },
         { nullptr, nullptr }
     };
-    
+
     luaL_register(L, nullptr, methods);
-    lua_pushvalue(L, -1); // mt, mt
-    lua_setfield(L, -2, "__index"); // mt.__index = mt
+    lua_pushvalue(L, -1); // ..., mt, mt
+    lua_setfield(L, -2, "__index"); // ..., mt; mt.__index = mt
 }
 
 static struct wfc_image GetImageDetails (lua_State * L)
@@ -204,26 +235,28 @@ static struct wfc_image GetImageDetails (lua_State * L)
     luaL_argcheck(L, -1, image.height > 0, "Non-positive input image height");
     lua_pop(L, 3); // params
     lua_getfield(L, 1, "data"); // params, data?
-    
-    if (!lua_isnil(L, -1))
-    {
-        image.data = (unsigned char *)luaL_checkstring(L, -1);
 
-        luaL_argcheck(L, -1, image.width * image.height * image.component_cnt >= lua_objlen(L, -1), "Inadequate data");
+    ByteReader bytes{ L, -1 };
+
+    if (bytes.mBytes)
+    {
+        image.data = (unsigned char *)bytes.mBytes;
+
+        luaL_argcheck(L, -1, image.width * image.height * image.component_cnt <= bytes.mCount, "Inadequate data");
     }
 
     return image;
 }
 
-CORONA_EXPORT int luaopen_plugin_wfc (lua_State* L)
+static void LoadModule (lua_State * L)
 {
     lua_newtable(L); // wfc
-    
+
     luaL_Reg funcs[] = {
         {
             "overlapping", [](lua_State * L)
             {
-                struct wfc_image image = GetImageDetails(L);
+                struct wfc_image image = GetImageDetails(L); // params, data?
                 
                 if (!image.data)
                 {
@@ -248,10 +281,10 @@ CORONA_EXPORT int luaopen_plugin_wfc (lua_State* L)
                 output_height = luaL_checkint(L, -3);
                 output_width = luaL_checkint(L, -4);
                 
-                luaL_argcheck(L, -4, image.width > 0, "Non-positive output image width");
-                luaL_argcheck(L, -3, image.height > 0, "Non-positive output image height");
-                luaL_argcheck(L, -2, image.width > 0, "Non-positive tile width");
-                luaL_argcheck(L, -1, image.height > 0, "Non-positive tile height");
+                luaL_argcheck(L, -4, output_width > 0, "Non-positive output image width");
+                luaL_argcheck(L, -3, output_height > 0, "Non-positive output image height");
+                luaL_argcheck(L, -2, tile_width > 0, "Non-positive tile width");
+                luaL_argcheck(L, -1, tile_height > 0, "Non-positive tile height");
                 lua_pop(L, 4); // params, data, context
                 
                 const char * bool_names[] = { "expand_input", "xflip_tiles", "yflip_tiles", "rotate_tiles" };
@@ -268,8 +301,8 @@ CORONA_EXPORT int luaopen_plugin_wfc (lua_State* L)
                 }
                 
                 lua_insert(L, -2); // params, context, data
-                lua_setfenv(L, -2); // param, context; context.env = data
-                
+                lua_setfenv(L, -2); // params, context; context.env = data
+
                 context->mInput = image;
                 context->mWFC = wfc_overlapping(output_width, output_height, &context->mInput, tile_width, tile_height, bools[0], bools[1], bools[2], bools[3]);
                 
@@ -281,9 +314,9 @@ CORONA_EXPORT int luaopen_plugin_wfc (lua_State* L)
                     return 2;
                 }
                 
-                AddMetatable(L); // context, wfc_mt
+                AddMetatable(L); // params, context, wfc_mt
 
-                lua_setmetatable(L, -2); // context; context.metatable = wfc_mt
+                lua_setmetatable(L, -2); // params, context; context.metatable = wfc_mt
                 
                 return 1;
             }
@@ -292,6 +325,25 @@ CORONA_EXPORT int luaopen_plugin_wfc (lua_State* L)
     };
     
     luaL_register( L, nullptr, funcs );
-    
+}
+
+CORONA_EXPORT int luaopen_plugin_wfc (lua_State* L)
+{
+    LoadModule(L); // wfc
+
+    luaL_Reg funcs[] = {
+        {
+            "Reloader", [](lua_State * L)
+            {
+                LoadModule(L);
+
+                return 1;
+            }
+        },
+        { nullptr, nullptr }
+    };
+
+    luaL_register(L, nullptr, funcs);
+
 	return 1;
 }

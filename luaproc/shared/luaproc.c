@@ -975,7 +975,7 @@ static int luaproc_copyupvalues(lua_State *Lfrom, lua_State *Lto,
 			// STEVE CHANGE
 //			lua_pop(Lfrom, 1);
 			{
-				const char * names[] = { "package", "loaded", Lfrom == mainlp.lstate ? "plugin.luaproc" : "luaproc", NULL };
+				const char * names[] = { "package", "loaded", Lfrom == mainlp.lstate ? "plugin_luaproc" : "luaproc", NULL };
 				int j, top = lua_gettop(Lfrom) - 1;// remove the global table plus whatever we add
 
 				for (j = 0; names[j] && lua_istable(Lfrom, -1); ++j) lua_getfield(Lfrom, -1, names[j]); // ..., luaproc?, _G[, package[, package.loaded[, luaproc]]]

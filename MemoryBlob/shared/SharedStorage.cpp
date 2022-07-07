@@ -261,19 +261,19 @@ struct VariantVectorOwned : VariantVectorBase {
 	{
 	}
 
-	VariantVectorOwned (VariantVectorOwned && other) _NOEXCEPT : VariantVectorBase{}
+	VariantVectorOwned (VariantVectorOwned && other) noexcept : VariantVectorBase{}
 	{
 		AuxSwap(other);
 	}
 
-	VariantVectorOwned & operator = (VariantVectorOwned && other) _NOEXCEPT
+	VariantVectorOwned & operator = (VariantVectorOwned && other) noexcept
 	{
 		AuxSwap(other);
 
 		return *this;
 	}
 
-	void AuxSwap (VariantVectorOwned & other) _NOEXCEPT
+	void AuxSwap (VariantVectorOwned & other) noexcept
 	{
 		std::swap(mAlignment, other.mAlignment);
 		std::swap(mData, other.mData);

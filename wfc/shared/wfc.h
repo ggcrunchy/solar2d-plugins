@@ -603,9 +603,9 @@ static int *wfc_cells(struct wfc *wfc)
   return cells;
 }
 
-struct wfc_image *wfc_output_image(struct wfc *wfc)
+struct wfc_image *wfc_output_image(struct wfc *wfc, struct wfc_image * out) // <- STEVE CHANGE
 {
-  struct wfc_image *image = wfc_img_create(wfc->output_width, wfc->output_height, wfc->image->component_cnt);
+  struct wfc_image *image = out ? out : wfc_img_create(wfc->output_width, wfc->output_height, wfc->image->component_cnt); // <- STEVE CHANGE
   if (image == NULL) {
     p("wfc_export: error\n");
     return 0;
@@ -776,10 +776,17 @@ static int wfc__remove_duplicate_tiles(struct wfc__tile **tiles, int *tile_cnt)
     }
 
     if (unique) {
-      (*tiles)[unique_cnt] = (*tiles)[j];
+      if (unique_cnt != j) {
+        struct wfc__tile tmp = (*tiles)[unique_cnt];
+        (*tiles)[unique_cnt] = (*tiles)[j];
+        (*tiles)[j] = tmp;
+      }
       unique_cnt++;
     }
   }
+
+  for (int i=unique_cnt; i<*tile_cnt; i++)
+    wfc_img_destroy((*tiles)[i].image);
 
   struct wfc__tile *unique_tiles = (struct wfc__tile *)realloc(*tiles, sizeof(**tiles) * unique_cnt); // <- STEVE CHANGE
   if (unique_tiles == NULL) {
@@ -806,7 +813,7 @@ static void wfc__destroy_props(struct wfc__prop *props)
 
 static struct wfc__prop *wfc__create_props(int cell_cnt)
 {
-  struct wfc__prop *props = (struct wfc__prop *)malloc(sizeof(*props) * cell_cnt * WFC_MAX_PROP_CNT); // <- STEVE CHANGE
+  struct wfc__prop *props = (struct wfc__prop *)malloc(sizeof(*props) * /*cell_cnt * */WFC_MAX_PROP_CNT); // <- STEVE CHANGE
   return props;
 }
 
@@ -899,7 +906,7 @@ static int wfc__create_allowed_tiles(int *allowed_tiles[4], int tile_cnt)
 static void wfc__add_prop(struct wfc *wfc, int src_cell_idx, int dst_cell_idx, enum wfc__direction direction)
 {
   // TODO: check for wfc->prop_cnt == WFC_MAX_PROP_CNT
-
+    if (wfc->prop_cnt==WFC_MAX_PROP_CNT) return;
   struct wfc__prop *p = &( wfc->props[wfc->prop_cnt] );
   (wfc->prop_cnt)++;
   p->src_cell_idx = src_cell_idx;
@@ -1040,7 +1047,7 @@ static int wfc__rand(struct wfc *wfc)
 {
     wfc->z = 36969*(wfc->z & 65535) + (wfc->z >> 16);
     wfc->w = 18000*(wfc->w & 65535) + (wfc->w >> 16);
-    
+
     return (wfc->z << 16) + (wfc->w & 65535);
 }
 
@@ -1079,7 +1086,7 @@ static int wfc__next_cell(struct wfc *wfc)
 
   for (int i=0; i<wfc->cell_cnt; i++) {
     // Add small noise to break ties between tiles with the same entropy
-      double entropy = wfc->cells[i].entropy + (wfc__rand(wfc) * 2.328306e-10) / 100000.0;//rand() / (100000.0 * RAND_MAX); <- STEVE CHANGE
+      double entropy = wfc->cells[i].entropy + (2.328306e-10 * wfc__rand(wfc)) / 100000.0;//rand() / (100000.0 * RAND_MAX); <- STEVE CHANGE
     if (wfc->cells[i].tile_cnt != 1 && entropy < min_entropy) {
       min_entropy = entropy;
       min_idx = i;
@@ -1131,8 +1138,7 @@ void wfc_init(struct wfc *wfc)
 // Return 0 on error (contradiction occurred)
 int wfc_run(struct wfc *wfc, int max_collapse_cnt)
 {
-  //int cell_idx = (wfc->output_height / 2) * wfc->output_width + wfc->output_width / 2;
-  int cell_idx = wfc__rand(wfc) % (wfc->output_height * wfc->output_width); // <- STEVE CHANGE
+  int cell_idx = (wfc->output_height / 2) * wfc->output_width + wfc->output_width / 2;
 
   while (1) {
     print_progress(wfc->collapsed_cell_cnt);
@@ -1200,7 +1206,7 @@ static struct wfc__tile *wfc__create_tiles_overlapping(struct wfc_image *image,
 {
   int xcnt = image->width - tile_width + 1;
   int ycnt = image->height - tile_height + 1;
-  int base_tile_cnt = xcnt * ycnt; // <- STEVE CHANGE
+  int base_tile_cnt; // <- STEVE CHANGE
   struct wfc__tile *tiles = NULL; // <- STEVE CHANGE
     
   if (expand_image) {
@@ -1228,7 +1234,7 @@ static struct wfc__tile *wfc__create_tiles_overlapping(struct wfc_image *image,
   if (!wfc__add_overlapping_images(tiles, image, xcnt, ycnt, tile_width, tile_height))
     goto CLEANUP;
 
-//  int base_tile_cnt = xcnt * ycnt; <- STEVE CHANGE
+  /*int */base_tile_cnt = xcnt * ycnt; // <- STEVE CHANGE
   if (xflip_tiles) {
     if (!wfc__add_flipped_images(tiles, base_tile_cnt, 0))
       goto CLEANUP;

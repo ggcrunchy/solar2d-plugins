@@ -1,14 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32602.291
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Plugin", "Plugin.vcxproj", "{79F0CACC-457B-4A25-BC54-81277688C361}"
 	ProjectSection(ProjectDependencies) = postProject
 		{BF4DE651-2791-489F-9246-E70BD64F314E} = {BF4DE651-2791-489F-9246-E70BD64F314E}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "solar2d_native_utils", "..\..\solar2d_native_utils\win32\solar2d_native_utils\solar2d_native_utils.vcxproj", "{BF4DE651-2791-489F-9246-E70BD64F314E}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "solar2d_native_utils", "..\..\solar2d_native_utils\win32\solar2d_native_utils.vcxproj", "{BF4DE651-2791-489F-9246-E70BD64F314E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,5 +27,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D9A9272B-5F6B-4A3B-AD80-3EA349F7C2E7}
 	EndGlobalSection
 EndGlobal

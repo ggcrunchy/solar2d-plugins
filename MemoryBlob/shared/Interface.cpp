@@ -129,7 +129,7 @@ bool MemoryBlob::Resize (lua_State * L, int arg, size_t size, void * key)
 
 	if (!bpv.mProps || !bpv.mProps->mResizable || !bpv.mProps->HasUpdatePrivileges(key)) return false;
 
-	AuxResize(L, bpv.mProps->mAlign, arg, size);
+	AuxResize(L, bpv.mProps->mAlign, bpv.mArg, size);
 
 	return true;
 }
