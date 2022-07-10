@@ -13,15 +13,14 @@ BUILD_TYPE=clean
 
 if [ $OS == Windows_NT ]
 then
-    ANDROID_NDK="D:/android-ndk-r20"
-    LIBS_SRC_DIR="$CORONA_ROOT/Corona/android/lib/gradle/Corona.aar"
-    CMD="cmd //c "
+	ANDROID_NDK="D:/android-ndk-r21b"
+	LIBS_SRC_DIR="$CORONA_ROOT/Corona/android/lib/gradle/Corona.aar"
+	CMD="cmd //c "
 else
-    ANDROID_NDK="/Applications/android-ndk-r20"
-    LIBS_SRC_DIR="$HOME/Library/Application Support/Corona/Native/Corona/android/lib/gradle/Corona.aar"
-    CMD=
+    ANDROID_NDK="$HOME/Library/Android/sdk/ndk/24.0.8215888"
+    LIBS_SRC_DIR="/Applications/Native/Corona/android/lib/gradle/Corona.aar"
+	CMD=
 fi
-
 #
 # Checks exit value for error
 # 
@@ -55,7 +54,7 @@ fi
 if [ "clean" == "$BUILD_TYPE" ]
 then
 	echo "== Clean build =="
-	rm -rf $path/obj/ $path/libs/
+	rm -rf $path/obj/ $path/libs/ $path/data.tgz
 	FLAGS="-B"
 else
 	echo "== Incremental build =="
@@ -82,13 +81,13 @@ then
 	echo "$ANDROID_NDK/ndk-build $FLAGS V=1 APP_OPTIM=$OPTIM_FLAGS"
 	echo "----------------------------------------------------------------------------"
 
-	$ANDROID_NDK/ndk-build $FLAGS V=1 APP_OPTIM=$OPTIM_FLAGS
+	$CMD $ANDROID_NDK/ndk-build $FLAGS V=1 APP_OPTIM=$OPTIM_FLAGS
 else
 	echo "----------------------------------------------------------------------------"
 	echo "$ANDROID_NDK/ndk-build $FLAGS V=1 MY_CFLAGS="$CFLAGS" APP_OPTIM=$OPTIM_FLAGS"
 	echo "----------------------------------------------------------------------------"
 
-	$ANDROID_NDK/ndk-build $FLAGS V=1 MY_CFLAGS="$CFLAGS" APP_OPTIM=$OPTIM_FLAGS
+	$CMD $ANDROID_NDK/ndk-build $FLAGS V=1 MY_CFLAGS="$CFLAGS" APP_OPTIM=$OPTIM_FLAGS
 fi
 
 find "$path/libs" \( -name liblua.so -or -name libcorona.so \)  -delete
@@ -103,4 +102,8 @@ popd > /dev/null
 ######################
 
 echo Done.
-echo $path/libs/armeabi-v7a/libplugin.msquares.so
+echo $path/jniLibs/armeabi-v7a/libplugin.$TARGET_NAME.so
+
+echo Packing binaries...
+tar -czvf data.tgz -C $path jniLibs -C $path/jniLibs/armeabi-v7a libplugin.$TARGET_NAME.so
+echo $path/data.tgz.

@@ -8,8 +8,7 @@ LOCAL_PATH := $(call my-dir)
 ifeq ($(OS),Windows_NT)
 	CORONA_ROOT := C:\PROGRA~2\CORONA~1\Corona\Native
 else
-	CORONA := /Applications/Corona
-	CORONA_ROOT := $(CORONA)/Native
+	CORONA_ROOT := /Applications/Native
 endif
 
 LUA_API_DIR := $(CORONA_ROOT)/Corona/shared/include/lua
@@ -19,7 +18,7 @@ PLUGIN_DIR := ../..
 CUCKOO_DIR := $(PLUGIN_DIR)/../libcuckoo
 
 SRC_DIR := $(PLUGIN_DIR)/shared
-CEU_DIR := $(PLUGIN_DIR)/../solar2d_native_utils
+SNU_DIR := $(PLUGIN_DIR)/../solar2d_native_utils
 
 # -----------------------------------------------------------------------------
 
@@ -41,7 +40,7 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := libplugin.luaproc
 
 LOCAL_C_INCLUDES := \
-	$(SRC_DIR) $(CUCKOO_DIR) $(CUCKOO_DIR)/.. $(CEU_DIR)
+	$(SRC_DIR) $(CUCKOO_DIR) $(CUCKOO_DIR)/.. $(SNU_DIR)
 
 LOCAL_SRC_FILES := \
 	$(SRC_DIR)/luaproc.c $(SRC_DIR)/lpsched.c \

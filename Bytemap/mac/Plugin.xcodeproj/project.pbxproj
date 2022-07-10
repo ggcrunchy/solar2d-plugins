@@ -253,7 +253,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#\n# Checks exit value for error\n# \ncheckError() {\n    if [ $? -ne 0 ]\n    then\n        echo \"Exiting due to errors (above)\"\n        exit -1\n    fi\n}\n\nPLUGINS_DIR=~/Library/Application\\ Support/Corona/Simulator/Plugins/\n\n#mkdir -p $PLUGINS_DIR\ncheckError\n\n#cp -v $CONFIGURATION_BUILD_DIR/$FULL_PRODUCT_NAME $PLUGINS_DIR\ncheckError";
+			shellScript = "#\n# Checks exit value for error\n# \ncheckError() {\n    if [ $? -ne 0 ]\n    then\n        echo \"Exiting due to errors (above)\"\n        exit -1\n    fi\n}\n\nPLUGINS_DIR=~/Library/Application\\ Support/Corona/Simulator/Plugins/\n\n#mkdir -p $PLUGINS_DIR\ncheckError\n\n#cp -v $CONFIGURATION_BUILD_DIR/$FULL_PRODUCT_NAME $PLUGINS_DIR\ncheckError\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */

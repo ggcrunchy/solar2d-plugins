@@ -31,6 +31,8 @@
 		A49186401641DDB800A39286 /* wfc.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = wfc.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA87A27F279B6AB900E57026 /* wfc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wfc.h; path = ../shared/wfc.h; sourceTree = "<group>"; };
 		AA87A280279B6AB900E57026 /* plugin.wfc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = plugin.wfc.cpp; path = ../shared/plugin.wfc.cpp; sourceTree = "<group>"; };
+		AA8C19D62878E8FF000D0253 /* ByteReader */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ByteReader; path = ../../ByteReader; sourceTree = "<group>"; };
+		AA8C19D72878E8FF000D0253 /* solar2d_native_utils */ = {isa = PBXFileReference; lastKnownFileType = folder; name = solar2d_native_utils; path = ../../solar2d_native_utils; sourceTree = "<group>"; };
 		CE353A2D1D690309000D2E95 /* libvlc.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libvlc.dylib; path = "../../../../Library/Application Support/Corona/Simulator/Plugins/plugin/lib/libvlc.dylib"; sourceTree = "<group>"; };
 		CE353A2E1D690309000D2E95 /* libvlccore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libvlccore.dylib; path = "../../../../Library/Application Support/Corona/Simulator/Plugins/plugin/lib/libvlccore.dylib"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -49,6 +51,8 @@
 		A4151F3316879B8200B2B43A /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				AA8C19D62878E8FF000D0253 /* ByteReader */,
+				AA8C19D72878E8FF000D0253 /* solar2d_native_utils */,
 				AA87A280279B6AB900E57026 /* plugin.wfc.cpp */,
 				AA87A27F279B6AB900E57026 /* wfc.h */,
 			);
@@ -282,7 +286,7 @@
 					Support/Corona/Simulator/Plugins/plugin/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/Native/Corona/shared/include/Corona ${SRCROOT}/Native/Corona/shared/include/lua";
+				USER_HEADER_SEARCH_PATHS = "/Applications/Native/Corona/shared/include/Corona /Applications/Native/Corona/shared/include/lua ${SRCROOT}/../../ByteReader ${SRCROOT}/../../solar2d_native_utils";
 			};
 			name = Debug;
 		};
@@ -304,7 +308,7 @@
 				);
 				"LIBRARY_SEARCH_PATHS[arch=*]" = "\"~/Library/Application Support/Corona/Simulator/Plugins/plugin/lib\"";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/Native/Corona/shared/include/Corona ${SRCROOT}/Native/Corona/shared/include/lua";
+				USER_HEADER_SEARCH_PATHS = "/Applications/Native/Corona/shared/include/Corona /Applications/Native/Corona/shared/include/lua ${SRCROOT}/../../ByteReader ${SRCROOT}/../../solar2d_native_utils";
 			};
 			name = Release;
 		};

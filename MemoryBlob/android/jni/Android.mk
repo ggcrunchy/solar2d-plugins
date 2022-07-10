@@ -8,8 +8,7 @@ LOCAL_PATH := $(call my-dir)
 ifeq ($(OS),Windows_NT)
 	CORONA_ROOT := C:\PROGRA~2\CORONA~1\Corona\Native
 else
-	CORONA := /Applications/Corona
-	CORONA_ROOT := $(CORONA)/Native
+	CORONA_ROOT := /Applications/Native
 endif
 
 LUA_API_DIR := $(CORONA_ROOT)/Corona/shared/include/lua
@@ -20,8 +19,8 @@ MATH_LIBRARIES_DIR := $(PLUGIN_DIR)/../math_libraries
 
 SRC_DIR := $(PLUGIN_DIR)/shared
 BR_DIR := $(PLUGIN_DIR)/../ByteReader
-CEU_DIR := $(PLUGIN_DIR)/../solar2d_native_utils
-CEU_SRC := $(CEU_DIR)/utils
+SNU_DIR := $(PLUGIN_DIR)/../solar2d_native_utils
+SNU_SRC := $(SNU_DIR)/utils
 TOP_DIR := $(PLUGIN_DIR)/..
 CUCKOO_DIR := $(TOP_DIR)/libcuckoo
 
@@ -45,7 +44,7 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := libplugin.MemoryBlob
 
 LOCAL_C_INCLUDES := \
-	$(SRC_DIR) $(BR_DIR) $(CEU_DIR) $(MATH_LIBRARIES_DIR) $(TOP_DIR) $(CUCKOO_DIR)
+	$(SRC_DIR) $(BR_DIR) $(SNU_DIR) $(MATH_LIBRARIES_DIR) $(TOP_DIR) $(CUCKOO_DIR)
 
 LOCAL_SRC_FILES := \
 	$(SRC_DIR)/plugin.MemoryBlob.cpp \
@@ -53,8 +52,8 @@ LOCAL_SRC_FILES := \
 	$(SRC_DIR)/Queue.cpp $(SRC_DIR)/SharedStorage.cpp $(SRC_DIR)/State.cpp \
 	$(CUCKOO_DIR)/city.cc \
 	$(BR_DIR)/ByteReader.cpp \
-	$(CEU_SRC)/Blob.cpp $(CEU_SRC)/Byte.cpp $(CEU_SRC)/LuaEx.cpp $(CEU_SRC)/Memory.cpp $(CEU_SRC)/Path.cpp \
-	$(CEU_SRC)/SIMD.cpp $(CEU_SRC)/Thread.cpp
+	$(SNU_SRC)/Blob.cpp $(SNU_SRC)/Byte.cpp $(SNU_SRC)/LuaEx.cpp $(SNU_SRC)/Memory.cpp $(SNU_SRC)/Path.cpp \
+	$(SNU_SRC)/SIMD.cpp $(SNU_SRC)/Thread.cpp
 LOCAL_CFLAGS := \
 	-DANDROID_NDK \
 	-DNDEBUG \
