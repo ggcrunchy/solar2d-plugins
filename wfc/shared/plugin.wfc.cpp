@@ -32,7 +32,6 @@
 
 struct wfc_context {
     struct wfc * mWFC{nullptr};
-    struct wfc_image * mOutput{nullptr};
     struct wfc_image mInput;
     bool mRanOK{false};
     bool mHasRun{false};
@@ -66,26 +65,11 @@ static void AddMetatable (lua_State * L)
                 return 0;
             }
         }, {
-            "destroy_output_image", [](lua_State * L)
-            {
-                wfc_context * WFC = Get(L);
-                
-                if (WFC->mOutput)
-                {
-                    wfc_img_destroy(WFC->mOutput);
-                    
-                    WFC->mOutput = nullptr;
-                }
-                
-                return 0;
-            }
-        }, {
             "__gc", [](lua_State * L)
             {
                 wfc_context * WFC = Get(L);
                
                 if (WFC->mWFC) wfc_destroy(WFC->mWFC);
-                if (WFC->mOutput) wfc_img_destroy(WFC->mOutput);
                 
                 return 0;
             }
@@ -93,68 +77,62 @@ static void AddMetatable (lua_State * L)
             "get_output_image", [](lua_State * L)
             {
                 wfc_context * WFC = Get(L);
-                wfc_image output = {};
                 
-                if (!WFC->mOutput)
+                if (WFC->mWFC && WFC->mRanOK)
                 {
-                    if (WFC->mWFC && WFC->mRanOK)
-                    {
-                        wfc_image image = {};
-                        const char * err = nullptr;
+                    wfc_image image = {};
+                    const char * err = nullptr;
                         
-                        if (BlobXS::IsBlob(L, 2))
+                    if (BlobXS::IsBlob(L, 2))
+                    {
+                        size_t size = BlobXS::GetSize(L, 2);
+                        int count = WFC->mWFC->cell_cnt * WFC->mInput.component_cnt;
+
+                        if (BlobXS::IsLocked(L, 2)) err = "cannot send output to locked blob";
+                        else if (size < count)
                         {
-                            size_t size = BlobXS::GetSize(L, 2);
-                            int count = WFC->mWFC->cell_cnt * WFC->mInput.component_cnt;
-
-                            if (BlobXS::IsLocked(L, 2)) err = "cannot send output to locked blob";
-                            else if (size < count)
-                            {
-                                if (!BlobXS::IsResizable(L, 2)) err = "fixed-size blob is too small";
-                                else if (!BlobXS::Resize(L, 2, count)) err = "unable to resize blob";
-                            }
-
-                            if (!err)
-                            {
-                                image.data = BlobXS::GetData(L, 2);
-                                image.width = WFC->mWFC->output_width;
-                                image.height = WFC->mWFC->output_height;
-                                image.component_cnt = WFC->mInput.component_cnt;
-                            }
+                            if (!BlobXS::IsResizable(L, 2)) err = "fixed-size blob is too small";
+                            else if (!BlobXS::Resize(L, 2, count)) err = "unable to resize blob";
                         }
 
-                        wfc_image * result = !err ? wfc_output_image(WFC->mWFC, image.data ? &image : nullptr) : nullptr;
-
-                        if (!result)
+                        if (!err)
                         {
-                            lua_pushnil(L); // wfc, nil
-                            lua_pushfstring(L, "Failed to create output image (%s)", err ? err : "allocation"); // wfc, nil, error
-                            
-                            return 2;
+                            image.data = BlobXS::GetData(L, 2);
+                            image.width = WFC->mWFC->output_width;
+                            image.height = WFC->mWFC->output_height;
+                            image.component_cnt = WFC->mInput.component_cnt;
                         }
-
-                       if (!image.data) WFC->mOutput = result;
-
-                       output = *result;
                     }
-                    
-                    else
+
+                    wfc_image * result = !err ? wfc_output_image(WFC->mWFC, image.data ? &image : nullptr) : nullptr;
+
+                    if (!result)
                     {
                         lua_pushnil(L); // wfc, nil
-                        lua_pushstring(L, WFC->mRanOK ? "Unable to create image from closed WFC context" : "WFC has not run successfully"); // wfc, nil, error
-                        
+                        lua_pushfstring(L, "Failed to create output image (%s)", err ? err : "allocation"); // wfc, nil, error
+                            
                         return 2;
                     }
-                }
 
-                if (WFC->mOutput) lua_pushlstring(L, reinterpret_cast<const char *>(output.data), size_t(output.width * output.height * output.component_cnt)); // wfc, output
-                else lua_pushboolean(L, 1); // wfc, ok
+                    if (!image.data) lua_pushlstring(L, reinterpret_cast<const char *>(result->data), size_t(result->width * result->height * result->component_cnt)); // wfc, output
+                    else lua_pushboolean(L, 1); // wfc, ok
 
-                lua_pushinteger(L, output.width); // wfc, output / ok, width
-                lua_pushinteger(L, output.height); // wfc, output / ok, width, height
-                lua_pushinteger(L, output.component_cnt); // wfc, output / ok, width, height, component_count
+                    lua_pushinteger(L, result->width); // wfc, output / ok, width
+                    lua_pushinteger(L, result->height); // wfc, output / ok, width, height
+                    lua_pushinteger(L, result->component_cnt); // wfc, output / ok, width, height, component_count
                 
-                return 4;
+                    if (!image.data) wfc_img_destroy(result);
+
+                    return 4;
+                }
+                    
+                else
+                {
+                    lua_pushnil(L); // wfc, nil
+                    lua_pushstring(L, WFC->mRanOK ? "Unable to create image from closed WFC context" : "WFC has not run successfully"); // wfc, nil, error
+                        
+                    return 2;
+                }
             }
         }, {
             "is_ready", [](lua_State * L)
