@@ -75,7 +75,9 @@ int InstantiateSpotColor (lua_State * L, spot::color && color)
 				"clone", [](lua_State * L)
 				{
 					return LuaXS::PCallWithStackThenReturn(L, [](lua_State * L) {
-						return InstantiateSpotColor(L, spot::color{*Color(L, 1)});
+						spot::color clone{*Color(L, 1)};
+
+						return InstantiateSpotColor(L, std::move(clone));
 					}, LuaXS::Nil{});
 				}
 			}, {
