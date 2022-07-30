@@ -46,8 +46,7 @@ LOCAL_C_INCLUDES := \
 LOCAL_SRC_FILES := \
 	$(SRC_DIR)/plugin.streamlines.cpp  \
 	$(BR_DIR)/ByteReader.cpp \
-	$(SNU_SRC)/Blob.cpp $(SNU_SRC)/Byte.cpp $(SNU_SRC)/LuaEx.cpp $(SNU_SRC)/Memory.cpp $(SNU_SRC)/Path.cpp \
-	$(SNU_SRC)/SIMD.cpp $(SNU_SRC)/Thread.cpp
+	$(SNU_SRC)/Blob.cpp $(SNU_SRC)/Byte.cpp $(SNU_SRC)/LuaEx.cpp $(SNU_SRC)/Memory.cpp $(SNU_SRC)/Path.cpp $(SNU_SRC)/Thread.cpp
 
 	
 
@@ -59,9 +58,6 @@ LOCAL_CFLAGS := \
 
 LOCAL_LDLIBS := -llog
 
-LOCAL_CFLAGS += -fopenmp
-LOCAL_LDFLAGS += -fopenmp
-
 LOCAL_SHARED_LIBRARIES := \
 	liblua libcorona
 
@@ -69,11 +65,6 @@ ifeq ($(TARGET_ARCH),arm)
 LOCAL_CFLAGS += -D_ARM_ASSEM_ -D_M_ARM
 endif
 
-ifeq ($(TARGET_ARCH),armeabi-v7a)
-LOCAL_CFLAGS += -DHAVENEON=1
-endif
-
-LOCAL_WHOLE_STATIC_LIBRARIES += cpufeatures
 # LOCAL_CFLAGS += -mfloat-abi=softfp -mfpu=neon -march=armv7 -mthumb
 LOCAL_CPPFLAGS += -std=c++11
 LOCAL_CPP_FEATURES += exceptions
@@ -82,5 +73,3 @@ LOCAL_CPP_FEATURES += exceptions
 LOCAL_ARM_MODE := arm
 LOCAL_ARM_NEON := true
 include $(BUILD_SHARED_LIBRARY)
-
-$(call import-module, android/cpufeatures)

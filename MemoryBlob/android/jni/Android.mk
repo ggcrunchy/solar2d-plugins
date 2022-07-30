@@ -52,8 +52,7 @@ LOCAL_SRC_FILES := \
 	$(SRC_DIR)/Queue.cpp $(SRC_DIR)/SharedStorage.cpp $(SRC_DIR)/State.cpp \
 	$(CUCKOO_DIR)/city.cc \
 	$(BR_DIR)/ByteReader.cpp \
-	$(SNU_SRC)/Blob.cpp $(SNU_SRC)/Byte.cpp $(SNU_SRC)/LuaEx.cpp $(SNU_SRC)/Memory.cpp $(SNU_SRC)/Path.cpp \
-	$(SNU_SRC)/SIMD.cpp $(SNU_SRC)/Thread.cpp
+	$(SNU_SRC)/Blob.cpp $(SNU_SRC)/Byte.cpp $(SNU_SRC)/LuaEx.cpp $(SNU_SRC)/Memory.cpp $(SNU_SRC)/Path.cpp $(SNU_SRC)/Thread.cpp
 LOCAL_CFLAGS := \
 	-DANDROID_NDK \
 	-DNDEBUG \
@@ -62,23 +61,12 @@ LOCAL_CFLAGS := \
 
 LOCAL_LDLIBS := -llog
 
-LOCAL_CFLAGS += -fopenmp
-LOCAL_LDFLAGS += -fopenmp
-
 LOCAL_SHARED_LIBRARIES := \
 	liblua libcorona
 
 ifeq ($(TARGET_ARCH),arm)
 LOCAL_CFLAGS+= -D_ARM_ASSEM_
 endif
-
-#for adding cpufeatures
-LOCAL_WHOLE_STATIC_LIBRARIES += cpufeatures
-ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
-    LOCAL_CFLAGS += -DHAVE_NEON=1
-endif
-
-LOCAL_WHOLE_STATIC_LIBRARIES += cpufeatures
 
 # LOCAL_CFLAGS += -mfloat-abi=softfp -mfpu=neon -march=armv7 -mthumb
 LOCAL_CPPFLAGS += -std=c++11
@@ -88,5 +76,3 @@ LOCAL_CPP_FEATURES += exceptions
 LOCAL_ARM_MODE := arm
 LOCAL_ARM_NEON := true
 include $(BUILD_SHARED_LIBRARY)
-
-$(call import-module, android/cpufeatures)
