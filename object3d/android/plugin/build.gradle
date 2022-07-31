@@ -1,0 +1,36 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
+
+    defaultConfig {
+        minSdkVersion 10
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+}
+
+def coronaEnterpriseDir = "$rootDir/CoronaEnterprise"
+
+task exportPluginJar (type: Copy, description: 'place the plugin JAR file in the outputs directory and give it a name from the AndroidManifest.xml') {
+    def pluginName = new XmlSlurper().parse(file('src/main/AndroidManifest.xml')).@package.text()
+    from "$buildDir/intermediates/bundles/release/"
+    into "$buildDir/outputs/jar"
+    include 'classes.jar'
+    rename 'classes.jar', "${pluginName}.jar"
+
+    doFirst {
+        println '== exportPluginJar =='
+    }
+}
+
+tasks.withType(JavaCompile) {
+    compileTask -> compileTask.dependsOn('exportPluginJar')
+}
+
+dependencies {
+    compile fileTree(dir: "$coronaEnterpriseDir/Corona/android/lib/Corona/libs", include: '*.jar')
+    compile fileTree(dir: 'libs', include: '*.jar')
+}

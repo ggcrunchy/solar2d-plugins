@@ -1,0 +1,126 @@
+apply plugin: 'com.android.application'
+
+// Application name variables
+def appName = new XmlSlurper().parse(file('src/main/AndroidManifest.xml')).@package.text()
+def apkName = appName.toString().split('\\.').last()
+
+// Paths used throughout the build process
+def coronaEnterpriseDir = "$rootDir/CoronaEnterprise"
+def assetsDir = "$projectDir/src/main/assets"
+def jniLibsDir = "$projectDir/src/main/jniLibs"
+def coronaEnterpriseMacBinDir = "$coronaEnterpriseDir/Corona/mac/bin"
+def coronaEnterpriseSharedDir = "$coronaEnterpriseDir/Corona/shared"
+def coronaEnterpriseAndroidLibDir = "$coronaEnterpriseDir/Corona/android/lib/Corona"
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
+
+    defaultConfig {
+        applicationId "$appName"
+        minSdkVersion 10
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            output.outputFile = file(output.outputFile.getPath().replace('/app-', "/${apkName}-"))
+        }
+    }
+}
+
+task cleanAssets(type: Delete, description: 'remove Corona assets and libcorona.so') {
+    delete "$assetsDir"
+    delete "$jniLibsDir"
+
+    doFirst {
+        println "== cleanAssets =="
+    }
+
+    doLast {
+        new File("$assetsDir").mkdirs()
+    }
+}
+
+task compileLua(type: Exec, description: 'compile Lua source code') {
+    executable = "$coronaEnterpriseMacBinDir/lua"
+    workingDir = "$coronaEnterpriseMacBinDir"
+    args = [
+            '-e',
+            "package.path='$coronaEnterpriseSharedDir/bin/?.lua;$coronaEnterpriseSharedDir/bin/?/init.lua;'..package.path",
+            "$coronaEnterpriseSharedDir/bin/Compile.lua",
+            'mac',
+            "$coronaEnterpriseDir"
+    ]
+
+    environment = [
+            LUA_CPATH                   : "$coronaEnterpriseMacBinDir/?.so",
+            TARGET_PLATFORM             : 'android',
+            PROJECT_DIR                 : "$rootDir",
+            CORONA_COPY_PNG_PRESERVE    : '--preserve',
+            CONFIGURATION               : 'release',
+            CORONA_ASSETS_DIR           : "$rootDir/../Corona",
+            CORONA_TARGET_RESOURCES_DIR : "$assetsDir",
+            CORONA_TARGET_EXECUTABLE_DIR: "$assetsDir"
+    ]
+
+    dependsOn 'cleanAssets'
+
+    doFirst {
+        println '== compileLua =='
+    }
+}
+
+task copyCoronaResources(type: Copy, description: 'include resources from Corona Enterprise') {
+    from fileTree(dir: "$coronaEnterpriseAndroidLibDir/res", include: '**/*')
+    into "$projectDir/src/main/res"
+
+    dependsOn 'compileLua'
+
+    doFirst {
+        println '== copyCoronaResources =='
+    }
+}
+
+task copyCoronaNativeLibs(type: Copy, description: 'include precompiled libraries from Corona Enterprise (along with my own)') {
+    from fileTree(dir: "$coronaEnterpriseAndroidLibDir/libs", include: '**/*.so')
+    into "$jniLibsDir"
+
+    from fileTree(dir: "$rootDir/libs", include: '**/*.so')
+    into "$jniLibsDir"
+
+    dependsOn 'copyCoronaResources'
+
+    doFirst {
+        println '== copyCoronaNativeLibs =='
+    }
+}
+
+task certifyBuild(type: Exec, description: 'certify libcorona.so with resource.car hash and developerkey.cert') {
+    executable = "$coronaEnterpriseMacBinDir/CoronaBuilder.app/Contents/MacOS/CoronaBuilder"
+    workingDir = "$coronaEnterpriseMacBinDir"
+    args = [
+            'app_sign',
+            'sign',
+            "$coronaEnterpriseSharedDir/resource/developerkey.cert",
+            "$assetsDir/resource.car",
+            "$jniLibsDir/armeabi-v7a/libcorona.so",
+            'little'
+    ]
+
+    dependsOn 'copyCoronaNativeLibs'
+
+    doFirst {
+        println '== certifyBuild =='
+    }
+}
+
+tasks.preBuild.dependsOn('certifyBuild')
+
+dependencies {
+    compile fileTree(dir: "$coronaEnterpriseDir/Corona/android/lib/Corona/libs", include: '*.jar')
+    compile fileTree(dir: 'libs', include: ['*.jar','*.so'])
+    compile 'com.android.support:appcompat-v7:23.4.0'
+}
