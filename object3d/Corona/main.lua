@@ -43,8 +43,13 @@ local MemoryBlob = require("plugin.MemoryBlob") -- installs non-dummy blob logic
 local object3d = require("plugin.object3d")
 local memoryBitmap = require("plugin.memoryBitmap")
 
+local WantAlpha = false
+
 local mode = "diffuse"
-local obj = object3d.New(400, 400, mode == "uvs")
+
+local NeedAlpha = WantAlpha or mode == "uvs"
+
+local obj = object3d.New(400, 400, NeedAlpha)
 
 local FaceParams = {}
 
@@ -108,7 +113,7 @@ local handlers = {
 
 obj_parser(system.pathForFile("squirrel/model_647897911503.obj"), handlers)
 
-local bm = Bytemap.newTexture{ width = 400, height = 400, format = mode == "uvs" and "rgba" or "rgb" }
+local bm = Bytemap.newTexture{ width = 400, height = 400, format = NeedAlpha and "rgba" or "rgb" }
 local image
 
 if mode == "uvs" then
@@ -145,13 +150,24 @@ else
 	image = display.newImage(bm.filename, bm.baseDir)
 
 	if mode == "diffuse" then
-		local bmap = Bytemap.loadTexture{ filename = "squirrel/texture_647897911503.jpg", format = "rgb", is_non_external = true }
+		local bmap = Bytemap.loadTexture{ filename = "squirrel/texture_647897911503.jpg", format = NeedAlpha and "rgba" or "rgb", is_non_external = true }
 
-		obj:SetDiffuse(bmap:GetBytes(), bmap.width, bmap.height, 3)
+		obj:SetDiffuse(bmap:GetBytes(), bmap.width, bmap.height, NeedAlpha and 4 or 3)
 	else
 		-- all white
 	end
 end
+--[[
+-- test alpha:
+local g = display.newGroup()
+g:toBack()
+for i = 1, 50 do
+  local x = math.random(100, display.contentWidth - 100)
+  local d = display.newCircle(g,x, display.contentCenterY, math.random(8, 15))
+
+  d:setFillColor(math.random(), math.random(), math.random())
+end
+--]]
 ---[[
 image.x, image.y = display.contentCenterX, display.contentCenterY
 
