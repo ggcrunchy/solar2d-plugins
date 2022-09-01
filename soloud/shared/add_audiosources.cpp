@@ -156,13 +156,8 @@ template<typename T> void AddCommonMethods (lua_State * L)
 						lua_setfield(L, -2, "__metatable"); // ..., mt; mt.__metatable = MT_NAME(AudioSourceDestroyed)
 					});
 
-					lua_getfenv(L, 1); // source, filters
-
-					for (int i = 1; i <= FILTERS_PER_STREAM; ++i)
-					{
-						lua_pushnil(L); // source, filters, nil
-						lua_rawseti(L, -2, i); // source, filters = { ..., [i] = nil }
-					}
+					RemoveFilterAndBufferRefs(L);
+					RemoveFromStore(L);
 				}
 
 				return 0;
@@ -302,34 +297,32 @@ template<typename T> void AddCommonMethods (lua_State * L)
 	luaL_register(L, nullptr, funcs);
 }
 
-template<typename T> void AddAudioSourceType (lua_State * L, lua_CFunction extra = nullptr)
+template<typename T> void AddAudioSourceType (lua_State * L, lua_CFunction extra)
 {
 	lua_pushliteral(L, "create"); // soloud, "create"
 	lua_pushstring(L, GetRawAudioSourceName<T>()); // soloud, "create", AudioSourceName
 	lua_concat(L, 2); // soloud, "create" .. AudioSourceName
 
-	if (extra) lua_pushcfunction(L, extra); // soloud, "create" .. AudioSourceName, extra
-	else lua_pushnil(L); // soloud, "create" .. AudioSourceName, nil
+	lua_pushcfunction(L, extra); // soloud, "create" .. AudioSourceName, extra
 
 	lua_pushcclosure(L, [](lua_State * L) {
 		T * source = LuaXS::NewTyped<T>(L); // source
 
-		lua_createtable(L, FILTERS_PER_STREAM, 0); // source, filters
-		lua_setfenv(L, -2); // source; source.env = filters
+		lua_createtable(L, FILTERS_PER_STREAM, 2); // source, env
+		lua_setfenv(L, -2); // source; source.env = env
 
 		LuaXS::AttachMethods(L, GetAudioSourceName<T>(), [](lua_State * L) {
+			AddCommonMethods<T>(L);
 
-			if (!lua_isnil(L, lua_upvalueindex(1)))
-			{
-				lua_pushvalue(L, lua_upvalueindex(1));	// mt, extra?
-				lua_pushvalue(L, -2); // mt, extra, mt
-				lua_call(L, 1, 0); // mt
-			}
-
+			lua_pushvalue(L, lua_upvalueindex(1));	// mt, extra
+			lua_pushvalue(L, -2); // mt, extra, mt
+			lua_call(L, 1, 0); // mt
 			lua_pushliteral(L, MT_NAME(AudioSource)); // mt, MT_NAME(AudioSource)
 
 			lua_setfield(L, -2, "__metatable"); // mt; mt.__metatable = MT_NAME(AudioSource)
 		});
+
+		AddToStore(L);
 
 		return 1;
 	}, 1); // soloud, "create" .. AudioSourceName, CreateAudioSource; CreateAudioSource.upvalue1 = extra / nil
@@ -342,7 +335,11 @@ template<typename T> void AddAudioSourceType (lua_State * L, lua_CFunction extra
 
 static void AddAy (lua_State * L)
 {
-	AddAudioSourceType<SoLoud::Ay>(L);
+	AddAudioSourceType<SoLoud::Ay>(L, [](lua_State * L) {
+		AddLoadMethods<SoLoud::Ay>(L);
+
+		return 0;
+	});
 }
 
 //
@@ -475,6 +472,13 @@ static void AddQueue (lua_State * L)
 	AddAudioSourceType<SoLoud::Queue>(L, [](lua_State * L) {
 		luaL_Reg funcs[] = {
 			{
+				"getQueueCount", [](lua_State * L)
+				{
+					lua_pushinteger(L, GetAudioSource<SoLoud::Queue>(L)->getQueueCount()); //queue, queue_count
+
+					return 1;
+				}
+			}, {
 				"isCurrentlyPlaying", [](lua_State * L)
 				{
 					lua_pushboolean(L, GetAudioSource<SoLoud::Queue>(L)->isCurrentlyPlaying(*GetAudioSource(L, 2))); // queue, source, isPlaying
@@ -691,14 +695,31 @@ static void AddVizsn (lua_State * L)
 //
 //
 
-static float GetSampleRate (lua_State * L)
+static void GetRawWaveOptions (lua_State * L, unsigned int & count, float & sample_rate, unsigned int & channels)
 {
-	return OptFloat(L, 3, 44100);
-}
+	const float def_sample_rate = 44100;
+	const unsigned int def_channels = 1U;
 
-static unsigned int GetChannelCount (lua_State * L)
-{
-	return luaL_optinteger(L, 4, 1U);
+	if (!lua_istable(L, 3))
+	{
+		sample_rate = def_sample_rate;
+		channels = def_channels;
+	}
+
+	else
+	{
+		lua_getfield(L, 3, "count"); // wav, bytes, count?
+		lua_getfield(L, 3, "samplerate"); // wav, bytes, count?, sample_rate?
+		lua_getfield(L, 3, "channels"); // wav, bytes, count?, sample_rate?, channels?
+
+		unsigned current_count = count;
+
+		count = luaL_optinteger(L, -3, current_count);
+		sample_rate = OptFloat(L, -2, def_sample_rate);
+		channels = luaL_optinteger(L, -1, def_channels);
+
+		if (count > current_count) count = current_count;
+	}
 }
 
 static void AddWav (lua_State * L)
@@ -720,9 +741,13 @@ static void AddWav (lua_State * L)
 					ByteReader mem{L, 2};
 
 					const float * bytes = static_cast<const float *>(mem.mBytes);
+					unsigned int count = mem.mCount / sizeof(float), channels;
+					float sample_rate;
+
+					GetRawWaveOptions(L, count, sample_rate, channels);
 
 					// TODO? does not actually track ownership (so will do a copy)
-					return Result(L, GetAudioSource<SoLoud::Wav>(L)->loadRawWave(const_cast<float *>(bytes), mem.mCount / sizeof(float), GetSampleRate(L), GetChannelCount(L), false, false));
+					return Result(L, GetAudioSource<SoLoud::Wav>(L)->loadRawWave(const_cast<float *>(bytes), count, sample_rate, channels, false, false));
 				}
 			}, {
 				"loadRawWave8", [](lua_State * L)
@@ -730,8 +755,12 @@ static void AddWav (lua_State * L)
 					ByteReader mem{L, 2};
 
 					const unsigned char * bytes = static_cast<const unsigned char *>(mem.mBytes);
+					unsigned int count = mem.mCount, channels;
+					float sample_rate;
 
-					return Result(L, GetAudioSource<SoLoud::Wav>(L)->loadRawWave8(const_cast<unsigned char *>(bytes), mem.mCount, GetSampleRate(L), GetChannelCount(L)));
+					GetRawWaveOptions(L, count, sample_rate, channels);
+
+					return Result(L, GetAudioSource<SoLoud::Wav>(L)->loadRawWave8(const_cast<unsigned char *>(bytes), count, sample_rate, channels));
 				}
 			}, {
 				"loadRawWave16", [](lua_State * L)
@@ -739,8 +768,12 @@ static void AddWav (lua_State * L)
 					ByteReader mem{L, 2};
 
 					const short * bytes = static_cast<const short *>(mem.mBytes);
+					unsigned int count = mem.mCount / sizeof(short), channels;
+					float sample_rate;
 
-					return Result(L, GetAudioSource<SoLoud::Wav>(L)->loadRawWave16(const_cast<short *>(bytes), mem.mCount / sizeof(short), GetSampleRate(L), GetChannelCount(L)));
+					GetRawWaveOptions(L, count, sample_rate, channels);
+
+					return Result(L, GetAudioSource<SoLoud::Wav>(L)->loadRawWave16(const_cast<short *>(bytes), count, sample_rate, channels));
 				}
 			},
 			{ nullptr, nullptr }

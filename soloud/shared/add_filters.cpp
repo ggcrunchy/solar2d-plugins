@@ -142,6 +142,8 @@ template<typename T> void AddCommonMethods (lua_State * L)
 				{
 					lua_pushlightuserdata(L, box->mFilter); // filter, ptr
 					lua_rawset(L, LUA_REGISTRYINDEX); // filter; registry[ptr] = nil
+
+					RemoveFromStore(L);
 				}
 
 				box->mFilter = nullptr;
@@ -270,10 +272,20 @@ template<typename T> void AddFilterType (lua_State * L, lua_CFunction extra = nu
 
 		box->mFilter = filter;
 
+		AddToStore(L);
+
 		return 1;
 	}, 1); // soloud, "create" .. FilterName, CreateFilter; CreateFilter.upvalue1 = extra / nil
 	lua_settable(L, -3); // sloud = { ..., ["create" .. FilterName] = CreateFilter }
 }
+
+//
+//
+//
+
+#define ADD_FILTER_PARAMETER(TYPE, NAME) \
+	lua_pushinteger(L, SoLoud::TYPE::NAME + 1);  \
+	lua_setfield(L, -2, #TYPE "." #NAME)
 
 //
 //
@@ -296,6 +308,8 @@ static void AddBassboostFilter (lua_State * L)
 
 		return 0;
 	});
+
+	ADD_FILTER_PARAMETER(BassboostFilter, BOOST);
 }
 
 //
@@ -321,6 +335,10 @@ static void AddBiquadResonantFilter (lua_State * L)
 
 		return 0;
 	});
+
+	ADD_FILTER_PARAMETER(BiquadResonantFilter, TYPE);
+	ADD_FILTER_PARAMETER(BiquadResonantFilter, FREQUENCY);
+	ADD_FILTER_PARAMETER(BiquadResonantFilter, RESONANCE);
 }
 
 //
@@ -359,7 +377,7 @@ static void AddDuckFilter (lua_State * L)
 				{
 					return Result(L, GetFilter<SoLoud::DuckFilter>(L)->setParams(
 						GetCore(L, 2), LuaXS::Uint(L, 3),
-						OptFloat(L, 4, .1f), OptFloat(L, 5, .5f), OptFloat(L, 6, .1f)
+						OptFloat(L, 4, .1f), OptFloat(L, 5, .5f), OptFloat(L, 6, .1f) // TODO: options table?
 					));
 				}
 			},
@@ -370,6 +388,10 @@ static void AddDuckFilter (lua_State * L)
 
 		return 0;
 	});
+
+	ADD_FILTER_PARAMETER(DuckFilter, ONRAMP);
+	ADD_FILTER_PARAMETER(DuckFilter, OFFRAMP);
+	ADD_FILTER_PARAMETER(DuckFilter, LEVEL);
 }
 
 //
@@ -385,7 +407,7 @@ static void AddEchoFilter (lua_State * L)
 				{
 					return Result(L, GetFilter<SoLoud::EchoFilter>(L)->setParams(
 						LuaXS::Float(L, 2),
-						OptFloat(L, 3, .7f), OptFloat(L, 4, 0)
+						OptFloat(L, 3, .7f), OptFloat(L, 4, 0) // TODO: options table?
 					));
 				}
 			},
@@ -396,6 +418,10 @@ static void AddEchoFilter (lua_State * L)
 
 		return 0;
 	});
+
+	ADD_FILTER_PARAMETER(EchoFilter, DELAY);
+	ADD_FILTER_PARAMETER(EchoFilter, DECAY);
+	ADD_FILTER_PARAMETER(EchoFilter, FILTER);
 }
 
 //
@@ -419,6 +445,15 @@ static void AddEQFilter (lua_State * L)
 
 		return 0;
 	});
+
+	ADD_FILTER_PARAMETER(EqFilter, BAND1);
+	ADD_FILTER_PARAMETER(EqFilter, BAND2);
+	ADD_FILTER_PARAMETER(EqFilter, BAND3);
+	ADD_FILTER_PARAMETER(EqFilter, BAND4);
+	ADD_FILTER_PARAMETER(EqFilter, BAND5);
+	ADD_FILTER_PARAMETER(EqFilter, BAND6);
+	ADD_FILTER_PARAMETER(EqFilter, BAND7);
+	ADD_FILTER_PARAMETER(EqFilter, BAND8);
 }
 
 //
@@ -451,6 +486,9 @@ static void AddFlangerFilter (lua_State * L)
 
 		return 0;
 	});
+
+	ADD_FILTER_PARAMETER(FlangerFilter, DELAY);
+	ADD_FILTER_PARAMETER(FlangerFilter, FREQ);
 }
 
 //
@@ -474,6 +512,11 @@ static void AddFreeverbFilter (lua_State * L)
 
 		return 0;
 	});
+
+	ADD_FILTER_PARAMETER(FreeverbFilter, FREEZE);
+	ADD_FILTER_PARAMETER(FreeverbFilter, ROOMSIZE);
+	ADD_FILTER_PARAMETER(FreeverbFilter, DAMP);
+	ADD_FILTER_PARAMETER(FreeverbFilter, WIDTH);
 }
 
 //
@@ -497,6 +540,9 @@ static void AddLofiFilter (lua_State * L)
 
 		return 0;
 	});
+
+	ADD_FILTER_PARAMETER(LofiFilter, SAMPLERATE);
+	ADD_FILTER_PARAMETER(LofiFilter, BITDEPTH);
 }
 
 //
@@ -522,6 +568,9 @@ static void AddRobotizeFilter (lua_State * L)
 
 		return 0;
 	});
+
+	ADD_FILTER_PARAMETER(RobotizeFilter, FREQ);
+	ADD_FILTER_PARAMETER(RobotizeFilter, WAVE);
 }
 
 //
@@ -545,6 +594,8 @@ static void AddWaveShaperFilter (lua_State * L)
 
 		return 0;
 	});
+
+	ADD_FILTER_PARAMETER(WaveShaperFilter, AMOUNT);
 }
 
 //
@@ -565,4 +616,7 @@ void add_filters (lua_State * L)
 	AddLofiFilter(L);
 	AddRobotizeFilter(L);
 	AddWaveShaperFilter(L);
+
+	lua_pushinteger(L, 1); // soloud, 1
+	lua_setfield(L, -2, "Filter.WET"); // soloud = { ..., ["Filter.WET"] = 1 }
 }

@@ -23,6 +23,7 @@
 
 #include "common.h"
 #include "templates.h"
+#include <vector>
 
 //
 //
@@ -54,33 +55,33 @@
 }
 
 #define DO_HANDLE(NAME) #NAME, [](lua_State * L) { \
-    GetSoloud(L)->NAME(LuaXS::Uint(L, 2));         \
+    GetSoloud(L)->NAME(GetHandle(L, 2));           \
     return 0;                                      \
 }
 
-#define DO_HANDLE_BOOLEAN(NAME) #NAME, [](lua_State * L) {      \
-    GetSoloud(L)->NAME(LuaXS::Uint(L, 2), lua_toboolean(L, 3)); \
-    return 0;                                                   \
+#define DO_HANDLE_BOOLEAN(NAME) #NAME, [](lua_State * L) {    \
+    GetSoloud(L)->NAME(GetHandle(L, 2), lua_toboolean(L, 3)); \
+    return 0;                                                 \
 }
 
-#define DO_HANDLE_FLOAT(NAME) #NAME, [](lua_State * L) {       \
-    GetSoloud(L)->NAME(LuaXS::Uint(L, 2), LuaXS::Float(L, 3)); \
-    return 0;                                                  \
+#define DO_HANDLE_FLOAT(NAME) #NAME, [](lua_State * L) {     \
+    GetSoloud(L)->NAME(GetHandle(L, 2), LuaXS::Float(L, 3)); \
+    return 0;                                                \
 }
 
-#define DO_HANDLE_NUMBER(NAME) #NAME, [](lua_State * L) {      \
-    GetSoloud(L)->NAME(LuaXS::Uint(L, 2), lua_tonumber(L, 3)); \
-    return 0;                                                  \
+#define DO_HANDLE_NUMBER(NAME) #NAME, [](lua_State * L) {    \
+    GetSoloud(L)->NAME(GetHandle(L, 2), lua_tonumber(L, 3)); \
+    return 0;                                                \
 }
 
-#define DO_HANDLE_FLOAT2(NAME) #NAME, [](lua_State * L) {                          \
-    GetSoloud(L)->NAME(LuaXS::Uint(L, 2), LuaXS::Float(L, 3), LuaXS::Float(L, 4)); \
-    return 0;                                                                      \
+#define DO_HANDLE_FLOAT2(NAME) #NAME, [](lua_State * L) {                        \
+    GetSoloud(L)->NAME(GetHandle(L, 2), LuaXS::Float(L, 3), LuaXS::Float(L, 4)); \
+    return 0;                                                                    \
 }
 
-#define DO_HANDLE_FLOAT3(NAME) #NAME, [](lua_State * L) {                                              \
-    GetSoloud(L)->NAME(LuaXS::Uint(L, 2), LuaXS::Float(L, 3), LuaXS::Float(L, 4), LuaXS::Float(L, 5)); \
-    return 0;                                                                                          \
+#define DO_HANDLE_FLOAT3(NAME) #NAME, [](lua_State * L) {                                            \
+    GetSoloud(L)->NAME(GetHandle(L, 2), LuaXS::Float(L, 3), LuaXS::Float(L, 4), LuaXS::Float(L, 5)); \
+    return 0;                                                                                        \
 }
 
 #define GET_BOOLEAN_VOID(NAME) #NAME, [](lua_State * L) { \
@@ -98,29 +99,24 @@
     return 1;                                            \
 }
 
-#define GET_BOOLEAN_HANDLE(NAME) #NAME, [](lua_State * L) {    \
-    lua_pushboolean(L, GetSoloud(L)->NAME(LuaXS::Uint(L, 2))); \
-    return 1;                                                  \
+#define GET_BOOLEAN_HANDLE(NAME) #NAME, [](lua_State * L) {  \
+    lua_pushboolean(L, GetSoloud(L)->NAME(GetHandle(L, 2))); \
+    return 1;                                                \
 }
 
-#define GET_INTEGER_HANDLE(NAME) #NAME, [](lua_State * L) {    \
-    lua_pushinteger(L, GetSoloud(L)->NAME(LuaXS::Uint(L, 2))); \
-    return 1;                                                  \
+#define GET_NUMBER_HANDLE(NAME) #NAME, [](lua_State * L) {  \
+    lua_pushnumber(L, GetSoloud(L)->NAME(GetHandle(L, 2))); \
+    return 1;                                               \
 }
 
-#define GET_NUMBER_HANDLE(NAME) #NAME, [](lua_State * L) {    \
-    lua_pushnumber(L, GetSoloud(L)->NAME(LuaXS::Uint(L, 2))); \
-    return 1;                                                 \
+#define FADE(NAME) #NAME, [](lua_State * L) {                                    \
+    GetSoloud(L)->NAME(GetHandle(L, 2), LuaXS::Float(L, 3), lua_tonumber(L, 4)); \
+    return 0;                                                                    \
 }
 
-#define FADE(NAME) #NAME, [](lua_State * L) {                                      \
-    GetSoloud(L)->NAME(LuaXS::Uint(L, 2), LuaXS::Float(L, 3), lua_tonumber(L, 4)); \
-    return 0;                                                                      \
-}
-
-#define OSCILLATE(NAME) #NAME, [](lua_State * L) {                                                     \
-    GetSoloud(L)->NAME(LuaXS::Uint(L, 2), LuaXS::Float(L, 3), LuaXS::Float(L, 4), lua_tonumber(L, 5)); \
-    return 0;                                                                                          \
+#define OSCILLATE(NAME) #NAME, [](lua_State * L) {                                                   \
+    GetSoloud(L)->NAME(GetHandle(L, 2), LuaXS::Float(L, 3), LuaXS::Float(L, 4), lua_tonumber(L, 5)); \
+    return 0;                                                                                        \
 }
 
 //
@@ -172,7 +168,7 @@ void SoloudMethods(lua_State * L)
 		{
 			"addVoiceToGroup", [](lua_State * L)
 			{
-				return Result(L, GetSoloud(L)->addVoiceToGroup(LuaXS::Uint(L, 2), LuaXS::Uint(L, 3)));
+				return Result(L, GetSoloud(L)->addVoiceToGroup(GetHandle(L, 2), GetHandle(L, 3)));
 			}
 		}, {
 			"countAudioSource", [](lua_State * L)
@@ -182,7 +178,12 @@ void SoloudMethods(lua_State * L)
 				return 1;
 			}
 		}, {
-			GET_INTEGER_VOID(createVoiceGroup)
+			"createVoiceGroup", [](lua_State * L)
+			{
+				lua_pushnumber(L, GetSoloud(L)->createVoiceGroup()); // soloud, group
+
+				return 1;
+			}
 		}, {
 			"destroy", [](lua_State * L)
 			{
@@ -192,6 +193,9 @@ void SoloudMethods(lua_State * L)
 				{
 					box->mCore.deinit();
 					box->mCore.~Soloud();
+
+					RemoveFilterAndBufferRefs(L);
+					RemoveFromStore(L);
 				}
 
 				box->mDestroyed = true;
@@ -201,12 +205,12 @@ void SoloudMethods(lua_State * L)
 		}, {
 			"destroyVoiceGroup", [](lua_State * L)
 			{
-				return Result(L, GetSoloud(L)->destroyVoiceGroup(LuaXS::Uint(L, 2)));
+				return Result(L, GetSoloud(L)->destroyVoiceGroup(GetHandle(L, 2)));
 			}
 		}, {
 			"fadeFilterParameter", [](lua_State * L)
 			{
-				GetSoloud(L)->fadeFilterParameter(LuaXS::Uint(L, 2), Index(L, 3), Index(L, 4), LuaXS::Float(L, 5), lua_tonumber(L, 6));
+				GetSoloud(L)->fadeFilterParameter(GetHandle(L, 2), Index(L, 3), Index(L, 4), LuaXS::Float(L, 5), lua_tonumber(L, 6));
 
 				return 0;
 			}
@@ -234,12 +238,14 @@ void SoloudMethods(lua_State * L)
 		},{
 			"getFilterParameter", [](lua_State * L)
 			{
-				lua_pushnumber(L, GetSoloud(L)->getFilterParameter(LuaXS::Uint(L, 2), Index(L, 3), Index(L, 4))); // soloud, handle, filter_id, attribute_id, param
+				lua_pushnumber(L, GetSoloud(L)->getFilterParameter(GetHandle(L, 2), Index(L, 3), Index(L, 4))); // soloud, handle, filter_id, attribute_id, param
 
 				return 1;
 			}
 		}, {
 			GET_NUMBER_VOID(getGlobalVolume)
+		}, {
+			GET_INTEGER_VOID(getBackendBufferSize)
 		}, {
 			GET_INTEGER_VOID(getBackendChannels)
 		}, {
@@ -259,13 +265,18 @@ void SoloudMethods(lua_State * L)
 		}, {
 			"getInfo", [](lua_State * L)
 			{
-				lua_pushnumber(L, GetSoloud(L)->getInfo(LuaXS::Uint(L, 2), LuaXS::Uint(L, 3))); // soloud, handle, key, info
+				lua_pushnumber(L, GetSoloud(L)->getInfo(GetHandle(L, 2), Index(L, 3))); // soloud, handle, key, info
 
 				return 1;
 			}
 		}, {
-			GET_INTEGER_HANDLE(getLoopCount)
-			}, {
+			"getLoopCount", [](lua_State * L)
+			{
+				lua_pushinteger(L, GetSoloud(L)->getLoopCount(GetHandle(L, 2)));
+
+				return 1;
+			}
+		}, {
 			GET_BOOLEAN_HANDLE(getLooping)
 		}, {
 			GET_NUMBER_HANDLE(getLoopPoint)
@@ -296,7 +307,7 @@ void SoloudMethods(lua_State * L)
 			"getSpeakerPosition", [](lua_State * L)
 			{
 				float x, y, z;
-				SoLoud::result result = GetSoloud(L)->getSpeakerPosition(LuaXS::Uint(L, 2), x, y, z);
+				SoLoud::result result = GetSoloud(L)->getSpeakerPosition(Index(L, 2), x, y, z);
 
 				if (SoLoud::SO_NO_ERROR == result)
 				{
@@ -327,24 +338,64 @@ void SoloudMethods(lua_State * L)
 			GET_BOOLEAN_HANDLE(isVoiceGroup)
 		}, {
 			GET_BOOLEAN_HANDLE(isVoiceGroupEmpty)
-}, {
-	"mix", [](lua_State * L)
-	{
-		// TODO!
+		}, {
+			"mix", [](lua_State * L)
+			{
+				std::vector<float> floats;
+				float * data;
+				unsigned int samples;
 
-		return 1;
-	}
-}, {
-	"mixSigned16", [](lua_State * L)
-	{
-		// TODO!
+				if (lua_isuserdata(L, 2))
+				{
+					FloatBuffer * buffer = GetFloatBuffer(L, 2);
+					size_t def_size = buffer->mSize / 2;
 
-		return 1;
-	}
+					samples = luaL_optinteger(L, 3, def_size);
+					data = buffer->mData;
+			
+					luaL_argcheck(L, buffer->mOwnsData, 2, "Attempt to mix() unowned data");
+					luaL_argcheck(L, samples > 0, !lua_isnoneornil(L, 3) ? 3 : 2, "mix() must have > 0 samples");
+					luaL_argcheck(L, samples <= def_size, 3, "mix() not given enough space for samples");
+					lua_pushboolean(L, 1); // buffer[, samples], true
+				}
+
+				else
+				{
+					samples = luaL_checkinteger(L, 2);
+
+					luaL_argcheck(L, samples > 0, 2, "mix() must have > 0 samples");
+
+					floats.resize(samples * 2);
+
+					data = floats.data();
+				}
+
+				GetSoloud(L)->mix(data, samples);
+
+				if (!floats.empty()) lua_pushlstring(L, reinterpret_cast<char *>(data), floats.size() * sizeof(float)); // samples, data
+
+				return 1;
+			}
+		}, {
+			"mixSigned16", [](lua_State * L)
+			{
+				// TODO? could add buffers for signed16 (also 8-bit)
+				unsigned int samples = luaL_checkinteger(L, 2);
+
+				luaL_argcheck(L, samples > 0, 2, "mixSigned16() must have > 0 samples");
+
+				std::vector<short> shorts(samples);
+
+				GetSoloud(L)->mixSigned16(shorts.data(), samples * 2);
+
+				if (!shorts.empty()) lua_pushlstring(L, reinterpret_cast<char *>(shorts.data()), samples * sizeof(short)); // samples, data
+
+				return 1;
+			}
 		}, {
 			"oscillateFilterParameter", [](lua_State * L)
 			{
-				GetSoloud(L)->oscillateFilterParameter(LuaXS::Uint(L, 2), Index(L, 3), Index(L, 4), LuaXS::Float(L, 5), LuaXS::Float(L, 6), lua_tonumber(L, 7));
+				GetSoloud(L)->oscillateFilterParameter(GetHandle(L, 2), Index(L, 3), Index(L, 4), LuaXS::Float(L, 5), LuaXS::Float(L, 6), lua_tonumber(L, 7));
 
 				return 0;
 			}
@@ -364,12 +415,16 @@ void SoloudMethods(lua_State * L)
 		}, {
 			"playBackground", [](lua_State * L)
 			{
-				lua_pushinteger(L, GetSoloud(L)->playBackground(
-					*GetAudioSource(L, 2),
-					OptFloat(L, 3, -1), lua_toboolean(L, 4)
-				)); // soloud, source[, volume, paused], handle
+				Options opts;
 
-				return 1;
+				opts.mWantVolume = opts.mPaused = true;
+
+				opts.Get(L, 3);
+
+				return PushHandle(L, GetSoloud(L)->playBackground(
+					*GetAudioSource(L, 2),
+					opts.mVolume, opts.mPaused
+				)); // soloud, source[, opts], handle
 			}
 		}, {
 			DO_HANDLE_NUMBER(schedulePause)
@@ -378,28 +433,28 @@ void SoloudMethods(lua_State * L)
 		}, {
 			"seek", [](lua_State * L)
 			{
-				return Result(L, GetSoloud(L)->seek(LuaXS::Uint(L, 2), lua_tonumber(L, 3)));
+				return Result(L, GetSoloud(L)->seek(GetHandle(L, 2), lua_tonumber(L, 3)));
 			}
 		}, {
 			DO_HANDLE_BOOLEAN(setAutoStop)
 		}, {
 			"setChannelVolume", [](lua_State * L)
 			{
-				GetSoloud(L)->setChannelVolume(LuaXS::Uint(L, 2), LuaXS::Uint(L, 3), LuaXS::Float(L, 4));
+				GetSoloud(L)->setChannelVolume(GetHandle(L, 2), Index(L, 3), LuaXS::Float(L, 4));
 
 				return 0;
 			}
 		}, {
 			"setDelaySamples", [](lua_State * L)
 			{
-				GetSoloud(L)->setDelaySamples(LuaXS::Uint(L, 2), LuaXS::Uint(L, 3));
+				GetSoloud(L)->setDelaySamples(GetHandle(L, 2), LuaXS::Uint(L, 3));
 
 				return 0;
 			}
 		}, {
 			"setFilterParameter", [](lua_State * L)
 			{
-				GetSoloud(L)->setFilterParameter(LuaXS::Uint(L, 2), Index(L, 3), Index(L, 4), LuaXS::Float(L, 5));
+				GetSoloud(L)->setFilterParameter(GetHandle(L, 2), Index(L, 3), Index(L, 4), LuaXS::Float(L, 5));
 
 				return 0;
 			}
@@ -421,7 +476,7 @@ void SoloudMethods(lua_State * L)
 		}, {
 			"setInaudibleBehavior", [](lua_State * L)
 			{
-				GetSoloud(L)->setInaudibleBehavior(LuaXS::Uint(L, 2), lua_toboolean(L, 3), lua_toboolean(L, 5));
+				GetSoloud(L)->setInaudibleBehavior(GetHandle(L, 2), lua_toboolean(L, 3), lua_toboolean(L, 5));
 
 				return 0;
 			}
@@ -458,7 +513,12 @@ void SoloudMethods(lua_State * L)
 		}, {
 			DO_HANDLE_FLOAT(setSamplerate)
 		}, {
-			DO_HANDLE_FLOAT3(setSpeakerPosition)
+			"setSpeakerPosition", [](lua_State * L)
+			{
+				GetSoloud(L)->setSpeakerPosition(Index(L, 2), LuaXS::Float(L, 3), LuaXS::Float(L, 4), LuaXS::Float(L, 5));
+    
+				return 0;
+			}
 		}, {
 			DO_HANDLE_FLOAT(setVolume)
 		}, {
@@ -466,11 +526,17 @@ void SoloudMethods(lua_State * L)
 		}, {
 			"set3dListenerParameters", [](lua_State * L)
 			{
+				Options opts;
+
+				opts.mWantVelocity = true;
+
+				opts.Get(L, 11);
+
 				GetSoloud(L)->set3dListenerParameters(
 					LuaXS::Float(L, 2), LuaXS::Float(L, 3), LuaXS::Float(L, 4),
 					LuaXS::Float(L, 5), LuaXS::Float(L, 6), LuaXS::Float(L, 7),
 					LuaXS::Float(L, 8), LuaXS::Float(L, 9), LuaXS::Float(L, 10),
-					OptFloat(L, 11, 0), OptFloat(L, 12, 0), OptFloat(L, 13, 0)
+					opts.mVelX, opts.mVelY, opts.mVelZ
 				);
 
 				return 0;
@@ -484,7 +550,7 @@ void SoloudMethods(lua_State * L)
 		}, {
 			"set3dSourceAttenuation", [](lua_State * L)
 			{
-				GetSoloud(L)->set3dSourceAttenuation(LuaXS::Uint(L, 2), GetAttenuationModel(L, 3), LuaXS::Float(L, 4));
+				GetSoloud(L)->set3dSourceAttenuation(GetHandle(L, 2), GetAttenuationModel(L, 3), LuaXS::Float(L, 4));
 
 				return 0;
 			}
@@ -495,9 +561,15 @@ void SoloudMethods(lua_State * L)
 		}, {
 			"set3dSourceParameters", [](lua_State * L)
 			{
-				GetSoloud(L)->set3dSourceParameters(LuaXS::Uint(L, 2),
+				Options opts;
+
+				opts.mWantVelocity = opts.mWantVolume = true;
+
+				opts.Get(L, 6);
+
+				GetSoloud(L)->set3dSourceParameters(GetHandle(L, 2),
 					LuaXS::Float(L, 3), LuaXS::Float(L, 4), LuaXS::Float(L, 5),
-					OptFloat(L, 6, 0), OptFloat(L, 7, 0), OptFloat(L, 8, 0)
+					opts.mVelX, opts.mVelY, opts.mVelZ
 				);
 
 				return 0;
@@ -530,29 +602,65 @@ void SoloudMethods(lua_State * L)
 //
 //
 
-int CreateCore (lua_State * L)
+void GetCreateCoreParams (lua_State * L, unsigned int & flags, unsigned int & backend, unsigned int & sample_rate, unsigned int & buffer_size, unsigned int & channels)
 {
-	const char * flag_names[] = { "CLIP_ROUNDOFF", "ENABLE_VISUALIZATION", "LEFT_HANDED_3D", "NO_FPU_REGISTER_CHANGE", nullptr };
-	unsigned int flags = 0;
-		
-	if (lua_isnoneornil(L, 1)) flags = SoLoud::Soloud::CLIP_ROUNDOFF;
-	else if (lua_isstring(L, 1)) flags = 1U << luaL_checkoption(L, 1, nullptr, flag_names);
-	else
-	{
-		luaL_checktype(L, 1, LUA_TTABLE);
+	lua_getfield(L, 1, "flags"); // params, flags?
 
-		for (lua_pushnil(L); lua_next(L, 1); lua_pop(L, 1)) flags |= 1U << luaL_checkoption(L, -2, nullptr, flag_names);
+	const char * flag_names[] = { "CLIP_ROUNDOFF", "ENABLE_VISUALIZATION", "LEFT_HANDED_3D", "NO_FPU_REGISTER_CHANGE", nullptr };
+
+	if (lua_isstring(L, -1)) flags = 1U << luaL_checkoption(L, -1, nullptr, flag_names);
+	else if (!lua_isnil(L, -1))
+	{
+		luaL_checktype(L, -1, LUA_TTABLE);
+
+		for (size_t i = 0, len = lua_objlen(L, -1); i < len; ++i, lua_pop(L, 1))
+		{
+			lua_rawgeti(L, -1, int(i + 1)); // params, flags, flag
+
+			flags |= 1U << luaL_checkoption(L, -1, nullptr, flag_names);
+		}
 	}
 
-	const char * backend_names[] = { "AUTO", "SDL1", "SDL2", "PORTAUDIO", "WINMM", "XAUDIO2", "WASAPI", "ALSA", "JACK", "OSS", "OPENAL", "COREAUDIO", "OPENSLES", "VITA_HOMEBREW", "MINIAUDIO", "NOSOUND", "NULLDRIVER", nullptr };
-	unsigned int backend = luaL_checkoption(L, 2, "AUTO", backend_names);
-	unsigned int sample_rate = luaL_optinteger(L, 3, 0), buffer_size = luaL_optinteger(L, 4, 0), channels = luaL_optinteger(L, 5, 2);
-		
-	CoreBox * box = LuaXS::NewTyped<CoreBox>(L); // [flags[, backend[, sample_rate[, buffer_size[, channels, ]]]]]core
+	//
+	//
+	//
 
-	box->mCore.init(flags, backend, sample_rate, buffer_size, channels);
+	lua_getfield(L, 1, "backend"); // params, flags?, backend?
+
+	const char * backend_names[] = { "AUTO", "SDL1", "SDL2", "PORTAUDIO", "WINMM", "XAUDIO2", "WASAPI", "ALSA", "JACK", "OSS", "OPENAL", "COREAUDIO", "OPENSLES", "VITA_HOMEBREW", "MINIAUDIO", "NOSOUND", "NULLDRIVER", nullptr };
+
+	backend = luaL_checkoption(L, -1, "AUTO", backend_names);
+
+	//
+	//
+	//
+
+	lua_getfield(L, 1, "samplerate"); // params, flags?, backend?, samplerate?
+	lua_getfield(L, 1, "buffersize"); // params, flags?, backend?, samplerate?, buffersize?
+	lua_getfield(L, 1, "channels"); // params, flags?, backend?, samplerate?, channels?
+
+	sample_rate = luaL_optinteger(L, -3, sample_rate);
+	buffer_size = luaL_optinteger(L, -2, buffer_size);
+	channels = luaL_optinteger(L, -1, channels);
+}
+
+int CreateCore (lua_State * L)
+{
+	unsigned int flags = SoLoud::Soloud::CLIP_ROUNDOFF, backend = SoLoud::Soloud::AUTO, sample_rate = 0U, buffer_size = 0U, channels = 2U;
+
+	if (lua_istable(L, 1)) GetCreateCoreParams(L, flags, backend, sample_rate, buffer_size, channels);
+		
+	CoreBox * box = LuaXS::NewTyped<CoreBox>(L); // [params, ]core
+	SoLoud::result result = box->mCore.init(flags, backend, sample_rate, buffer_size, channels);
+
+	if (SoLoud::SO_NO_ERROR != result) return Result(L, result);
+
+	lua_createtable(L, FILTERS_PER_STREAM, 3); // core, env
+	lua_setfenv(L, -2); // source; source.env = env
 
 	LuaXS::AttachMethods(L, MT_NAME(Soloud), SoloudMethods);
+
+	AddToStore(L);
 
 	return 1;
 }

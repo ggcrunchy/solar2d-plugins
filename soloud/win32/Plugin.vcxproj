@@ -103,6 +103,7 @@ del %SIMULATOR_DIR%\catalog.json</Command>
     <ClCompile Include="..\shared\add_audiosources.cpp" />
     <ClCompile Include="..\shared\add_core.cpp" />
     <ClCompile Include="..\shared\add_filters.cpp" />
+    <ClCompile Include="..\shared\add_floatbuffer.cpp" />
     <ClCompile Include="..\shared\plugin.soloud.cpp" />
     <ClCompile Include="..\shared\src\audiosource\ay\chipplayer.cpp" />
     <ClCompile Include="..\shared\src\audiosource\ay\sndbuffer.cpp" />

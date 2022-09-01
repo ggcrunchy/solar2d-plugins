@@ -327,6 +327,9 @@
     <ClCompile Include="..\shared\add_audiosources.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\shared\add_floatbuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\shared\include\soloud.h">
