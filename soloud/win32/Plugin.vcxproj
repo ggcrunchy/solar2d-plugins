@@ -69,7 +69,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;PLUGINMEMORYBITMAP_EXPORTS;_CRT_SECURE_NO_WARNINGS;WITH_WINMM;WITH_NULL;WITH_NOSOUND;WITH_MINIAUDIO;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(CORONA_ROOT)/Corona/shared/include/Corona;$(CORONA_ROOT)/Corona/shared/include/lua;$(SolutionDir)../shared/include;$(SolutionDir)../../ByteReader;$(SolutionDir)../../solar2d_native_utils;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(CORONA_ROOT)/Corona/shared/include/Corona;$(CORONA_ROOT)/Corona/shared/include/lua;$(SolutionDir)../shared/include;$(SolutionDir)../../ByteReader;$(SolutionDir)../../solar2d_native_utils</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -104,6 +104,8 @@ del %SIMULATOR_DIR%\catalog.json</Command>
     <ClCompile Include="..\shared\add_core.cpp" />
     <ClCompile Include="..\shared\add_filters.cpp" />
     <ClCompile Include="..\shared\add_floatbuffer.cpp" />
+    <ClCompile Include="..\shared\custom_objects.cpp" />
+    <ClCompile Include="..\shared\marshal.c" />
     <ClCompile Include="..\shared\plugin.soloud.cpp" />
     <ClCompile Include="..\shared\src\audiosource\ay\chipplayer.cpp" />
     <ClCompile Include="..\shared\src\audiosource\ay\sndbuffer.cpp" />
@@ -176,6 +178,7 @@ del %SIMULATOR_DIR%\catalog.json</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\shared\common.h" />
+    <ClInclude Include="..\shared\custom_objects.h" />
     <ClInclude Include="..\shared\include\soloud.h" />
     <ClInclude Include="..\shared\include\soloud_audiosource.h" />
     <ClInclude Include="..\shared\include\soloud_ay.h" />
@@ -215,6 +218,7 @@ del %SIMULATOR_DIR%\catalog.json</Command>
     <ClInclude Include="..\shared\include\soloud_waveshaperfilter.h" />
     <ClInclude Include="..\shared\include\soloud_wavstream.h" />
     <ClInclude Include="..\shared\include\zx7decompress.h" />
+    <ClInclude Include="..\shared\marshal.h" />
     <ClInclude Include="..\shared\src\audiosource\ay\chipplayer.h" />
     <ClInclude Include="..\shared\src\audiosource\ay\sndbuffer.h" />
     <ClInclude Include="..\shared\src\audiosource\ay\sndchip.h" />

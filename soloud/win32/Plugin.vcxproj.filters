@@ -330,6 +330,12 @@
     <ClCompile Include="..\shared\add_floatbuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\shared\custom_objects.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\marshal.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\shared\include\soloud.h">
@@ -499,6 +505,12 @@
     </ClInclude>
     <ClInclude Include="..\shared\templates.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\custom_objects.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\marshal.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

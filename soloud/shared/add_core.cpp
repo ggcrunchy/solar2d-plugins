@@ -655,7 +655,8 @@ int CreateCore (lua_State * L)
 
 	if (SoLoud::SO_NO_ERROR != result) return Result(L, result);
 
-	lua_createtable(L, FILTERS_PER_STREAM, 3); // core, env
+	// hash part: fft table, wave table, unpaused, state
+	lua_createtable(L, FILTERS_PER_STREAM, 4); // core, env
 	lua_setfenv(L, -2); // source; source.env = env
 
 	LuaXS::AttachMethods(L, MT_NAME(Soloud), SoloudMethods);

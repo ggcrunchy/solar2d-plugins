@@ -46,6 +46,7 @@ struct FloatBuffer {
 
 	float * mData{nullptr};
 	size_t mSize{0U};
+	bool mCanWrite{false}; // n.b. if not owned
 	bool mOwnsData{true};
 	bool mSourceGone{false};
 };
@@ -78,8 +79,11 @@ int Result (lua_State * L, SoLoud::result err);
 float OptFloat (lua_State * L, int arg, float def);
 void SetFilterRefToEnvironment (lua_State * L, int arg, int index, SoLoud::Filter * filter);
 void AddToStore (lua_State * L);
-void RemoveFromStore (lua_State * L);
+void GetFromStore (lua_State * L, void * object);
+void RemoveFromStore (lua_State * L, void * object = nullptr);
 void RemoveFilterAndBufferRefs (lua_State * L);
+void AddBasics (lua_State * L);
+void PushPluginModule (lua_State * L);
 
 struct Options {
 	bool mWantPan{false};

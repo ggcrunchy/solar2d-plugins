@@ -210,7 +210,7 @@ FloatBuffer * NewFloatBuffer (lua_State * L)
 					float v = LuaXS::Float(L, 3);
 					
 					luaL_argcheck(L, pos >= 1 && pos <= buffer->mSize, 2, "Invalid index to setAt()");
-					luaL_argcheck(L, buffer->mOwnsData, 1, "Attempt to setAt() unowned data");
+					luaL_argcheck(L, buffer->mOwnsData || buffer->mCanWrite, 1, "Attempt to setAt() unowned data");
 
 					buffer->mData[pos - 1] = v;
 

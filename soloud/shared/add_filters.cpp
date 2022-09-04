@@ -107,7 +107,7 @@ static void GetFilterRef (lua_State * L, SoLoud::Filter * filter)
 	if (filter)
 	{
 		lua_pushlightuserdata(L, filter); // ..., filter_ptr
-		lua_gettable(L, LUA_REGISTRYINDEX); // ..., filter?
+		lua_rawget(L, LUA_REGISTRYINDEX); // ..., filter?
 	}
 
 	else lua_pushnil(L); // ..., nil
@@ -140,9 +140,7 @@ template<typename T> void AddCommonMethods (lua_State * L)
 
 				if (box->mFilter)
 				{
-					lua_pushlightuserdata(L, box->mFilter); // filter, ptr
-					lua_rawset(L, LUA_REGISTRYINDEX); // filter; registry[ptr] = nil
-
+					RemoveFromStore(L, box->mFilter);
 					RemoveFromStore(L);
 				}
 
@@ -155,11 +153,7 @@ template<typename T> void AddCommonMethods (lua_State * L)
 			{
 				FilterBox * box = GetFilterBox<T>(L);
 
-				if (box->mFilter)
-				{
-					lua_pushlightuserdata(L, box->mFilter); // filter, ptr
-					lua_rawset(L, LUA_REGISTRYINDEX); // filter; registry[ptr] = nil
-				}
+				if (box->mFilter) RemoveFromStore(L, box->mFilter);
 
 				return 0;
 			}
@@ -241,20 +235,11 @@ template<typename T> void AddFilterType (lua_State * L, lua_CFunction extra = nu
 		FilterBox * box = LuaXS::NewTyped<FilterBox>(L); // box
 		T * filter = LuaXS::NewTyped<T>(L); // box, filter
 
-		LuaXS::AttachMethods(L, MT_NAME(RawFilter), [](lua_State * L) {
-			luaL_Reg funcs[] = {
-				{
-					"__gc", LuaXS::TypedGC<SoLoud::Filter>
-				},
-				{ nullptr, nullptr }
-			};
+		LuaXS::AttachTypedGC<SoLoud::Filter>(L, MT_NAME(RawFilter));
 
-			luaL_register(L, nullptr, funcs);
-		});
+		AddToStore(L);
 
-		lua_pushlightuserdata(L, filter); // box, filter, filter_ptr
-		lua_insert(L, -2); // box, filter_ptr, filter
-		lua_settable(L, LUA_REGISTRYINDEX); // box; registry[filter_ptr] = filter
+		lua_pop(L, 1); // box
 
 		LuaXS::AttachMethods(L, GetFilterName<T>(), [](lua_State * L) {
 			AddCommonMethods<T>(L);
@@ -276,7 +261,7 @@ template<typename T> void AddFilterType (lua_State * L, lua_CFunction extra = nu
 
 		return 1;
 	}, 1); // soloud, "create" .. FilterName, CreateFilter; CreateFilter.upvalue1 = extra / nil
-	lua_settable(L, -3); // sloud = { ..., ["create" .. FilterName] = CreateFilter }
+	lua_rawset(L, -3); // soloud = { ..., ["create" .. FilterName] = CreateFilter }
 }
 
 //

@@ -37,6 +37,7 @@
 #include "soloud_vizsn.h"
 #include "soloud_wav.h"
 #include "soloud_wavstream.h"
+#include "custom_objects.h"
 #include "templates.h"
 
 //
@@ -63,6 +64,9 @@ ADD_AUDIOSOURCE_NAME(Vic)
 ADD_AUDIOSOURCE_NAME(Vizsn)
 ADD_AUDIOSOURCE_NAME(Wav)
 ADD_AUDIOSOURCE_NAME(WavStream)
+
+template<> const char * GetAudioSourceName<CustomSource> () { return MT_PREFIX "CustomSource"; }
+template<> const char * GetRawAudioSourceName<CustomSource> () { return "CustomSource"; }
 
 //
 //
@@ -297,36 +301,50 @@ template<typename T> void AddCommonMethods (lua_State * L)
 	luaL_register(L, nullptr, funcs);
 }
 
-template<typename T> void AddAudioSourceType (lua_State * L, lua_CFunction extra)
+template<typename T> void AddAudioSourceType (lua_State * L, lua_CFunction body, lua_CFunction init = nullptr)
 {
 	lua_pushliteral(L, "create"); // soloud, "create"
 	lua_pushstring(L, GetRawAudioSourceName<T>()); // soloud, "create", AudioSourceName
 	lua_concat(L, 2); // soloud, "create" .. AudioSourceName
+	lua_pushcfunction(L, body); // soloud, "create" .. AudioSourceName, body
 
-	lua_pushcfunction(L, extra); // soloud, "create" .. AudioSourceName, extra
+	if (init) lua_pushcfunction(L, init); // soloud, "create" .. AudioSourceName, body[, init]
 
 	lua_pushcclosure(L, [](lua_State * L) {
-		T * source = LuaXS::NewTyped<T>(L); // source
+		lua_settop(L, 1); // args?
 
-		lua_createtable(L, FILTERS_PER_STREAM, 2); // source, env
-		lua_setfenv(L, -2); // source; source.env = env
+		T * source = LuaXS::NewTyped<T>(L); // args?, source
+		bool is_custom = !lua_isnoneornil(L, lua_upvalueindex(2));
+
+		// hash part: fft table, wave table[, interface, new instance, data, want_parent_data]
+		lua_createtable(L, FILTERS_PER_STREAM, is_custom ? 6 : 2); // args?, source, env
+		lua_setfenv(L, -2); // args?, source; source.env = env
 
 		LuaXS::AttachMethods(L, GetAudioSourceName<T>(), [](lua_State * L) {
 			AddCommonMethods<T>(L);
 
-			lua_pushvalue(L, lua_upvalueindex(1));	// mt, extra
-			lua_pushvalue(L, -2); // mt, extra, mt
+			lua_pushvalue(L, lua_upvalueindex(1));	// mt, body
+			lua_pushvalue(L, -2); // mt, body, mt
 			lua_call(L, 1, 0); // mt
 			lua_pushliteral(L, MT_NAME(AudioSource)); // mt, MT_NAME(AudioSource)
 
 			lua_setfield(L, -2, "__metatable"); // mt; mt.__metatable = MT_NAME(AudioSource)
 		});
 
+		// Custom source? If so, since it now has a __gc, do any initialization before storing.
+		if (is_custom)
+		{
+			lua_pushvalue(L, lua_upvalueindex(2)); // args?, source, init
+			lua_pushvalue(L, -2); // args?, source, init, source
+			lua_pushvalue(L, 1); // args?, source, init, source, args?
+			lua_call(L, 2, 0); // args?, source
+		}
+
 		AddToStore(L);
 
 		return 1;
-	}, 1); // soloud, "create" .. AudioSourceName, CreateAudioSource; CreateAudioSource.upvalue1 = extra / nil
-	lua_settable(L, -3); // sloud = { ..., ["create" .. AudioSourceName] = CreateAudioSource }
+	}, init ? 2 : 1); // soloud, "create" .. AudioSourceName, CreateAudioSource; CreateAudioSource.upvalues = { body[, init] }
+	lua_rawset(L, -3); // sloud = { ..., ["create" .. AudioSourceName] = CreateAudioSource }
 }
 
 //
@@ -792,7 +810,7 @@ static void AddWav (lua_State * L)
 static void AddWavStream (lua_State * L)
 {
 	AddAudioSourceType<SoLoud::WavStream>(L, [](lua_State * L) {
-		AddFilenameMethod<SoLoud::WavStream, &SoLoud::WavStream::loadToMem>(L, "loadParams");
+		AddFilenameMethod<SoLoud::WavStream, &SoLoud::WavStream::loadToMem>(L, "loadToMem");
 		AddLoadMethods<SoLoud::WavStream>(L);
 
 		luaL_Reg funcs[] = {
@@ -822,6 +840,77 @@ static void AddWavStream (lua_State * L)
 //
 //
 
+void AddCustomSource (lua_State * L)
+{
+	AddAudioSourceType<CustomSource>(L, [](lua_State * L) {
+		luaL_Reg funcs[] = {
+			{
+				"__newindex", [](lua_State * L)
+				{
+					lua_getmetatable(L, 1); // source, k, v, mt
+					lua_pushvalue(L, 2); // source, k, v, mt, k
+					lua_rawget(L, -2); // source, k, v, mt, v?
+
+					if (!lua_isnil(L, 1))
+					{
+						CORONA_LOG_WARNING("Attempt to modify built-in value");
+
+						return 0;
+					}
+
+					CustomSource * source = GetAudioSource<CustomSource>(L);
+
+					if (!lua_isstring(L, 2) || !source->SetEntry(L, lua_tostring(L, 2), 3)) // if primitive, add to map (TODO: relax, use Entry::IsPrimitive())
+					{
+						lua_getfenv(L, 1); // source, k, v, mt, nil, env
+						lua_getfield(L, -1, "data"); // source, k, v, mt, nil, env, data?
+
+						if (lua_isnil(L, -1))
+						{
+							lua_newtable(L); // source, k, v, mt, nil, env, nil, data
+							lua_pushvalue(L, -1); // source, k, v, mt, nil, env, nil, data, data
+							lua_setfield(L, -4, "data"); // source, k, v, mt, nil, env = { ..., data = data }, nil, data
+						}
+
+						lua_replace(L, 1); // data, k, v, mt, nil, env[, nil]
+						lua_settop(L, 3); // data, k, v
+						lua_rawset(L, 1); // data = { ..., [k] = v }
+					}
+
+					return 0;
+				}
+			},
+			{ nullptr, nullptr }
+		};
+
+		luaL_register(L, nullptr, funcs);
+
+		LuaXS::AttachProperties(L, [](lua_State * L) {
+			CustomSource * source = GetAudioSource<CustomSource>(L);
+
+			if (!lua_isstring(L, 2) || !source->FindEntry(L, lua_tostring(L, 2))) // look in map first; TODO: relax, use Entry::IsPrimitive()
+			{
+				lua_getfenv(L, 1); // source, k, env
+				lua_getfield(L, -1, "data"); // source, k, env, data?
+
+				if (!lua_isnil(L, -1))
+				{
+					lua_pushvalue(L, 2); // source, k, env, data, k
+					lua_rawget(L, -2); // source, k, env, data, v?
+				}
+			}
+
+			return 1;
+		});
+
+		return 0;
+	}, CustomSourceInit);
+}
+
+//
+//
+//
+
 void add_audiosources (lua_State * L)
 {
 	AddAy(L);
@@ -837,4 +926,5 @@ void add_audiosources (lua_State * L)
 	AddVizsn(L);
 	AddWav(L);
 	AddWavStream(L);
+	AddCustomSource(L);
 }
