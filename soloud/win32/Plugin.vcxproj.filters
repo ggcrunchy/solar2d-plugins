@@ -330,10 +330,19 @@
     <ClCompile Include="..\shared\add_floatbuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\shared\custom_objects.cpp">
+    <ClCompile Include="..\shared\custom_audiosource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\shared\marshal.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\custom_object_data.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\custom_audiosource_instance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\custom_objects.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

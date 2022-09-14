@@ -24,6 +24,7 @@
 #pragma once
 
 #include "CoronaLua.h"
+#include "CoronaLog.h"
 #include "utils/LuaEx.h"
 #include "soloud.h"
 
@@ -33,6 +34,22 @@
 
 #define MT_PREFIX "soloud."
 #define MT_NAME(name) MT_PREFIX #name
+
+//
+//
+//
+
+struct Options {
+	bool mWantPan{false};
+	bool mWantPaused{false};
+	bool mWantVelocity{false};
+	bool mWantVolume{false};
+
+	void Get (lua_State * L, int opts);
+
+	float mPan, mVolume, mVelX, mVelY, mVelZ;
+	bool mPaused;
+};
 
 //
 //
@@ -60,6 +77,10 @@ void add_floatbuffer (lua_State * L);
 void add_core (lua_State * L);
 void add_filters (lua_State * L);
 
+//
+//
+//
+
 SoLoud::AudioSource * GetAudioSource (lua_State * L, int arg = 1);
 SoLoud::Soloud * GetCore (lua_State * L, int arg = 1);
 SoLoud::Filter * GetFilter (lua_State * L, int arg = 1);
@@ -67,32 +88,60 @@ SoLoud::Filter * GetFilter (lua_State * L, int arg = 1);
 FloatBuffer * GetFloatBuffer (lua_State * L, int arg = 1);
 FloatBuffer * NewFloatBuffer (lua_State * L);
 
+//
+//
+//
+
 int PushHandle (lua_State * L, unsigned int handle);
 unsigned int GetHandle (lua_State * L, int arg);
+
+//
+//
+//
 
 unsigned int GetAttenuationModel (lua_State * L, int arg);
 unsigned int GetResampler (lua_State * L, int arg);
 const char * GetResamplerString (lua_State * L, unsigned int resampler);
+const char ** GetWaveformModelList (void);
 int GetWaveform (lua_State * L, int arg, const char * def = nullptr);
+
+//
+//
+//
+
 int HasMetatable (lua_State * L, int arg, const char * name);
+
+//
+//
+//
+
 int Result (lua_State * L, SoLoud::result err);
+int GetIndexEnum (lua_State * L, int arg, const char * const names[], const char * def = nullptr);
 float OptFloat (lua_State * L, int arg, float def);
+
+//
+//
+//
+
 void SetFilterRefToEnvironment (lua_State * L, int arg, int index, SoLoud::Filter * filter);
-void AddToStore (lua_State * L);
+void RemoveEnvironment (lua_State * L, int arg = 1);
+
+//
+//
+//
+
+void AddToStore (lua_State * L, void * object = nullptr);
 void GetFromStore (lua_State * L, void * object);
 void RemoveFromStore (lua_State * L, void * object = nullptr);
-void RemoveFilterAndBufferRefs (lua_State * L);
+
+//
+//
+//
 void AddBasics (lua_State * L);
+
+//
+//
+//
+
 void PushPluginModule (lua_State * L);
-
-struct Options {
-	bool mWantPan{false};
-	bool mWantPaused{false};
-	bool mWantVelocity{false};
-	bool mWantVolume{false};
-
-	void Get (lua_State * L, int opts);
-
-	float mPan, mVolume, mVelX, mVelY, mVelZ;
-	bool mPaused;
-};
+void PushFilterParameters (lua_State * L);

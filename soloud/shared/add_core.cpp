@@ -151,9 +151,59 @@ static SoLoud::Soloud * GetSoloud (lua_State * L)
 //
 //
 
+static SoLoud::Soloud * sCurrentCore;
+
+//
+//
+//
+
 static unsigned int Index (lua_State * L, int arg)
 {
 	return LuaXS::Uint(L, arg) - 1;
+}
+
+//
+//
+//
+
+static unsigned int FilterAttribute (lua_State * L, int arg)
+{
+	if (lua_type(L, arg) == LUA_TSTRING) // lua_isstring() will coerce indices
+	{
+		arg = CoronaLuaNormalize(L, arg);
+
+		PushFilterParameters(L); // ..., name, ..., filter_params
+
+		lua_pushvalue(L, arg); // ..., name, ..., filter_params, name
+		lua_rawget(L, -2); // ..., name, ..., filter_params, value?
+		luaL_argcheck(L, lua_isnumber(L, -1), arg, "Invalid filter attribute name");
+
+		unsigned int result = lua_tointeger(L, -1);
+
+		lua_pop(L, 2); // ..., name, ...
+
+		return result;
+	}
+
+	else return Index(L, arg);
+}
+
+//
+//
+//
+
+static void Deinitialize (SoLoud::Soloud & core)
+{
+	core.deinit();
+	core.~Soloud();
+}
+
+static void Shutdown (lua_State * L, SoLoud::Soloud & core, int arg = 1)
+{
+	Deinitialize(core);
+
+	RemoveEnvironment(L, arg);
+	RemoveFromStore(L, &core);
 }
 
 //
@@ -191,12 +241,12 @@ void SoloudMethods(lua_State * L)
 
 				if (!box->mDestroyed)
 				{
-					box->mCore.deinit();
-					box->mCore.~Soloud();
+					luaL_argcheck(L, &box->mCore == sCurrentCore, 1, "More than one core active");
 
-					RemoveFilterAndBufferRefs(L);
-					RemoveFromStore(L);
+					sCurrentCore = nullptr;
 				}
+
+				if (!box->mDestroyed) Shutdown(L, box->mCore);
 
 				box->mDestroyed = true;
 
@@ -210,7 +260,7 @@ void SoloudMethods(lua_State * L)
 		}, {
 			"fadeFilterParameter", [](lua_State * L)
 			{
-				GetSoloud(L)->fadeFilterParameter(GetHandle(L, 2), Index(L, 3), Index(L, 4), LuaXS::Float(L, 5), lua_tonumber(L, 6));
+				GetSoloud(L)->fadeFilterParameter(GetHandle(L, 2), Index(L, 3), FilterAttribute(L, 4), LuaXS::Float(L, 5), lua_tonumber(L, 6));
 
 				return 0;
 			}
@@ -225,11 +275,7 @@ void SoloudMethods(lua_State * L)
 			{
 				CoreBox * box = GetCoreBox(L, 1);
 
-				if (!box->mDestroyed)
-				{
-					box->mCore.deinit();
-					box->mCore.~Soloud();
-				}
+				if (!box->mDestroyed) Deinitialize(box->mCore);
 
 				return 0;
 			}
@@ -238,7 +284,7 @@ void SoloudMethods(lua_State * L)
 		},{
 			"getFilterParameter", [](lua_State * L)
 			{
-				lua_pushnumber(L, GetSoloud(L)->getFilterParameter(GetHandle(L, 2), Index(L, 3), Index(L, 4))); // soloud, handle, filter_id, attribute_id, param
+				lua_pushnumber(L, GetSoloud(L)->getFilterParameter(GetHandle(L, 2), Index(L, 3), FilterAttribute(L, 4))); // soloud, handle, filter_id, attribute_id, param
 
 				return 1;
 			}
@@ -311,9 +357,9 @@ void SoloudMethods(lua_State * L)
 
 				if (SoLoud::SO_NO_ERROR == result)
 				{
-					lua_pushnumber(L, 1); // soloud, channel, x
-					lua_pushnumber(L, 1); // soloud, channel, x, y
-					lua_pushnumber(L, 1); // soloud, channel, x, y, z
+					lua_pushnumber(L, x); // soloud, channel, x
+					lua_pushnumber(L, y); // soloud, channel, x, y
+					lua_pushnumber(L, z); // soloud, channel, x, y, z
 
 					return 3;
 				}
@@ -395,7 +441,7 @@ void SoloudMethods(lua_State * L)
 		}, {
 			"oscillateFilterParameter", [](lua_State * L)
 			{
-				GetSoloud(L)->oscillateFilterParameter(GetHandle(L, 2), Index(L, 3), Index(L, 4), LuaXS::Float(L, 5), LuaXS::Float(L, 6), lua_tonumber(L, 7));
+				GetSoloud(L)->oscillateFilterParameter(GetHandle(L, 2), Index(L, 3), FilterAttribute(L, 4), LuaXS::Float(L, 5), LuaXS::Float(L, 6), lua_tonumber(L, 7));
 
 				return 0;
 			}
@@ -454,7 +500,7 @@ void SoloudMethods(lua_State * L)
 		}, {
 			"setFilterParameter", [](lua_State * L)
 			{
-				GetSoloud(L)->setFilterParameter(GetHandle(L, 2), Index(L, 3), Index(L, 4), LuaXS::Float(L, 5));
+				GetSoloud(L)->setFilterParameter(GetHandle(L, 2), Index(L, 3), FilterAttribute(L, 4), LuaXS::Float(L, 5));
 
 				return 0;
 			}
@@ -646,6 +692,16 @@ void GetCreateCoreParams (lua_State * L, unsigned int & flags, unsigned int & ba
 
 int CreateCore (lua_State * L)
 {
+	if (sCurrentCore)
+	{
+		CORONA_LOG_WARNING("Creating SoLoud core, but another was still active; shutting old one down");
+
+		GetFromStore(L, sCurrentCore); // [params, ]old_core
+		Shutdown(L, *sCurrentCore, -1);
+
+		lua_pop(L, 1); // [params]
+	}
+
 	unsigned int flags = SoLoud::Soloud::CLIP_ROUNDOFF, backend = SoLoud::Soloud::AUTO, sample_rate = 0U, buffer_size = 0U, channels = 2U;
 
 	if (lua_istable(L, 1)) GetCreateCoreParams(L, flags, backend, sample_rate, buffer_size, channels);
@@ -663,6 +719,8 @@ int CreateCore (lua_State * L)
 
 	AddToStore(L);
 
+	sCurrentCore = &box->mCore;
+
 	return 1;
 }
 
@@ -674,4 +732,6 @@ void add_core (lua_State * L)
 {
 	lua_pushcfunction(L, CreateCore); // soloud, CreateCore
 	lua_setfield(L, -2, "createCore"); // soloud = { ..., createCore = CreateCore }
+
+	sCurrentCore = nullptr;
 }

@@ -164,19 +164,19 @@ namespace SoLoud
 		m3dVelocity[1] = 0;
 		m3dVelocity[2] = 0;		
 		m3dSoundSpeed = 343.3f;
-		mMaxActiveVoices = 16;
+		mMaxActiveVoices = 0; // <- STEVE CHANGE: https://github.com/jarikomppa/soloud/pull/345/commits/1139c3afaba1d0e9d23086d5b4c2d939d38b2ae8
 		mHighestVoice = 0;
 		mResampleData = NULL;
 		mResampleDataOwner = NULL;
 		for (i = 0; i < 3 * MAX_CHANNELS; i++)
 			m3dSpeakerPosition[i] = 0;
 	}
-
+#include "CoronaLog.h"
 	Soloud::~Soloud()
-	{
+	{CoronaLog("A");
 		// let's stop all sounds before deinit, so we don't mess up our mutexes
-		stopAll();
-		deinit();
+		stopAll();CoronaLog("B");
+		deinit();CoronaLog("C");
 		unsigned int i;
 		for (i = 0; i < FILTERS_PER_STREAM; i++)
 		{
@@ -186,22 +186,22 @@ namespace SoLoud
 			delete[] mVoiceGroup[i];
 		delete[] mVoiceGroup;
 		delete[] mResampleData;
-		delete[] mResampleDataOwner;
+		delete[] mResampleDataOwner;CoronaLog("D");
 	}
 
 	void Soloud::deinit()
-	{
+	{CoronaLog("1");
 		// Make sure no audio operation is currently pending
 		lockAudioMutex_internal();
 		unlockAudioMutex_internal();
-		SOLOUD_ASSERT(!mInsideAudioThreadMutex);
-		stopAll();
+		SOLOUD_ASSERT(!mInsideAudioThreadMutex);CoronaLog("2");
+		stopAll();CoronaLog("3");
 		if (mBackendCleanupFunc)
 			mBackendCleanupFunc(this);
-		mBackendCleanupFunc = 0;
+		mBackendCleanupFunc = 0;CoronaLog("4");
 		if (mAudioThreadMutex)
 			Thread::destroyMutex(mAudioThreadMutex);
-		mAudioThreadMutex = NULL;
+		mAudioThreadMutex = NULL;CoronaLog("5");
 	}
 
 	result Soloud::init(unsigned int aFlags, unsigned int aBackend, unsigned int aSamplerate, unsigned int aBufferSize, unsigned int aChannels)
@@ -599,6 +599,7 @@ namespace SoLoud
 		if (mScratchSize < 4096) mScratchSize = 4096;
 		mScratch.init(mScratchSize * MAX_CHANNELS);
 		mOutputScratch.init(mScratchSize * MAX_CHANNELS);
+		mMaxActiveVoices = 16; // <- STEVE CHANGE: https://github.com/jarikomppa/soloud/pull/345/commits/1139c3afaba1d0e9d23086d5b4c2d939d38b2ae8
 		mResampleData = new float*[mMaxActiveVoices * 2];
 		mResampleDataOwner = new AudioSourceInstance*[mMaxActiveVoices];
 		mResampleDataBuffer.init(mMaxActiveVoices * 2 * SAMPLE_GRANULARITY * MAX_CHANNELS);

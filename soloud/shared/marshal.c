@@ -208,6 +208,7 @@ static void mar_encode_value(lua_State *L, mar_Buffer *buf, int val, size_t *idx
             mar_Buffer rec_buf;
             int i;
             lua_Debug ar;
+            size_t count = 0; // <- STEVE CHANGE
             lua_pop(L, 1); /* pop nil */
 
             lua_pushvalue(L, -1);
@@ -223,7 +224,6 @@ static void mar_encode_value(lua_State *L, mar_Buffer *buf, int val, size_t *idx
             lua_pushvalue(L, -1);
             lua_pushinteger(L, (*idx)++);
             lua_rawset(L, SEEN_IDX);
-
             // STEVE CHANGE
             if (ar.what[0] == 'L') {
             // /STEVE CHANGE
@@ -231,28 +231,27 @@ static void mar_encode_value(lua_State *L, mar_Buffer *buf, int val, size_t *idx
                 buf_init(L, &rec_buf);
                 lua_dump(L, (lua_Writer)buf_write, &rec_buf);
             // STEVE CHANGE
+                count = rec_buf.head;
             }
             // /STEVE CHANGE
 
             buf_write(L, (void*)&tag, MAR_CHR, buf);
             // STEVE CHANGE
+            buf_write(L, (void*)&ar.nups, MAR_I32, buf); // https://github.com/richardhundt/lua-marshal/issues/5
+            buf_write(L, (void*)&count/*rec_buf.head*/, MAR_I32, buf);
             if (ar.what[0] == 'L') {
             // /STEVE CHANGE
-                buf_write(L, (void*)&rec_buf.head, MAR_I32, buf);
                 buf_write(L, rec_buf.data, rec_buf.head, buf);
                 buf_done(L, &rec_buf);
                 lua_pop(L, 1);
             // STEVE CHANGE
             }
             else {
-                size_t zero = 0;
                 lua_CFunction func = lua_tocfunction(L, -1);
-                buf_write(L, (void*)&zero, MAR_I32, buf);
-                buf_write(L, (void *)&func, sizeof(func), buf);
+                buf_write(L, (void*)&func, sizeof(func), buf);
             }
+            lua_createtable(L, ar.nups, 0); // lua_newtable(L);
             // /STEVE CHANGE
-
-            lua_newtable(L);
             for (i=1; i <= ar.nups; i++) {
                 lua_getupvalue(L, -2, i);
                 lua_rawseti(L, -2, i);
@@ -345,6 +344,16 @@ static int mar_encode_table(lua_State *L, mar_Buffer *buf, size_t *idx)
     if (((*p)-buf)+sizeof(T) > len) luaL_error(L, "bad code"); \
     l = *(T*)*p; (*p) += sizeof(T);
 
+// STEVE CHANGE
+#define mar_mem_next(T) \
+    if (((*p)-buf)+sizeof(T) > len) luaL_error(L, "bad code"); \
+    { char nbuf[sizeof(T)]; \
+    memcpy(nbuf, *p, sizeof(T)); (*p) += sizeof(T);
+
+#define mar_mem_get(T) *(T*)nbuf
+#define mar_mem_end() }
+// /STEVE CHANGE
+
 static void mar_decode_value
     (lua_State *L, const char *buf, size_t len, const char **p, size_t *idx)
 {
@@ -357,16 +366,12 @@ static void mar_decode_value
         mar_incr_ptr(MAR_CHR);
         break;
     case LUA_TNUMBER:
-// STEVE CHANGE (iOS did not like the original, potentially misaligned form)
-        {
-            char nbuf[sizeof(lua_Number)];
-            
-            memcpy(nbuf, *p, sizeof(lua_Number));
-
-            lua_pushnumber(L, *(lua_Number*)nbuf);//*p);
-        }
-// /STEVE CHANGE
-        mar_incr_ptr(MAR_I64);
+        // STEVE CHANGE (iOS did not like the original, potentially misaligned form)
+        mar_mem_next(lua_Number);
+        lua_pushnumber(L, mar_mem_get(lua_Number));//*p);
+        mar_mem_end();
+        // mar_incr_ptr(MAR_I64);
+        // /STEVE CHANGE
         break;
     case LUA_TSTRING:
         mar_next_len(l, uint32_t);
@@ -414,10 +419,6 @@ static void mar_decode_value
         int i;
         mar_Buffer dec_buf;
         char tag = *(char*)*p;
-    // STEVE CHANGE
-        lua_CFunction func;
-        int delay = 0;
-    // /STEVE CHANGE
         mar_incr_ptr(1);
         if (tag == MAR_TREF) {
             int ref;
@@ -425,6 +426,9 @@ static void mar_decode_value
             lua_rawgeti(L, SEEN_IDX, ref);
         }
         else {
+            // STEVE CHANGE https://github.com/richardhundt/lua-marshal/issues/5
+            mar_next_len(nups, uint32_t);
+            // /STEVE CHANGE
             mar_next_len(l, uint32_t);
             // STEVE CHANGE
             if (l > 0) {
@@ -438,32 +442,21 @@ static void mar_decode_value
             // STEVE CHANGE
             }
             else {
-                memcpy(&func, p, sizeof(func));
-                lua_pushnil(L); // stub
-                delay = 1;
-                mar_incr_ptr(sizeof(func));
+                lua_CFunction func;
+                mar_mem_next(lua_CFunction);
+                func = mar_mem_get(lua_CFunction);
+                mar_mem_end();
+                for (i = 0; i < nups; ++i) lua_pushnil(L);
+                lua_pushcclosure(L, func, nups);
             }
 
-            if (!delay) {
-            // /STEVE CHANGE
-                lua_pushvalue(L, -1);
-                lua_rawseti(L, SEEN_IDX, (*idx)++);
-            // STEVE CHANGE
-            }
-            // /STEVE CHANGE
+            lua_pushvalue(L, -1);
+            lua_rawseti(L, SEEN_IDX, (*idx)++);
+
             mar_next_len(l, uint32_t);
             lua_newtable(L);
             mar_decode_table(L, *p, l, idx);
-            nups = lua_objlen(L, -1);
-            // STEVE CHANGE
-            if (delay) {
-                for (i = 0; i < nups; ++i) lua_pushnil(L);
-                lua_pushcclosure(L, func, nups);
-                lua_pushvalue(L, -1);
-                lua_rawseti(L, SEEN_IDX, (*idx)++);
-                lua_replace(L, -2); // stub -> func
-            }
-            // /STEVE CHANGE
+            // nups = lua_objlen(L, -1); // <- STEVE CHANGE
             for (i=1; i <= nups; i++) {
                 lua_rawgeti(L, -1, i);
                 lua_setupvalue(L, -3, i);
@@ -554,7 +547,6 @@ static int mar_decode_table(lua_State *L, const char* buf, size_t len, size_t *i
 
     buf_init(L, &buf);
     buf_write(L, (void*)&m, 1, &buf);
-
     mar_encode_value(L, &buf, -1, &idx);
 
     lua_pop(L, 1);

@@ -269,8 +269,8 @@ template<typename T> void AddFilterType (lua_State * L, lua_CFunction extra = nu
 //
 
 #define ADD_FILTER_PARAMETER(TYPE, NAME) \
-	lua_pushinteger(L, SoLoud::TYPE::NAME + 1);  \
-	lua_setfield(L, -2, #TYPE "." #NAME)
+	lua_pushinteger(L, SoLoud::TYPE::NAME); /* filter_params, soloud, v */  \
+	lua_setfield(L, -3, #TYPE "." #NAME) /* filter_params = { ..., [name] = v }, soloud */
 
 //
 //
@@ -301,16 +301,67 @@ static void AddBassboostFilter (lua_State * L)
 //
 //
 
+static void AugmentGetParamType (lua_State * L)
+{
+	lua_getfield(L, -2, "getParamType"); // mt, aug, GetParamType
+	lua_pushcclosure(L, [](lua_State * L) {
+		lua_pushliteral(L, "INT"); // object, index, "INT"
+		lua_pushvalue(L, lua_upvalueindex(2)); // object, index, "INT", GetParamType
+		lua_pushvalue(L, 1); // object, index, "INT", GetParamType, object
+		lua_pushvalue(L, 2); // object, index, "INT", GetParamType, object, index
+		lua_call(L, 2, 1); // object, index, "INT", type
+
+		if (!lua_equal(L, -2, -1)) return 1;
+
+		lua_settop(L, 2); // object, index
+		lua_pushvalue(L, lua_upvalueindex(1)); // object, index, aug
+		lua_insert(L, 1); // aug, object, index
+		lua_call(L, 2, LUA_MULTRET); // ...
+
+		return lua_gettop(L);
+	}, 2); // mt, GetParamType2; GetParamType2.upvalues = { aug, GetParamType }
+	lua_setfield(L, -2, "getParamType"); // mt = { ..., getParamType = GetParamType2 }
+}
+
+//
+//
+//
+
+static bool FoundEnum (lua_State * L, const char ** list, int arg)
+{
+	if (!lua_isnumber(L, arg)) return false;
+
+	int index = lua_tointeger(L, arg);
+
+	if (index < 0) return false;
+
+	for (int pos = 0; list[pos]; ++pos)
+	{
+		if (pos == index)
+		{
+			lua_pushstring(L, list[index]); // ..., v
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
+//
+//
+//
+
 static void AddBiquadResonantFilter (lua_State * L)
 {
+	static const char * sTypes[] = { "LOWPASS", "HIGHPASS", "BANDPASS", nullptr };
+
 	AddFilterType<SoLoud::BiquadResonantFilter>(L, [](lua_State * L) {
 		luaL_Reg funcs[] = {
 			{
 				"setParams", [](lua_State * L)
 				{
-					const char * types[] = { "LOWPASS", "HIGHPASS", "BANDPASS", nullptr };
-
-					return Result(L, GetFilter<SoLoud::BiquadResonantFilter>(L)->setParams(luaL_checkoption(L, 2, nullptr, types), LuaXS::Float(L, 3), LuaXS::Float(L, 4)));
+					return Result(L, GetFilter<SoLoud::BiquadResonantFilter>(L)->setParams(luaL_checkoption(L, 2, nullptr, sTypes), LuaXS::Float(L, 3), LuaXS::Float(L, 4)));
 				}
 			},
 			{ nullptr, nullptr }
@@ -318,9 +369,26 @@ static void AddBiquadResonantFilter (lua_State * L)
 
 		luaL_register(L, nullptr, funcs);
 
+		lua_pushcfunction(L, [](lua_State * L) {
+			// n.b. index ignored; TYPE is only INT
+			lua_pushliteral(L, "INT"); // index, "INT"
+			lua_newuserdata(L, 0); // index, "INT", type_proxy
+
+			LuaXS::AttachMethods(L, MT_NAME(BiquadResonantFilterTypeProxy), [](lua_State * L) {
+				LuaXS::AttachProperties(L, [](lua_State * L) {
+					if (FoundEnum(L, sTypes, 2)) return 1; // type_proxy, index[, v]
+
+					return 0;
+				});
+			});
+
+			return 2;
+		}); // mt, aug
+		AugmentGetParamType(L); // mt
+
 		return 0;
 	});
-
+	
 	ADD_FILTER_PARAMETER(BiquadResonantFilter, TYPE);
 	ADD_FILTER_PARAMETER(BiquadResonantFilter, FREQUENCY);
 	ADD_FILTER_PARAMETER(BiquadResonantFilter, RESONANCE);
@@ -361,7 +429,7 @@ static void AddDuckFilter (lua_State * L)
 				"setParams", [](lua_State * L)
 				{
 					return Result(L, GetFilter<SoLoud::DuckFilter>(L)->setParams(
-						GetCore(L, 2), LuaXS::Uint(L, 3),
+						GetCore(L, 2), GetHandle(L, 3),
 						OptFloat(L, 4, .1f), OptFloat(L, 5, .5f), OptFloat(L, 6, .1f) // TODO: options table?
 					));
 				}
@@ -420,7 +488,18 @@ static void AddEQFilter (lua_State * L)
 			{
 				"setParams", [](lua_State * L)
 				{
-					return Result(L, GetFilter<SoLoud::EqFilter>(L)->setParam(LuaXS::Uint(L, 2), LuaXS::Float(L, 3)));
+					unsigned int band = 0;
+
+					if (lua_isstring(L, 2))
+					{
+						const char * str = lua_tostring(L, 2);
+
+						if (lua_objlen(L, 2) == 5 && strncmp(str, "BAND", 4) == 0 && isdigit(str[4])) band = SoLoud::EqFilter::BAND1 + str[4] - '1';
+					}
+
+					else band = LuaXS::Uint(L, 2);
+
+					return Result(L, GetFilter<SoLoud::EqFilter>(L)->setParam(band, LuaXS::Float(L, 3)));
 				}
 			},
 			{ nullptr, nullptr }
@@ -551,6 +630,23 @@ static void AddRobotizeFilter (lua_State * L)
 
 		luaL_register(L, nullptr, funcs);
 
+		lua_pushcfunction(L, [](lua_State * L) {
+			// n.b. index ignored; WAVE is only INT
+			lua_pushliteral(L, "INT"); // index, "INT"
+			lua_newuserdata(L, 0); // index, "INT", wave_proxy
+
+			LuaXS::AttachMethods(L, MT_NAME(RobotizeFilterWaveProxy), [](lua_State * L) {
+				LuaXS::AttachProperties(L, [](lua_State * L) {
+					if (FoundEnum(L, GetWaveformModelList(), 2)) return 1; // wave_proxy, index[, v]
+
+					return 0;
+				});
+			});
+
+			return 2;
+		}); // mt, aug
+		AugmentGetParamType(L); // mt
+
 		return 0;
 	});
 
@@ -587,8 +683,23 @@ static void AddWaveShaperFilter (lua_State * L)
 //
 //
 
+static int sFilterParametersRef;
+
+void PushFilterParameters (lua_State * L)
+{
+	lua_getref(L, sFilterParametersRef); // ..., filter_params
+}
+
+//
+//
+
 void add_filters (lua_State * L)
 {
+	lua_newtable(L); // soloud, filter_params
+	lua_pushinteger(L, 0); // soloud, filter_params
+	lua_setfield(L, -2, "Filter.WET"); // soloud, filter_params = { ..., ["Filter.WET"] = 1 }
+	lua_insert(L, -2); // filter_params, soloud
+
 	AddBassboostFilter(L);
 	AddBiquadResonantFilter(L);
 	AddDCRemovaltFilter(L);
@@ -602,6 +713,7 @@ void add_filters (lua_State * L)
 	AddRobotizeFilter(L);
 	AddWaveShaperFilter(L);
 
-	lua_pushinteger(L, 1); // soloud, 1
-	lua_setfield(L, -2, "Filter.WET"); // soloud = { ..., ["Filter.WET"] = 1 }
+	lua_insert(L, -2); // soloud, filter_params
+
+	sFilterParametersRef = lua_ref(L, 1); // soloud; ref = filter_params
 }

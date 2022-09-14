@@ -22,6 +22,7 @@
 */
 
 #include <map>
+#include <mutex>
 #include <string>
 
 #pragma once
@@ -33,8 +34,6 @@
 struct Entry {
 	Entry () {}
 	Entry (const Entry & other);
-	~Entry ();
-
 
 	// TODO: use this, to allow primitive keys
 	struct Less {
@@ -44,10 +43,10 @@ struct Entry {
 	static bool IsPrimitive (lua_State * L, int arg);
 
 	int mType{LUA_TNIL};
+	std::string mS;
 	union {
 		bool mB;
 		lua_Number mN;
-		std::string mS;
 	};
 };
 
@@ -57,17 +56,59 @@ struct Entry {
 
 struct CustomSource;
 
-struct CustomSourceInstance : public SoLoud::AudioSourceInstance {
-	CustomSource * mParent;
-	lua_State * mL{nullptr};
-	std::map<std::string, Entry> * mEntries{nullptr};
-	int mData{LUA_NOREF};
+struct ParentData {
+	std::map<std::string, Entry> mEntries;
 	uint64_t mLastUpdate{0ULL};
+
+	bool FindEntry (lua_State * L, int kpos = 2) const;
+	bool SetEntry (lua_State * L, int kpos = 2);
+	bool SetEntryWithMutex (lua_State * L, int kpos = 2);
+};
+
+struct ParentDataWrapper {
+	ParentDataWrapper (const CustomSource * parent, const ParentData & data) : mParent{parent}, mData{data}
+	{
+	}
+
+	const CustomSource * mParent;
+	ParentData mData;
+
+	void Init (lua_State * L);
+	void Synchronize ();
+};
+
+//
+//
+//
+
+struct CustomSourceInstance : public SoLoud::AudioSourceInstance {
+	lua_State * mL;
+	CustomSource * mParent;
+	ParentData * mParentData{nullptr};
+	bool mHasError{false};
+
+	//
+	//
+	//
 
 	CustomSourceInstance (CustomSource * parent);
 	virtual ~CustomSourceInstance ();
 
-	void Synchronize ();
+	//
+	//
+	//
+
+	void Init (lua_State * L, const ParentData * data);
+
+	//
+	//
+	//
+
+	bool PreCall (const char * name, const char * other, int & has_data);
+
+	//
+	//
+	//
 
 	virtual unsigned int getAudio (float * buffer, unsigned int samples, unsigned int size);
 	virtual bool hasEnded ();
@@ -76,16 +117,67 @@ struct CustomSourceInstance : public SoLoud::AudioSourceInstance {
 	virtual float getInfo (unsigned int key);
 };
 
+//
+//
+//
+
 struct CustomSource : public SoLoud::AudioSource {
 	lua_State * mL;
-	std::map<std::string, Entry> mEntries;
-	uint64_t mLastUpdate{0ULL};
+	ParentData mData;
 
-	bool DoCall (int nargs);
-	bool FindEntry (lua_State * L, const char * name);
-	bool SetEntry (lua_State * L, const char * name, int pos);
+	//
+	//
+	//
+
+	enum {
+		HashValues = 4 // interface, new instance, data, class
+	};
+
+	//
+	//
+	//
+
+	// conveniences, to avoid some lookup:
+	const char * mInterface;
+	const char * mNewInstance{nullptr};
+	size_t mInterfaceLen;
+	size_t mNewInstanceLen{0U};
+	bool mHasSeek;
+
+	//
+	//
+	//
+
+	bool mWantParentData;
+
+	//
+	//
+	//
+	
+	static int Init (lua_State * L);
+
+	//
+	//
+	//
 
 	virtual SoLoud::AudioSourceInstance * createInstance();
 };
 
-int CustomSourceInit (lua_State * L);
+//
+//
+//
+
+bool CheckForKey (lua_State * L, const char * other = nullptr);
+int GetEnvData (lua_State * L);
+int SetEnvData (lua_State * L);
+int GetData (lua_State * L, const ParentData & data);
+int SetData (lua_State * L, ParentData & data, bool with_mutex = false);
+
+std::mutex & GetCustomObjectsMutex ();
+
+#define LOCK_SECONDARY_STATE() std::lock_guard<std::mutex> lock(GetCustomObjectsMutex())
+
+void GetDecodeConstants (lua_State * L);
+
+void CreateSecondaryState (lua_State * L);
+lua_State * GetSoLoudState (lua_State * L);

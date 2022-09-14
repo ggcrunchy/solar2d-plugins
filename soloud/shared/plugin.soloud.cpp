@@ -22,7 +22,9 @@
 */
 
 #include "common.h"
+#include "custom_objects.h"
 #include "soloud_misc.h"
+#include <bitset>
 
 //
 //
@@ -77,11 +79,16 @@ const char * GetResamplerString (lua_State * L, unsigned int resampler)
 //
 //
 
+const char ** GetWaveformModelList (void)
+{
+	static const char * sModels[] = { "SQUARE", "SAW", "SIN", "TRIANGLE", "BOUNCE", "JAWS", "HUMPS", "FSQUARE", "FSAW", nullptr };
+
+	return sModels;
+}
+
 int GetWaveform (lua_State * L, int arg, const char * def)
 {
-	const char * models[] = { "SQUARE", "SAW", "SIN", "TRIANGLE", "BOUNCE", "JAWS", "HUMPS", "FSQUARE", "FSAW", nullptr };
-
-	return luaL_checkoption(L, arg, def, models);
+	return luaL_checkoption(L, arg, def, GetWaveformModelList());
 }
 
 //
@@ -141,10 +148,22 @@ int Result (lua_State * L, SoLoud::result err)
 //
 //
 
-void AddToStore (lua_State * L)
+int GetIndexEnum (lua_State * L, int arg, const char * const names[], const char * def)
 {
+	if (lua_type(L, arg) == LUA_TSTRING) return luaL_checkoption(L, arg, def, names); // lua_isstring() will coerce indices
+	else return luaL_checkint(L, arg) - 1;
+}
+
+//
+//
+//
+
+void AddToStore (lua_State * L, void * object)
+{
+	if (!object) object = lua_touserdata(L, -1);
+
 	lua_getfield(L, LUA_REGISTRYINDEX, MT_NAME(Store)); // ..., object, store
-	lua_pushlightuserdata(L, lua_touserdata(L, -2)); // ..., object, store, object_ptr
+	lua_pushlightuserdata(L, object); // ..., object, store, object_ptr
 	lua_pushvalue(L, -3); // ..., object, store, object_ptr, object
 	lua_rawset(L, -3); // ..., object, store = { ..., [object_ptr] = object }
 	lua_pop(L, 1); // ..., object
@@ -182,27 +201,20 @@ void RemoveFromStore (lua_State * L, void * object)
 //
 //
 
-void RemoveFilterAndBufferRefs (lua_State * L)
+void RemoveEnvironment (lua_State * L, int arg)
 {
-	lua_getfenv(L, 1); // object, ..., filters
+	arg = CoronaLuaNormalize(L, arg);
 
-	for (int i = 1; i <= FILTERS_PER_STREAM; ++i)
-	{
-		lua_pushnil(L); // object, ..., filters, nil
-		lua_rawseti(L, -2, i); // object, ..., filters = { ..., [i] = nil }
-	}
-
-	lua_getfield(L, -1, MT_NAME(FFTBuffer)); // object, ..., filters, fft_buffer?
-	lua_getfield(L, -2, MT_NAME(WaveBuffer)); // object, ..., filters, fft_buffer, wave_buffer?
-	lua_pushnil(L); // object, ..., filters, fft_buffer, wave_buffer?, nil
-	lua_pushnil(L); // object, ..., filters, fft_buffer, wave_buffer?, nil, nil
-	lua_setfield(L, -5, MT_NAME(FFTBuffer)); // object, ..., filters, fft_buffer, wave_buffer?, nil; filters = { ..., [MT_NAME(FFTBuffer)] = nil }
-	lua_setfield(L, -4, MT_NAME(WaveBuffer)); // object, ..., filters, fft_buffer, wave_buffer?; filters = { ..., [MT_NAME(WaveBuffer)] = nil }
+	lua_getfenv(L, arg); // ..., object, ..., env
+	lua_getmetatable(L, arg); // ..., object, ..., env, object_mt (using the metatable is arbitrary: it only needs to be some other table)
+	lua_setfenv(L, arg); // ..., object, ..., env; object.env = object_mt
+	lua_getfield(L, -1, MT_NAME(FFTBuffer)); // ..., object, ..., env, fft_buffer?
+	lua_getfield(L, -2, MT_NAME(WaveBuffer)); // ..., object, ..., env, fft_buffer, wave_buffer?
 
 	if (!lua_isnil(L, -2)) GetFloatBuffer(L, -2)->mSourceGone = true;
 	if (!lua_isnil(L, -1)) GetFloatBuffer(L, -1)->mSourceGone = true;
 
-	lua_pop(L, 3); // object, ...
+	lua_pop(L, 3); // ..., object, ...
 }
 
 //
@@ -288,80 +300,73 @@ static int ApplicationEvent (lua_State * L)
 	{
 		lua_settop(L, 0); // (empty)
 		lua_getfield(L, LUA_REGISTRYINDEX, MT_NAME(Store)); // store
+		luaL_getmetatable(L, MT_NAME(Soloud)); // store, core_mt
 
-		for (lua_pushnil(L); lua_next(L, -2); lua_pop(L, 1))
+		for (lua_pushnil(L); lua_next(L, -3); lua_pop(L, 1))
 		{
-			int is_source = luaL_getmetafield(L, -1, "__metatable"); // store, object_ptr, object[, name]
+			luaL_argcheck(L, lua_getmetatable(L, -1), -1, "Object in store has no metatable"); // store, core_mt, object_ptr, object, mt
 
-			lua_pop(L, is_source); // store, object_ptr, object
+			int match = lua_equal(L, -4, -1);
 
-			if (!is_source)
+			lua_pop(L, 1); // store, core_mt, object_ptr, object
+
+			if (match)
 			{
-				lua_getfenv(L, -1); // store, core_ptr, core, env
+				lua_getfenv(L, -1); // store, core_mt, core_ptr, core, env
 
 				SoLoud::Soloud * core = GetCore(L, -2);
-				const size_t uint_bits = sizeof(unsigned int);
+
+				using Bitset = std::bitset<VOICE_COUNT>;
 
 				if (suspend)
 				{
-					unsigned int * unpaused = LuaXS::NewArray<unsigned int>(L, VOICE_COUNT / uint_bits); // store, core, true, env, unpaused
+					Bitset * unpaused = LuaXS::NewTyped<Bitset>(L); // store, core_mt, core, true, env, unpaused
 					
 					core->lockAudioMutex_internal();
 
 					unsigned int highest = core->mHighestVoice;
 
-					core->unlockAudioMutex_internal();
-
 					for (unsigned int i = 0; i < highest; ++i)
 					{
-						core->lockAudioMutex_internal();
-
-						SoLoud::handle handle = core->getHandleFromVoice_internal(i);
-
-						core->unlockAudioMutex_internal();
+						if (!core->mVoice[i] || core->mVoice[i]->mFlags & SoLoud::AudioSourceInstance::PAUSED) continue;
 						
-						if (core->isValidVoiceHandle(handle) && !core->getPause(handle))
-						{
-							int j = i / uint_bits, bit = i % uint_bits;
+						unpaused->set(i);
 
-							unpaused[j] |= 1U << bit;
-						}
+						core->mVoice[i]->mFlags |= SoLoud::AudioSourceInstance::PAUSED;
 					}
 
-					core->setPauseAll(true);
+					core->mActiveVoiceDirty = true;
 
-					lua_setfield(L, -2, "unpaused"); // store, core_ptr, core, env = { ..., unpaused = unpaused }
-					lua_pop(L, 1); // store, core_ptr, core
+					core->unlockAudioMutex_internal();
+
+					lua_setfield(L, -2, "unpaused"); // store, core_mt, core_ptr, core, env = { ..., unpaused = unpaused }
+					lua_pop(L, 1); // store, core_mt, core_ptr, core
 				}
 
 				else
 				{
-					lua_getfield(L, -1, "unpaused"); // store, core_ptr, core, env, unpaused
+					lua_getfield(L, -1, "unpaused"); // store, core_mt, core_ptr, core, env, unpaused
 
-					unsigned int * unpaused = LuaXS::UD<unsigned int>(L, -1);
+					Bitset * unpaused = LuaXS::UD<Bitset>(L, -1);
 					
 					core->lockAudioMutex_internal();
 
 					unsigned int highest = core->mHighestVoice;
 
-					core->unlockAudioMutex_internal();
-
 					for (unsigned int i = 0; i < highest; ++i)
 					{
-						core->lockAudioMutex_internal();
+						if (!unpaused->test(i)) continue;
 
-						SoLoud::handle handle = core->getHandleFromVoice_internal(i);
-
-						core->unlockAudioMutex_internal();
-
-						int j = i / uint_bits, bit = i % uint_bits;
-
-						if (unpaused[j] & (1U << bit)) core->setPause(handle, false);
+						core->mVoice[i]->mFlags &= ~SoLoud::AudioSourceInstance::PAUSED;
 					}
 
-					lua_pushnil(L); // store, core_ptr, coree, env, unpaused, nil
-					lua_setfield(L, -3, "unpaused"); // store, core_ptr, core, env = { ..., unpaused = nil }, unpaused
-					lua_pop(L, 2); // store, core_ptr, core
+					core->mActiveVoiceDirty = true;
+
+					core->unlockAudioMutex_internal();
+
+					lua_pushnil(L); // store, core_mt, core_ptr, coree, env, unpaused, nil
+					lua_setfield(L, -3, "unpaused"); // store, core_mt, core_ptr, core, env = { ..., unpaused = nil }, unpaused
+					lua_pop(L, 2); // store, core_mt, core_ptr, core
 				}
 			}
 		}
@@ -403,6 +408,13 @@ void AddBasics (lua_State * L)
 	lua_setfield(L, -2, "MAX_CHANNELS"); // soloud = { ..., MAX_CHANNELS = MAX_CHANNELS }
 	lua_pushstring(L, GetResamplerString(L, SOLOUD_DEFAULT_RESAMPLER)); // soloud, SOLOUD_DEFAULT_RESAMPLER
 	lua_setfield(L, -2, "DEFAULT_RESAMPLER"); // soloud = { ..., DEFAULT_RESAMPLER = SOLOUD_DEFAULT_RESAMPLER }
+
+	//
+	//
+	//
+
+	lua_newtable(L); // soloud, store
+	lua_setfield(L, LUA_REGISTRYINDEX, MT_NAME(Store)); // soloud; registry.NAME = store
 }
 
 //
@@ -411,7 +423,7 @@ void AddBasics (lua_State * L)
 
 CORONA_EXPORT int luaopen_plugin_soloud (lua_State * L)
 {
-	lua_newtable(L);// soloud
+	lua_newtable(L); // soloud
 
 	//
 	//
@@ -430,13 +442,6 @@ CORONA_EXPORT int luaopen_plugin_soloud (lua_State * L)
 	//
 	//
 	//
-
-	lua_newtable(L); // soloud, store
-	lua_setfield(L, LUA_REGISTRYINDEX, MT_NAME(Store)); // soloud; registry.NAME = store
-
-	//
-	//
-	//
 	
 	lua_getglobal(L, "Runtime"); // soloud, Runtime
 	lua_getfield(L, -1, "addEventListener"); // soloud, Runtime, Runtime.addEventListener
@@ -449,9 +454,15 @@ CORONA_EXPORT int luaopen_plugin_soloud (lua_State * L)
 	//
 	//
 
-	lua_pushvalue(L, 1); // soloud, soloud
+	lua_pushvalue(L, -1); // soloud, soloud
 
 	sPluginRef = lua_ref(L, 1); // soloud
+
+	//
+	//
+	//
+
+	CreateSecondaryState(L);
 
 	//
 	//

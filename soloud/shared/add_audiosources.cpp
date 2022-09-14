@@ -160,7 +160,7 @@ template<typename T> void AddCommonMethods (lua_State * L)
 						lua_setfield(L, -2, "__metatable"); // ..., mt; mt.__metatable = MT_NAME(AudioSourceDestroyed)
 					});
 
-					RemoveFilterAndBufferRefs(L);
+					RemoveEnvironment(L);
 					RemoveFromStore(L);
 				}
 
@@ -316,8 +316,8 @@ template<typename T> void AddAudioSourceType (lua_State * L, lua_CFunction body,
 		T * source = LuaXS::NewTyped<T>(L); // args?, source
 		bool is_custom = !lua_isnoneornil(L, lua_upvalueindex(2));
 
-		// hash part: fft table, wave table[, interface, new instance, data, want_parent_data]
-		lua_createtable(L, FILTERS_PER_STREAM, is_custom ? 6 : 2); // args?, source, env
+		// hash part: fft table, wave table; cf. CustomSource::HashValues for rest
+		lua_createtable(L, FILTERS_PER_STREAM, 2 + (is_custom ? CustomSource::HashValues : 0)); // args?, source, env
 		lua_setfenv(L, -2); // args?, source; source.env = env
 
 		LuaXS::AttachMethods(L, GetAudioSourceName<T>(), [](lua_State * L) {
@@ -799,6 +799,16 @@ static void AddWav (lua_State * L)
 
 		luaL_register(L, nullptr, funcs);
 
+		LuaXS::AttachProperties(L, [](lua_State * L) {
+			const char * key = lua_tostring(L, 2);
+
+			if (!key || strcmp(key, "SampleCount") != 0) return 0;
+			
+			lua_pushinteger(L, GetAudioSource<SoLoud::Wav>(L)->mSampleCount); // wav, "SampleCount", sample_count
+
+			return 1;
+		});
+
 		return 0;
 	});
 }
@@ -832,6 +842,16 @@ static void AddWavStream (lua_State * L)
 
 		luaL_register(L, nullptr, funcs);
 
+		LuaXS::AttachProperties(L, [](lua_State * L) {
+			const char * key = lua_tostring(L, 2);
+
+			if (!key || strcmp(key, "SampleCount") != 0) return 0;
+			
+			lua_pushinteger(L, GetAudioSource<SoLoud::WavStream>(L)->mSampleCount); // wav_stream, "SampleCount", sample_count
+
+			return 1;
+		});
+
 		return 0;
 	});
 }
@@ -847,37 +867,9 @@ void AddCustomSource (lua_State * L)
 			{
 				"__newindex", [](lua_State * L)
 				{
-					lua_getmetatable(L, 1); // source, k, v, mt
-					lua_pushvalue(L, 2); // source, k, v, mt, k
-					lua_rawget(L, -2); // source, k, v, mt, v?
+					if (CheckForKey(L, "class")) return 0; // source, k, v[, mt, v?]
 
-					if (!lua_isnil(L, 1))
-					{
-						CORONA_LOG_WARNING("Attempt to modify built-in value");
-
-						return 0;
-					}
-
-					CustomSource * source = GetAudioSource<CustomSource>(L);
-
-					if (!lua_isstring(L, 2) || !source->SetEntry(L, lua_tostring(L, 2), 3)) // if primitive, add to map (TODO: relax, use Entry::IsPrimitive())
-					{
-						lua_getfenv(L, 1); // source, k, v, mt, nil, env
-						lua_getfield(L, -1, "data"); // source, k, v, mt, nil, env, data?
-
-						if (lua_isnil(L, -1))
-						{
-							lua_newtable(L); // source, k, v, mt, nil, env, nil, data
-							lua_pushvalue(L, -1); // source, k, v, mt, nil, env, nil, data, data
-							lua_setfield(L, -4, "data"); // source, k, v, mt, nil, env = { ..., data = data }, nil, data
-						}
-
-						lua_replace(L, 1); // data, k, v, mt, nil, env[, nil]
-						lua_settop(L, 3); // data, k, v
-						lua_rawset(L, 1); // data = { ..., [k] = v }
-					}
-
-					return 0;
+					return SetData(L, GetAudioSource<CustomSource>(L)->mData, true);
 				}
 			},
 			{ nullptr, nullptr }
@@ -886,25 +878,24 @@ void AddCustomSource (lua_State * L)
 		luaL_register(L, nullptr, funcs);
 
 		LuaXS::AttachProperties(L, [](lua_State * L) {
-			CustomSource * source = GetAudioSource<CustomSource>(L);
+			lua_getfenv(L, 1); // source, k, env
+			lua_getfield(L, -1, "class"); // source, k, env, class?
 
-			if (!lua_isstring(L, 2) || !source->FindEntry(L, lua_tostring(L, 2))) // look in map first; TODO: relax, use Entry::IsPrimitive()
+			if (!lua_isnil(L, -1))
 			{
-				lua_getfenv(L, 1); // source, k, env
-				lua_getfield(L, -1, "data"); // source, k, env, data?
+				lua_pushvalue(L, 2); // source, k, env, class, k
+				lua_rawget(L, -2); // source, k, env, class, v?
 
-				if (!lua_isnil(L, -1))
-				{
-					lua_pushvalue(L, 2); // source, k, env, data, k
-					lua_rawget(L, -2); // source, k, env, data, v?
-				}
+				if (!lua_isnil(L, -1)) return 1;
 			}
 
-			return 1;
+			lua_settop(L, 2); // source, k
+
+			return GetData(L, GetAudioSource<CustomSource>(L)->mData);
 		});
 
 		return 0;
-	}, CustomSourceInit);
+	}, CustomSource::Init);
 }
 
 //
