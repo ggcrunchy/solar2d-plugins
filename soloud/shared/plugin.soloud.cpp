@@ -23,6 +23,7 @@
 
 #include "common.h"
 #include "custom_objects.h"
+#include "dll_loader.h"
 #include "soloud_misc.h"
 #include <bitset>
 
@@ -187,7 +188,7 @@ void GetFromStore (lua_State * L, void * object)
 //
 
 void RemoveFromStore (lua_State * L, void * object)
-{
+{CoronaLog("RFS");
 	if (!object) object = lua_touserdata(L, 1);
 
 	lua_getfield(L, LUA_REGISTRYINDEX, MT_NAME(Store)); // [object, ]..., store
@@ -202,7 +203,7 @@ void RemoveFromStore (lua_State * L, void * object)
 //
 
 void RemoveEnvironment (lua_State * L, int arg)
-{
+{CoronaLog("RE");
 	arg = CoronaLuaNormalize(L, arg);
 
 	lua_getfenv(L, arg); // ..., object, ..., env
@@ -424,7 +425,7 @@ void AddBasics (lua_State * L)
 CORONA_EXPORT int luaopen_plugin_soloud (lua_State * L)
 {
 	lua_newtable(L); // soloud
-
+return 1;
 	//
 	//
 	//
@@ -438,6 +439,12 @@ CORONA_EXPORT int luaopen_plugin_soloud (lua_State * L)
 	//
 
 	AddBasics(L);
+
+	//
+	//
+	//
+
+	AddLoader(L);
 
 	//
 	//
@@ -470,6 +477,26 @@ CORONA_EXPORT int luaopen_plugin_soloud (lua_State * L)
 
 	return 1;
 }
-
-
+#include <windows.h>
+BOOL APIENTRY DllMain(HANDLE hModule, 
+                      DWORD  ul_reason_for_call, 
+                      LPVOID lpReserved)
+{
+	switch (ul_reason_for_call)
+	{
+	case DLL_PROCESS_ATTACH:
+		CoronaLog("Process ATTACH");
+		break;
+	case DLL_PROCESS_DETACH:
+		CoronaLog("Process DETACH");
+		break;
+	case DLL_THREAD_DETACH:
+		CoronaLog("Thread DETACH");
+		break;
+	case DLL_THREAD_ATTACH:
+		CoronaLog("Thread ATTACH");
+		break;
+	}
+    return TRUE;
+}
 

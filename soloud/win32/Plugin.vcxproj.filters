@@ -345,6 +345,15 @@
     <ClCompile Include="..\shared\custom_objects.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\shared\dll_loader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\miniz.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\MemoryModule.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\shared\include\soloud.h">
@@ -509,16 +518,25 @@
     <ClInclude Include="..\shared\src\backend\miniaudio\miniaudio.h">
       <Filter>Source Files\src\backend\miniaudio</Filter>
     </ClInclude>
-    <ClInclude Include="..\shared\common.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\shared\templates.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\shared\custom_objects.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\marshal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\templates.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\dll_loader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\miniz.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\MemoryModule.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

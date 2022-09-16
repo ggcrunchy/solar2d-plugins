@@ -150,10 +150,10 @@ template<typename T> void AddCommonMethods (lua_State * L)
 			}
 		}, {
 			"__gc", [](lua_State * L)
-			{
-				FilterBox * box = GetFilterBox<T>(L);
+			{CoronaLog("F1");
+				FilterBox * box = GetFilterBox<T>(L);CoronaLog("F2");
 
-				if (box->mFilter) RemoveFromStore(L, box->mFilter);
+				if (box->mFilter) RemoveFromStore(L, box->mFilter);CoronaLog("F3");
 
 				return 0;
 			}

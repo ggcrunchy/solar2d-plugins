@@ -29,6 +29,40 @@
 //
 //
 
+struct CoreBox {
+	SoLoud::Soloud mCore;
+	bool mDestroyed{false};
+};
+
+static CoreBox * GetCoreBox (lua_State * L, int arg)
+{
+	return LuaXS::CheckUD<CoreBox>(L, arg, MT_NAME(Soloud));
+}
+
+SoLoud::Soloud * GetCore (lua_State * L, int arg)
+{
+	CoreBox * box = GetCoreBox(L, arg);
+
+	luaL_argcheck(L, !box->mDestroyed, arg, "Core already destroyed");
+
+	return &box->mCore;
+}
+
+static SoLoud::Soloud * GetSoloud (lua_State * L)
+{
+	return GetCore(L);
+}
+
+//
+//
+//
+
+static SoLoud::Soloud * sCurrentCore;
+
+//
+//
+//
+
 #define DO_VOID(NAME) #NAME, [](lua_State * L) { \
     GetSoloud(L)->NAME();                        \
     return 0;                                    \
@@ -123,40 +157,6 @@
 //
 //
 
-struct CoreBox {
-	SoLoud::Soloud mCore;
-	bool mDestroyed{false};
-};
-
-static CoreBox * GetCoreBox (lua_State * L, int arg)
-{
-	return LuaXS::CheckUD<CoreBox>(L, arg, MT_NAME(Soloud));
-}
-
-SoLoud::Soloud * GetCore (lua_State * L, int arg)
-{
-	CoreBox * box = GetCoreBox(L, arg);
-
-	luaL_argcheck(L, !box->mDestroyed, arg, "Core already destroyed");
-
-	return &box->mCore;
-}
-
-static SoLoud::Soloud * GetSoloud (lua_State * L)
-{
-	return GetCore(L);
-}
-
-//
-//
-//
-
-static SoLoud::Soloud * sCurrentCore;
-
-//
-//
-//
-
 static unsigned int Index (lua_State * L, int arg)
 {
 	return LuaXS::Uint(L, arg) - 1;
@@ -194,16 +194,16 @@ static unsigned int FilterAttribute (lua_State * L, int arg)
 
 static void Deinitialize (SoLoud::Soloud & core)
 {
-	core.deinit();
-	core.~Soloud();
+	core.deinit();CoronaLog("DEINIT1");
+	core.~Soloud();CoronaLog("DEINIT2");
 }
 
 static void Shutdown (lua_State * L, SoLoud::Soloud & core, int arg = 1)
 {
 	Deinitialize(core);
-
-	RemoveEnvironment(L, arg);
-	RemoveFromStore(L, &core);
+	CoronaLog("SD1");
+	RemoveEnvironment(L, arg);CoronaLog("RE");
+	RemoveFromStore(L, &core);CoronaLog("RFS");
 }
 
 //
@@ -238,16 +238,16 @@ void SoloudMethods(lua_State * L)
 			"destroy", [](lua_State * L)
 			{
 				CoreBox * box = GetCoreBox(L, 1);
-
+				CoronaLog("DEST1");
 				if (!box->mDestroyed)
-				{
+				{CoronaLog("DEST2");
 					luaL_argcheck(L, &box->mCore == sCurrentCore, 1, "More than one core active");
-
+					CoronaLog("DEST3");
 					sCurrentCore = nullptr;
 				}
-
+				CoronaLog("DEST4");
 				if (!box->mDestroyed) Shutdown(L, box->mCore);
-
+				CoronaLog("DEST5");
 				box->mDestroyed = true;
 
 				return 0;
@@ -272,11 +272,11 @@ void SoloudMethods(lua_State * L)
 			FADE(fadeVolume)
 		}, {
 			"__gc", [](lua_State * L)
-			{
+			{CoronaLog("GC1");
 				CoreBox * box = GetCoreBox(L, 1);
-
+				CoronaLog("GC2");
 				if (!box->mDestroyed) Deinitialize(box->mCore);
-
+				CoronaLog("GC3..");
 				return 0;
 			}
 		}, {

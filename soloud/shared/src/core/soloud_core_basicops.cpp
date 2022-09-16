@@ -157,22 +157,22 @@ namespace SoLoud
 		FOR_ALL_VOICES_POST
 	}
 
-	void Soloud::stopAudioSource(AudioSource &aSound)
-	{
-		if (aSound.mAudioSourceID)
-		{
-			lockAudioMutex_internal();
+	void Soloud::stopAudioSource(AudioSource &aSound, bool onlyTry) // <- STEVE CHANGE
+	{CoronaLog("sas1, not in mutex = %s",!mInsideAudioThreadMutex ? "yes" : "no");
+		if (aSound.mAudioSourceID && !onlyTry) // <- STEVE CHANGE
+		{CoronaLog("sas1.1");
+			lockAudioMutex_internal();CoronaLog("sas1.2");
 			
-			int i;
+			int i;CoronaLog("sas2");
 			for (i = 0; i < (signed)mHighestVoice; i++)
 			{
 				if (mVoice[i] && mVoice[i]->mAudioSourceID == aSound.mAudioSourceID)
-				{
-					stopVoice_internal(i);
+				{CoronaLog("sas3, %i", i);
+					stopVoice_internal(i);CoronaLog("sas4");
 				}
 			}
-			unlockAudioMutex_internal();
-		}
+			unlockAudioMutex_internal();CoronaLog("sas5");
+		}CoronaLog("sas6");
 	}
 
 	void Soloud::stopAll()

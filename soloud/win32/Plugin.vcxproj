@@ -67,9 +67,9 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;PLUGINMEMORYBITMAP_EXPORTS;_CRT_SECURE_NO_WARNINGS;WITH_WINMM;WITH_NULL;WITH_NOSOUND;WITH_MINIAUDIO;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_WARNINGS;WITH_WINMM;WITH_NULL;WITH_NOSOUND;WITH_MINIAUDIO;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(CORONA_ROOT)/Corona/shared/include/Corona;$(CORONA_ROOT)/Corona/shared/include/lua;$(SolutionDir)../shared/include;$(SolutionDir)../../ByteReader;$(SolutionDir)../../solar2d_native_utils</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(CORONA_ROOT)/Corona/shared/include/Corona;$(CORONA_ROOT)/Corona/shared/include/lua;$(SolutionDir)../shared/include;$(SolutionDir)../../ByteReader;$(SolutionDir)../../solar2d_native_utils;$(SolutionDir)../..</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -87,7 +87,7 @@ set FILENAME=plugin_$(TargetName).dll
 set FULL_NAME=%PLUGIN_DIR%\%FILENAME%
 copy "$(OutDir)$(TargetName).dll" "%FULL_NAME%"
 del "%PLUGIN_DIR%\data.tgz"
-tar -czf "%PLUGIN_DIR%\data.tgz" -C "%PLUGIN_DIR%" %FILENAME%
+tar -czf "%PLUGIN_DIR%\data.tgz" -C "%PLUGIN_DIR%" %FILENAME% libopenmpt.zip
 del "%FULL_NAME%"
 set SIMULATOR_DIR="$(appdata)\Corona Labs\Corona Simulator\Plugins"
 del %SIMULATOR_DIR%\catalog.json</Command>
@@ -108,7 +108,10 @@ del %SIMULATOR_DIR%\catalog.json</Command>
     <ClCompile Include="..\shared\custom_audiosource_instance.cpp" />
     <ClCompile Include="..\shared\custom_objects.cpp" />
     <ClCompile Include="..\shared\custom_object_data.cpp" />
+    <ClCompile Include="..\shared\dll_loader.cpp" />
     <ClCompile Include="..\shared\marshal.c" />
+    <ClCompile Include="..\shared\MemoryModule.c" />
+    <ClCompile Include="..\shared\miniz.c" />
     <ClCompile Include="..\shared\plugin.soloud.cpp" />
     <ClCompile Include="..\shared\src\audiosource\ay\chipplayer.cpp" />
     <ClCompile Include="..\shared\src\audiosource\ay\sndbuffer.cpp" />
@@ -182,6 +185,7 @@ del %SIMULATOR_DIR%\catalog.json</Command>
   <ItemGroup>
     <ClInclude Include="..\shared\common.h" />
     <ClInclude Include="..\shared\custom_objects.h" />
+    <ClInclude Include="..\shared\dll_loader.h" />
     <ClInclude Include="..\shared\include\soloud.h" />
     <ClInclude Include="..\shared\include\soloud_audiosource.h" />
     <ClInclude Include="..\shared\include\soloud_ay.h" />
@@ -222,6 +226,8 @@ del %SIMULATOR_DIR%\catalog.json</Command>
     <ClInclude Include="..\shared\include\soloud_wavstream.h" />
     <ClInclude Include="..\shared\include\zx7decompress.h" />
     <ClInclude Include="..\shared\marshal.h" />
+    <ClInclude Include="..\shared\MemoryModule.h" />
+    <ClInclude Include="..\shared\miniz.h" />
     <ClInclude Include="..\shared\src\audiosource\ay\chipplayer.h" />
     <ClInclude Include="..\shared\src\audiosource\ay\sndbuffer.h" />
     <ClInclude Include="..\shared\src\audiosource\ay\sndchip.h" />

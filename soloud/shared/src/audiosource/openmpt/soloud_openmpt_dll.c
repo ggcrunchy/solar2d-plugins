@@ -39,16 +39,17 @@ static dll_openmpt_module_set_repeat_count d_openmpt_module_set_repeat_count = N
 
 #ifdef WINDOWS_VERSION
 #include <windows.h>
+#include "..\..\..\dll_loader.h" // <- STEVE CHANGE
 
 static HMODULE openDll()
 {
-	HMODULE res = LoadLibraryA("libopenmpt.dll");
+	HMODULE res = /*LoadLibraryA*/(HMODULE)LoadDLL("libopenmpt.dll", "libopenmpt.zip"); // <- STEVE CHANGE
 	return res;
 }
 
 static void* getDllProc(HMODULE aDllHandle, const char *aProcName)
 {
-	return (void*)GetProcAddress(aDllHandle, (LPCSTR)aProcName);
+	return (void*)/*GetProcAddress*/GetProcFromDLL(aDllHandle, (LPCSTR)aProcName); // <- STEVE CHANGE
 }
 
 #elif defined(__vita__)

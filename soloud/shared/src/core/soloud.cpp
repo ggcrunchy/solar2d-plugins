@@ -208,8 +208,8 @@ namespace SoLoud
 	{		
 		if (aBackend >= BACKEND_MAX || aChannels == 3 || aChannels == 5 || aChannels == 7 || aChannels > MAX_CHANNELS)
 			return INVALID_PARAMETER;
-
-		deinit();
+		CoronaLog("INIT1");
+		deinit();CoronaLog("INIT2");
 
 		mAudioThreadMutex = Thread::createMutex();
 

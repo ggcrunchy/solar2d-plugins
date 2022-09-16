@@ -272,6 +272,8 @@ namespace SoLoud
 		// When looping, start playing from this time
 		time mLoopPoint;
 
+		bool mShuttingDown; // <- STEVE CHANGE
+
 		// CTor
 		AudioSource();
 		// Set default volume for instances

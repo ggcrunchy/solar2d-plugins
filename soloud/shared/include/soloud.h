@@ -278,7 +278,7 @@ namespace SoLoud
 		// Stop all voices.
 		void stopAll();
 		// Stop all voices that play this sound source
-		void stopAudioSource(AudioSource &aSound);
+		void stopAudioSource(AudioSource &aSound, bool onlyTry = false); // <- STEVE CHANGE
 		// Count voices that play this audio source
 		int countAudioSource(AudioSource &aSound);
 
@@ -502,6 +502,7 @@ namespace SoLoud
 
 		// Lock audio thread mutex.
 		void lockAudioMutex_internal();
+
 		// Unlock audio thread mutex.
 		void unlockAudioMutex_internal();
 

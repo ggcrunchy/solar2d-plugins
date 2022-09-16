@@ -21,11 +21,11 @@
 * [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
 */
 
+#pragma once
+
 #include <map>
 #include <mutex>
 #include <string>
-
-#pragma once
 
 //
 //
@@ -35,7 +35,7 @@ struct Entry {
 	Entry () {}
 	Entry (const Entry & other);
 
-	// TODO: use this, to allow primitive keys
+	// TODO: use this to allow primitive keys
 	struct Less {
 		bool operator ()(const Entry & lhs, const Entry & rhs) const;
 	};
@@ -69,7 +69,7 @@ struct ParentDataWrapper {
 	ParentDataWrapper (const CustomSource * parent, const ParentData & data) : mParent{parent}, mData{data}
 	{
 	}
-
+	~ParentDataWrapper(){CoronaLog("PDW");}
 	const CustomSource * mParent;
 	ParentData mData;
 

@@ -203,11 +203,13 @@ namespace SoLoud
 		mColliderData = 0;
 		mVolume = 1;
 		mLoopPoint = 0;
+
+		mShuttingDown = false; // <- STEVE CHANGE
 	}
 
 	AudioSource::~AudioSource() 
-	{
-		stop();
+	{CoronaLog("AS~1");
+		stop();CoronaLog("AS~2");
 	}
 
 	void AudioSource::setVolume(float aVolume)
@@ -269,10 +271,10 @@ namespace SoLoud
 	}
 
 	void AudioSource::stop()
-	{
+	{CoronaLog("stop1");
 		if (mSoloud)
-		{
-			mSoloud->stopAudioSource(*this);
+		{CoronaLog("stop2");
+			mSoloud->stopAudioSource(*this, mShuttingDown);CoronaLog("stop3"); // <- STEVE CHANGE
 		}
 	}
 

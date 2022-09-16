@@ -168,13 +168,14 @@ template<typename T> void AddCommonMethods (lua_State * L)
 			}
 		}, {
 			"__gc", [](lua_State * L)
-			{
+			{CoronaLog("AS1");
 				if (!HasMetatable(L, 1, MT_NAME(AudioSourceDestroyed)))
-				{
-					GetAudioSource(L); // do checks
-
-					LuaXS::DestructTyped<SoLoud::AudioSource>(L);
-				}
+				{CoronaLog("AS2");
+					GetAudioSource(L)->mShuttingDown = true;
+				CoronaLog("STOPPED");
+				CoronaLog("AS3");
+					LuaXS::DestructTyped<SoLoud::AudioSource>(L);CoronaLog("AS4");
+				} else CoronaLog("GONE");
 
 				return 0;
 			}
