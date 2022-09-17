@@ -170,13 +170,17 @@ namespace SoLoud
 		mResampleDataOwner = NULL;
 		for (i = 0; i < 3 * MAX_CHANNELS; i++)
 			m3dSpeakerPosition[i] = 0;
+	// STEVE CHANGE
+		mMixing = false;
+		mShuttingDown = false;
+	// /STEVE CHANGE
 	}
-#include "CoronaLog.h"
+
 	Soloud::~Soloud()
-	{CoronaLog("A");
+	{
 		// let's stop all sounds before deinit, so we don't mess up our mutexes
-		stopAll();CoronaLog("B");
-		deinit();CoronaLog("C");
+		stopAll();
+		deinit();
 		unsigned int i;
 		for (i = 0; i < FILTERS_PER_STREAM; i++)
 		{
@@ -186,30 +190,41 @@ namespace SoLoud
 			delete[] mVoiceGroup[i];
 		delete[] mVoiceGroup;
 		delete[] mResampleData;
-		delete[] mResampleDataOwner;CoronaLog("D");
+		delete[] mResampleDataOwner;
 	}
 
 	void Soloud::deinit()
-	{CoronaLog("1");
+	{
 		// Make sure no audio operation is currently pending
-		lockAudioMutex_internal();
-		unlockAudioMutex_internal();
-		SOLOUD_ASSERT(!mInsideAudioThreadMutex);CoronaLog("2");
-		stopAll();CoronaLog("3");
+		// STEVE CHANGE
+		if (!mShuttingDown)
+		{
+		// /STEVE CHANGE
+			lockAudioMutex_internal();
+			unlockAudioMutex_internal();
+		// STEVE CHANGE
+		}
+		else
+		{CoronaLog("SPin1");
+			while (mMixing) CoronaLog("loop");CoronaLog("Spin2");
+		}
+		// /STEVE CHANGE
+		SOLOUD_ASSERT(!mInsideAudioThreadMutex);
+		stopAll();
 		if (mBackendCleanupFunc)
 			mBackendCleanupFunc(this);
-		mBackendCleanupFunc = 0;CoronaLog("4");
+		mBackendCleanupFunc = 0;
 		if (mAudioThreadMutex)
 			Thread::destroyMutex(mAudioThreadMutex);
-		mAudioThreadMutex = NULL;CoronaLog("5");
+		mAudioThreadMutex = NULL;
 	}
 
 	result Soloud::init(unsigned int aFlags, unsigned int aBackend, unsigned int aSamplerate, unsigned int aBufferSize, unsigned int aChannels)
 	{		
 		if (aBackend >= BACKEND_MAX || aChannels == 3 || aChannels == 5 || aChannels == 7 || aChannels > MAX_CHANNELS)
 			return INVALID_PARAMETER;
-		CoronaLog("INIT1");
-		deinit();CoronaLog("INIT2");
+
+		deinit();
 
 		mAudioThreadMutex = Thread::createMutex();
 
@@ -1648,7 +1663,7 @@ namespace SoLoud
 						memset(aScratch + k * aBufferSize, 0, sizeof(float) * outofs); 
 					}
 				}												
-
+				
 				while (step_fixed != 0 && outofs < aSamplesToRead)
 				{
 					if (voice->mLeftoverSamples == 0)
@@ -1678,7 +1693,7 @@ namespace SoLoud
 								}
 							}
 						}
-
+						
                         // Clear remaining of the resample data if the full scratch wasn't used
 						if (readcount < SAMPLE_GRANULARITY)
 						{
@@ -1697,7 +1712,7 @@ namespace SoLoud
 							// We have new block of data, move pointer backwards
 							voice->mSrcOffset -= SAMPLE_GRANULARITY * FIXPOINT_FRAC_MUL;
 						}
-
+						
 					
 						// Run the per-stream filters to get our source data
 
@@ -1786,7 +1801,7 @@ namespace SoLoud
 
 					// Keep track of how many samples we've written so far
 					outofs += writesamples;
-
+					
 					// Move source pointer onwards (writesamples may be zero)
 					voice->mSrcOffset += writesamples * step_fixed;
 				}
@@ -1874,7 +1889,7 @@ namespace SoLoud
 
 					// Figure out how many samples we can generate from this source data.
 					// The value may be zero.
-
+					
 					unsigned int writesamples = 0;
 
 					if (voice->mSrcOffset < SAMPLE_GRANULARITY * FIXPOINT_FRAC_MUL)
@@ -1885,7 +1900,7 @@ namespace SoLoud
 						if (((writesamples * step_fixed + voice->mSrcOffset) >> FIXPOINT_FRAC_BITS) >= SAMPLE_GRANULARITY)
 							writesamples--;
 					}
-
+					
 
 					// If this is too much for our output buffer, don't write that many:
 					if (writesamples + outofs > aSamplesToRead)
@@ -2181,7 +2196,7 @@ namespace SoLoud
 
 		if (mActiveVoiceDirty)
 			calcActiveVoices_internal();
-	
+
 		mixBus_internal(mOutputScratch.mData, aSamples, aStride, mScratch.mData, 0, (float)mSamplerate, mChannels, mResampler);
 
 		for (i = 0; i < FILTERS_PER_STREAM; i++)
@@ -2242,16 +2257,30 @@ namespace SoLoud
 
 	void Soloud::mix(float *aBuffer, unsigned int aSamples)
 	{
+		// STEVE CHANGE
+		if (mShuttingDown) return;
+		
+		mMixing = true;
+		// /STEVE CHANGE
 		unsigned int stride = (aSamples + 15) & ~0xf;
 		mix_internal(aSamples, stride);
 		interlace_samples_float(mScratch.mData, aBuffer, aSamples, mChannels, stride);
+
+		mMixing = false; // <- STEVE CHANGE
 	}
 
 	void Soloud::mixSigned16(short *aBuffer, unsigned int aSamples)
 	{
+		// STEVE CHANGE
+		if (mShuttingDown) return;
+
+		mMixing = true;
+		// /STEVE CHANGE
 		unsigned int stride = (aSamples + 15) & ~0xf;
 		mix_internal(aSamples, stride);
 		interlace_samples_s16(mScratch.mData, aBuffer, aSamples, mChannels, stride);
+
+		mMixing = false; // <- STEVE CHANGE
 	}
 
 	void interlace_samples_float(const float *aSourceBuffer, float *aDestBuffer, unsigned int aSamples, unsigned int aChannels, unsigned int aStride)

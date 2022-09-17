@@ -176,7 +176,7 @@ static unsigned int FilterAttribute (lua_State * L, int arg)
 
 		lua_pushvalue(L, arg); // ..., name, ..., filter_params, name
 		lua_rawget(L, -2); // ..., name, ..., filter_params, value?
-		luaL_argcheck(L, lua_isnumber(L, -1), arg, "Invalid filter attribute name");
+		luaL_checktype(L, -1, LUA_TNUMBER);
 
 		unsigned int result = lua_tointeger(L, -1);
 
@@ -194,16 +194,15 @@ static unsigned int FilterAttribute (lua_State * L, int arg)
 
 static void Deinitialize (SoLoud::Soloud & core)
 {
-	core.deinit();CoronaLog("DEINIT1");
 	core.~Soloud();CoronaLog("DEINIT2");
 }
 
 static void Shutdown (lua_State * L, SoLoud::Soloud & core, int arg = 1)
 {
 	Deinitialize(core);
-	CoronaLog("SD1");
-	RemoveEnvironment(L, arg);CoronaLog("RE");
-	RemoveFromStore(L, &core);CoronaLog("RFS");
+
+	RemoveEnvironment(L, arg);
+	RemoveFromStore(L, &core);
 }
 
 //
@@ -238,16 +237,16 @@ void SoloudMethods(lua_State * L)
 			"destroy", [](lua_State * L)
 			{
 				CoreBox * box = GetCoreBox(L, 1);
-				CoronaLog("DEST1");
+
 				if (!box->mDestroyed)
-				{CoronaLog("DEST2");
+				{
 					luaL_argcheck(L, &box->mCore == sCurrentCore, 1, "More than one core active");
-					CoronaLog("DEST3");
+
 					sCurrentCore = nullptr;
+
+					Shutdown(L, box->mCore);
 				}
-				CoronaLog("DEST4");
-				if (!box->mDestroyed) Shutdown(L, box->mCore);
-				CoronaLog("DEST5");
+
 				box->mDestroyed = true;
 
 				return 0;
@@ -272,11 +271,16 @@ void SoloudMethods(lua_State * L)
 			FADE(fadeVolume)
 		}, {
 			"__gc", [](lua_State * L)
-			{CoronaLog("GC1");
+			{
 				CoreBox * box = GetCoreBox(L, 1);
-				CoronaLog("GC2");
-				if (!box->mDestroyed) Deinitialize(box->mCore);
-				CoronaLog("GC3..");
+
+				if (!box->mDestroyed)
+				{
+					box->mCore.mShuttingDown = true;
+
+					Deinitialize(box->mCore);
+				}
+
 				return 0;
 			}
 		}, {
@@ -387,6 +391,7 @@ void SoloudMethods(lua_State * L)
 		}, {
 			"mix", [](lua_State * L)
 			{
+				SoLoud::Soloud * soloud = GetSoloud(L);
 				std::vector<float> floats;
 				float * data;
 				unsigned int samples;
@@ -394,7 +399,7 @@ void SoloudMethods(lua_State * L)
 				if (lua_isuserdata(L, 2))
 				{
 					FloatBuffer * buffer = GetFloatBuffer(L, 2);
-					size_t def_size = buffer->mSize / 2;
+					size_t def_size = buffer->mSize / soloud->mChannels;
 
 					samples = luaL_optinteger(L, 3, def_size);
 					data = buffer->mData;
@@ -411,12 +416,12 @@ void SoloudMethods(lua_State * L)
 
 					luaL_argcheck(L, samples > 0, 2, "mix() must have > 0 samples");
 
-					floats.resize(samples * 2);
+					floats.resize(samples * soloud->mChannels);
 
 					data = floats.data();
 				}
 
-				GetSoloud(L)->mix(data, samples);
+				soloud->mix(data, samples);
 
 				if (!floats.empty()) lua_pushlstring(L, reinterpret_cast<char *>(data), floats.size() * sizeof(float)); // samples, data
 
@@ -426,13 +431,14 @@ void SoloudMethods(lua_State * L)
 			"mixSigned16", [](lua_State * L)
 			{
 				// TODO? could add buffers for signed16 (also 8-bit)
+				SoLoud::Soloud * soloud = GetSoloud(L);
 				unsigned int samples = luaL_checkinteger(L, 2);
 
 				luaL_argcheck(L, samples > 0, 2, "mixSigned16() must have > 0 samples");
 
 				std::vector<short> shorts(samples);
 
-				GetSoloud(L)->mixSigned16(shorts.data(), samples * 2);
+				soloud->mixSigned16(shorts.data(), samples * soloud->mChannels);
 
 				if (!shorts.empty()) lua_pushlstring(L, reinterpret_cast<char *>(shorts.data()), samples * sizeof(short)); // samples, data
 

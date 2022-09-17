@@ -150,10 +150,10 @@ template<typename T> void AddCommonMethods (lua_State * L)
 			}
 		}, {
 			"__gc", [](lua_State * L)
-			{CoronaLog("F1");
-				FilterBox * box = GetFilterBox<T>(L);CoronaLog("F2");
+			{
+				FilterBox * box = GetFilterBox<T>(L);
 
-				if (box->mFilter) RemoveFromStore(L, box->mFilter);CoronaLog("F3");
+				if (box->mFilter) RemoveFromStore(L, box->mFilter);
 
 				return 0;
 			}
@@ -283,7 +283,10 @@ static void AddBassboostFilter (lua_State * L)
 			{
 				"setParams", [](lua_State * L)
 				{
-					return Result(L, GetFilter<SoLoud::BassboostFilter>(L)->setParams(LuaXS::Float(L, 2)));
+					luaL_checktype(L, 2, LUA_TTABLE);
+					lua_getfield(L, 2, "boost"); // lofi_filter, params, boost
+
+					return Result(L, GetFilter<SoLoud::BassboostFilter>(L)->setParams(LuaXS::Float(L, -1)));
 				}
 			},
 			{ nullptr, nullptr }
@@ -361,7 +364,12 @@ static void AddBiquadResonantFilter (lua_State * L)
 			{
 				"setParams", [](lua_State * L)
 				{
-					return Result(L, GetFilter<SoLoud::BiquadResonantFilter>(L)->setParams(luaL_checkoption(L, 2, nullptr, sTypes), LuaXS::Float(L, 3), LuaXS::Float(L, 4)));
+					luaL_checktype(L, 2, LUA_TTABLE);
+					lua_getfield(L, 2, "type"); // biquad_filter, params, type
+					lua_getfield(L, 2, "frequency"); // biquad_filter, params, type, frequency
+					lua_getfield(L, 2, "resonance"); // biquad_filter, params, type, frequency, resonance
+
+					return Result(L, GetFilter<SoLoud::BiquadResonantFilter>(L)->setParams(luaL_checkoption(L, -3, nullptr, sTypes), LuaXS::Float(L, -2), LuaXS::Float(L, -1)));
 				}
 			},
 			{ nullptr, nullptr }
@@ -405,7 +413,10 @@ static void AddDCRemovaltFilter (lua_State * L)
 			{
 				"setParams", [](lua_State * L)
 				{
-					return Result(L, GetFilter<SoLoud::DCRemovalFilter>(L)->setParams(LuaXS::Float(L, 2)));
+					if (lua_istable(L, 2)) lua_getfield(L, 2, "length"); // dc_removal_filter, params, length
+					else lua_pushnil(L); // dc_removal_filter[, params], nil
+
+					return Result(L, GetFilter<SoLoud::DCRemovalFilter>(L)->setParams(OptFloat(L, -1, .1f)));
 				}
 			},
 			{ nullptr, nullptr }
@@ -428,9 +439,16 @@ static void AddDuckFilter (lua_State * L)
 			{
 				"setParams", [](lua_State * L)
 				{
+					luaL_checktype(L, 2, LUA_TTABLE);
+					lua_getfield(L, 2, "core"); // duck_filter, params, core
+					lua_getfield(L, 2, "listenTo"); // duck_filter, params, core, listen_to
+					lua_getfield(L, 2, "onRamp"); // duck_filter, params, core, listen_to, on_ramp
+					lua_getfield(L, 2, "offRamp"); // duck_filter, params, core, listen_to, on_ramp, off_ramp
+					lua_getfield(L, 2, "level"); // duck_filter, params, core, listen_to, on_ramp, off_ramp, level
+
 					return Result(L, GetFilter<SoLoud::DuckFilter>(L)->setParams(
-						GetCore(L, 2), GetHandle(L, 3),
-						OptFloat(L, 4, .1f), OptFloat(L, 5, .5f), OptFloat(L, 6, .1f) // TODO: options table?
+						GetCore(L, -5), GetHandle(L, -4),
+						OptFloat(L, -3, .1f), OptFloat(L, -2, .5f), OptFloat(L, -1, .1f)
 					));
 				}
 			},
@@ -458,9 +476,14 @@ static void AddEchoFilter (lua_State * L)
 			{
 				"setParams", [](lua_State * L)
 				{
+					luaL_checktype(L, 2, LUA_TTABLE);
+					lua_getfield(L, 2, "delay"); // echo_filter, params, delay
+					lua_getfield(L, 2, "decay"); // echo_filter, params, delay, decay
+					lua_getfield(L, 2, "filter"); // echo_filter, params, delay, decay, filter
+
 					return Result(L, GetFilter<SoLoud::EchoFilter>(L)->setParams(
-						LuaXS::Float(L, 2),
-						OptFloat(L, 3, .7f), OptFloat(L, 4, 0) // TODO: options table?
+						LuaXS::Float(L, -3),
+						OptFloat(L, -2, .7f), OptFloat(L, -1, 0)
 					));
 				}
 			},
@@ -488,18 +511,22 @@ static void AddEQFilter (lua_State * L)
 			{
 				"setParams", [](lua_State * L)
 				{
+					luaL_checktype(L, 2, LUA_TTABLE);
+					lua_getfield(L, 2, "band"); // eq_filter, params, band
+					lua_getfield(L, 2, "volume"); // eq_filter, params, band, volume
+
 					unsigned int band = 0;
 
-					if (lua_isstring(L, 2))
+					if (LUA_TSTRING == lua_type(L, -2))
 					{
-						const char * str = lua_tostring(L, 2);
+						const char * str = lua_tostring(L, -2);
 
-						if (lua_objlen(L, 2) == 5 && strncmp(str, "BAND", 4) == 0 && isdigit(str[4])) band = SoLoud::EqFilter::BAND1 + str[4] - '1';
+						if (lua_objlen(L, -2) == 5 && strncmp(str, "BAND", 4) == 0 && isdigit(str[4])) band = SoLoud::EqFilter::BAND1 + str[4] - '1';
 					}
 
-					else band = LuaXS::Uint(L, 2);
+					else band = LuaXS::Uint(L, -2);
 
-					return Result(L, GetFilter<SoLoud::EqFilter>(L)->setParam(band, LuaXS::Float(L, 3)));
+					return Result(L, GetFilter<SoLoud::EqFilter>(L)->setParam(band, LuaXS::Float(L, -1)));
 				}
 			},
 			{ nullptr, nullptr }
@@ -540,7 +567,11 @@ static void AddFlangerFilter (lua_State * L)
 			{
 				"setParams", [](lua_State * L)
 				{
-					return Result(L, GetFilter<SoLoud::FlangerFilter>(L)->setParams(LuaXS::Float(L, 2), LuaXS::Float(L, 3)));
+					luaL_checktype(L, 2, LUA_TTABLE);
+					lua_getfield(L, 2, "delay"); // flanger_filter, params, delay
+					lua_getfield(L, 2, "frequency"); // flanger_filter, params, delay, frequency
+
+					return Result(L, GetFilter<SoLoud::FlangerFilter>(L)->setParams(LuaXS::Float(L, -2), LuaXS::Float(L, -1)));
 				}
 			},
 			{ nullptr, nullptr }
@@ -566,7 +597,13 @@ static void AddFreeverbFilter (lua_State * L)
 			{
 				"setParams", [](lua_State * L)
 				{
-					return Result(L, GetFilter<SoLoud::FreeverbFilter>(L)->setParams(LuaXS::Float(L, 2), LuaXS::Float(L, 3), LuaXS::Float(L, 4), LuaXS::Float(L, 5)));
+					luaL_checktype(L, 2, LUA_TTABLE);
+					lua_getfield(L, 2, "mode"); // freeverb_filter, params, mode
+					lua_getfield(L, 2, "roomSize"); // freeverb_filter, params, delay, mode, room_size
+					lua_getfield(L, 2, "damp"); // freeverb_filter, params, mode, room_size, damp
+					lua_getfield(L, 2, "width"); // freeverb_filter, params, delay, mode, room_size, damp, width
+
+					return Result(L, GetFilter<SoLoud::FreeverbFilter>(L)->setParams(LuaXS::Float(L, -4), LuaXS::Float(L, -3), LuaXS::Float(L, -2), LuaXS::Float(L, -1)));
 				}
 			},
 			{ nullptr, nullptr }
@@ -594,7 +631,11 @@ static void AddLofiFilter (lua_State * L)
 			{
 				"setParams", [](lua_State * L)
 				{
-					return Result(L, GetFilter<SoLoud::LofiFilter>(L)->setParams(LuaXS::Float(L, 2), LuaXS::Float(L, 3)));
+					luaL_checktype(L, 2, LUA_TTABLE);
+					lua_getfield(L, 2, "sampleRate"); // lofi_filter, params, sample_rate
+					lua_getfield(L, 2, "bitDepth"); // lofi_filter, params, delay, sample_rate, bit_depth
+
+					return Result(L, GetFilter<SoLoud::LofiFilter>(L)->setParams(LuaXS::Float(L, -2), LuaXS::Float(L, -1)));
 				}
 			},
 			{ nullptr, nullptr }
@@ -620,7 +661,11 @@ static void AddRobotizeFilter (lua_State * L)
 			{
 				"setParams", [](lua_State * L)
 				{
-					GetFilter<SoLoud::RobotizeFilter>(L)->setParams(LuaXS::Float(L, 2), GetWaveform(L, 3));
+					luaL_checktype(L, 2, LUA_TTABLE);
+					lua_getfield(L, 2, "frequency"); // lofi_filter, params, frequency
+					lua_getfield(L, 2, "waveform"); // lofi_filter, params, delay, frequency, waveform
+
+					GetFilter<SoLoud::RobotizeFilter>(L)->setParams(LuaXS::Float(L, -2), GetWaveform(L, -1));
 
 					return Result(L, SoLoud::SO_NO_ERROR);
 				}
@@ -665,7 +710,10 @@ static void AddWaveShaperFilter (lua_State * L)
 			{
 				"setParams", [](lua_State * L)
 				{
-					return Result(L, GetFilter<SoLoud::WaveShaperFilter>(L)->setParams(LuaXS::Float(L, 2)));
+					luaL_checktype(L, 2, LUA_TTABLE);
+					lua_getfield(L, 2, "amount"); // lofi_filter, params, amount
+
+					return Result(L, GetFilter<SoLoud::WaveShaperFilter>(L)->setParams(LuaXS::Float(L, -1)));
 				}
 			},
 			{ nullptr, nullptr }

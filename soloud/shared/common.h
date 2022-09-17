@@ -57,8 +57,8 @@ struct Options {
 
 struct FloatBuffer {
 	~FloatBuffer()
-	{CoronaLog("FB1");
-		if (mOwnsData) delete mData;CoronaLog("FB2");
+	{
+		if (mOwnsData) delete mData;
 	}
 
 	float * mData{nullptr};

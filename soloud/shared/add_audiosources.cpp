@@ -39,6 +39,7 @@
 #include "soloud_wavstream.h"
 #include "custom_objects.h"
 #include "templates.h"
+#include <vector>
 
 //
 //
@@ -110,8 +111,6 @@ template<typename T, SoLoud::result (T::*body)(const char *)> void AddFilenameMe
 //
 //
 
-
-
 template<typename T> void AddLoadMethods (lua_State * L)
 {
 	AddFilenameMethod<T, &T::load>(L, "load");
@@ -137,6 +136,12 @@ template<typename T> void AddLoadMethods (lua_State * L)
 
 	luaL_register(L, nullptr, funcs);
 }
+
+//
+//
+//
+
+static int sAudioSourceCleanupRef;
 
 //
 //
@@ -168,14 +173,21 @@ template<typename T> void AddCommonMethods (lua_State * L)
 			}
 		}, {
 			"__gc", [](lua_State * L)
-			{CoronaLog("AS1");
+			{
 				if (!HasMetatable(L, 1, MT_NAME(AudioSourceDestroyed)))
-				{CoronaLog("AS2");
-					GetAudioSource(L)->mShuttingDown = true;
-				CoronaLog("STOPPED");
-				CoronaLog("AS3");
-					LuaXS::DestructTyped<SoLoud::AudioSource>(L);CoronaLog("AS4");
-				} else CoronaLog("GONE");
+				{
+					// Since these were in the store, the plugin must be being unloaded, thus making it dangerous
+					// to call audio source destructors: stopping the source will involve the mutex, potentially
+					// terminating the process, e.g. see the remarks in https://docs.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-entercriticalsection.
+					// This also means audio source instances are still alive, and many of them rely on the parent
+					// source. Thus, any non-destroyed audio sources are put in a list, whose __gc will fire off
+					// after those for the core (if any) and secondary Lua state (where the instances reside).
+					SoLoud::AudioSource * source = GetAudioSource(L);
+if (source->mSoloud) CoronaLog("sas1, not in mutex = %s",!source->mSoloud->mInsideAudioThreadMutex ? "yes" : "no");
+					lua_getref(L, sAudioSourceCleanupRef); // source, late_audiosource_cleanup
+
+					LuaXS::UD<std::vector<SoLoud::AudioSource *>>(L, -1)->push_back(source);
+				}
 
 				return 0;
 			}
@@ -420,7 +432,11 @@ static void AddMonotone (lua_State * L)
 			{
 				"setParams", [](lua_State * L)
 				{
-					return Result(L, GetAudioSource<SoLoud::Monotone>(L)->setParams(LuaXS::Int(L, 2), GetWaveform(L, 3, "SQUARE")));
+					luaL_checktype(L, 2, LUA_TTABLE);
+					lua_getfield(L, 2, "hardwareChannels"); // monotone, params, hardware_channels
+					lua_getfield(L, 2, "waveform"); // flanger_filter, params, hardware_channels, waveform
+
+					return Result(L, GetAudioSource<SoLoud::Monotone>(L)->setParams(LuaXS::Int(L, -2), GetWaveform(L, -1, "SQUARE")));
 				}
 			},
 			{ nullptr, nullptr }
@@ -512,7 +528,11 @@ static void AddQueue (lua_State * L)
 			}, {
 				"setParams", [](lua_State * L)
 				{
-					return Result(L, GetAudioSource<SoLoud::Queue>(L)->setParams(LuaXS::Float(L, 2), luaL_optinteger(L, 3, 2U)));
+					luaL_checktype(L, 2, LUA_TTABLE);
+					lua_getfield(L, 2, "sampleRate"); // queue, params, sample_rate
+					lua_getfield(L, 2, "channels"); // queue, params, sample_rate, channels
+
+					return Result(L, GetAudioSource<SoLoud::Queue>(L)->setParams(LuaXS::Float(L, -2), luaL_optinteger(L, -1, 2U)));
 				}
 			}, {
 				"setParamsFromAudioSource", [](lua_State * L)
@@ -588,9 +608,15 @@ static void AddSpeech (lua_State * L)
 			{
 				"setParams", [](lua_State * L)
 				{
+					luaL_checktype(L, 2, LUA_TTABLE);
+					lua_getfield(L, 2, "baseFrequency"); // speech, params, base_frequency
+					lua_getfield(L, 2, "baseSpeed"); // speech, params, base_frequency, base_speed
+					lua_getfield(L, 2, "baseDeclination"); // speech, params, base_frequency, base_speed, base_declination
+					lua_getfield(L, 2, "baseWaveform"); // speech, params, base_frequency, , base_speed, base_declination, base_waveform
+
 					const char * klatt[] = { "SAW", "TRIANGLE", "SIN", "SQUARE", "PULSE", "NOISE", "WARBLE", nullptr };
 
-					return Result(L, GetAudioSource<SoLoud::Speech>(L)->setParams(luaL_optinteger(L, 2, 1330U), OptFloat(L, 3, 10), OptFloat(L, 4, .5f), luaL_checkoption(L, 5, "TRIANGLE", klatt)));
+					return Result(L, GetAudioSource<SoLoud::Speech>(L)->setParams(luaL_optinteger(L, -4, 1330U), OptFloat(L, -3, 10), OptFloat(L, -2, .5f), luaL_checkoption(L, -1, "TRIANGLE", klatt)));
 				}
 			}, {
 				"setText", [](lua_State * L)
@@ -728,7 +754,7 @@ static void GetRawWaveOptions (lua_State * L, unsigned int & count, float & samp
 	else
 	{
 		lua_getfield(L, 3, "count"); // wav, bytes, count?
-		lua_getfield(L, 3, "samplerate"); // wav, bytes, count?, sample_rate?
+		lua_getfield(L, 3, "sampleRate"); // wav, bytes, count?, sample_rate?
 		lua_getfield(L, 3, "channels"); // wav, bytes, count?, sample_rate?, channels?
 
 		unsigned current_count = count;
@@ -905,6 +931,26 @@ void AddCustomSource (lua_State * L)
 
 void add_audiosources (lua_State * L)
 {
+	LuaXS::NewTyped<std::vector<SoLoud::AudioSource *>>(L); // ..., late_audiosource_cleanup
+	LuaXS::AttachGC(L, [](lua_State * L) {
+		using Vector = std::vector<SoLoud::AudioSource *>;
+
+		Vector & cleanup = *LuaXS::UD<Vector>(L, 1);
+CoronaLog("CLEANUP %u", cleanup.size());
+		for (size_t i = 0; i < cleanup.size(); ++i)
+		{
+			cleanup[i]->mSoloud = nullptr; // will already be gone
+
+			cleanup[i]->~AudioSource();
+		}
+CoronaLog("CLEANUP2");
+		cleanup.~vector();
+CoronaLog("Cleanup ~v");
+		return 0;
+	});
+
+	sAudioSourceCleanupRef = lua_ref(L, 1); // ...; ref = late_audiosource_cleanup
+
 	AddAy(L);
 	AddBus(L);
 	AddMonotone(L);

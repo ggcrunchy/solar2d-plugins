@@ -188,7 +188,7 @@ void GetFromStore (lua_State * L, void * object)
 //
 
 void RemoveFromStore (lua_State * L, void * object)
-{CoronaLog("RFS");
+{
 	if (!object) object = lua_touserdata(L, 1);
 
 	lua_getfield(L, LUA_REGISTRYINDEX, MT_NAME(Store)); // [object, ]..., store
@@ -203,7 +203,7 @@ void RemoveFromStore (lua_State * L, void * object)
 //
 
 void RemoveEnvironment (lua_State * L, int arg)
-{CoronaLog("RE");
+{
 	arg = CoronaLuaNormalize(L, arg);
 
 	lua_getfenv(L, arg); // ..., object, ..., env
@@ -425,7 +425,7 @@ void AddBasics (lua_State * L)
 CORONA_EXPORT int luaopen_plugin_soloud (lua_State * L)
 {
 	lua_newtable(L); // soloud
-return 1;
+
 	//
 	//
 	//

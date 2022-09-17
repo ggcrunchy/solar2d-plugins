@@ -14,7 +14,7 @@
     <ProjectGuid>{5B45F8CA-B2E2-435A-8BD1-EFE21718A800}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>pluginmemoryBitmap</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>7.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -69,7 +69,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_WARNINGS;WITH_WINMM;WITH_NULL;WITH_NOSOUND;WITH_MINIAUDIO;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(CORONA_ROOT)/Corona/shared/include/Corona;$(CORONA_ROOT)/Corona/shared/include/lua;$(SolutionDir)../shared/include;$(SolutionDir)../../ByteReader;$(SolutionDir)../../solar2d_native_utils;$(SolutionDir)../..</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(CORONA_ROOT)/Corona/shared/include/Corona;$(CORONA_ROOT)/Corona/shared/include/lua;$(SolutionDir)../shared/include;$(SolutionDir)../../ByteReader;$(SolutionDir)../../solar2d_native_utils</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -87,7 +87,7 @@ set FILENAME=plugin_$(TargetName).dll
 set FULL_NAME=%PLUGIN_DIR%\%FILENAME%
 copy "$(OutDir)$(TargetName).dll" "%FULL_NAME%"
 del "%PLUGIN_DIR%\data.tgz"
-tar -czf "%PLUGIN_DIR%\data.tgz" -C "%PLUGIN_DIR%" %FILENAME% libopenmpt.zip
+tar -czf "%PLUGIN_DIR%\data.tgz" -C "%PLUGIN_DIR%" %FILENAME%
 del "%FULL_NAME%"
 set SIMULATOR_DIR="$(appdata)\Corona Labs\Corona Simulator\Plugins"
 del %SIMULATOR_DIR%\catalog.json</Command>

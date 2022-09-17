@@ -27,6 +27,7 @@ freely, subject to the following restrictions:
 
 #include <stdlib.h> // rand
 #include <math.h> // sin
+#include <atomic> // <- STEVE CHANGE
 
 #ifdef SOLOUD_NO_ASSERTS
 #define SOLOUD_ASSERT(x)
@@ -42,7 +43,7 @@ freely, subject to the following restrictions:
 // STEVE CHANGE
 // #include <windows.h> // only needed for OutputDebugStringA, should be solved somehow.
 #include "CoronaLog.h"
-#define SOLOUD_ASSERT(x) if (!(x)) { char temp[200]; sprintf(temp, "%s(%d): assert(%s) failed.\n", __FILE__, __LINE__, #x); /*OutputDebugStringA*/CoronaLog("%s", temp); __debugbreak(); }
+#define SOLOUD_ASSERT(x) if (!(x)) { char temp[200]; sprintf(temp, "%s(%d): assert(%s) failed.\n", __FILE__, __LINE__, #x); /*OutputDebugStringA*/CORONA_LOG_ERROR("%s", temp); __debugbreak(); }
 // /STEVE CHANGE
 #else
 #include <assert.h> // assert
@@ -278,7 +279,7 @@ namespace SoLoud
 		// Stop all voices.
 		void stopAll();
 		// Stop all voices that play this sound source
-		void stopAudioSource(AudioSource &aSound, bool onlyTry = false); // <- STEVE CHANGE
+		void stopAudioSource(AudioSource &aSound);
 		// Count voices that play this audio source
 		int countAudioSource(AudioSource &aSound);
 
@@ -499,7 +500,7 @@ namespace SoLoud
 		void trimVoiceGroup_internal(handle aVoiceGroupHandle);
 		// Get pointer to the zero-terminated array of voice handles in a voice group
 		handle * voiceGroupHandleToArray_internal(handle aVoiceGroupHandle) const;
-
+std::atomic<bool> mMixing, mShuttingDown;
 		// Lock audio thread mutex.
 		void lockAudioMutex_internal();
 

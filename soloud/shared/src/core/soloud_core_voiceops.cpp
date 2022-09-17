@@ -114,12 +114,12 @@ namespace SoLoud
 	}
 
 	void Soloud::stopVoice_internal(unsigned int aVoice)
-	{CoronaLog("svi1");
+	{
 		SOLOUD_ASSERT(aVoice < VOICE_COUNT);
 		SOLOUD_ASSERT(mInsideAudioThreadMutex);
 		mActiveVoiceDirty = true;
 		if (mVoice[aVoice])
-		{CoronaLog("svi2");
+		{
 			// Delete via temporary variable to avoid recursion
 			AudioSourceInstance * v = mVoice[aVoice];
 			mVoice[aVoice] = 0;
@@ -128,12 +128,12 @@ namespace SoLoud
 			for (i = 0; i < mMaxActiveVoices; i++)
 			{
 				if (mResampleDataOwner[i] == v)
-				{CoronaLog("svi3");
+				{
 					mResampleDataOwner[i] = NULL;
 				}
 			}
-			CoronaLog("svi4");
-			delete v;CoronaLog("svi5");
+
+			delete v;
 		}
 	}
 

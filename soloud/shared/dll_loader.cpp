@@ -61,8 +61,6 @@ struct Loader {
 	std::map<std::string, HCUSTOMMODULE> mArchives;
 	lua_State * mL;
 	int mPathForFileRef{LUA_REFNIL};
-	int mCPathRef{LUA_REFNIL};
-	bool mInSimulator{false};
 
 	bool ResolveZip (mz_zip_archive & zip, const char * archive);
 
@@ -199,46 +197,13 @@ HCUSTOMMODULE Loader::LoadLib (LPCSTR filename, void * ud)
 
 bool Loader::ResolveZip (mz_zip_archive & zip, const char * archive)
 {
-	int top = lua_gettop(mL);
-	bool ok = false;
+	lua_getref(mL, mPathForFileRef); // ..., system.pathForFile
+	lua_pushstring(mL, archive); // ..., system.pathForFile, archive
+	lua_call(mL, 1, 1); // ..., file?
 
-	if (!mInSimulator)
-	{
-		lua_getref(mL, mPathForFileRef); // ..., system.pathForFile
-		lua_pushstring(mL, archive); // ..., system.pathForFile, archive
-		lua_call(mL, 1, 1); // ..., file?
+	bool ok = !lua_isnil(mL, -1) && mz_zip_reader_init_file(&zip, lua_tostring(mL, -1), 0);
 
-		ok = !lua_isnil(mL, -1) && mz_zip_reader_init_file(&zip, lua_tostring(mL, -1), 0);
-	}
-
-	else
-	{
-		lua_getref(mL, mCPathRef); // ..., package.cpath
-
-		for (const char * s1 = lua_tostring(mL, -1), *s2 = s1; ; ++s2)
-		{
-			if (';' == *s2 || !*s2)
-			{
-				std::string name{s1, s2};
-
-				luaL_gsub(mL, name.c_str(), "?.dll", archive); // ..., package.cpath, file
-
-				if (mz_zip_reader_init_file(&zip, lua_tostring(mL, -1), 0))
-				{
-					ok = true;
-
-					break;
-				}
-
-				lua_pop(mL, 1); // ..., package.cpath
-
-				if (!*s2) break;
-				else s1 = s2 + 1;
-			}
-		}
-	}
-
-	lua_settop(mL, top); // ...
+	lua_pop(mL, 1); // ...
 
 	return ok;
 }
@@ -250,7 +215,6 @@ bool Loader::ResolveZip (mz_zip_archive & zip, const char * archive)
 static bool CheckLoaded (const Loader * loader)
 {
 	if (!loader) CORONA_LOG_WARNING("No loader installed");
-	else if (loader->mInSimulator && LUA_REFNIL == loader->mCPathRef) CORONA_LOG_WARNING("No package.cpath available");
 	else if (LUA_REFNIL == loader->mPathForFileRef) CORONA_LOG("No system.pathForFile() available");
 	else return true;
 
@@ -377,34 +341,6 @@ void AddLoader (lua_State * L)
 
 		if (lua_isfunction(L, -1)) sLoader->mPathForFileRef = lua_ref(L, 1); // ..., loader, system; ref = system.pathForFile
 		else CORONA_LOG_WARNING("Unable to find system.pathForFile(), or not a function");
-	}
-
-	if (sLoader->mPathForFileRef != LUA_REFNIL)
-	{
-		lua_getref(L, sLoader->mPathForFileRef); // ..., loader, system, system.pathForFile
-		lua_pushliteral(L, "main.lua"); // ..., loader, system, system.pathForFile, "main.lua"
-		lua_call(L, 1, 1); // ..., loader, system, name?
-
-		sLoader->mInSimulator = !lua_isnil(L, -1);
-	}
-	
-	
-
-	//
-	//
-	//
-
-	if (sLoader->mInSimulator)
-	{
-		lua_getglobal(L, "package"); // ..., loader, system, name, package
-
-		if (lua_istable(L, -1))
-		{
-			lua_getfield(L, -1, "cpath"); // loader, system, name, package, package.cpath
-
-			if (lua_type(L, -1) == LUA_TSTRING) sLoader->mCPathRef = lua_ref(L, 1); // ..., loader, system, name, package
-			else CORONA_LOG_WARNING("Unable to find package.cpath, or not a string");
-		}
 	}
 
 	//

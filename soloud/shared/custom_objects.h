@@ -69,7 +69,7 @@ struct ParentDataWrapper {
 	ParentDataWrapper (const CustomSource * parent, const ParentData & data) : mParent{parent}, mData{data}
 	{
 	}
-	~ParentDataWrapper(){CoronaLog("PDW");}
+
 	const CustomSource * mParent;
 	ParentData mData;
 
