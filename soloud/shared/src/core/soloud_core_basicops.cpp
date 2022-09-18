@@ -156,7 +156,7 @@ namespace SoLoud
 			stopVoice_internal(ch);
 		FOR_ALL_VOICES_POST
 	}
-
+#include "CoronaLog.h"
 	void Soloud::stopAudioSource(AudioSource &aSound)
 	{
 		if (aSound.mAudioSourceID)

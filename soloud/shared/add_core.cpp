@@ -57,7 +57,7 @@ static SoLoud::Soloud * GetSoloud (lua_State * L)
 //
 //
 
-static SoLoud::Soloud * sCurrentCore;
+static CoreBox * sCurrentCore;
 
 //
 //
@@ -240,7 +240,7 @@ void SoloudMethods(lua_State * L)
 
 				if (!box->mDestroyed)
 				{
-					luaL_argcheck(L, &box->mCore == sCurrentCore, 1, "More than one core active");
+					luaL_argcheck(L, box == sCurrentCore, 1, "More than one core active");
 
 					sCurrentCore = nullptr;
 
@@ -528,7 +528,7 @@ void SoloudMethods(lua_State * L)
 		}, {
 			"setInaudibleBehavior", [](lua_State * L)
 			{
-				GetSoloud(L)->setInaudibleBehavior(GetHandle(L, 2), lua_toboolean(L, 3), lua_toboolean(L, 5));
+				GetSoloud(L)->setInaudibleBehavior(GetHandle(L, 2), lua_toboolean(L, 3), lua_toboolean(L, 4));
 
 				return 0;
 			}
@@ -701,11 +701,15 @@ int CreateCore (lua_State * L)
 	if (sCurrentCore)
 	{
 		CORONA_LOG_WARNING("Creating SoLoud core, but another was still active; shutting old one down");
-
+		
+		sCurrentCore->mDestroyed = true; // avoid "shutting down" logic
+		
 		GetFromStore(L, sCurrentCore); // [params, ]old_core
-		Shutdown(L, *sCurrentCore, -1);
+		Shutdown(L, sCurrentCore->mCore, -1);
 
 		lua_pop(L, 1); // [params]
+
+		sCurrentCore = nullptr;
 	}
 
 	unsigned int flags = SoLoud::Soloud::CLIP_ROUNDOFF, backend = SoLoud::Soloud::AUTO, sample_rate = 0U, buffer_size = 0U, channels = 2U;
@@ -718,14 +722,14 @@ int CreateCore (lua_State * L)
 	if (SoLoud::SO_NO_ERROR != result) return Result(L, result);
 
 	// hash part: fft table, wave table, unpaused, state
-	lua_createtable(L, FILTERS_PER_STREAM, 4); // core, env
-	lua_setfenv(L, -2); // source; source.env = env
+	lua_createtable(L, FILTERS_PER_STREAM, 4); // [params, ]core, env
+	lua_setfenv(L, -2); // [params, ]source; source.env = env
 
 	LuaXS::AttachMethods(L, MT_NAME(Soloud), SoloudMethods);
 
 	AddToStore(L);
 
-	sCurrentCore = &box->mCore;
+	sCurrentCore = box;
 
 	return 1;
 }

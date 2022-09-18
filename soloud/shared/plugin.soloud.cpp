@@ -477,6 +477,7 @@ CORONA_EXPORT int luaopen_plugin_soloud (lua_State * L)
 
 	return 1;
 }
+#ifdef _WIN32
 #include <windows.h>
 BOOL APIENTRY DllMain(HANDLE hModule, 
                       DWORD  ul_reason_for_call, 
@@ -499,4 +500,4 @@ BOOL APIENTRY DllMain(HANDLE hModule,
 	}
     return TRUE;
 }
-
+#endif

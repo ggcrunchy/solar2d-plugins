@@ -192,7 +192,7 @@ namespace SoLoud
 		delete[] mResampleData;
 		delete[] mResampleDataOwner;
 	}
-
+#include "CoronaLog.h"
 	void Soloud::deinit()
 	{
 		// Make sure no audio operation is currently pending

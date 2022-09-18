@@ -267,7 +267,7 @@ namespace SoLoud
 			return;
 		mFilter[aFilterId] = aFilter;
 	}
-
+#include "CoronaLog.h"
 	void AudioSource::stop()
 	{
 		if (mSoloud)
