@@ -1,4 +1,6 @@
---- 3D object thing.
+--- Entry point.
+--
+-- The text below is adapted either from megademo code or http://solhsa.com/soloud/examples.html.
 
 --
 -- Permission is hereby granted, free of charge, to any person obtaining
@@ -24,369 +26,256 @@
 --
 
 -- Standard library imports --
-local abs = math.abs
-local cos = math.cos
-local floor = math.floor
-local huge = math.huge
-local ipairs = ipairs
-local max = math.max
-local min = math.min
-local sin = math.sin
+local require = require
 
 -- Modules --
-local line = require("line")
-local obj_parser = require("obj_parser")
+local utils = require("utils")
 
--- Plugins --
-local Bytemap = require("plugin.Bytemap")
-local MemoryBlob = require("plugin.MemoryBlob") -- installs non-dummy blob logic
-local object3d = require("plugin.object3d")
-local memoryBitmap = require("plugin.memoryBitmap")
+-- Solar2D globals --
+local native = native
 
-local WantAlpha = false
+--
+--
+--
 
-local mode = "diffuse"
+local Menu
 
-local NeedAlpha = WantAlpha or mode == "uvs"
+local function Choose (button)
+  Menu:removeSelf()
 
-local obj = object3d.New(400, 400, NeedAlpha)
-
-local FaceParams = {}
-
-local xmin, ymin, zmin = huge, huge, huge
-local xmax, ymax, zmax = -huge, -huge, -huge
-
-local handlers = {
-	check_function = function(check) end,
-
-	vertex = function(x, y, z)
-		xmax, ymax, zmax = max(x, xmax), max(y, ymax), max(z, zmax)
-		xmin, ymin, zmin = min(x, xmin), min(y, ymin), min(z, zmin)
-
-		obj:AddVertex(x, y, z)
-	end,
-
-	normal = function(x, y, z)
-		obj:AddNormal(x, y, z)
-	end,
-
-	texcoord = function(u, v)
-		obj:AddUV(u, v)
-	end,
-
-	start_face = function() end,
-
-	face_vtn = function(v, t, n)
-		FaceParams[#FaceParams + 1] = v
-		FaceParams[#FaceParams + 1] = t
-		FaceParams[#FaceParams + 1] = n
-	end,
-
-	end_face = function()
-		obj:AddFace(unpack(FaceParams))
-
-		for i = #FaceParams, 1, -1 do
-			FaceParams[i] = nil
-		end
-	end,
-
-	line = function(v, t) end,
-	
-	material_def = function(material_name) end,
-	
-	material_attr = function(cmd, ...)
-		if cmd == 'ka' or cmd  == 'kd' or cmd == 'ks' then
-			local r,g,b = ...
-		elseif cmd == 'illum' or cmd == 'ns' or cmd == 'd' or cmd == 'tr' then
-			local N = ...
-		elseif ({'map_ka', 'map_kd', 'map_ks', 'map_ns', 'map_d', 'map_bump', 'bump', 'disp', 'decal'})[cmd] then
-			local filepath = ...
-		end
-	end,
-
-	material = function(material_name) end,
-
-	group = function(group_names_t) end,
-
-	smoothing_group = function(group_names_t) end
-}
-
-obj_parser(system.pathForFile("squirrel/model_647897911503.obj"), handlers)
-
-local bm = Bytemap.newTexture{ width = 400, height = 400, format = NeedAlpha and "rgba" or "rgb" }
-local image
-
-if mode == "uvs" then
-	local kernel = { category = "composite", name = "uv_to_diffuse" }
-
-	kernel.fragment = [[
-		P_UV vec2 DecodeTwoFloatsRGBA (P_COLOR vec4 rgba)
-		{
-			return vec2(dot(rgba.xy, vec2(1., 1. / 255.)), dot(rgba.zw, vec2(1., 1. / 255.)));
-		}
-
-		P_COLOR vec4 FragmentKernel (P_UV vec2 uv)
-		{
-			uv = DecodeTwoFloatsRGBA(texture2D(CoronaSampler0, uv));
-
-			return texture2D(CoronaSampler1, uv);
-		}
-	]]
-
-	graphics.defineEffect(kernel)
-
-	image = display.newRect(0, 0, 400, 400)
-
-	image.fill = {
-		type = "composite",
-		paint1 = { type = "image", filename = bm.filename, baseDir = bm.baseDir },
-		paint2 = { type = "image", filename = "squirrel/texture_647897911503.jpg" }
-	}
-
-	image.fill.effect = "composite.custom.uv_to_diffuse"
-
-	obj:SetDiffuse("uvs")
-else
-	image = display.newImage(bm.filename, bm.baseDir)
-
-	if mode == "diffuse" then
-		local bmap = Bytemap.loadTexture{ filename = "squirrel/texture_647897911503.jpg", format = NeedAlpha and "rgba" or "rgb", is_non_external = true }
-
-		obj:SetDiffuse(bmap:GetBytes(), bmap.width, bmap.height, NeedAlpha and 4 or 3)
-	else
-		-- all white
-	end
-end
---[[
--- test alpha:
-local g = display.newGroup()
-g:toBack()
-for i = 1, 50 do
-  local x = math.random(100, display.contentWidth - 100)
-  local d = display.newCircle(g,x, display.contentCenterY, math.random(8, 15))
-
-  d:setFillColor(math.random(), math.random(), math.random())
-end
---]]
----[[
-image.x, image.y = display.contentCenterX, display.contentCenterY
-
-bm:BindBlob(obj:GetBlob())
-
-obj:Render()
-
-timer.performWithDelay(30, function(event)
-	obj:SetEye(1, 1 + sin(event.count / 7), 3)
-	obj:Render()
-	bm:invalidate()
-end, 0)
---]]
-do return end
-local CellDim = .15 -- with test model, gives density of 1 to 8 faces per cube
-
-local grid = {}
-
-local function CellIndex (v)
-	return floor(v / CellDim) + 1
-end
-
-local Bleed = .15 * CellDim
-
-for fi = 1, #obj do
-	local i1, i2, i3 = obj:GetFaceVertexIndices(fi)
-	local x1, y1, z1 = obj:GetVertex(i1)
-	local x2, y2, z2 = obj:GetVertex(i2)
-	local x3, y3, z3 = obj:GetVertex(i3)
-	local xa, xb = min(x1, x2, x3) - Bleed, max(x1, x2, x3) + Bleed
-	local ya, yb = min(y1, y2, y3) - Bleed, max(y1, y2, y3) + Bleed
-	local za, zb = min(z1, z2, z3) - Bleed, max(z1, z2, z3) + Bleed
-
-	for y = CellIndex(ya), CellIndex(yb) do
-		local zcells = grid[y] or {}
-
-		for z = CellIndex(za), CellIndex(zb) do
-			local xcells = zcells[z] or {}
-				
-			for x = CellIndex(xa), CellIndex(xb) do
-				local faces = xcells[x] or {}
-
-				xcells[x], faces[#faces + 1] = faces, fi
-			end
-
-			zcells[z] = xcells
-		end
-
-		grid[y] = zcells
-	end
+  require("tests." .. button:getLabel())
 end
 
 --
-local extent = ((xmax - xmin)^2 + (zmax - zmin)^2)^.5
-local R = 64 * extent
-local HorzPerPixel, VertPerPixel = 1, 1
-
-local HorzN = math.ceil(2 * math.pi * R) * HorzPerPixel
-local VertN = 128 * (ymax - ymin) * VertPerPixel
-
-HorzN = math.ceil(HorzN / 4) * 4
-VertN = math.ceil(VertN)
-
 --
-local tex = memoryBitmap.newTexture{ width = HorzN, height = VertN, format = "rgb" }
-local object = display.newImage(tex.filename, tex.baseDir)
+--
 
-object:setStrokeColor(0, 0, 1)
+utils.Begin("Select sub-demo to run", 50, 50)
+utils.Begin("scrollview", 500, "hide")
 
-object.x, object.y = display.contentCenterX, display.contentHeight - object.height / 2 - 50
-object.strokeWidth = 3
+local seps, any = {}
 
-local cy, dy = ymax, (ymin - ymax) / VertN
-local a0, da = 0, 2 * math.pi / HorzN
-local dist = 1.5 * extent
-local examined, pixel_id = {}, 1
+for _, v in ipairs{
+{
+    to = "quickstart",
+    about = [[
+Tiny demo from the homepage, that simply plays a panned sound.]]
 
-local now
+  },
+  {
+    to = "simplest",
+    about = [[
+The simplest example initializes SoLoud, and uses the speech synthesizer
+to play some sound. Once the sound has finished, the application cleans up and quits.]]
 
-local function MaybeYield ()
-	local t = system.getTimer()
+  },
 
-	if not now then
-		now = t
-	elseif t - now > 50 then
-		tex:invalidate()
+  {
+    to = "welcome",
+    about = [[
+Slightly more complicated console-based example, playing different kinds of sounds:
 
-		coroutine.yield()
+  Set up SoLoud
+  Load and play looping ogg stream
+  Adjust live parameters of the ogg (volume, pan, play speed)
+  Ask for text input, play it through speech synthesizer
+  Wait until speech is over
+  Try to load and play an S3M module]]
 
-		now = system.getTimer()
-	end
+  },
+
+  {
+    to = "enumerate",
+    about = [[
+The enumerate demo scans all included back-ends and shows data about them. Note that
+some backends, like WinMM, only support limited number of channels, while others may
+report more channels available than the hardware supports, like PortAudio.]]
+
+  },
+
+  {
+    to = "env",
+    about = [[
+The env demo is a non-interactive demo of how SoLoud could be used to play environmental
+audio. It is more of a proof of concept than a good example at this point.]]
+
+  },
+  
+  {
+    to = "null",
+    about = [[
+The null demo shows an example of using the null driver backend. It plays some sound and
+draws the waveform on the console using ascii graphics.]]
+
+  },
+
+  {
+    to = "c_test",
+    about = [[
+The c_test demo uses the "c" API to play voice samples as well as playing a wave that is
+generated on the fly.]]
+
+  },
+
+  {
+    to = "piano",
+    about = [[
+This example is a simple implementation of a playable instrument. The example also includes
+a simple waveform generator, which can produce square, saw, sine and triangle waves.
+
+You can jam from the PC keyboard (or with the piano keys widget).
+
+You can also adjust some filters and pick waveforms using the GUI. Speech synthesizer
+describes your option changes.]]
+
+  },
+
+  {
+    to = "multimusic",
+    about = [[
+Multimusic demo plays multiple music tracks with interactive options to fade between them.]]
+
+  },
+
+  {
+    to = "monotone",
+    about = [[
+Monotone demo plays a "monotone" tracker song with various interative options and filters.]]
+
+  },
+
+  {
+    to = "tests.tedsid",
+    about = [[
+tedsid demonstrates the MOS TED and SID synthesis engines.]],
+    NYI = true -- files missing / not loading
+
+  },
+
+  {
+    to = "wavformats",
+    about = [[
+wavformats test plays files with all sorts of wave file formats.]]
+
+  },
+
+  {
+    to = "speakers",
+    about = [[
+speakers test plays single sounds through surround speakers.]]
+
+  },
+
+  {
+    to = "ay",
+    about = [[
+ay demonstrates the AY-3-8912 synthesis engine (zx spectrum 128k music).]],
+    NYI = true -- files missing
+
+  },
+
+  {
+    to = "mixbusses",
+    about = [[
+Mixbusses creates three different mix busses, plays different sounds in
+each and lets user adjust the volume of the bus interactively.]]
+
+  },
+
+  {
+    to = "test3d",
+    about = [[
+3d test demo is a test of the 3d sound.]]
+
+  },
+
+  {
+    to = "pewpew",
+    about = [[
+pewpew demo shows the use of play_clocked and how delaying sound makes it
+feel like it plays earlier.]]
+
+  },
+
+  {
+    to = "radiogaga",
+    about = [[
+radiogaga demo demonstrates audio queues to generate endless music by
+chaining random clips of music.]]
+
+  },
+  
+  {
+    to = "space",
+    about = [[
+space demo is a mockup of a conversation in a space game, and shows use
+of the visualization interfaces.]]
+
+  },
+
+  {
+    to = "speechfilter",
+    about = [[
+speechfilter demonstrates various DSP effects on speech synthesis.]]
+
+  },
+  
+  {
+    to = "virtualvoices",
+    about = [[
+virtualvoices demonstrates playing way more sounds than is actually possible,
+and having the ones active that matter.]]
+
+  },
+
+  {
+    to = "thebutton",
+    about = [[
+thebutton test shows one way of avoiding actor speaking on top of themselves.]]
+
+  },
+
+  {
+    to = "annex",
+    about = [[
+annex test moves a live sound from one mixing bus to another.]]
+
+  },
+
+  {
+    to = "filterfolio",
+    about = [[
+Filter folio is a playground for various filters and their parameters.]]
+
+  },
+
+  {
+    to = "henley",
+    about = [[
+Henley spouts off random words based on patterns found in a piece of text.]]
+  }
+} do
+  if not v.NYI then
+    if any then
+      seps[#seps + 1] = utils.Separator(25)
+    else
+      any = true
+    end
+
+    utils.Button{
+      label = v.to, font = native.systemFontBold, font_size = 30,
+      width = 275, height = 70,
+      action = Choose
+    }
+    utils.NewLine(5)
+    utils.Text(v.about)
+  end
 end
 
-local co = coroutine.create(function()
-	for y = 1, VertN do
-		local angle, yi = a0, CellIndex(cy)
-		local zcells = grid[yi]
-
-		for x = 1, HorzN do
-			local dx, dz = cos(angle), sin(angle)
-			local px, pz = dx * dist, dz * dist
-
-			for xi, zi in line.LineIter(px, pz, -px, -pz, CellDim) do
-				local xcells = zcells and zcells[zi]
-				local faces, tmin = xcells and xcells[xi]
-
-				for i = 1, #(faces or "") do
-					local fi = faces[i]
-
-					if examined[fi] ~= pixel_id then
-						examined[fi] = pixel_id
-
-						local t, r, g, b, a = obj:GetColor(fi, px, cy, pz, 0, cy, 0)
-
-						if t and (not tmin or t < tmin) then
-							tmin = t
-
-							if a then
-								--
-							else
-								tex:setPixel(x, y, r, g, b)
-							end
-						end
-					end
-				end
-
-				--
-				if tmin then
-					break
-				end
-
-				MaybeYield()
-			end
-
-			angle, pixel_id = angle + da, pixel_id + 1
-		end
-
-		cy = cy + dy
-	end
-end)
-
-timer.performWithDelay(75, function(event)
-	if coroutine.status(co) == "dead" then
-		timer.cancel(event.source)
-	else
-		coroutine.resume(co)
-	end
-end, 0)
-
-
-local rect = display.newRect(0, 0, 200, 300)
-
-rect:setStrokeColor(1, 0, 0)
-
-rect.x, rect.y = display.contentWidth - rect.width / 2 - 50, display.contentCenterY
-rect.strokeWidth = 3
-
-rect.fill = { type = "image", filename = tex.filename, baseDir = tex.baseDir }
-
-do
-	local kernel = { category = "filter", name = "cylinder" }
-
-	kernel.vertexData = {
-		{ name = "angle", index = 0, default = 0 }
-	}
-	
-	kernel.fragment = [[
-		P_COLOR vec4 FragmentKernel (P_UV vec2 uv)
-		{
-			P_UV float ca = 2. * uv.x - 1.;
-			P_UV float angle = acos(ca) + CoronaVertexUserData.x;
-
-			uv.x = fract(angle / (2. * 3.14159));
-
-			return CoronaColorScale(texture2D(CoronaSampler0, uv));
-		}
-	]]
-	
-	graphics.defineEffect(kernel)
+for i = 1, #seps do
+  seps[i].width = utils.GetColumnWidth()
 end
 
-rect.fill.effect = "filter.custom.cylinder"
+utils.End()
 
-local l, r = display.newCircle(0, 0, 15), display.newCircle(0, 0, 15)
-
-l.x, l.y = rect.x - 35, rect.y - rect.height / 2 - 20
-r.x, r.y = rect.x + 35, rect.y - rect.height / 2 - 20
-
-local delta = 0
-
-l:addEventListener("touch", function(event)
-	if event.phase == "began" then
-		delta = 1
-	elseif event.phase == "ended" or event.phase == "cancelled" then
-		delta = 0
-	end
-
-	return true
-end)
-
-r:addEventListener("touch", function(event)
-	if event.phase == "began" then
-		delta = -1
-	elseif event.phase == "ended" or event.phase == "cancelled" then
-		delta = 0
-	end
-
-	return true
-end)
-
-local at
-
-Runtime:addEventListener("enterFrame", function(event)
-	local now = event.time
-	local diff = at and now - at or 0
-
-	rect.fill.effect.angle = rect.fill.effect.angle + delta * diff * .75 / 1000
-
-	at = now
-end)
-
--- Can make mask using "none" mode... (eye level with center at middle z, every x degrees rotation...)
+Menu = utils.End()

@@ -11,8 +11,8 @@
 		A49EC14F1BD76ECE0093F529 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A49EC14E1BD76ECE0093F529 /* AppDelegate.m */; };
 		A49EC1551BD76ECE0093F529 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A49EC1531BD76ECE0093F529 /* Main.storyboard */; };
 		A49EC1571BD76ECE0093F529 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A49EC1561BD76ECE0093F529 /* Assets.xcassets */; };
-		A49EC1B41BD77E410093F529 /* CoronaCards.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A49EC1A11BD77B680093F529 /* CoronaCards.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		CE0FB7B020AE3FCD00B5DAED /* CoronaCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE0FB7AF20AE3FCD00B5DAED /* CoronaCards.framework */; };
+		AA8C236D28D9561B000D0253 /* CoronaCards.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AA8C236C28D9561B000D0253 /* CoronaCards.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		AA8C236E28D95660000D0253 /* CoronaCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA8C236C28D9561B000D0253 /* CoronaCards.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,7 +32,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				A49EC1B41BD77E410093F529 /* CoronaCards.framework in Embed Frameworks */,
+				AA8C236D28D9561B000D0253 /* CoronaCards.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -47,9 +47,9 @@
 		A49EC1541BD76ECE0093F529 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A49EC1561BD76ECE0093F529 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A49EC1581BD76ECE0093F529 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A49EC1A11BD77B680093F529 /* CoronaCards.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoronaCards.framework; path = CoronaEnterprise/Corona/tvos/frameworks/CoronaCards.framework; sourceTree = SOURCE_ROOT; };
 		A49EC1AE1BD77C890093F529 /* main.lua */ = {isa = PBXFileReference; lastKnownFileType = text; name = main.lua; path = ../Corona/main.lua; sourceTree = "<group>"; };
-		CE0FB7AF20AE3FCD00B5DAED /* CoronaCards.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoronaCards.framework; path = ../../../../../../../Applications/Corona/Native/Corona/tvos/frameworks/CoronaCards.framework; sourceTree = "<group>"; };
+		AA8C236A28D955B2000D0253 /* CoronaCards.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CoronaCards.framework; sourceTree = "<group>"; };
+		AA8C236C28D9561B000D0253 /* CoronaCards.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoronaCards.framework; path = "../../../../../../../Applications/Corona-3649/Native/Corona/tvos/frameworks/CoronaCards.framework"; sourceTree = "<group>"; };
 		CE330D7C1DB1997A006F759D /* Plugin.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Plugin.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -58,7 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE0FB7B020AE3FCD00B5DAED /* CoronaCards.framework in Frameworks */,
+				AA8C236E28D95660000D0253 /* CoronaCards.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,6 +68,7 @@
 		A49EC13E1BD76ECE0093F529 = {
 			isa = PBXGroup;
 			children = (
+				AA8C236C28D9561B000D0253 /* CoronaCards.framework */,
 				CE330D7C1DB1997A006F759D /* Plugin.xcodeproj */,
 				A49EC1491BD76ECE0093F529 /* App */,
 				A49EC17A1BD779050093F529 /* Corona */,
@@ -117,15 +118,23 @@
 		A49EC1AD1BD77C6C0093F529 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				A49EC1A11BD77B680093F529 /* CoronaCards.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		AA8C236928D955B2000D0253 /* frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AA8C236A28D955B2000D0253 /* CoronaCards.framework */,
+			);
+			name = frameworks;
+			path = "../../../../../../../Applications/Corona-3649/Native/Corona/tvos/frameworks";
 			sourceTree = "<group>";
 		};
 		CE0FB7AE20AE3FCD00B5DAED /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CE0FB7AF20AE3FCD00B5DAED /* CoronaCards.framework */,
+				AA8C236928D955B2000D0253 /* frameworks */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -133,7 +142,7 @@
 		CE330D7D1DB1997A006F759D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				CE330D821DB1997A006F759D /* Corona_plugin_object3d.framework */,
+				CE330D821DB1997A006F759D /* Corona_plugin_soloud.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -182,6 +191,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -202,10 +212,10 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		CE330D821DB1997A006F759D /* Corona_plugin_object3d.framework */ = {
+		CE330D821DB1997A006F759D /* Corona_plugin_soloud.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
-			path = Corona_plugin_object3d.framework;
+			path = Corona_plugin_soloud.framework;
 			remoteRef = CE330D811DB1997A006F759D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -266,7 +276,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Ensures that next attempt to build actually rebuilds the executable so it can be (re)app_sign(ed)\necho \"Updating modification time of $PROJECT_DIR/CoronaEnterprise/Corona/tvos/frameworks/CoronaCards.framework to trigger relink of $BUILT_PRODUCTS_DIR/$EXECUTABLE_PATH\"\necho \"We need to do this b/c app_sign can only sign an unsigned executable.\"\ntouch \"$PROJECT_DIR/CoronaEnterprise/Corona/tvos/frameworks/CoronaCards.framework\"";
+			shellScript = "# Ensures that next attempt to build actually rebuilds the executable so it can be (re)app_sign(ed)\necho \"Updating modification time of $PROJECT_DIR/Native/Corona/tvos/frameworks/CoronaCards.framework to trigger relink of $BUILT_PRODUCTS_DIR/$EXECUTABLE_PATH\"\necho \"We need to do this b/c app_sign can only sign an unsigned executable.\"\ntouch \"$PROJECT_DIR/Native/Corona/tvos/frameworks/CoronaCards.framework\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A4DF58591BE2F06F00B17862 /* Script: codesign embedded framework */ = {
@@ -395,6 +405,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
@@ -438,6 +449,7 @@
 				);
 				INFOPLIST_FILE = App/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

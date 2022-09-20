@@ -205,6 +205,9 @@ namespace SoLoud
 		if((*data->engineObj)->GetInterface(data->engineObj, SL_IID_ENGINE, &data->engine) != SL_RESULT_SUCCESS)
 		{
 			LOG_ERROR( "Failed to get engine interface." );
+			// STEVE CHANGE
+			(*data->engineObj)->Destroy(data->engineObj);
+			// /STEVE CHANGE
 			return UNKNOWN_ERROR;
 		}
 
@@ -215,6 +218,9 @@ namespace SoLoud
 		if((*data->engine)->CreateOutputMix(data->engine, &data->outputMixObj, 1, ids, req) != SL_RESULT_SUCCESS)
 		{
 			LOG_ERROR( "Failed to create output mix object." );
+			// STEVE CHANGE
+			(*data->engineObj)->Destroy(data->engineObj);
+			// /STEVE CHANGE
 			return UNKNOWN_ERROR;
 		}
 		(*data->outputMixObj)->Realize(data->outputMixObj, SL_BOOLEAN_FALSE);
@@ -222,6 +228,12 @@ namespace SoLoud
 		if((*data->outputMixObj)->GetInterface(data->outputMixObj, SL_IID_VOLUME, &data->outputMixVol) != SL_RESULT_SUCCESS)
 		{
 			LOG_INFO( "Failed to get output mix volume interface." );
+			// STEVE CHANGE
+			(*data->outputMixObj)->Destroy(data->outputMixObj);
+			(*data->engineObj)->Destroy(data->engineObj);
+			
+			return UNKNOWN_ERROR;
+			// /STEVE CHANGE
 		}
 
 		// Create android buffer queue.
