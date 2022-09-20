@@ -96,7 +96,7 @@ SoLoud::AudioSource * GetAudioSource (lua_State * L, int arg)
 
 template<typename T, SoLoud::result (T::*body)(const char *)> void AddFilenameMethod (lua_State * L, const char * name)
 {
-	PathXS::Directories::Instantiate(L);// funcs, directories
+	PathXS::Directories::Instantiate(L); // funcs, directories
 
 	lua_pushcclosure(L, [](lua_State * L) {
 		PathXS::Directories * dir = LuaXS::UD<PathXS::Directories>(L, lua_upvalueindex(1));

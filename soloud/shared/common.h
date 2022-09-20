@@ -61,6 +61,8 @@ struct FloatBuffer {
 		if (mOwnsData) delete mData;
 	}
 
+	unsigned int Size (lua_State * L, int arg);
+
 	float * mData{nullptr};
 	size_t mSize{0U};
 	bool mCanWrite{false}; // n.b. if not owned

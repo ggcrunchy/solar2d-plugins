@@ -24,6 +24,7 @@
 #include "common.h"
 #include "ByteReader.h"
 #include "soloud_fft.h"
+#include <limits>
 
 //
 //
@@ -95,6 +96,17 @@ static int AuxNValues (lua_State * L)
 //
 //
 
+unsigned int FloatBuffer::Size (lua_State * L, int arg)
+{
+	unsigned int size = luaL_optinteger(L, arg, mSize);
+
+	return size > mSize ? mSize : size;
+}
+
+//
+//
+//
+
 FloatBuffer * GetFloatBuffer (lua_State * L, int arg)
 {
 	FloatBuffer * buffer = LuaXS::CheckUD<FloatBuffer>(L, arg, MT_NAME(FloatBuffer));
@@ -111,6 +123,35 @@ FloatBuffer * NewFloatBuffer (lua_State * L)
 	LuaXS::AttachMethods(L, MT_NAME(FloatBuffer), [](lua_State * L) {
 		luaL_Reg funcs[] = {
 			{
+				"addAt", [](lua_State * L)
+				{
+					FloatBuffer * buffer = GetFloatBuffer(L);
+					size_t pos = luaL_checkint(L, 2);
+					float v = LuaXS::Float(L, 3);
+					
+					luaL_argcheck(L, pos >= 1 && pos <= buffer->mSize, 2, "Invalid index to addAt()");
+					luaL_argcheck(L, buffer->mOwnsData || buffer->mCanWrite, 1, "Attempt to addAt() unowned data");
+
+					buffer->mData[pos - 1] += v;
+
+					return 0;
+				}
+			}, {
+				"divideByN", [](lua_State * L)
+				{
+					FloatBuffer * buffer = GetFloatBuffer(L);
+					float n = LuaXS::Float(L, 2);
+					
+					luaL_argcheck(L, buffer->mOwnsData || buffer->mCanWrite, 1, "Attempt to addAt() unowned data");
+
+					for (unsigned int i = 0, size = buffer->Size(L, 3); i < size; ++i)
+					{
+						buffer->mData[i] /= n;
+					}
+
+					return 0;
+				}
+			}, {
 				"dup", [](lua_State * L)
 				{
 					FloatBuffer * buffer = GetFloatBuffer(L);
@@ -130,7 +171,7 @@ FloatBuffer * NewFloatBuffer (lua_State * L)
 
 					luaL_argcheck(L, buffer->mOwnsData, 1, "Attempt to fft() unowned data");
 
-					SoLoud::FFT::fft(buffer->mData, buffer->mSize);
+					SoLoud::FFT::fft(buffer->mData, buffer->Size(L, 2));
 
 					return 0;
 				}
@@ -149,7 +190,6 @@ FloatBuffer * NewFloatBuffer (lua_State * L)
 			}, {
 				"fft1024", [](lua_State * L)
 				{
-					
 					FloatBuffer * buffer = GetFloatBuffer(L);
 					
 					luaL_argcheck(L, buffer->mSize >= 1024, 1, "Too little data for fft1024()");
@@ -160,7 +200,49 @@ FloatBuffer * NewFloatBuffer (lua_State * L)
 					return 0;
 				}
 			}, {
+				"fillRandom", [](lua_State * L)
+				{
+					FloatBuffer * buffer = GetFloatBuffer(L);
+					
+					luaL_argcheck(L, buffer->mOwnsData, 1, "Attempt to fillRandom() unowned data");
+
+					float fmin = LuaXS::Float(L, 2);
+					float fmax = LuaXS::Float(L, 3);
+
+					if (fmax < fmin)
+					{
+						float temp = fmax;
+
+						fmax = fmin;
+						fmin = temp;
+					}
+
+					for (unsigned int i = 0, size = buffer->Size(L, 4); i < size; ++i)
+					{
+						buffer->mData[i] = fmin + (fmax - fmin) * rand() / RAND_MAX;
+					}
+
+					return 0;
+				}
+			}, {
 				"__gc", LuaXS::TypedGC<FloatBuffer>
+			}, {
+				"getAbsMax", [](lua_State * L)
+				{
+					FloatBuffer * buffer = GetFloatBuffer(L);
+					float fmax = 0;
+
+					for (unsigned int i = 0, size = buffer->Size(L, 2); i < size; ++i)
+					{
+						float v = abs(buffer->mData[i]);
+
+						if (v > fmax) fmax = v;
+					}
+
+					lua_pushnumber(L, fmax); // buffer[, size], abs_max
+
+					return 1;
+				}
 			}, {
 				"getAt", [](lua_State * L)
 				{
@@ -173,13 +255,28 @@ FloatBuffer * NewFloatBuffer (lua_State * L)
 					return 1;
 				}
 			}, {
+				"getMax", [](lua_State * L)
+				{
+					FloatBuffer * buffer = GetFloatBuffer(L);
+					float fmax = std::numeric_limits<float>::min();
+
+					for (unsigned int i = 0, size = buffer->Size(L, 2); i < size; ++i)
+					{
+						if (buffer->mData[i] > fmax) fmax = buffer->mData[i];
+					}
+
+					lua_pushnumber(L, fmax); // buffer[, size], max
+
+					return 1;
+				}
+			}, {
 				"ifft", [](lua_State * L)
 				{
 					FloatBuffer * buffer = GetFloatBuffer(L);
 
 					luaL_argcheck(L, buffer->mOwnsData, 1, "Attempt to ifft() unowned data");
 
-					SoLoud::FFT::ifft(buffer->mData, buffer->mSize);
+					SoLoud::FFT::ifft(buffer->mData, buffer->Size(L, 2));
 
 					return 0;
 				}
@@ -201,6 +298,28 @@ FloatBuffer * NewFloatBuffer (lua_State * L)
 					lua_pushinteger(L, GetFloatBuffer(L)->mSize); // buffer, size
 
 					return 1;
+				}
+			}, {
+				"populateFromAmplitudeAndPhase", [](lua_State * L)
+				{
+					FloatBuffer * buffer = GetFloatBuffer(L);
+					FloatBuffer * amplitude = GetFloatBuffer(L, 2);
+					FloatBuffer * phase = GetFloatBuffer(L, 3);
+
+					luaL_argcheck(L, buffer->mOwnsData || buffer->mCanWrite, 1, "Attempt to populateFromAmplitudeAndPhase() unowned data");
+
+					unsigned int half = buffer->Size(L, 4) / 2, asize = amplitude->mSize, psize = phase->mSize;
+
+					if (half > asize) half = asize;
+					if (half > psize) half = psize;
+
+					for (unsigned int i = 0, j = 0; j < half; ++j)
+					{
+						buffer->mData[i++] = amplitude->mData[j] * cos(phase->mData[j]);
+						buffer->mData[i++] = amplitude->mData[j] * sin(phase->mData[j]);
+					}
+
+					return 0;
 				}
 			}, {
 				"setAt", [](lua_State * L)
@@ -249,7 +368,7 @@ FloatBuffer * NewFloatBuffer (lua_State * L)
 
 					luaL_argcheck(L, buffer->mOwnsData, 1, "Attempt to zero() unowned data");
 
-					memset(buffer->mData, 0, buffer->mSize * sizeof(float));
+					memset(buffer->mData, 0, buffer->Size(L, 2) * sizeof(float));
 
 					return 0;
 				}
