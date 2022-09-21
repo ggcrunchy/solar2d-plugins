@@ -178,9 +178,8 @@ void GetFromStore (lua_State * L, void * object)
 {
 	lua_getfield(L, LUA_REGISTRYINDEX, MT_NAME(Store)); // ..., store
 	lua_pushlightuserdata(L, object); // .., store, object_ptr
-	lua_rawget(L, -2); // ..., store, object_ptr, object
-	lua_insert(L, -3); // ..., object, store, object_ptr
-	lua_pop(L, 2); // ..., object
+	lua_rawget(L, -2); // ..., store, object
+	lua_replace(L, -2); // ..., object
 }
 
 //

@@ -231,6 +231,7 @@
 		AA8C1E7B28D900E6000D0253 /* dr_wav.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = dr_wav.h; path = ../../../shared/src/audiosource/wav/dr_wav.h; sourceTree = "<group>"; };
 		AA8C1E7C28D900E6000D0253 /* soloud_wavstream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = soloud_wavstream.cpp; path = ../../../shared/src/audiosource/wav/soloud_wavstream.cpp; sourceTree = "<group>"; };
 		AA8C1E7D28D900E6000D0253 /* stb_vorbis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stb_vorbis.h; path = ../../../shared/src/audiosource/wav/stb_vorbis.h; sourceTree = "<group>"; };
+		AA8C240528DA8A4F000D0253 /* libplayer.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libplayer.a; path = "../../../../../../../Applications/Corona-3649/Native/Corona/ios/lib/libplayer.a"; sourceTree = "<group>"; };
 		CE6E2BDF1DF23A2B00AA7AF8 /* ByteReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ByteReader.cpp; path = ../../ByteReader/ByteReader.cpp; sourceTree = "<group>"; };
 		CE6E2BE01DF23A2B00AA7AF8 /* ByteReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ByteReader.h; path = ../../ByteReader/ByteReader.h; sourceTree = "<group>"; };
 		CE8A2C521E0F86F500FCFAFD /* aligned_allocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = aligned_allocator.h; path = ../../corona_enterprise_utils/external/aligned_allocator.h; sourceTree = "<group>"; };
@@ -360,6 +361,7 @@
 		AA8C1DC328D8EB11000D0253 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AA8C240528DA8A4F000D0253 /* libplayer.a */,
 				AA8C1DC628D8EB54000D0253 /* Foundation.framework */,
 				AA8C1DC428D8EB11000D0253 /* CoreAudio.framework */,
 			);
@@ -763,6 +765,7 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				EXCLUDED_ARCHS = arm64;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -782,9 +785,9 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "${SRCROOT}/Boost/include/";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LIBRARY_SEARCH_PATHS = "${SRCROOT}/Boost";
-				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = "-lboost";
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = "$(inherited)";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/CoronaEnterprise/Corona/shared/include/Corona ${SRCROOT}/CoronaEnterprise/Corona/shared/include/lua ${SRCROOT}/CoronaEnterprise/Corona/ios/include/Corona ${SRCROOT}/../../ByteReader ${SRCROOT}/../../corona_enterprise_utils ${SRCROOT}/../../math_libraries";
@@ -815,6 +818,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXCLUDED_ARCHS = arm64;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -827,9 +831,10 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "${SRCROOT}/Boost/include/";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LIBRARY_SEARCH_PATHS = "${SRCROOT}/Boost";
+				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				OTHER_LDFLAGS = "-lboost";
+				OTHER_LDFLAGS = "$(inherited)";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/CoronaEnterprise/Corona/shared/include/Corona ${SRCROOT}/CoronaEnterprise/Corona/shared/include/lua ${SRCROOT}/CoronaEnterprise/Corona/ios/include/Corona";
@@ -840,22 +845,27 @@
 		A4E253C0166D6FB300DCDC2C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = /tmp/plugin_library.dst;
 				ENABLE_BITCODE = NO;
+				EXCLUDED_ARCHS = arm64;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				GENERATE_MASTER_OBJECT_FILE = YES;
+				GENERATE_MASTER_OBJECT_FILE = NO;
 				HEADER_SEARCH_PATHS = "";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"$(inherited)",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				STRIP_STYLE = "non-global";
+				STRIP_STYLE = debugging;
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/CoronaEnterprise/Corona/shared/include/Corona ${SRCROOT}/CoronaEnterprise/Corona/shared/include/lua ${SRCROOT}/CoronaEnterprise/Corona/ios/include/Corona ${SRCROOT}/ByteReader ${SRCROOT}/corona_enterprise_utils ${SRCROOT}/Boost/config/include ${SRCROOT}/Boost/atomic/include";
 			};
 			name = Debug;
@@ -864,12 +874,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = /tmp/plugin_library.dst;
 				ENABLE_BITCODE = NO;
+				EXCLUDED_ARCHS = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					WITH_COREAUDIO,
@@ -879,13 +891,17 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				GENERATE_MASTER_OBJECT_FILE = YES;
+				GENERATE_MASTER_OBJECT_FILE = NO;
 				HEADER_SEARCH_PATHS = "";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				OTHER_LDFLAGS = "-ObjC";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"$(inherited)",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				STRIP_STYLE = "non-global";
+				STRIP_STYLE = debugging;
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/Native/Corona/shared/include/Corona ${SRCROOT}/Native/Corona/shared/include/lua ${SRCROOT}/Native/Corona/ios/include/Corona ${SRCROOT}/../shared/include ${SRCROOT}/../../ByteReader ${SRCROOT}/../../solar2d_native_utils ${SRCROOT}/../../math_libraries";
 			};
 			name = Release;
