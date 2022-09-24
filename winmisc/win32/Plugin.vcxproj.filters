@@ -2,5 +2,73 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="..\shared\plugin.winmisc.cpp" />
+    <ClCompile Include="..\shared\screenRecorder.cpp" />
+    <ClCompile Include="..\shared\pdfImageConverter.cpp" />
+    <ClCompile Include="..\shared\openpnp-capture\common\context.cpp">
+      <Filter>openpnp-capture\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\openpnp-capture\common\libmain.cpp">
+      <Filter>openpnp-capture\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\openpnp-capture\common\logging.cpp">
+      <Filter>openpnp-capture\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\openpnp-capture\common\stream.cpp">
+      <Filter>openpnp-capture\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\openpnp-capture\win\platformcontext.cpp">
+      <Filter>openpnp-capture\win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\openpnp-capture\win\platformstream.cpp">
+      <Filter>openpnp-capture\win</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\shared\common.h" />
+    <ClInclude Include="..\shared\miniaudio.h" />
+    <ClInclude Include="..\shared\openpnp-capture\common\context.h">
+      <Filter>openpnp-capture\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\openpnp-capture\common\deviceinfo.h">
+      <Filter>openpnp-capture\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\openpnp-capture\common\logging.h">
+      <Filter>openpnp-capture\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\openpnp-capture\common\stream.h">
+      <Filter>openpnp-capture\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\openpnp-capture\common\version.h">
+      <Filter>openpnp-capture\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\openpnp-capture\win\platformcontext.h">
+      <Filter>openpnp-capture\win</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\openpnp-capture\win\platformdeviceinfo.h">
+      <Filter>openpnp-capture\win</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\openpnp-capture\win\platformstream.h">
+      <Filter>openpnp-capture\win</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\openpnp-capture\win\samplegrabber.h">
+      <Filter>openpnp-capture\win</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\openpnp-capture\win\scopedcomptr.h">
+      <Filter>openpnp-capture\win</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\openpnp-capture\include\openpnp-capture.h">
+      <Filter>openpnp-capture</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="openpnp-capture">
+      <UniqueIdentifier>{81671bdd-fae5-4c9e-824e-1a80ff445d45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="openpnp-capture\common">
+      <UniqueIdentifier>{51d2f5e7-cfe5-4e7c-936b-d12d03747060}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="openpnp-capture\win">
+      <UniqueIdentifier>{fad53253-0ff1-456e-8a66-e4484dc1ae7b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

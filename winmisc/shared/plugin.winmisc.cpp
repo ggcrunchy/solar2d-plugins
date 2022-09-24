@@ -21,8 +21,7 @@
 * [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
 */
 
-#include "CoronaLua.h"
-#include "utils/Blob.h"
+#include "common.h"
 #include <windows.h>
 #include <cstdlib>
 #include <vector>
@@ -155,7 +154,7 @@ static BOOL CALLBACK EnumWindowsProc (HWND window, LPARAM lparam)
 
 CORONA_EXPORT int luaopen_plugin_winmisc (lua_State* L)
 {
-	lua_newtable(L);// winmisc
+	lua_newtable(L); // winmisc
 
 	luaL_Reg funcs[] = {
 		{
@@ -456,6 +455,9 @@ CORONA_EXPORT int luaopen_plugin_winmisc (lua_State* L)
 	};
 
 	luaL_register(L, nullptr, funcs);
+
+    AddPDFImageConverter(L);
+    AddScreenRecorder(L);
 
 	return 1;
 }

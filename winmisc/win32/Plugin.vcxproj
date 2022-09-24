@@ -11,7 +11,30 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\shared\openpnp-capture\common\context.cpp" />
+    <ClCompile Include="..\shared\openpnp-capture\common\libmain.cpp" />
+    <ClCompile Include="..\shared\openpnp-capture\common\logging.cpp" />
+    <ClCompile Include="..\shared\openpnp-capture\common\stream.cpp" />
+    <ClCompile Include="..\shared\openpnp-capture\win\platformcontext.cpp" />
+    <ClCompile Include="..\shared\openpnp-capture\win\platformstream.cpp" />
+    <ClCompile Include="..\shared\pdfImageConverter.cpp" />
     <ClCompile Include="..\shared\plugin.winmisc.cpp" />
+    <ClCompile Include="..\shared\screenRecorder.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\shared\common.h" />
+    <ClInclude Include="..\shared\miniaudio.h" />
+    <ClInclude Include="..\shared\openpnp-capture\common\context.h" />
+    <ClInclude Include="..\shared\openpnp-capture\common\deviceinfo.h" />
+    <ClInclude Include="..\shared\openpnp-capture\common\logging.h" />
+    <ClInclude Include="..\shared\openpnp-capture\common\stream.h" />
+    <ClInclude Include="..\shared\openpnp-capture\common\version.h" />
+    <ClInclude Include="..\shared\openpnp-capture\include\openpnp-capture.h" />
+    <ClInclude Include="..\shared\openpnp-capture\win\platformcontext.h" />
+    <ClInclude Include="..\shared\openpnp-capture\win\platformdeviceinfo.h" />
+    <ClInclude Include="..\shared\openpnp-capture\win\platformstream.h" />
+    <ClInclude Include="..\shared\openpnp-capture\win\samplegrabber.h" />
+    <ClInclude Include="..\shared\openpnp-capture\win\scopedcomptr.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{79F0CACC-457B-4A25-BC54-81277688C361}</ProjectGuid>
@@ -80,7 +103,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>$(CORONA_ROOT)/Corona/shared/include/Corona;$(CORONA_ROOT)/Corona/shared/include/lua;%(AdditionalIncludeDirectories);$(SolutionDir)../../ByteReader;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(CORONA_ROOT)/Corona/shared/include/Corona;$(CORONA_ROOT)/Corona/shared/include/lua;%(AdditionalIncludeDirectories);$(SolutionDir)../../ByteReader;$(SolutionDir)../../solar2d_native_utils;$(SolutionDir)../shared/openpnp-capture/include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);LUA_BUILD_AS_DLL;LUA_LIB;_CRT_SECURE_NO_WARNINGS;__HAVE_OGG</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -88,7 +111,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>$(CORONA_ROOT)\Corona\win\lib\*.lib;%(AdditionalDependencies);</AdditionalDependencies>
+      <AdditionalDependencies>$(CORONA_ROOT)\Corona\win\lib\*.lib;%(AdditionalDependencies);$(Configuration)\solar2d_native_utils.lib</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -107,7 +130,9 @@ set FULL_NAME=%PLUGIN_DIR%\%FILENAME%
 copy "$(OutDir)$(TargetName).dll" "%FULL_NAME%"
 del "%PLUGIN_DIR%\data.tgz"
 tar -czf "%PLUGIN_DIR%\data.tgz" -C "%PLUGIN_DIR%" %FILENAME%
-del "%FULL_NAME%"</Command>
+del "%FULL_NAME%"
+set SIMULATOR_DIR="$(appdata)\Corona Labs\Corona Simulator\Plugins"
+del %SIMULATOR_DIR%\catalog.json</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
