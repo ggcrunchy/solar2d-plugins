@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\shared\src\additional.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\animation.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\animmesh.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\bitfields.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\bone.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\camera.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\compat-5.3.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\enums.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\face.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\import.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\light.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\main.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\material.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\mesh.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\meshanim.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\node.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\nodeanim.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\scene.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\texture.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\udata.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\utils.c">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{38221a7e-1a81-4618-ace5-4cc7ab7026ec}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\shared\src\compat-5.3.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\internal.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\moonassimp.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\objects.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\tree.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\udata.h">
+      <Filter>src</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
