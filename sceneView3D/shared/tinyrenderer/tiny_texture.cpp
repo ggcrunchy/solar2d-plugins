@@ -1,12 +1,11 @@
 #include "tinyrenderer.h"
-#include "utils/LuaEx.h"
 
 //
 //
 //
 
-#define TEXTURE_TYPE "scene3d.tiny.Texture"
-#define FLOAT_TEXTURE_TYPE "scene3d.tiny.FloatTexture"
+#define TEXTURE_TYPE "sceneView3D.tiny.Texture"
+#define FLOAT_TEXTURE_TYPE "sceneView3D.tiny.FloatTexture"
 
 //
 //
@@ -36,10 +35,9 @@ Texture<float> & GetFloatTexture (lua_State * L, int arg)
 //
 //
 
-void open_texture (lua_State * L)
+void add_texture (lua_State * L)
 {
-    AddConstructor(L, "NewTexture", [](lua_State * L)
-	{
+    lua_pushcfunction(L, [](lua_State * L) {
 		LuaXS::NewTyped<Texture<unsigned char>>(L);	// texture
 		LuaXS::AttachMethods(L, TEXTURE_TYPE, [](lua_State * L) {
 			luaL_Reg methods[] = {
@@ -62,10 +60,10 @@ void open_texture (lua_State * L)
 		});
 
 		return 1;
-	});
+	}); // ..., tinyrenderer, NewTexture
+	lua_setfield(L, -2, "NewTexture"); // ..., tinyrenderer = { ..., NewTexture = NewTexture }
 
-	AddConstructor(L, "NewFloatTexture", [](lua_State * L)
-	{
+	lua_pushcfunction(L, [](lua_State * L) {
 		LuaXS::NewTyped<Texture<float>>(L);	// texture
 		LuaXS::AttachMethods(L, FLOAT_TEXTURE_TYPE, [](lua_State * L) {
 			luaL_Reg methods[] = {
@@ -94,7 +92,8 @@ void open_texture (lua_State * L)
 		});
 
 		return 1;
-	});
+	}); // ..., tinyrenderer = { ..., NewTexture }, NewFloatTexture
+	lua_setfield(L, -2, "NewFloatTexture"); // ..., tinyrenderer = { ..., NewTexture, NewFloatTexture = NewFloatTexture }
 }
 
 //

@@ -28,6 +28,17 @@
 #include "CoronaLua.h"
 #include <vector>
 
+//
+//
+//
+
+#define BYTEMAP_TYPE_NAME(TYPE) "Bytemap." #TYPE
+#define BYTEMAP_NAME "BytemapXS"
+
+//
+//
+//
+
 struct Bytemap
 {
 	std::vector<unsigned char> mBytes{};// Normal data (or temporary, when using unsuitable bytemaps)

@@ -187,9 +187,9 @@ bool SoftwareRenderer::clipTriangles(Vector3f *clipSpaceVertices){
     int count = 0;
     for(int i = 0; i < 3; ++i){
         Vector3f vertex = clipSpaceVertices[i];
-        bool inside = (-vertex.w <= vertex.x <= vertex.w ) 
-                    && (-vertex.w <= vertex.y <= vertex.w)
-                    && (0 <= vertex.z <= vertex.w);
+        bool inside = (-vertex.w <= vertex.x  && vertex.x <= vertex.w ) // <- STEVE CHANGE
+                    && (-vertex.w <= vertex.y && vertex.y <= vertex.w) // <- STEVE CHANGE
+                    && (0 <= vertex.z && vertex.z <= vertex.w); // <- STEVE CHANGE
         if (!inside) ++count;
     }
     //If count equals three it means every vertex was out so we skip it

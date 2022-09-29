@@ -41,5 +41,8 @@
     <ClCompile Include="..\shared\BindBlob.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\shared\MakeSeamless.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

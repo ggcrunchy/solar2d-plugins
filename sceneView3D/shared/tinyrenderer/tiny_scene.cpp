@@ -1,7 +1,6 @@
 #include "tinyrenderer.h"
-#include "geometry.h"
+#include "utils/Blob.h"
 #include "utils/Byte.h"
-#include "utils/LuaEx.h"
 #include "utils/Thread.h"
 #include <algorithm>
 
@@ -9,7 +8,7 @@
 //
 //
 
-#define SCENE_TYPE "scene3d.tiny.Scene"
+#define SCENE_TYPE "sceneView3D.tiny.Scene"
 
 //
 //
@@ -277,19 +276,19 @@ Matrix Transform::ToMatrix (void)
 
 template<typename F> void VisitScene (lua_State * L, Scene & scene, Model::RenderState & rs, F && func)
 {
-    std::vector<Group *> stack;
+    std::vector<Node *> stack;
 	std::vector<Matrix> mstack;
 
-	lua_getref(L, scene.mGroupRef);	// scene, group
+	lua_getref(L, scene.mRootRef); // scene, root
 
-	Group & group = GetGroup(L, -1);
+	Node & node = GetNode(L, -1);
 
-	stack.push_back(&group);
-	mstack.push_back(group.mXform.ToMatrix());
+	stack.push_back(&node);
+	mstack.push_back(node.ToMatrix());
 
 	while (!stack.empty())
 	{
-		Group * cur = stack.back();
+		Node * cur = stack.back();
 		Matrix gmat = mstack.back();
 
 		stack.pop_back();
@@ -301,16 +300,16 @@ template<typename F> void VisitScene (lua_State * L, Scene & scene, Model::Rende
 
 			for (int i = 0; i < object->mModel.nfaces(); i++)
 			{
-				for (int j = 0; j < 3; j++) (object->mInfo->*vert_fn)(scene, rs, object->mModel, gmat * object->mXform.ToMatrix(), i, j);
-                   
+				for (int j = 0; j < 3; j++) (object->mInfo->*vert_fn)(scene, rs, object->mModel, gmat * object->ToMatrix(), i, j);
+
 				func(*object);
 			}
 		}
 
-		for (auto iter = cur->mSubGroups.rbegin(); iter != cur->mSubGroups.rend(); ++iter)
+		for (auto iter = cur->mSubnodes.rbegin(); iter != cur->mSubnodes.rend(); ++iter)
 		{
 			stack.push_back(*iter);
-			mstack.push_back(gmat * (*iter)->mXform.ToMatrix());
+			mstack.push_back(gmat * (*iter)->ToMatrix());
 		}
 	}
 }
@@ -319,43 +318,31 @@ template<typename F> void VisitScene (lua_State * L, Scene & scene, Model::Rende
 //
 //
 
-void open_scene (lua_State * L)
+void add_scene (lua_State * L)
 {
-	lua_getfield(L, -1, "NewGroup"); // ..., tinyrenderer, NewGroup
+	lua_getfield(L, -1, "NewNode"); // ..., tinyrenderer, NewNode
 
-    AddConstructor(L, "NewScene", [](lua_State * L)
+    lua_pushcclosure(L, [](lua_State * L)
     {
 		bool bHasAlpha = false, bUsingBlob = false;
 
 		LuaXS::Options{L, 3}.Add("has_alpha", bHasAlpha)
 							.Add("using_blob", bUsingBlob);
-	
-		Scene * scene = LuaXS::NewTyped<Scene>(L, LuaXS::Int(L, 1), LuaXS::Int(L, 2), bHasAlpha);	// w, h[, opts], scene
 
-		lua_pushvalue(L, lua_upvalueindex(1));	// w, h[, opts], scene, NewGroup
-		lua_call(L, 0, 1);	// w, h[, opts], scene, group
-		lua_getfenv(L, -1);	// w, h[, opts], scene, group, items
-		lua_pushvalue(L, -3);	// w, h[, opts], scene, group, items, scene
-		lua_setfield(L, -2, "scene");	// w, h[, opts], scene, group, items = { ..., scene = scene }
-		lua_pop(L, 1);	// w, h[, opts], scene, group
+		Scene * scene = LuaXS::NewTyped<Scene>(L, LuaXS::Int(L, 1), LuaXS::Int(L, 2), bHasAlpha); // w, h[, opts], scene
 
-		scene->mGroupRef = lua_ref(L, 1);	// w, h[, opts], scene; scene.group = group
+		lua_pushvalue(L, lua_upvalueindex(1)); // w, h[, opts], scene, NewNode
+		lua_call(L, 0, 1); // w, h[, opts], scene, root
 
- /*
- LuaXS::AttachMethods(L, OBJECT_NAME, [](lua_State * L)
- {
- luaL_Reg methods[] = {
- { nullptr, nullptr }
- };
- 
- luaL_register(L, nullptr, methods);
- });
- 
- BlobXS::NewBlob(L, O->Count());    // w, h[, has_alpha], object, blob
- 
- O->mOutput = BlobXS::GetData(L, -1);
- O->mBlobRef = lua_ref(L, 1);// w, h[, has_alpha], object
- */
+		GetNode(L, -1).mIsSceneRoot = true;
+
+		scene->mRootRef = lua_ref(L, 1); // w, h[, opts], scene; scene.root = root
+
+		BlobXS::NewBlob(L, scene->mW * scene->mH * (bHasAlpha ? 4 : 3)); // w, h[, has_alpha], scene, blob
+
+		scene->mOutput = BlobXS::GetData(L, -1);
+		scene->mBlobRef = lua_ref(L, 1); // w, h[, has_alpha], scene
+
         LuaXS::AttachMethods(L, SCENE_TYPE, [](lua_State * L) {
             luaL_Reg methods[] = {
                 {
@@ -379,7 +366,7 @@ void open_scene (lua_State * L)
                 }, {
                     "GetBlob", [](lua_State * L)
                     {
-                        lua_getref(L, GetScene(L).mBlobRef);// object, blob
+                        lua_getref(L, GetScene(L).mBlobRef); // scene, blob
                         
                         return 1;
                     }
@@ -388,12 +375,12 @@ void open_scene (lua_State * L)
                     {
                         Scene & scene = GetScene(L);
                         
-                        lua_pushlstring(L, reinterpret_cast<const char *>(scene.mOutput), scene.Count());// object, str
+                        lua_pushlstring(L, reinterpret_cast<const char *>(scene.mOutput), scene.Count()); // scene, bytes
                         
                         return 1;
                     }
                 }, {
-					 "GetColor", [](lua_State * L)
+					 "GetHitColor", [](lua_State * L)
 					 {
                          Scene & scene = GetScene(L);
                          
@@ -443,14 +430,14 @@ void open_scene (lua_State * L)
 */
 						}
 
-						else lua_pushnil(L);// scene, group, nil
+						else lua_pushnil(L);// scene, node, nil
 
 						return 1;
 					}
 				 }, {
-					"GetGroup", [](lua_State * L)
+					"GetRoot", [](lua_State * L)
 					{
-						lua_getref(L, GetScene(L).mGroupRef);	// scene, group
+						lua_getref(L, GetScene(L).mRootRef); // scene, root
 															
 						return 1;
 					}
@@ -513,9 +500,12 @@ void open_scene (lua_State * L)
             
             luaL_register(L, nullptr, methods);
         });
-        
+
+		AddToStore(L);
+
         return 1;
-    }, 1);	// tinyrenderer
+    }, 1); // ..., tinyrenderer, NewScene; NewScene.upvalue = NewNode
+	lua_setfield(L, -2, "NewScene"); // ..., tinyrenderer = { ..., NewScene = NewScene }
 }
 
 //

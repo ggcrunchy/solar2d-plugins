@@ -21,44 +21,16 @@
 * [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
 */
 
+#pragma once
+
 #include "CoronaLua.h"
-#include "tinyrenderer/tinyrenderer.h"
+#include "ByteReader.h"
+#include "utils/LuaEx.h"
 
 //
 //
 //
 
-CORONA_EXPORT int luaopen_plugin_scene3d (lua_State * L)
-{
-	lua_newtable(L); // scene3d
-
-    //
-    //
-    //
-
-    lua_newtable(L); // scene3d, tinyrenderer
-
-    tiny::open_group(L);
-    tiny::open_model(L);
-    tiny::open_object(L);
-    tiny::open_scene(L);
-    tiny::open_texture(L);
-
-    lua_setfield(L, -2, "tinyrenderer"); // scene3d = { tinyrenderer = tinyrenderer }
-
-    //
-    //
-    //
-
-    lua_newtable(L); // scene3d, SSGE
-
-    // TODO!
-
-    lua_setfield(L, -2, "SSGE"); // scene3d = { tinyrenderer, SSGE = SSGE }
-
-    //
-    //
-    //
-
-	return 1;
-}
+void AddToStore (lua_State * L, void * object = nullptr);
+void GetFromStore (lua_State * L, void * object);
+void RemoveFromStore (lua_State * L, void * object = nullptr);

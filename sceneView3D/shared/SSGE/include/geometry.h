@@ -45,7 +45,7 @@ class Frustrum{
         };
     public:
         float  fov, AR, near, far , nearH, nearW;
-        Frustrum(float ratio): fov(50), near(0.1), far(100), AR(ratio){};
+        Frustrum(float ratio): fov(50), near(0.1f), far(100), AR(ratio){}
         Plane pl[6];
 
         void setCamInternals();

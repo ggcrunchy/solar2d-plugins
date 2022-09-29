@@ -27,7 +27,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\shared\plugin.scene3d.cpp">
+    <ClCompile Include="..\shared\plugin.sceneView3D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\shared\tinyrenderer\color.cpp">
@@ -36,7 +36,7 @@
     <ClCompile Include="..\shared\tinyrenderer\tiny_geometry.cpp">
       <Filter>Source Files\tinyrenderer</Filter>
     </ClCompile>
-    <ClCompile Include="..\shared\tinyrenderer\group.cpp">
+    <ClCompile Include="..\shared\tinyrenderer\node.cpp">
       <Filter>Source Files\tinyrenderer</Filter>
     </ClCompile>
     <ClCompile Include="..\shared\tinyrenderer\tiny_model.cpp">
@@ -168,6 +168,9 @@
       <Filter>Header Files\SSGE</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\SSGE\libs\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\common.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

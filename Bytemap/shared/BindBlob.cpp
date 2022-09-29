@@ -29,7 +29,7 @@
 // Bind a blob to the bytemap (or unbind)
 int Bytemap_BindBlob (lua_State * L)
 {
-	Bytemap * bmap = LuaXS::DualUD<Bytemap>(L, 1, "BytemapXS");
+	Bytemap * bmap = LuaXS::DualUD<Bytemap>(L, 1, BYTEMAP_NAME);
 
 	if (bmap)
 	{
@@ -75,7 +75,7 @@ int Bytemap_BindBlob (lua_State * L)
 // Deallocate bytemap memory
 int Bytemap_Deallocate (lua_State * L)
 {
-	Bytemap * bmap = LuaXS::DualUD<Bytemap>(L, 1, "BytemapXS");
+	Bytemap * bmap = LuaXS::DualUD<Bytemap>(L, 1, BYTEMAP_NAME);
 
 	if (bmap)
 	{

@@ -5,7 +5,7 @@
 //
 //
 
-#define MODEL_TYPE "scene3d.tiny.Model"
+#define MODEL_TYPE "sceneView3D.tiny.Model"
 
 //
 //
@@ -36,7 +36,7 @@ Model::Model (void) : verts_(), faces_(), norms_(), uv_()
 
 Vec3f Model::normal (int iface, int nthvert) const
 {
-	int idx = faces_[iface][nthvert][2];
+	int idx = faces_[iface][nthvert]/*[2]*/; // <- STEVE CHANGE
 
 	return norms_[idx];
 }
@@ -47,11 +47,12 @@ Vec3f Model::normal (int iface, int nthvert) const
 
 std::vector<int> Model::face (int idx) const
 {
-	std::vector<int> face;
+// STEVE CHANGE
+/*	std::vector<int> face;
 
-	for (auto && elem : faces_[idx]) face.push_back(elem[0]);
-
-	return face;
+	for (auto && elem : faces_[idx]) face.push_back(elem[0]);*/
+// /STEVE CHANGE
+	return faces_[idx];//face; <- STEVE CHANGE
 }
 
 //
@@ -157,7 +158,7 @@ Color Model::RenderInfo::GetDiffuse (const Vec2f & uvf) const
 
 		Color out;
 
-		for (int i = 0; i < mDiffuse->mComp; ++i) out.mBytes[i] = mDiffuse->mPixels[offset + i];
+		for (int i = 0; i < mDiffuse->mComp; ++i) out.mBytes[i] = mDiffuse->mData[offset + i];
 
 		return out;
 	}
@@ -191,12 +192,12 @@ Vec3f Model::RenderInfo::GetNormal (const Vec2f & uvf) const
 //
 //
 
-Vec4f Model::RenderInfo::basic_vertex (const Scene & scene, RenderState & rs, const Model & model, const Matrix & mat, int iface, int nthvert)
+Vec4f Model::RenderInfo::basic_vertex (const Scene & scene, RenderState & rs, const Model & model, const Matrix & mat, int iface, int nthvert) const
 {
 	Vec4f gl_Vertex = scene.mMVP * mat * embed<4>(model.vert(iface, nthvert));
 
 	rs.varying_tri.set_col(nthvert, gl_Vertex);
-		
+
 	return gl_Vertex;
 }
 
@@ -204,7 +205,7 @@ Vec4f Model::RenderInfo::basic_vertex (const Scene & scene, RenderState & rs, co
 //
 //
 
-Vec4f Model::RenderInfo::diffuse_vertex (const Scene & scene, RenderState & rs, const Model & model, const Matrix & mat, int iface, int nthvert)
+Vec4f Model::RenderInfo::diffuse_vertex (const Scene & scene, RenderState & rs, const Model & model, const Matrix & mat, int iface, int nthvert) const
 {
 	Vec4f gl_Vertex = basic_vertex(scene, rs, model, mat, iface, nthvert);
 
@@ -217,7 +218,7 @@ Vec4f Model::RenderInfo::diffuse_vertex (const Scene & scene, RenderState & rs, 
 //
 //
 
-Vec4f Model::RenderInfo::diffuse_normals_vertex (const Scene & scene, RenderState & rs, const Model & model, const Matrix & mat, int iface, int nthvert)
+Vec4f Model::RenderInfo::diffuse_normals_vertex (const Scene & scene, RenderState & rs, const Model & model, const Matrix & mat, int iface, int nthvert) const
 {
 	Vec4f gl_Vertex = diffuse_vertex(scene, rs, model, mat, iface, nthvert);
 
@@ -280,9 +281,9 @@ Color Model::RenderInfo::diffuse_normals_fragment (const Scene & scene, const Re
 //
 //
 
-void open_model (lua_State * L)
+void add_model (lua_State * L)
 {
-    AddConstructor(L, "NewModel", [](lua_State * L)
+    lua_pushcfunction(L, [](lua_State * L)
     {
 		LuaXS::NewTyped<Model>(L);	// model
         LuaXS::AttachMethods(L, MODEL_TYPE, [](lua_State * L) {
@@ -292,16 +293,9 @@ void open_model (lua_State * L)
                     {
                         int n = (lua_gettop(L) - 1) / 3, j = 2;
                         
-                        std::vector<Vec3i> corners;
+                        std::vector</*Vec3i*/int> corners;
                         
-                        for (int i = 0; i < 3; ++i)
-                        {
-                            Vec3i f{0, 0, 0};
-                            
-                            for (int k = 0; k < n; ++k) f[k] = LuaXS::Int(L, j++) - 1;
-                            
-                            corners.push_back(f);
-                        }
+                        for (int i = 0; i < 3; ++i) corners.push_back(LuaXS::Int(L, j++) - 1);
                         
                         GetModel(L).faces_.push_back(corners);
                         
@@ -390,7 +384,8 @@ void open_model (lua_State * L)
         });
         
         return 1;
-    });
+    }); // ..., tinyrenderer
+    lua_setfield(L, -2, "NewModel"); // ..., tinyrenderer = { ..., NewModel = NewModel }
 }
 
 //

@@ -103,6 +103,7 @@ del %SIMULATOR_DIR%\catalog.json</Command>
     <ClCompile Include="..\shared\BindBlob.cpp" />
     <ClCompile Include="..\shared\BytesOpts.cpp" />
     <ClCompile Include="..\shared\GetBytes.cpp" />
+    <ClCompile Include="..\shared\MakeSeamless.cpp" />
     <ClCompile Include="..\shared\plugin.ByteMap.cpp" />
     <ClCompile Include="..\shared\SetBytes.cpp" />
   </ItemGroup>

@@ -55,7 +55,7 @@ struct GouraudShader : public IShader {
     //Per object data
     Matrix4 MVP, MV, V, N;
     Vector3f lightColor1{1,1,1}, lightColor2{0,0,1}, lightColor3{1,1,1};
-    float ambientStrength = 0.05, diffStrength = 0, specularStrength = 0.5, spec = 0;
+    float ambientStrength = 0.05f, diffStrength = 0, specularStrength = 0.5f, spec = 0;
     Vector3f rgb{255,255,255};
 
     //Per vertex data
@@ -101,8 +101,8 @@ struct GouraudShader : public IShader {
 struct PhongShader : public IShader {
     //Per object data
     Matrix4 MVP, MV, V, N;
-    float ambientStrength = 0.05, diffStrength = 0, specularStrength = 0.9, spec = 0;
-    Vector3f lightColor{0,0.1,1},lightColorSpec{1,1,1};
+    float ambientStrength = 0.05f, diffStrength = 0, specularStrength = 0.9f, spec = 0;
+    Vector3f lightColor{0,0.1f,1},lightColorSpec{1,1,1};
     Vector3f rgb{255,255,255};
 
     //Per vertex data
@@ -152,7 +152,7 @@ struct BlinnPhongShader : public IShader {
     //Per object data
     Texture *albedoT;
     Matrix4 MVP, MV, V, N;
-    float ambientStrength = 0.05, diffStrength=1 , specularStrength= 0.5;
+    float ambientStrength = 0.05f, diffStrength=1 , specularStrength= 0.5f;
     Vector3f lightColor{1,1,1};
 
     //Per vertex data
@@ -208,7 +208,7 @@ struct TextureMapShader : public IShader {
 
     //Light Variables
     Vector3f lightColor{1,1,1}, white{1,1,1};
-    float ambientStrength = 0.1, diffStrength = 0.9, specularStrength = 0.8;
+    float ambientStrength = 0.1f, diffStrength = 0.9f, specularStrength = 0.8f;
     float diff, spec, shininess = 128;
     Vector3f lightDir[3];
 
@@ -282,9 +282,9 @@ struct PBRShader : public IShader {
     Vector3f cameraPos;
 
     //Light Variables
-    Vector3f F0{0.04, 0.04, 0.04}, F0corrected; //Default value dielectric
+    Vector3f F0{0.04f, 0.04f, 0.04f}, F0corrected; //Default value dielectric
     Vector3f *lightDirVal, *lightCol, *lightPos;
-    float nDotL, nDotV, ambientInt = 0.01; 
+    float nDotL, nDotV, ambientInt = 0.01f; 
     int numLights;
 
     //Variables set per vertex
@@ -302,8 +302,8 @@ struct PBRShader : public IShader {
 
     //BRDF functions
     Vector3f fresnelSchlick(float cosTheta, Vector3f &fresnel0 ){
-        float invcCosTheta = 1.0 - cosTheta;
-        return fresnel0 + (Vector3f(1.0)- fresnel0) * (invcCosTheta * invcCosTheta * invcCosTheta * invcCosTheta * invcCosTheta);
+        float invcCosTheta = 1.0f - cosTheta;
+        return fresnel0 + (Vector3f(1.0f)- fresnel0) * (invcCosTheta * invcCosTheta * invcCosTheta * invcCosTheta * invcCosTheta);
     }
     float distributionGGX(Vector3f normal, Vector3f halfway, float roughness){
         float a      = roughness*roughness;

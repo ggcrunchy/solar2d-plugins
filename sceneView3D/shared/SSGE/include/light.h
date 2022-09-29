@@ -14,7 +14,7 @@ struct BaseLight{
     Vector3f color;
     float radius;
     char type;
-    float time = 2 * M_PI ;
+    float time = float(2 * M_PI);
     unsigned int totalTime;
 
     void update(unsigned int deltaT){

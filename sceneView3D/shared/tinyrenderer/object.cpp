@@ -1,12 +1,10 @@
 #include "tinyrenderer.h"
-#include "geometry.h"
-#include "utils/LuaEx.h"
 
 //
 //
 //
 
-#define OBJECT_TYPE "scene3d.tiny.Group"
+#define OBJECT_TYPE "sceneView3D.tiny.Object"
 
 //
 //
@@ -117,23 +115,46 @@ struct RenderInfoRAII {
 //
 //
 
-void open_object (lua_State * L)
+void add_object (lua_State * L)
 {
-    LuaXS::NewWeakKeyedTable(L); // ..., tinyrenderer, object_to_model
-
-    AddConstructor(L, "NewObject", [](lua_State * L)
+    lua_pushcfunction(L, [](lua_State * L)
     {
-        LuaXS::NewTyped<Object>(L, GetModel(L, 2)); // model, object
+		lua_settop(L, 1); // model
 
-        lua_pushvalue(L, lua_upvalueindex(1));  // model, object, object_to_model
-        lua_pushvalue(L, -2);   // model, object, object_to_model, object
-        lua_pushvalue(L, 1);// model, object, object_to_model = { ..., [object] = model }
-        lua_pop(L, 1);  // model, object
+        Object * object = LuaXS::NewTyped<Object>(L, GetModel(L, 1)); // model, object
+
+		lua_insert(L, 1); // object, model
+
+		object->mModelRef = lua_ref(L, 1); // object; object.ref = model
 
         LuaXS::AttachMethods(L, OBJECT_TYPE, [](lua_State * L) {
             luaL_Reg methods[] = {
 				{
+                    "DetachSelf", [](lua_State * L)
+                    {
+						Object & object = GetObject(L);
+						Node * parent = static_cast<Node *>(object.mParent);
+
+						if (parent)
+						{
+							auto iter = std::find(parent->mObjects.begin(), parent->mObjects.end(), &object);
+
+							if (iter != parent->mObjects.end()) parent->mObjects.erase(iter);
+						}
+
+						object.mParent = nullptr;
+
+                        return 0;
+                    }
+				}, {
 					"__gc", LuaXS::TypedGC<Object>
+				}, {
+					"GetParent", [](lua_State * L)
+					{
+                        GetFromStore(L, GetObject(L).mParent); // object, parent
+                        
+                        return 1;
+					}
 				}, {
 					"SetDiffuse", [](lua_State * L)
 					{
@@ -141,6 +162,11 @@ void open_object (lua_State * L)
 
 						ri.mInfo.SetDiffuse(L);
 
+						return 0;
+					}
+				}, {
+					"RemoveSelf", [](lua_State * L)
+					{
 						return 0;
 					}
 				}, {
@@ -155,21 +181,21 @@ void open_object (lua_State * L)
 				}, {
 					"SetPosition", [](lua_State * L)
 					{
-						GetObject(L).mXform.SetPosition(L);
+						GetObject(L).SetPosition(L);
 
 						return 0;
 					}
 				}, {
 					"SetRotation", [](lua_State * L)
 					{
-						GetObject(L).mXform.SetRotation(L);
+						GetObject(L).SetRotation(L);
 
 						return 0;
 					}
 				}, {
 					"SetScale", [](lua_State * L)
 					{
-						GetObject(L).mXform.SetScale(L);
+						GetObject(L).SetScale(L);
 
 						return 0;
 					}
@@ -180,8 +206,11 @@ void open_object (lua_State * L)
 			luaL_register(L, nullptr, methods);
         });
 
+		AddToStore(L);
+
         return 1;
-    }, 1);  // ..., tinyrenderer = { ..., NewObject = NewObject }
+    }, 1);  // ..., tinyrendere, NewObject
+	lua_setfield(L, -2, "NewObject"); // ..., tinyrenderer = { ..., NewObject = NewObject }
 }
 
 //

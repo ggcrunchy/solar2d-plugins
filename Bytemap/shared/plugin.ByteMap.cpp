@@ -32,6 +32,7 @@
 #include "utils/Path.h"
 #include "utils/Platform.h"
 #include "utils/Thread.h"
+#include <cstdint>
 
 #define STB_IMAGE_IMPLEMENTATION
 #define STBI_NO_STDIO
@@ -198,7 +199,7 @@ static int PushCachedFunction( lua_State *L, lua_CFunction f )
 
 static int Bytemap_GetBlob (lua_State * L)
 {
-	Bytemap * bmap = LuaXS::DualUD<Bytemap>(L, 1, "BytemapXS");
+	Bytemap * bmap = LuaXS::DualUD<Bytemap>(L, 1, BYTEMAP_NAME);
 
 	if (bmap) lua_getref(L, bmap->mBlobRef);// bmap, blob?
 
@@ -232,6 +233,7 @@ static int Bytemap_GetField (lua_State * L, const char * field, void * context)
 	else if (strcmp(field, "BindBlob") == 0) res = PushCachedFunction(L, Bytemap_BindBlob);
 	else if (strcmp(field, "Deallocate") == 0) res = PushCachedFunction(L, Bytemap_Deallocate);
 	else if (strcmp(field, "GetBlob") == 0) res = PushCachedFunction(L, Bytemap_GetBlob);
+	else if (strcmp(field, "MakeSeamless") == 0) res = PushCachedFunction(L, Bytemap_MakeSeamless);
 	else if (strcmp(field, "format") == 0) PushFormat(L, static_cast<Bytemap *>(context));
 	else res = 0;
 
@@ -319,7 +321,7 @@ static bool NewBytemap (lua_State * L, int w, int h, CoronaExternalBitmapFormat 
 
 		bmap->InitializeBytes(bytes);
 
-		LuaXS::AttachMethods(L, "BytemapXS", [](lua_State * L)
+		LuaXS::AttachMethods(L, BYTEMAP_NAME, [](lua_State * L)
 		{
 			luaL_Reg methods[] = {
 				{
@@ -334,6 +336,8 @@ static bool NewBytemap (lua_State * L, int w, int h, CoronaExternalBitmapFormat 
 					"GetBytes", Bytemap_GetBytes
 				}, {
 					"invalidate", LuaXS::NoOp
+				}, {
+					"MakeSeamless", Bytemap_MakeSeamless
 				}, {
 					"releaseSelf", LuaXS::NoOp
 				}, {
@@ -374,11 +378,6 @@ static CoronaExternalBitmapFormat GetFormat (lua_State * L, int arg)
 
 	return formats[luaL_checkoption(L, arg, "rgba", names)];
 }
-
-struct ByteProxy {
-	unsigned char * mBytes;
-	size_t mSize;
-};
 
 static void * RegisterByteProxyReader (lua_State * L)
 {
@@ -509,10 +508,10 @@ CORONA_EXPORT int luaopen_plugin_Bytemap (lua_State * L)
 	
 	luaL_register(L, nullptr, bytemap_funcs);
 
-	NewByteSource<ByteProxy>(L, "Bytemap.proxy", RegisterByteProxyReader(L));	// bytemap, proxy
+	NewByteSource<ByteProxy>(L, BYTEMAP_TYPE_NAME(proxy), RegisterByteProxyReader(L)); // bytemap, proxy
 	PathXS::Directories::Instantiate(L);// bytemap, proxy, dirs
 
-	NewByteSource<BytemapRef>(L, "Bytemap.ptr", RegisterBytemapReaderWriter(L));// bytemap, proxy, dirs, bmap_ref
+	NewByteSource<BytemapRef>(L, BYTEMAP_TYPE_NAME(ptr), RegisterBytemapReaderWriter(L)); // bytemap, proxy, dirs, bmap_ref
 
 	lua_pushvalue(L, -1);	// bytemap, proxy, dirs, bmap_ref, bmap_ref
 	lua_pushcclosure(L, [](lua_State * L) {
@@ -587,12 +586,38 @@ CORONA_EXPORT int luaopen_plugin_Bytemap (lua_State * L)
 
 					if (4 == ncomps && !bNoPremultipliedAlpha)
 					{
+						// FastPremult() from https://arxiv.org/pdf/2202.02864v1.pdf
+						uint32_t * pixel = reinterpret_cast<uint32_t *>(uc);
+
+						for (int i = 0, len = proxy->mSize / 4; i < len; ++i, ++pixel)
+						{
+							uint32_t color = *pixel;
+							uint32_t alfa = color >> 24;
+							uint32_t rb, ga;
+
+							color |= 0xff000000;
+
+							rb = color & 0x00ff00ff;
+							rb *= alfa;
+							rb += 0x00800080;
+							rb += (rb >> 8) & 0x00ff00ff;
+							rb &= 0xff00ff00;
+							ga = (color >> 8) & 0x00ff00ff;
+							ga *= alfa;
+							ga += 0x00800080;
+							ga += (ga >> 8) & 0x00ff00ff;
+							ga &= 0xff00ff00;
+
+							*pixel = ga | (rb >> 8);
+						}
+						/*
 						for (int i = 0; i < proxy->mSize; i += 4)
 						{
 							unsigned int alpha = uc[i + 3];
 
 							for (int j = 0; j < 3; ++j) uc[i + j] = (unsigned char)((alpha * uc[i + j]) / 255);
 						}
+						*/
 					}
 
                     lua_pcall(L, 2, 0, 0);	// params, dirs, format?, is_absolute, filename, bmap

@@ -402,9 +402,9 @@ void AddBasics (lua_State * L)
 	lua_setfield(L, -2, "FILTERS_PER_STREAM"); // soloud = { ..., FILTERS_PER_STREAM = FILTERS_PER_STREAM }
 	lua_pushinteger(L, SAMPLE_GRANULARITY); // soloud, SAMPLE_GRANULARITY
 	lua_setfield(L, -2, "SAMPLE_GRANULARITY"); // soloud = { ..., SAMPLE_GRANULARITY = SAMPLE_GRANULARITY }
-	lua_pushinteger(L, FILTERS_PER_STREAM); // soloud, VOICE_COUNT
+	lua_pushinteger(L, VOICE_COUNT); // soloud, VOICE_COUNT
 	lua_setfield(L, -2, "VOICE_COUNT"); // soloud = { ..., VOICE_COUNT = VOICE_COUNT }
-	lua_pushinteger(L, FILTERS_PER_STREAM); // soloud, FILTERS_PER_STREAM
+	lua_pushinteger(L, MAX_CHANNELS); // soloud, FILTERS_PER_STREAM
 	lua_setfield(L, -2, "MAX_CHANNELS"); // soloud = { ..., MAX_CHANNELS = MAX_CHANNELS }
 	lua_pushstring(L, GetResamplerString(L, SOLOUD_DEFAULT_RESAMPLER)); // soloud, SOLOUD_DEFAULT_RESAMPLER
 	lua_setfield(L, -2, "DEFAULT_RESAMPLER"); // soloud = { ..., DEFAULT_RESAMPLER = SOLOUD_DEFAULT_RESAMPLER }

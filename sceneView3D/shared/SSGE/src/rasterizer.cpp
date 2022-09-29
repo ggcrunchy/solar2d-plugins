@@ -63,10 +63,10 @@ void Rasterizer::testPattern(Buffer<Uint32> *pixelBuffer){
 
 void Rasterizer::drawLine(Vector3f &vertex1, Vector3f &vertex2,const Uint32 &color, Buffer<Uint32> *pixelBuffer ){
     //NDC to viewport transform
-    int x1 = (vertex1.x + 1 ) * pixelBuffer->mWidth * 0.5;
-    int y1 = (-vertex1.y + 1 ) * pixelBuffer->mHeight * 0.5;
-    int x2 = (vertex2.x +1 ) * pixelBuffer->mWidth  * 0.5;
-    int y2 = (-vertex2.y +1 ) * pixelBuffer->mHeight * 0.5;
+    int x1 = (vertex1.x + 1 ) * pixelBuffer->mWidth * 0.5f;
+    int y1 = (-vertex1.y + 1 ) * pixelBuffer->mHeight * 0.5f;
+    int x2 = (vertex2.x +1 ) * pixelBuffer->mWidth  * 0.5f;
+    int y2 = (-vertex2.y +1 ) * pixelBuffer->mHeight * 0.5f;
 
     //transpose line if it is too steep
     bool steep = false;
@@ -206,8 +206,8 @@ void Rasterizer::drawTriangles(Vector3f *vertices, IShader &shader, Buffer<Uint3
 void Rasterizer::viewportTransform(Buffer<Uint32> *pixelBuffer, Vector3f *vertices){
     for(int i = 0; i < 3; ++i){
         //Adding half a pixel to avoid gaps on small vertex values
-        vertices[i].x = ((vertices[i].x + 1 ) * pixelBuffer->mWidth * 0.5)  + 0.5;
-        vertices[i].y = ((vertices[i].y + 1 ) * pixelBuffer->mHeight * 0.5) + 0.5;
+        vertices[i].x = ((vertices[i].x + 1 ) * pixelBuffer->mWidth * 0.5f)  + 0.5f;
+        vertices[i].y = ((vertices[i].y + 1 ) * pixelBuffer->mHeight * 0.5f) + 0.5f;
     }
 }
 

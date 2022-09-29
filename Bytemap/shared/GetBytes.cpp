@@ -93,7 +93,7 @@ struct TempGuard {
 // Extract bytes from the bytemap
 int Bytemap_GetBytes (lua_State * L)
 {
-	Bytemap * bmap = LuaXS::DualUD<Bytemap>(L, 1, "BytemapXS");
+	Bytemap * bmap = LuaXS::DualUD<Bytemap>(L, 1, BYTEMAP_NAME);
 
 	if (bmap)
 	{

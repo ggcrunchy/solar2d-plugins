@@ -149,7 +149,7 @@ static const struct luaL_Reg Functions[] =
     };
 
 
-CORONA_EXPORT int luaopen_plugin_(lua_State *L) // <- STEVE CHANGE
+CORONA_EXPORT int luaopen_plugin_moonassimp(lua_State *L) // <- STEVE CHANGE
 /* Lua calls this function to load the module */
     {
     lua_newtable(L); /* the ai table */

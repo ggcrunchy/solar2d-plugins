@@ -120,9 +120,23 @@ struct BytesOpts {
 	void Load (lua_State * L, Bytemap * bmap, int opts);
 };
 
+//
+//
+//
+
+struct ByteProxy {
+	unsigned char * mBytes;
+	size_t mSize;
+};
+
+//
+//
+//
+
 int Bytemap_BindBlob (lua_State * L);
 int Bytemap_Deallocate (lua_State * L);
 int Bytemap_GetBytes (lua_State * L);
+int Bytemap_MakeSeamless (lua_State * L);
 int Bytemap_SetBytes (lua_State * L);
 
 #endif

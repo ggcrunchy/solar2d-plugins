@@ -140,7 +140,7 @@ static void Extrude (lua_State * L, Bytemap * bmap, const BytesOpts & opts, int 
 // Assign bytes to the bytemap
 int Bytemap_SetBytes (lua_State * L)
 {
-	Bytemap * bmap = LuaXS::DualUD<Bytemap>(L, 1, "BytemapXS");
+	Bytemap * bmap = LuaXS::DualUD<Bytemap>(L, 1, BYTEMAP_NAME);
 
 	if (bmap)
 	{

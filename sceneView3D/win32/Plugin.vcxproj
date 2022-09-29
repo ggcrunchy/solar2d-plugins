@@ -69,7 +69,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);M_PI=3.1415926535897932384;M_1_PIf32=float(1.f/M_PI)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(CORONA_ROOT)/Corona/shared/include/Corona;$(CORONA_ROOT)/Corona/shared/include/lua;$(SolutionDir)../../ByteReader;$(SolutionDir)../../solar2d_native_utils;$(SolutionDir)../shared/SSGE/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(CORONA_ROOT)/Corona/shared/include/Corona;$(CORONA_ROOT)/Corona/shared/include/lua;$(SolutionDir)../../ByteReader;$(SolutionDir)../../solar2d_native_utils;$(SolutionDir)../shared/SSGE/include;;$(SolutionDir)../shared</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -94,7 +94,7 @@ del %SIMULATOR_DIR%\catalog.json</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\shared\plugin.scene3d.cpp" />
+    <ClCompile Include="..\shared\plugin.sceneView3D.cpp" />
     <ClCompile Include="..\shared\SSGE\src\camera.cpp" />
     <ClCompile Include="..\shared\SSGE\src\displayManager.cpp" />
     <ClCompile Include="..\shared\SSGE\src\engine.cpp" />
@@ -113,7 +113,7 @@ del %SIMULATOR_DIR%\catalog.json</Command>
     <ClCompile Include="..\shared\SSGE\src\ssge_texture.cpp" />
     <ClCompile Include="..\shared\tinyrenderer\color.cpp" />
     <ClCompile Include="..\shared\tinyrenderer\tiny_geometry.cpp" />
-    <ClCompile Include="..\shared\tinyrenderer\group.cpp" />
+    <ClCompile Include="..\shared\tinyrenderer\node.cpp" />
     <ClCompile Include="..\shared\tinyrenderer\tiny_model.cpp" />
     <ClCompile Include="..\shared\tinyrenderer\object.cpp" />
     <ClCompile Include="..\shared\tinyrenderer\tiny_scene.cpp" />
@@ -121,6 +121,7 @@ del %SIMULATOR_DIR%\catalog.json</Command>
     <ClCompile Include="..\shared\tinyrenderer\utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\shared\common.h" />
     <ClInclude Include="..\shared\SSGE\include\buffer.h" />
     <ClInclude Include="..\shared\SSGE\include\camera.h" />
     <ClInclude Include="..\shared\SSGE\include\displayManager.h" />
