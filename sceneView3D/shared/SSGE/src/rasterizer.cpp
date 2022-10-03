@@ -33,12 +33,22 @@ const int Rasterizer::gammaTable[256] = {0, 21, 28, 34, 39, 43, 46,
         251, 251, 252, 252, 253, 253, 254, 254, 255, 255};
 
 //Initializing all the basic colors 
-// STEVE CHANGE TODO
+// STEVE CHANGE
+static Uint32 MapRGBA (int r, int g, int b, int a)
+{
+    return (a << 24) | (b << 16) | (g << 8) | r;
+}
+
+static Uint32 MapRGB (int r, int g, int b)
+{
+    return MapRGBA(r, g, b, 0xFF);
+}
+
 //const SDL_PixelFormat* Rasterizer::mappingFormat( SDL_AllocFormat(PIXEL_FORMAT));
-const Uint32 Rasterizer::white(0xFFFFFFFF)/*SDL_MapRGBA(mappingFormat, 0xFF,0xFF,0xFF,0xFF))*/;
-const Uint32 Rasterizer::red(0xFF0000FF)/*SDL_MapRGBA(mappingFormat, 0xFF,0x00,0x00,0xFF))*/;
-const Uint32 Rasterizer::green(0x00FF00FF)/*SDL_MapRGBA(mappingFormat, 0x00,0xFF,0x00,0xFF))*/;
-const Uint32 Rasterizer::blue(0x0000FFFF)/*SDL_MapRGBA(mappingFormat, 0x00,0x00,0xFF,0xFF))*/;
+const Uint32 Rasterizer::white(/*SDL_*/MapRGBA(/*mappingFormat, */0xFF,0xFF,0xFF,0xFF));
+const Uint32 Rasterizer::red(/*SDL_*/MapRGBA(/*mappingFormat, */0xFF,0x00,0x00,0xFF));
+const Uint32 Rasterizer::green(/*SDL_*/MapRGBA(/*mappingFormat, */0x00,0xFF,0x00,0xFF));
+const Uint32 Rasterizer::blue(/*SDL_*/MapRGBA(/*mappingFormat, */0x00,0x00,0xFF,0xFF));
 // /STEVE CHANGE
 
 //Early pixel buffer traversal test
@@ -48,7 +58,7 @@ void Rasterizer::makeCoolPattern(Buffer<Uint32> *pixelBuffer){
             Uint8 r = x*2 % 256;
             Uint8 g = y/8 % 256;
             Uint8 b = r*y % 256;
-            Uint32 color = 0;//SDL_MapRGBA(mappingFormat, r,g,b,0xFF); <- STEVE CHANGE TODO
+            Uint32 color = /*SDL_*/MapRGBA(/*mappingFormat, */r,g,b,0xFF); // <- STEVE CHANGE
             (*pixelBuffer)(x,y) = color;
         }
     }
@@ -183,10 +193,10 @@ void Rasterizer::drawTriangles(Vector3f *vertices, IShader &shader, Buffer<Uint3
                     rgbVals = shader.fragment(uPers , vPers);
 
                     //Update pixel buffer with clamped values 
-                    (*pixelBuffer)(x,y) = 0;/*SDL_MapRGB(mappingFormat,
+                    (*pixelBuffer)(x,y) = /*SDL_*/MapRGB(//mappingFormat, // <- STEVE CHANGE
                                                 gammaAdjust(rgbVals.data[0]), 
                                                 gammaAdjust(rgbVals.data[1]),
-                                                gammaAdjust(rgbVals.data[2]));*/ // <- STEVE CHANGE TODO
+                                                gammaAdjust(rgbVals.data[2]));
                 }   
             }
 

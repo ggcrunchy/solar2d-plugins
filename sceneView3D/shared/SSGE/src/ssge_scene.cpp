@@ -11,18 +11,30 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
-Scene::Scene(const std::string &sceneName){
+Scene::Scene(const std::string &sceneName, float aspect_ratio) : mainCamera(aspect_ratio) { // <- STEVE CHANGE
     //Building all the useful path strings
-    std::string folderPath = "../scenes/" + sceneName;
-    
-    if( !findSceneFolder(folderPath)){
-        //If you do not find the scene folder quit
-        emptyScene = true; 
+    // STEVE CHANGE
+    // std::string folderPath = "../scenes/" + sceneName;
+    size_t pos = sceneName.find_last_of("/\\");
+
+    emptyScene = sceneName.npos == pos;
+
+    if (!emptyScene)
+    {
+       std::string folderPath = sceneName;
+
+    // /STEVE CHANGE
+        if( !findSceneFolder(folderPath)){
+            //If you do not find the scene folder quit
+            emptyScene = true; 
+        }
+        else{
+            //Load all cameras, models and lights and return false if it fails
+            emptyScene = !loadContent(folderPath, sceneName.substr(pos + 1)); // <- STEVE CHANGE
+        }
+        // STEVE CHANGE
     }
-    else{
-        //Load all cameras, models and lights and return false if it fails
-        emptyScene = !loadContent(folderPath, sceneName);
-    }
+    // /STEVE CHANGE
 }
 
 Scene::~Scene(){
@@ -36,8 +48,8 @@ Scene::~Scene(){
 }
 
 //Update Order is critical for correct culling
-void Scene::update(unsigned int deltaT){
-    mainCamera.update(deltaT);
+void Scene::update(unsigned int now, unsigned int deltaT){ // <- STEVE CHANGE
+    mainCamera.update(now, deltaT);
     for(int i=0; i < lightCount; ++i){
         lights[i].update(deltaT);
     }

@@ -5,8 +5,8 @@
 // ===============================
 
 #include "engine.h"
-
-int main(int argc, char *argv[]){
+// STEVE CHANGE
+/*int main(int argc, char *argv[]){
 
     Engine SSGE; //"Simple" Software Graphics Engine
     if(SSGE.startUp()){
@@ -18,4 +18,5 @@ int main(int argc, char *argv[]){
     SSGE.shutDown();
 
     return 0;
-}
+}*/
+// /STEVE CHANGE 

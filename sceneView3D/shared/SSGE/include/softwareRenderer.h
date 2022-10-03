@@ -32,7 +32,7 @@ class SoftwareRenderer {
         ~SoftwareRenderer();
 
         //Creates all buffers and preps everything for model rendering
-        bool startUp(int w, int h);  
+        bool startUp(int w, int h, Uint32 * blob); // <- STEVE CHANGE
         void shutDown();      
 
         //Overview:
@@ -63,7 +63,7 @@ class SoftwareRenderer {
 
     private:
         //Buffer methods
-        bool createBuffers(int w, int h);
+        bool createBuffers(int w, int h, Uint32 * blob); // <- STEVE CHANGE
 
         //Primitive level methods
         void packDataIntoTris(Vector3i &f, Vector3f *trianglePrim, std::vector<Vector3f> &vals);

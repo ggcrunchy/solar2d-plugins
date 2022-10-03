@@ -25,11 +25,11 @@
 class Scene{
     public:
         //Builds scene using path to folder containing content and txt setup file
-        Scene(const std::string &sceneFolder);
+        Scene(const std::string &sceneFolder, float aspect_ratio); // <- STEVE CHANGE
         ~Scene();
 
         //Updates all models, lights and cameras
-        void update(unsigned int deltaT);
+        void update(unsigned int now, unsigned int deltaT); // <- STEVE CHANGE
 
         //Getters used in the setup of the render queue
         std::queue<Model*>* getVisiblemodels();

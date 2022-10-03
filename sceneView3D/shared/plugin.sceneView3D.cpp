@@ -23,6 +23,7 @@
 
 #include "CoronaLua.h"
 #include "tinyrenderer/tinyrenderer.h"
+#include "SSGE/include/engine.h"
 
 //
 //
@@ -100,7 +101,7 @@ CORONA_EXPORT int luaopen_plugin_sceneView3D (lua_State * L)
 
     lua_newtable(L); // sceneView3D, SSGE
 
-    // TODO!
+    Engine::add_engine(L);
 
     lua_setfield(L, -2, "SSGE"); // sceneView3D = { tinyrenderer, SSGE = SSGE }
 

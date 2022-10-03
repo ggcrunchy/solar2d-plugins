@@ -64,11 +64,11 @@ class Rasterizer{
         Rasterizer(){}; //Ensuring an object can never be instanced accidentally
 
         //Setting this equal to the same pixel format our screen texture is in
-        // STEVE CHANGE TODO
+        // STEVE CHANGE
         /*
         static const Uint32 PIXEL_FORMAT = SDL_PIXELFORMAT_RGB888;
         static const SDL_PixelFormat* mappingFormat;*/
-        // /STEVE CHANGE TODO
+        // /STEVE CHANGE
 
         //Some basic colors
         static const Uint32 white;

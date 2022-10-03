@@ -33,7 +33,7 @@ class RenderManager{
         ~RenderManager();
 
         //Gets scene and display info. Will be used to build render Queue
-        bool startUp(DisplayManager &displayManager, SceneManager &sceneManager );
+        bool startUp(DisplayManager &displayManager, SceneManager &sceneManager, Uint32 * blob); // <- STEVE CHANGE
         void shutDown();
 
         //Performs all high level prep operations that the graphics library
@@ -42,7 +42,7 @@ class RenderManager{
 
     private:
         void buildRenderQueue();
-        bool initSoftwareRenderer();
+        bool initSoftwareRenderer(Uint32 * blob); // <- STEVE CHANGE
         
         //This is a pointer to a pointer to allow for scene switching
         SceneManager   * sceneLocator;

@@ -6,7 +6,7 @@
 //Headers
 #include "camera.h"
 
-Camera::Camera(){
+Camera::Camera(float aspect_ratio) : cameraFrustrum{aspect_ratio} { // <- STEVE CHANGE
     side = front.crossProduct(up).normalized();
     viewMatrix = Matrix4::lookAt(position, target, up);
     projectionMatrix = Matrix4::projectionMatrix(cameraFrustrum.fov, cameraFrustrum.AR, cameraFrustrum.near, cameraFrustrum.far);
@@ -16,9 +16,9 @@ Camera::Camera(){
 
 //Updates target and position based on camera movement mode.
 ///Also updates view matrix and projection matrix for rendering
-void Camera::update(unsigned int deltaT){
+void Camera::update(unsigned int now, unsigned int deltaT){
     if(orbiting){
-        float ang    = 2 * M_PI * 0; // static_cast<float>(SDL_GetTicks()) / (period*1000); <- STEVE CHANGE TODO TODO TODO
+        float ang    = 2 * M_PI * static_cast<float>(now/*SDL_GetTicks()*/) / (period*1000);
         float camX   = std::sin(ang) * radius; 
         float camZ   = std::cos(ang) * radius;
         position.x   = camX;

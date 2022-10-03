@@ -12,8 +12,14 @@ DisplayManager::~DisplayManager(){}
 
 //Initializes the window and obtains the surface on which we draw.
 //Also first place where SDL is initialized. 
-bool DisplayManager::startUp(){
+bool DisplayManager::startUp(int w, int h){ //<- STEVE CHANGE
     bool success = true;
+// STEVE CHANGE
+    SCREEN_WIDTH = w;
+    SCREEN_HEIGHT = h;
+    SCREEN_PITCH  = SCREEN_HEIGHT*sizeof(Uint32);
+    SCREEN_ASPECT_RATIO = SCREEN_WIDTH /(float)SCREEN_HEIGHT;
+// /STEVE CHANGE
     if( !startSDL() ){
         success = false;
     }
@@ -33,19 +39,19 @@ bool DisplayManager::startUp(){
 //Closes down sdl and destroys window.
 //SDL surface is also destroyed in the call to destroy window
 void DisplayManager::shutDown(){
-// STEVE CHANGE TODO
+// STEVE CHANGE
     /*
     SDL_DestroyWindow(mWindow);
     mWindow = nullptr;
     SDL_Quit();
     */
-// /STEVE CHANGE TODO
+// /STEVE CHANGE
 }
 
 //Applies the rendering results to the window screen by copying the pixelbuffer values
 //to the screen surface.
 void DisplayManager::swapBuffers(Buffer<Uint32> *pixels){
-// STEVE CHANGE TODO
+// STEVE CHANGE
 /*
     //Allows surface editing 
     SDL_LockSurface(mSurface);
@@ -57,24 +63,24 @@ void DisplayManager::swapBuffers(Buffer<Uint32> *pixels){
     //Apply surface changes to window
     SDL_UpdateWindowSurface(mWindow);
 */
-// /STEVE CHANGE TODO
+// /STEVE CHANGE
 }
 
 //Entry point to SDL
 bool DisplayManager::startSDL(){
-// STEVE CHANGE TODO
+// STEVE CHANGE
 /*
     if( SDL_Init(SDL_INIT_VIDEO) != 0){
         printf("Failed to initialize SDL. Error: %s\n", SDL_GetError() );
         return  false;
     }*/
-// /STEVE CHANGE TODO
+// /STEVE CHANGE
     return true;
 }
 
 //Inits window with the display values crated at compile time
 bool DisplayManager::createWindow(){
-// STEVE CHANGE TODO
+// STEVE CHANGE
 /*
     mWindow = SDL_CreateWindow( "SoftwareRenderer", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
     if( mWindow == nullptr){
@@ -90,13 +96,13 @@ bool DisplayManager::createWindow(){
 //But given that I am doing 100% cpu based rendering it makes sense
 //After all I'm not usin any of the new functionality
 bool DisplayManager::createScreenSurface(){
-// STEVE CHANGE TODO
+// STEVE CHANGE
 /*
     mSurface = SDL_GetWindowSurface(mWindow);
     if(mSurface == NULL){
         printf("Could not create window surface. Error: %s\n", SDL_GetError());
         return false;
     }*/
-// /STEVE CHANGE TODO
+// /STEVE CHANGE
     return true;
 }

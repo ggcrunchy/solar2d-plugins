@@ -37,8 +37,8 @@ struct BaseLight{
 
             case 'c':
             {
-                float colX    = (std::sin(ang/12e3) + 1)/2.0f ; 
-                float colY    = (std::cos(ang/6e3) + 1)/2.0f ; 
+                float colX    = float(std::sin(ang/12e3) + 1)/2.0f ; 
+                float colY    = float(std::cos(ang/6e3) + 1)/2.0f ; 
                 color.x       = colX;
                 color.y       = 1.0f-colY;
                 color.z       = colY;

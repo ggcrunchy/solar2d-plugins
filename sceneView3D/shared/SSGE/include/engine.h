@@ -15,8 +15,11 @@
 //Headers
 #include "displayManager.h"
 #include "renderManager.h"
-#include "inputManager.h"
+// #include "inputManager.h" <- STEVE CHANGE
 #include "sceneManager.h"
+#include "common.h" // <- STEVE CHANGE
+
+#define printf CoronaLog
 
 //Very basic graphics engine application. 
 //In charge of initializing and closing down all manager-level classes in a safe way.
@@ -30,16 +33,20 @@ class Engine
     //I use these methods instead of constructors and destructors
     //because I want to be able to control initialization order.
     //You'll see the same idea applied to all manager level classes.
-    bool startUp();
+    bool startUp(int w, int h, Uint32 * blob); // <- STEVE CHANGE
     void shutDown();
 
     //Contains all high level logic and the main application loop
-    void run();
+    void run(int now, int deltaT); // <- STEVE CHANGE
 
-  private:
+    // STEVE CHANGE
+    static void add_engine (lua_State * L);
+    // /STEVE CHANGE
+
+//  private: <- STEVE CHANGE
     DisplayManager gDisplayManager;
     RenderManager gRenderManager;
-    InputManager gInputManager;
+//    InputManager gInputManager; <- STEVE CHANGE
     SceneManager gSceneManager;
 };
 

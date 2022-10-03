@@ -12,10 +12,10 @@ RenderManager::~RenderManager(){}
 
 //Sets the internal pointers to the screen and the current scene and inits the software
 //renderer instance. 
-bool RenderManager::startUp(DisplayManager &displayManager,SceneManager &sceneManager ){
+bool RenderManager::startUp(DisplayManager &displayManager,SceneManager &sceneManager, Uint32 * blob){ // <- STEVE CHANGE
     screen = &displayManager;
     sceneLocator = &sceneManager;
-    if( !initSoftwareRenderer() ){
+    if( !initSoftwareRenderer(blob) ){ // <- STEVE CHANGE
         printf("Failed to initialize software Renderer!\n");
         return false;
     }
@@ -70,10 +70,10 @@ void RenderManager::buildRenderQueue(){
     renderObjectQueue = currentScene->getVisiblemodels();
 }
 
-bool RenderManager::initSoftwareRenderer(){
-    int w = DisplayManager::SCREEN_WIDTH;
-    int h = DisplayManager::SCREEN_HEIGHT;
-    return renderInstance.startUp(w,h);
+bool RenderManager::initSoftwareRenderer(Uint32 * blob){ // <- STEVE CHANGE
+    int w = screen->/*DisplayManager::*/SCREEN_WIDTH; // <-STEVE CHANGE
+    int h = screen->/*DisplayManager::*/SCREEN_HEIGHT; // <- STEVE CHANGE
+    return renderInstance.startUp(w,h, blob); // <- STEVE CHANGE
 }
 
 

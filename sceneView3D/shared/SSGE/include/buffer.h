@@ -16,6 +16,7 @@ template<class T>
 struct Buffer{
         int mWidth, mHeight, mPixelCount, mPitch, mOrigin;
         T *buffer;
+        bool mOwnsBuffer{true}; // <- STEVE CHANGE
 
         //The buffer is actually just a simple 1D array which we access using an equation
         //Notice how it's not the usual (y*width + x) equation that you see for most quasi 2D arrays
@@ -24,20 +25,23 @@ struct Buffer{
             return buffer[mOrigin /*+*/ -y*mWidth + x]; // <- STEVE CHANGE
         }
 
-        Buffer(int w, int h, T * array) 
+        Buffer(int w, int h, T * array, bool ownsBuffer = true) // <- STEVE CHANGE 
         : mWidth(w), mHeight(h), mPixelCount(w*h), mPitch(w*sizeof(T)),
-          mOrigin(mHeight*mWidth - mWidth), buffer(array){}
+          mOrigin(mHeight*mWidth - mWidth), buffer(array), mOwnsBuffer(ownsBuffer){} // <- STEVE CHANGE
 
-        ~Buffer(){delete [] buffer;}
+        ~Buffer(){if (mOwnsBuffer) delete [] buffer;} // <- STEVE CHANGE
         
         //Cannot use memset to clear a float since the binary
         //Representation is more complex. We just iterate through the whole
         //thing and explicitely set it to zero instead
         void clear(){
             if(std::is_same<T,float>::value){
-				for(int i = 0; i < mPixelCount;++i){
+                memset(buffer, 0, mPixelCount * sizeof(float));
+                // STEVE CHANGE
+                /*for(int i = 0; i < mPixelCount;++i){
 					buffer[i]  = 0.0f;
-				}
+				}*/
+                // /STEVE CHANGE
             }
 			else{
 				//Set to a 15% white color to make it nicer looking.

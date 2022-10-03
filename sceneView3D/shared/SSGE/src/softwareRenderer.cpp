@@ -14,8 +14,8 @@
 SoftwareRenderer::SoftwareRenderer(){}
 SoftwareRenderer::~SoftwareRenderer(){}
 
-bool SoftwareRenderer::startUp(int w, int h){
-    if( !createBuffers(w, h) ){
+bool SoftwareRenderer::startUp(int w, int h, Uint32 * blob){ // <- STEVE CHANGE
+    if( !createBuffers(w, h, blob) ){ // <- STEVE CHANGE
         return false;
     }
     //Want to make sure that we don't call for a delete of zbuffer and pixelbuffer
@@ -146,7 +146,7 @@ void SoftwareRenderer::setSceneLights(BaseLight * lights, int numLights){
 }
 
 
-bool SoftwareRenderer::createBuffers(int w, int h){
+bool SoftwareRenderer::createBuffers(int w, int h, Uint32 * blob){ // <- STEVE CHANGE
     int pixelCount = w*h;
     bool success = true;
 
@@ -156,7 +156,7 @@ bool SoftwareRenderer::createBuffers(int w, int h){
         success = false;
     }
     else{
-        pixelBuffer = new Buffer<Uint32>(w, h, new Uint32[pixelCount]);
+        pixelBuffer = new Buffer<Uint32>(w, h, blob ? blob : new Uint32[pixelCount], !blob); // <- STEVE CHANGE
         if( pixelBuffer == nullptr){
             printf("Could not build pixel Buffer.\n");
             success = false;

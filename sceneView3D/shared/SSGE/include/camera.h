@@ -21,18 +21,18 @@
 #include "displayManager.h"
 
 struct Camera{
-    Camera();
+    Camera(float aspect_ratio); // <- STEVE CHANGE
 
     //Visibility and geometry member variables
     Matrix4 viewMatrix;
     Matrix4 projectionMatrix;
-    Frustrum cameraFrustrum{DisplayManager::SCREEN_ASPECT_RATIO};
+    Frustrum cameraFrustrum;// {DisplayManager::SCREEN_ASPECT_RATIO}; <- STEVE CHANGE
 
     //View frustrum culling
     bool checkVisibility(AABox *bounds);
 
     //Updates the camera matrices with the user input obtained in the input class
-    void update(unsigned int deltaT);
+    void update(unsigned int now, unsigned int deltaT); // <- STEVE CHANGE
     void resetCamera(); 
 
     //Position and direction of camera, used to build view matrix

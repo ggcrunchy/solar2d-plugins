@@ -71,6 +71,9 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(CORONA_ROOT)/Corona/shared/include/Corona;$(CORONA_ROOT)/Corona/shared/include/lua;$(SolutionDir)../../ByteReader;$(SolutionDir)../../solar2d_native_utils;$(SolutionDir)../shared/SSGE/include;;$(SolutionDir)../shared</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <OpenMPSupport>
+      </OpenMPSupport>
+      <AdditionalOptions>/openmp:experimental %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

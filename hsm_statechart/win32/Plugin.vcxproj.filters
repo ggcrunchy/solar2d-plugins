@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="hula">
+      <UniqueIdentifier>{5a9206c1-46f3-4873-8910-fe2a6f88f430}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="builder">
+      <UniqueIdentifier>{852d7b53-007d-497a-8466-16a8b67d4802}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\shared\hsm\hula\hula.c">
+      <Filter>hula</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\hsm\hula\hula_lib.c">
+      <Filter>hula</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\hsm\hsm_context.c" />
+    <ClCompile Include="..\shared\hsm\hsm_machine.c" />
+    <ClCompile Include="..\shared\hsm\builder\hash.c">
+      <Filter>builder</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\hsm\builder\hsm_builder.c">
+      <Filter>builder</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\hsm\builder\lower.c">
+      <Filter>builder</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\shared\hsm\hula\hula.h">
+      <Filter>hula</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\hsm\hula\hula_lib.h">
+      <Filter>hula</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\hsm\hula\hula_types.h">
+      <Filter>hula</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\hsm\hsm_context.h" />
+    <ClInclude Include="..\shared\hsm\hsm_forwards.h" />
+    <ClInclude Include="..\shared\hsm\hsm_info.h" />
+    <ClInclude Include="..\shared\hsm\hsm_machine.h" />
+    <ClInclude Include="..\shared\hsm\hsm_stack.h" />
+    <ClInclude Include="..\shared\hsm\hsm_state.h" />
+    <ClInclude Include="..\shared\hsm\hsm_status.h" />
+    <ClInclude Include="..\shared\hsm\hsm_types.h" />
+    <ClInclude Include="..\shared\hsm\builder\hash.h">
+      <Filter>builder</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\hsm\builder\hsm_builder.h">
+      <Filter>builder</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
