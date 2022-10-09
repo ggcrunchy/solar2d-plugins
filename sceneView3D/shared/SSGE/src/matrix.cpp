@@ -11,7 +11,7 @@
 //using the full 4x4 values.
 //Also changes the secret w component in the vec3 to w 
 //which is only really ever used in perspective divide and clipping
-Vector3f Matrix4::matMultVec(const Vector3f &vec){
+Vector3f Matrix4::matMultVec(const Vector3f &vec) const { // <- STEVE CHANGE
     Vector3f newVec(0,0,0);
     float w2 = 0;
     newVec.x = vec.x*(*this)(0,0)+
@@ -41,7 +41,7 @@ Vector3f Matrix4::matMultVec(const Vector3f &vec){
 
 //Used to multiply direction vectors or when you do not what your vector to be
 //translated. Implicitely makes the matrix a 3x3
-Vector3f Matrix4::matMultDir(const Vector3f &vec){
+Vector3f Matrix4::matMultDir(const Vector3f &vec) const { // <- STEVE CHANGE
     Vector3f newVec(0,0,0);
     newVec.x = vec.x*(*this)(0,0)+
                vec.y*(*this)(0,1)+
@@ -58,7 +58,7 @@ Vector3f Matrix4::matMultDir(const Vector3f &vec){
     return newVec;
 }
 
-Matrix4 Matrix4::transpose(){
+Matrix4 Matrix4::transpose() const { // <- STEVE CHANGE
     Matrix4 transposeMatrix;
     //First row
     transposeMatrix(0,0) = (*this)(0,0);
@@ -87,7 +87,7 @@ Matrix4 Matrix4::transpose(){
 }
 
 //Taken from Mesa implementation of GLU library
-Matrix4 Matrix4::inverse(){
+Matrix4 Matrix4::inverse() const { // <- STEVE CHANGE
     Matrix4 inverseMat;
 
     float det;
@@ -222,7 +222,7 @@ Matrix4 Matrix4::inverse(){
 //I'll only need 4x4 stuff and this technically allows for any n matrix.
 //Traverse the matrix cell by cell and find the final value through a step of 
 //sub multiplications that are then added together
-Matrix4 Matrix4::operator*(Matrix4 &rhs){
+Matrix4 Matrix4::operator*(const Matrix4 &rhs) const { // <- STEVE CHANGE
     //Matrix dimensions
     Matrix4 results;
     int n = 4;

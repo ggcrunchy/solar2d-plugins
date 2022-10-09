@@ -17,10 +17,11 @@
 // ===============================
 
 //Includes
-#include "displayManager.h"
-#include "sceneManager.h"
+// #include "displayManager.h" <- STEVE CHANGE
+// #include "sceneManager.h" <- STEVE CHANGE
 #include "softwareRenderer.h"
 #include "model.h"
+#include "scene.h" // <- STEVE CHANGE
 #include <queue>
 
 //High level render operations that shouldn't be done by the
@@ -33,20 +34,20 @@ class RenderManager{
         ~RenderManager();
 
         //Gets scene and display info. Will be used to build render Queue
-        bool startUp(DisplayManager &displayManager, SceneManager &sceneManager, Uint32 * blob); // <- STEVE CHANGE
+        bool startUp(int w, int h,/*DisplayManager &displayManager,SceneManager &sceneManager,  */Uint32 * blob); // <- STEVE CHANGE
         void shutDown();
 
         //Performs all high level prep operations that the graphics library
         //Needs to do before beginning to draw each model in the scene.
-        void render();
+        void render(Scene * current); // <- STEVE CHANGE
 
     private:
-        void buildRenderQueue();
-        bool initSoftwareRenderer(Uint32 * blob); // <- STEVE CHANGE
+        void buildRenderQueue(Scene * scene); // <- STEVE CHANGE
+        bool initSoftwareRenderer(int w, int h, Uint32 * blob); // <- STEVE CHANGE
         
         //This is a pointer to a pointer to allow for scene switching
-        SceneManager   * sceneLocator;
-        DisplayManager * screen;
+        // SceneManager   * sceneLocator; <- STEVE CHANGE
+        // DisplayManager * screen; <- STEVE CHANGE
 
         SoftwareRenderer renderInstance;
         std::queue<Model*> *renderObjectQueue;        

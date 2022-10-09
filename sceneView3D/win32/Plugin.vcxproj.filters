@@ -57,19 +57,10 @@
     <ClCompile Include="..\shared\SSGE\src\camera.cpp">
       <Filter>Source Files\SSGE</Filter>
     </ClCompile>
-    <ClCompile Include="..\shared\SSGE\src\displayManager.cpp">
-      <Filter>Source Files\SSGE</Filter>
-    </ClCompile>
     <ClCompile Include="..\shared\SSGE\src\engine.cpp">
       <Filter>Source Files\SSGE</Filter>
     </ClCompile>
     <ClCompile Include="..\shared\SSGE\src\ssge_geometry.cpp">
-      <Filter>Source Files\SSGE</Filter>
-    </ClCompile>
-    <ClCompile Include="..\shared\SSGE\src\inputManager.cpp">
-      <Filter>Source Files\SSGE</Filter>
-    </ClCompile>
-    <ClCompile Include="..\shared\SSGE\src\main.cpp">
       <Filter>Source Files\SSGE</Filter>
     </ClCompile>
     <ClCompile Include="..\shared\SSGE\src\matrix.cpp">
@@ -81,9 +72,6 @@
     <ClCompile Include="..\shared\SSGE\src\ssge_model.cpp">
       <Filter>Source Files\SSGE</Filter>
     </ClCompile>
-    <ClCompile Include="..\shared\SSGE\src\objParser.cpp">
-      <Filter>Source Files\SSGE</Filter>
-    </ClCompile>
     <ClCompile Include="..\shared\SSGE\src\rasterizer.cpp">
       <Filter>Source Files\SSGE</Filter>
     </ClCompile>
@@ -91,9 +79,6 @@
       <Filter>Source Files\SSGE</Filter>
     </ClCompile>
     <ClCompile Include="..\shared\SSGE\src\ssge_scene.cpp">
-      <Filter>Source Files\SSGE</Filter>
-    </ClCompile>
-    <ClCompile Include="..\shared\SSGE\src\sceneManager.cpp">
       <Filter>Source Files\SSGE</Filter>
     </ClCompile>
     <ClCompile Include="..\shared\SSGE\src\softwareRenderer.cpp">
@@ -116,16 +101,10 @@
     <ClInclude Include="..\shared\SSGE\include\camera.h">
       <Filter>Header Files\SSGE</Filter>
     </ClInclude>
-    <ClInclude Include="..\shared\SSGE\include\displayManager.h">
-      <Filter>Header Files\SSGE</Filter>
-    </ClInclude>
     <ClInclude Include="..\shared\SSGE\include\engine.h">
       <Filter>Header Files\SSGE</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\SSGE\include\geometry.h">
-      <Filter>Header Files\SSGE</Filter>
-    </ClInclude>
-    <ClInclude Include="..\shared\SSGE\include\inputManager.h">
       <Filter>Header Files\SSGE</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\SSGE\include\light.h">
@@ -140,9 +119,6 @@
     <ClInclude Include="..\shared\SSGE\include\model.h">
       <Filter>Header Files\SSGE</Filter>
     </ClInclude>
-    <ClInclude Include="..\shared\SSGE\include\objParser.h">
-      <Filter>Header Files\SSGE</Filter>
-    </ClInclude>
     <ClInclude Include="..\shared\SSGE\include\rasterizer.h">
       <Filter>Header Files\SSGE</Filter>
     </ClInclude>
@@ -150,9 +126,6 @@
       <Filter>Header Files\SSGE</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\SSGE\include\scene.h">
-      <Filter>Header Files\SSGE</Filter>
-    </ClInclude>
-    <ClInclude Include="..\shared\SSGE\include\sceneManager.h">
       <Filter>Header Files\SSGE</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\SSGE\include\shader.h">
@@ -166,9 +139,6 @@
     </ClInclude>
     <ClInclude Include="..\shared\SSGE\include\vector3D.h">
       <Filter>Header Files\SSGE</Filter>
-    </ClInclude>
-    <ClInclude Include="..\shared\SSGE\libs\stb_image.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\common.h">
       <Filter>Header Files</Filter>

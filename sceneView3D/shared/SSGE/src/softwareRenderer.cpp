@@ -7,7 +7,6 @@
 #include "softwareRenderer.h"
 #include "shader.h"
 #include "mesh.h"
-
 #ifdef _WIN32 // <- STEVE CHANGE
 	#include <omp.h>
 #endif // <- STEVE CHANGE
@@ -37,19 +36,19 @@ void SoftwareRenderer::shutDown(){
     }
 }
 
-void SoftwareRenderer::drawTriangularMesh(Model * currentModel){
+void SoftwareRenderer::drawTriangularMesh(const Model * currentModel){ // <- STEVE CHANGE
     //Getting the vertices, faces, normals and texture data for the whole model
-    Mesh *triMesh = currentModel->getMesh();
-    std::vector<Vector3i> * vIndices = &triMesh->vertexIndices;
-    std::vector<Vector3i> * tIndices = &triMesh->textureIndices;
-    std::vector<Vector3i> * nIndices = &triMesh->normalsIndices;
-    std::vector<Vector3f> * fNormals = &triMesh->fNormals;
+    const Mesh *triMesh = currentModel->getMesh(); // <- STEVE CHANGE
+    const std::vector<Vector3i> * vIndices = &triMesh->vertexIndices; // <- STEVE CHANGE
+    // std::vector<Vector3i> * tIndices = &triMesh->textureIndices; // <- STEVE CHANGE
+    // std::vector<Vector3i> * nIndices = &triMesh->normalsIndices; // <- STEVE CHANGE
+    const std::vector<Vector3f> * fNormals = &triMesh->fNormals; // <- STEVE CHANGE
 
-    std::vector<Vector3f> * vertices = &triMesh->vertices;
-    std::vector<Vector3f> * texels   = &triMesh->texels;
-    std::vector<Vector3f> * normals  = &triMesh->normals;
-    std::vector<Vector3f> * tangents = &triMesh->tangents;
-    int numFaces = triMesh->numFaces;
+    const std::vector<Vector3f> * vertices = &triMesh->vertices; // <- STEVE CHANGE
+    const std::vector<Vector3f> * texels   = &triMesh->texels; // <- STEVE CHANGE
+    const std::vector<Vector3f> * normals  = &triMesh->normals; // <- STEVE CHANGE
+    const std::vector<Vector3f> * tangents = &triMesh->tangents; // <- STEVE CHANGE
+    int numFaces = triMesh->numFaces(); // <- STEVE CHANGE
 
     //Initializing shader textures
     PBRShader shader;
@@ -94,8 +93,8 @@ void SoftwareRenderer::drawTriangularMesh(Model * currentModel){
 
         //Current vertex, normals and texture data indices
         Vector3i f = (*vIndices)[j];
-        Vector3i n = (*nIndices)[j];
-        Vector3i u = (*tIndices)[j];
+        Vector3i n = (*/*n*/vIndices)[j]; // <- STEVE CHANGE
+        Vector3i u = (*/*t*/vIndices)[j]; // <- STEVE CHANGE
 
         //Last setup of shader light variables
         std::vector<Vector3f> lightDir/*[*/(mNumLights * 3 )/*]*/; // <- STEVE CHANGE
@@ -103,12 +102,17 @@ void SoftwareRenderer::drawTriangularMesh(Model * currentModel){
 
         //Pack vertex, normal and UV data into triangles
         packDataIntoTris(f, trianglePrimitive, *vertices);
-        packDataIntoTris(n, normalPrim, *normals);
-        packDataIntoTris(u, uvPrim, *texels);
-        packDataIntoTris(f, tangentPrim, *tangents);
+        // STEVE CHANGE moved rest...
 
         //Early quit if face is pointing away from camera
         if (backFaceCulling((*fNormals)[j], trianglePrimitive[0], worldToObject)) continue;
+
+        // STEVE CHANGE
+        // ...here.
+        packDataIntoTris(n, normalPrim, *normals);
+        packDataIntoTris(u, uvPrim, *texels);
+        packDataIntoTris(f, tangentPrim, *tangents);
+        // /STEVE CHANGE
 
         //Apply vertex shader
         for(int i = 0; i < 3; ++i){
@@ -168,7 +172,7 @@ bool SoftwareRenderer::createBuffers(int w, int h, Uint32 * blob){ // <- STEVE C
     return success;
 }
 
-void SoftwareRenderer::packDataIntoTris(Vector3i &index, Vector3f *primitive, std::vector<Vector3f> &vals){
+void SoftwareRenderer::packDataIntoTris(const Vector3i &index, Vector3f *primitive, const std::vector<Vector3f> &vals){ // <- STEVE CHANGE
     for(int i = 0; i < 3; ++i){
         primitive[i] = vals[index.data[i]];
     }
@@ -176,9 +180,9 @@ void SoftwareRenderer::packDataIntoTris(Vector3i &index, Vector3f *primitive, st
 
 //Gets view direction in object space and uses it to check if the facet normal
 //Is aligned with the viewdirection
-bool SoftwareRenderer::backFaceCulling(Vector3f &facetNormal, Vector3f &vert,  Matrix4 &worldToObject){
+bool SoftwareRenderer::backFaceCulling(const Vector3f &facetNormal, const Vector3f &vert,  const Matrix4 &worldToObject){ // <- STEVE CHANGE
         Vector3f viewDir =  worldToObject.matMultVec(mCamera->position) -  vert;
-        viewDir.normalized();
+    //    viewDir.normalized(); <- STEVE CHANGE
 
         //Returns false if the triangle cannot see the camera
         float intensity =  facetNormal.dotProduct(viewDir);
@@ -186,7 +190,7 @@ bool SoftwareRenderer::backFaceCulling(Vector3f &facetNormal, Vector3f &vert,  M
 }
 
 //Inside bounds described in perspective matrix calculation
-bool SoftwareRenderer::clipTriangles(Vector3f *clipSpaceVertices){
+bool SoftwareRenderer::clipTriangles(const Vector3f *clipSpaceVertices){ // <- STEVE CHANGE
     int count = 0;
     for(int i = 0; i < 3; ++i){
         Vector3f vertex = clipSpaceVertices[i];

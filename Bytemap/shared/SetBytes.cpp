@@ -115,7 +115,7 @@ static void DoEdge (lua_State * L, int arg, Bytemap * bmap, int x1, int y1, int 
 }
 
 // Extrude non-border edges
-static void Extrude (lua_State * L, Bytemap * bmap, const BytesOpts & opts, int y2)
+static void Extrude (lua_State * L, Bytemap * bmap, const BytesOpts & opts)
 {
 	lua_createtable(L, 0, 4);	// ..., opts
 
@@ -123,16 +123,38 @@ static void Extrude (lua_State * L, Bytemap * bmap, const BytesOpts & opts, int 
 	int t = CoronaLuaNormalize(L, -1);
 
 	// Are we at least one pixel into the bytemap from the left...
-	if (props.mX1 > 0) DoEdge(L, t, bmap, props.mX1, props.mY1, props.mX1, y2, -1, 0, opts.mExtrude, props.mX1);
+	bool bDoLeft = props.mX1 > 0;
+
+	if (bDoLeft) DoEdge(L, t, bmap, props.mX1, props.mY1, props.mX1, props.mY2, -1, 0, opts.mExtrude, props.mX1);
 
 	// ...from the right...
-	if (props.mX2 < bmap->mW - 1) DoEdge(L, t, bmap, props.mX2, props.mY1, props.mX2, y2, +1, 0, opts.mExtrude, bmap->mW - 1 - props.mX2);
+	bool bDoRight = props.mX2 < bmap->mW - 1;
+
+	if (bDoRight) DoEdge(L, t, bmap, props.mX2, props.mY1, props.mX2, props.mY2, +1, 0, opts.mExtrude, bmap->mW - 1 - props.mX2);
 
 	// ...from above...
-	if (props.mY1 > 0) DoEdge(L, t, bmap, props.mX1, props.mY1, props.mX2, props.mY1, 0, -1, opts.mExtrude, props.mY1);
+	bool bDoAbove = props.mY1 > 0;
+
+	if (bDoAbove) DoEdge(L, t, bmap, props.mX1, props.mY1, props.mX2, props.mY1, 0, -1, opts.mExtrude, props.mY1);
 
 	// ...from below?
-	if (y2 < bmap->mH - 1) DoEdge(L, t, bmap, props.mX1, y2, props.mX2, y2, 0, +1, opts.mExtrude, bmap->mH - 1 - y2);
+	bool bDoBelow = props.mY2 < bmap->mH - 1;
+
+	if (bDoBelow) DoEdge(L, t, bmap, props.mX1, props.mY2, props.mX2, props.mY2, 0, +1, opts.mExtrude, bmap->mH - 1 - props.mY2);
+
+	// We want to extrude corners too: the corner value will have been extruded along both
+	// axes, so we can arbitrarily choose one result and extrude that going the other way.
+	if (bDoAbove)
+	{
+		if (bDoLeft) DoEdge(L, t, bmap, props.mX1, props.mY1 - opts.mExtrude, props.mX1, props.mY2 - opts.mExtrude, -1, 0, opts.mExtrude, props.mX1);
+		if (bDoRight) DoEdge(L, t, bmap, props.mX2, props.mY1 - opts.mExtrude, props.mX2, props.mY2 - opts.mExtrude, +1, 0, opts.mExtrude, bmap->mW - 1 - props.mX2);
+	}
+
+	if (bDoBelow)
+	{
+		if (bDoLeft) DoEdge(L, t, bmap, props.mX1, props.mY1 + opts.mExtrude, props.mX1, props.mY2 + opts.mExtrude, -1, 0, opts.mExtrude, props.mX1);
+		if (bDoRight) DoEdge(L, t, bmap, props.mX2, props.mY1 + opts.mExtrude, props.mX2, props.mY2 + opts.mExtrude, +1, 0, opts.mExtrude, bmap->mW - 1 - props.mX2);
+	}
 
 	lua_pop(L, 1);	// ...
 }
@@ -157,9 +179,6 @@ int Bytemap_SetBytes (lua_State * L)
 
             if (opts.mOK)
 			{
-				// Remember the lower y-coordinate, since the next step might clip it.
-				int y2 = opts.mProps.mY2;
-
 				// Get the pixel count: this will either be the bytemap area or the number of
 				// (whole) pixels available in the bytes, whichever is lesser. Given this
 				// amount, try to pare off any extra rows.
@@ -186,7 +205,7 @@ int Bytemap_SetBytes (lua_State * L)
 					else AuxSetBytes(L, bmap, bytes.mBytes, opts, n);
 
 					// Perform any extrusion.
-					if (opts.mExtrude > 0U && !opts.mProps.IsCustomRect(bmap)) Extrude(L, bmap, opts, y2);
+					if (opts.mExtrude > 0U && opts.mProps.IsCustomRect(bmap)) Extrude(L, bmap, opts);
 				}
 
 				return OK(L, opts);	// bmap, bytes, ok[, info]

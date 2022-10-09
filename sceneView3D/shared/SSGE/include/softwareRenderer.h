@@ -51,7 +51,7 @@ class SoftwareRenderer {
         //13.-Runs fragment shader per pixel that passes depth buffer check
         //14.-updates zBuffer with new value and gamma corrects color
         //15.-Writes to pixel frame buffer 
-        void drawTriangularMesh(Model * currentModel);
+        void drawTriangularMesh(const Model * currentModel); // <- STEVE CHANGE
 
         //Returns pixel buffer
         Buffer<Uint32>* getRenderTarget();
@@ -66,12 +66,12 @@ class SoftwareRenderer {
         bool createBuffers(int w, int h, Uint32 * blob); // <- STEVE CHANGE
 
         //Primitive level methods
-        void packDataIntoTris(Vector3i &f, Vector3f *trianglePrim, std::vector<Vector3f> &vals);
+        void packDataIntoTris(const Vector3i &f, Vector3f *trianglePrim, const std::vector<Vector3f> &vals); // <- STEVE CHANGE
         void perspectiveDivide(Vector3f *clippedVertices);
 
         //Culling and clipping methods
-        bool backFaceCulling(Vector3f &facetNormal, Vector3f &vertex, Matrix4 &worldToObject);
-        bool clipTriangles(Vector3f *clipSpaceVertices);
+        bool backFaceCulling(const Vector3f &facetNormal, const Vector3f &vertex, const Matrix4 &worldToObject); // <- STEVE CHANGE
+        bool clipTriangles(const Vector3f *clipSpaceVertices); // <- STEVE CHANGE
 
         //Pointer to the scene's target camera
         Camera * mCamera;

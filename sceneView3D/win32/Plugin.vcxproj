@@ -80,7 +80,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>$(CORONA_ROOT)/Corona/win/lib/*.lib;$(Configuration)\solar2d_native_utils.lib</AdditionalDependencies>
+      <AdditionalDependencies>$(CORONA_ROOT)/Corona/win/lib/*.lib;$(Configuration)\solar2d_native_utils.lib;winmm.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>set PLUGIN_DIR=$(appdata)\Solar2DPlugins\com.xibalbastudios\plugin.$(TargetName)\win32-sim
@@ -99,19 +99,14 @@ del %SIMULATOR_DIR%\catalog.json</Command>
   <ItemGroup>
     <ClCompile Include="..\shared\plugin.sceneView3D.cpp" />
     <ClCompile Include="..\shared\SSGE\src\camera.cpp" />
-    <ClCompile Include="..\shared\SSGE\src\displayManager.cpp" />
     <ClCompile Include="..\shared\SSGE\src\engine.cpp" />
     <ClCompile Include="..\shared\SSGE\src\ssge_geometry.cpp" />
-    <ClCompile Include="..\shared\SSGE\src\inputManager.cpp" />
-    <ClCompile Include="..\shared\SSGE\src\main.cpp" />
     <ClCompile Include="..\shared\SSGE\src\matrix.cpp" />
     <ClCompile Include="..\shared\SSGE\src\mesh.cpp" />
     <ClCompile Include="..\shared\SSGE\src\ssge_model.cpp" />
-    <ClCompile Include="..\shared\SSGE\src\objParser.cpp" />
     <ClCompile Include="..\shared\SSGE\src\rasterizer.cpp" />
     <ClCompile Include="..\shared\SSGE\src\renderManager.cpp" />
     <ClCompile Include="..\shared\SSGE\src\ssge_scene.cpp" />
-    <ClCompile Include="..\shared\SSGE\src\sceneManager.cpp" />
     <ClCompile Include="..\shared\SSGE\src\softwareRenderer.cpp" />
     <ClCompile Include="..\shared\SSGE\src\ssge_texture.cpp" />
     <ClCompile Include="..\shared\tinyrenderer\color.cpp" />
@@ -127,24 +122,19 @@ del %SIMULATOR_DIR%\catalog.json</Command>
     <ClInclude Include="..\shared\common.h" />
     <ClInclude Include="..\shared\SSGE\include\buffer.h" />
     <ClInclude Include="..\shared\SSGE\include\camera.h" />
-    <ClInclude Include="..\shared\SSGE\include\displayManager.h" />
     <ClInclude Include="..\shared\SSGE\include\engine.h" />
     <ClInclude Include="..\shared\SSGE\include\geometry.h" />
-    <ClInclude Include="..\shared\SSGE\include\inputManager.h" />
     <ClInclude Include="..\shared\SSGE\include\light.h" />
     <ClInclude Include="..\shared\SSGE\include\matrix.h" />
     <ClInclude Include="..\shared\SSGE\include\mesh.h" />
     <ClInclude Include="..\shared\SSGE\include\model.h" />
-    <ClInclude Include="..\shared\SSGE\include\objParser.h" />
     <ClInclude Include="..\shared\SSGE\include\rasterizer.h" />
     <ClInclude Include="..\shared\SSGE\include\renderManager.h" />
     <ClInclude Include="..\shared\SSGE\include\scene.h" />
-    <ClInclude Include="..\shared\SSGE\include\sceneManager.h" />
     <ClInclude Include="..\shared\SSGE\include\shader.h" />
     <ClInclude Include="..\shared\SSGE\include\softwareRenderer.h" />
     <ClInclude Include="..\shared\SSGE\include\texture.h" />
     <ClInclude Include="..\shared\SSGE\include\vector3D.h" />
-    <ClInclude Include="..\shared\SSGE\libs\stb_image.h" />
     <ClInclude Include="..\shared\tinyrenderer\geometry.h" />
     <ClInclude Include="..\shared\tinyrenderer\tinyrenderer.h" />
   </ItemGroup>

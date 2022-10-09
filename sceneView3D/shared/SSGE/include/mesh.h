@@ -19,7 +19,7 @@
 //texture coordinates of a model. Also keeps track of useful stuff for iterating.
 struct Mesh{
     //Per vertex values
-    int numVertices = 0;
+//    int numVertices = 0; <- STEVE CHANGE
     std::vector<Vector3f> vertices;
     std::vector<Vector3f> normals;
     std::vector<Vector3f> texels;
@@ -27,11 +27,16 @@ struct Mesh{
     std::vector<Vector3f> biTangents;
 
     //Per face values
-    int numFaces = 0;
+ //   int numFaces = 0; <- STEVE CHANGE
     std::vector<Vector3f> fNormals; //Normals for the whole face
+    // STEVE CHANGE
     std::vector<Vector3i> vertexIndices;
-    std::vector<Vector3i> textureIndices;
-    std::vector<Vector3i> normalsIndices;
+    /*std::vector<Vector3i> textureIndices;
+    std::vector<Vector3i> normalsIndices;*/
+
+    size_t numVertices() const { return vertices.size(); }
+    size_t numFaces() const { return vertexIndices.size(); }
+    // /STEVE CHANGE
 
     //Simple mesh description for debugging.
     void describeMesh();

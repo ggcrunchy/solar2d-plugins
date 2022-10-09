@@ -16,19 +16,36 @@
 
 //Headers
 #include <string>
+#include <vector>
 #include "vector3D.h"
+#include "common.h" // <- STEVE CHANGE
 
 class Texture{
     public:
-        Texture(std::string path, std::string type); 
+        enum TextureType { kRGB, kXYZ, kBW }; // <- STEVE CHANGE
+
+        Texture(/*std::string path, std::string*/ TextureType type); // <- STEVE CHANGE
         ~Texture();
 
-        Vector3f getPixelVal(float u, float v);
-        float getIntensityVal(float u, float v);
+        Vector3f getPixelVal(float u, float v) const; // <- STEVE CHANGE
+        float getIntensityVal(float u, float v) const; // <- STEVE CHANGE
+
+        // STEVE CHANGE
+        void Load (const unsigned char * data, int w, int h, int channels);
+        bool HasData (void) const { return !pixelData.empty(); }
+        int ChannelCount (void) const { return kBW != textureType ? 3 : 1; }
+
+        static void add_texture (lua_State * L);
+        static Texture * Get (lua_State * L, int arg = 1);
+
+        static Texture * PushNew (lua_State * L, const char * type, std::vector<float> * workspace);
+        // /STEVE CHANGE
 
     private:
-        float *pixelData;
-        int width, height, channels, tileW = 32, tileH = 32, widthInTiles;
+        std::vector<float> pixelData; // <- STEVE CHANGE
+        int width, height, widthInTiles; // <- STEVE CHANGE
+        short channels, textureType; // <- STEVE CHANGE
+        static const int tileW = 32, tileH = 32; // <- STEVE CHANGE
 
         //Currently disabled after tiling has been implemented
         int bilinearFiltering(float u, float v);

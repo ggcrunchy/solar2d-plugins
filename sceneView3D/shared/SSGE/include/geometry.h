@@ -44,12 +44,12 @@ class Frustrum{
 		RIGHT, NEARP, FARP
         };
     public:
-        float  fov, AR, near, far , nearH, nearW;
-        Frustrum(float ratio): fov(50), near(0.1f), far(100), AR(ratio){}
+        float  fov, /*AR, */near, far , nearH, nearW; // <- STEVE CHANGE
+        Frustrum(/*float ratio*/): fov(50), near(0.1f), far(100)/*, AR(ratio)*/{} // <- STEVE CHANGE
         Plane pl[6];
 
-        void setCamInternals();
-        void updatePlanes(Matrix4 &viewMat, const Vector3f &cameraPos) ;
+        void setCamInternals(float aspect_ratio); // <- STEVE CHANGE
+        void updatePlanes(Matrix4 &viewMat, const Vector3f &cameraPos, float aspect_ratio) ; // <- STEVE CHANGE
         bool checkIfInside(AABox *bounds);
 };
 #endif

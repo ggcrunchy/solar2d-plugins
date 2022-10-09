@@ -7,14 +7,14 @@
 #include "mesh.h"
 
 void Mesh::describeMesh(){
-    for(int i = 0; i < numVertices; ++i){
+    for(int i = 0; i < numVertices(); ++i){ // <- STEVE CHANGE
         printf("Vertex  %2.1d: %f, %f, %f \n",i,vertices[i].x, vertices[i].y, vertices[i].z);
     }
-    printf("Meshsize is: %d \n", numVertices);
+    printf("Meshsize is: %d \n", numVertices()); // <- STEVE CHANGE
 }
-    
+
 void Mesh::buildFacetNormals(){
-    for(int i = 0; i < numFaces; ++i){
+    for(int i = 0; i < numFaces(); ++i){ // <- STEVE CHANGE
         Vector3i indices = vertexIndices[i];
         Vector3f N1 = vertices[indices.data[1]] - vertices[indices.data[0]];
         Vector3f N2 = vertices[indices.data[2]] - vertices[indices.data[0]];
@@ -26,16 +26,16 @@ void Mesh::buildFacetNormals(){
 //average process might be altering direction. Then also corrects for any incorrect handedness
 //issues. Finally sets the correct vectors in a per vertex fashion
 void Mesh::buildTangentSpace(){
-    std::vector<std::vector<Vector3f>> tempTangents(numVertices);
-    std::vector<std::vector<Vector3f>> tempBiTangents(numVertices);
+    std::vector<std::vector<Vector3f>> tempTangents(numVertices()); // <- STEVE CHANGE
+    std::vector<std::vector<Vector3f>> tempBiTangents(numVertices()); // <- STEVE CHANGE
     Vector3f tangent, biTangent;
 
     //Extract the tangent and bitangentn of each surface triangle
     //Assign the value to a temporary vector of vectors of vector3's (yikes)
     //“When I wrote this, only God and I understood what I was doing. Now, God only knows.”
-    for(int i = 0; i < numFaces; ++i){
+    for(int i = 0; i < numFaces(); ++i){ // <- STEVE CHANGE
         Vector3i vIndices = vertexIndices[i];
-        Vector3i tIndices = textureIndices[i];
+    //    Vector3i tIndices = textureIndices[i]; // <- STEVE CHANGE
 
         Vector3f v0 = vertices[vIndices.data[0]];
         Vector3f v1 = vertices[vIndices.data[1]];
@@ -44,8 +44,8 @@ void Mesh::buildTangentSpace(){
         Vector3f edge1 = v1 - v0;
         Vector3f edge2 = v2 - v0;
 
-        Vector3f deltaUV1 = texels[tIndices.data[1]] - texels[tIndices.data[0]];
-        Vector3f deltaUV2 = texels[tIndices.data[2]] - texels[tIndices.data[0]];
+        Vector3f deltaUV1 = texels[/*t*/vIndices.data[1]] - texels[/*t*/vIndices.data[0]]; // <- STEVE CHANGE
+        Vector3f deltaUV2 = texels[/*t*/vIndices.data[2]] - texels[/*t*/vIndices.data[0]]; // <- STEVE CHANGE
 
         float f = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y);
 
@@ -71,7 +71,7 @@ void Mesh::buildTangentSpace(){
 
     //Take average of tangents and bitangents at that vertex and populate the array in the 
     //correct order
-    for(int j = 0; j < numVertices; ++j){
+    for(int j = 0; j < numVertices(); ++j){ // <- STEVE CHANGE
         int count1 = 0, count2 = 0;
 
         Vector3f temp1{0};
@@ -101,18 +101,18 @@ void Mesh::buildTangentSpace(){
     }
 
     //Renormalize and correct handedness of tangent/bitangent vectors
-    for(int k = 0; k < numFaces; ++k){
+    for(int k = 0; k < numFaces(); ++k){ // <- STEVE CHANGE
         Vector3i vIndices = vertexIndices[k];
-        Vector3i nIndices = normalsIndices[k];
+    //    Vector3i nIndices = normalsIndices[k]; // <- STEVE CHANGE
 
         //Per vertex
         Vector3f tangentV0 = tangents[vIndices.data[0]]; 
         Vector3f tangentV1 = tangents[vIndices.data[1]];
         Vector3f tangentV2 = tangents[vIndices.data[2]];
 
-        Vector3f normalV0 = normals[nIndices.data[0]]; 
-        Vector3f normalV1 = normals[nIndices.data[1]];
-        Vector3f normalV2 = normals[nIndices.data[2]];
+        Vector3f normalV0 = normals[/*n*/vIndices.data[0]]; // <- STEVE CHANGE
+        Vector3f normalV1 = normals[/*n*/vIndices.data[1]]; // <- STEVE CHANGE
+        Vector3f normalV2 = normals[/*n*/vIndices.data[2]]; // <- STEVE CHANGE
 
         Vector3f biTangentV0 = biTangents[vIndices.data[0]]; 
         Vector3f biTangentV1 = biTangents[vIndices.data[1]];

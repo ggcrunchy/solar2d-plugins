@@ -18,10 +18,11 @@
 #include "matrix.h"
 #include "vector3D.h"
 #include "geometry.h"
-#include "displayManager.h"
+#include "common.h" // <- STEVE CHANGE
+//#include "displayManager.h" <- STEVE CHANGE
 
 struct Camera{
-    Camera(float aspect_ratio); // <- STEVE CHANGE
+    Camera();
 
     //Visibility and geometry member variables
     Matrix4 viewMatrix;
@@ -32,7 +33,7 @@ struct Camera{
     bool checkVisibility(AABox *bounds);
 
     //Updates the camera matrices with the user input obtained in the input class
-    void update(unsigned int now, unsigned int deltaT); // <- STEVE CHANGE
+    void update(float aspect_ratio, unsigned int deltaT); // <- STEVE CHANGE
     void resetCamera(); 
 
     //Position and direction of camera, used to build view matrix
@@ -42,15 +43,22 @@ struct Camera{
     Vector3f front{0, 0, -1};
     Vector3f side;
 
+    // STEVE CHANGE
+    static void add_camera (lua_State * L);
+    static Camera * Get (lua_State * L, int arg = 1);
+    // /STEVE CHANGE
+
     //Values related to orbiting mode
-    float radius  = 2;
+    // STEVE CHANGE
+    /*float radius  = 2;
     float period  = 30; //in seconds
     bool orbiting = true;
 
     //Momentary fixed camera speed (FPS dependent)
     float camSpeed = 0.1f;
     float pitch    = 0;
-    float yaw      = -90;
+    float yaw      = -90;*/
+    // /STEVE CHANGE
 };
 
 #endif

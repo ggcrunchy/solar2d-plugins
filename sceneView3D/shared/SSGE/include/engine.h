@@ -13,10 +13,11 @@
 // ===============================
 
 //Headers
-#include "displayManager.h"
+// #include "displayManager.h" <- STEVE CHANGE
 #include "renderManager.h"
 // #include "inputManager.h" <- STEVE CHANGE
-#include "sceneManager.h"
+// #include "sceneManager.h" <- STEVE CHANGE
+#include "scene.h" // <- STEVE CHANGE
 #include "common.h" // <- STEVE CHANGE
 
 #define printf CoronaLog
@@ -37,17 +38,18 @@ class Engine
     void shutDown();
 
     //Contains all high level logic and the main application loop
-    void run(int now, int deltaT); // <- STEVE CHANGE
+    void run(Scene * currentScene, int deltaT); // <- STEVE CHANGE
 
     // STEVE CHANGE
     static void add_engine (lua_State * L);
     // /STEVE CHANGE
 
 //  private: <- STEVE CHANGE
-    DisplayManager gDisplayManager;
+//    DisplayManager gDisplayManager; <- STEVE CHANGE
     RenderManager gRenderManager;
 //    InputManager gInputManager; <- STEVE CHANGE
-    SceneManager gSceneManager;
+//    SceneManager gSceneManager; <- STEVE CHANGE
+    float aspect_ratio; // <- STEVE CHANGE
 };
 
 #endif

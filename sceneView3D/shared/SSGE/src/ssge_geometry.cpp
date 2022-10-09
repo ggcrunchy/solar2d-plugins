@@ -15,7 +15,7 @@ void AABox::buildAABB(const Mesh &mesh){
     Vector3f maxVals(std::numeric_limits<float>::min());
 
     //Iterating through every vertx in the mesh
-    for(int i = 0; i < mesh.numVertices; ++i){
+    for(int i = 0; i < mesh.numVertices(); ++i){ // <- STEVE CHANGE
         //Checking the current vertex for all axes
         for(int ax = 0; ax < 3; ++ax){
             //Thanks @Erkaman!
@@ -78,15 +78,15 @@ void Plane::setNormalAndPoint(const Vector3f &n, const Vector3f &p0){
 
 //-------------------------------FRUSTRUM------------------------------------//
 
-void Frustrum::setCamInternals(){
+void Frustrum::setCamInternals(float aspect_ratio){ // <- STEVE CHANGE
     float tanHalfFOV  =  tan( (fov/2) * (M_PI / 180) );
     nearH = near * tanHalfFOV; //Half of the frustrum near plane height
-    nearW = nearH * AR;
+    nearW = nearH * aspect_ratio/*AR*/; // <- STEVE CHANGE
 }
 
 //Calculates frustrum planes in world space
-void Frustrum::updatePlanes(Matrix4 &viewMat, const Vector3f &cameraPos){
-    setCamInternals();
+void Frustrum::updatePlanes(Matrix4 &viewMat, const Vector3f &cameraPos, float aspect_ratio){ // <- STEVE CHANGE
+    setCamInternals(aspect_ratio); // <- STEVE CHANGE
     Vector3f X(viewMat(0,0), viewMat(0,1), viewMat(0,2)); //Side Unit Vector
     Vector3f Y(viewMat(1,0), viewMat(1,1), viewMat(1,2)); //Up Unit Vector
     Vector3f Z(viewMat(2,0), viewMat(2,1), viewMat(2,2)); //Forward vector

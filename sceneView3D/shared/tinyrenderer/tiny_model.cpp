@@ -328,6 +328,8 @@ void add_model (lua_State * L)
                         return 0;
                     }
                 }, {
+                    "__gc", LuaXS::TypedGC<Model>
+                }, {
                     "GetFaceVertexIndices", [](lua_State * L)
                     {
                         Model & model = GetModel(L);

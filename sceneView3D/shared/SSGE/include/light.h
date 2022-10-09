@@ -12,7 +12,8 @@
 struct BaseLight{
     Vector3f position;
     Vector3f color;
-    float radius;
+// STEVE CHANGE
+    /*float radius;
     char type;
     float time = float(2 * M_PI);
     unsigned int totalTime;
@@ -55,7 +56,8 @@ struct BaseLight{
             default:
             break;
         }
-    }
+    }*/
+// /STEVE CHANGE
 
 };
 

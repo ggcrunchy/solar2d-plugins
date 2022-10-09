@@ -24,14 +24,14 @@ class SceneManager{
         ~SceneManager();
 
         //Initializes and closes all scene related stuff
-        bool startUp(float aspect_ratio); // <- STEVE CHANGE
+        bool startUp();
         void shutDown();
 
         // Scene switching
         bool switchScene(std::string sceneID);
 
         // Update current scene
-        void update(unsigned int now, unsigned int deltaT); // <- STEVE CHANGE
+        // void update(unsigned int deltaT); <- STEVE CHANGE
 
         //Called by the rendermanager to prep the render queue 
         //Also called by the input manager as a precaution to avoid dangling pointers

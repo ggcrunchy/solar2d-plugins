@@ -20,13 +20,14 @@ Engine::~Engine(){}
 bool Engine::startUp(int w, int h, Uint32 * blob){ // <- STEVE CHANGE
     bool success = true;
     //Start up of all SDL Display related content
-    if( !gDisplayManager.startUp(w, h) ){
+    // STEVE CHANGE
+    /*if( !gDisplayManager.startUp(w, h) ){
         success = false;
         printf("Failed to initialize window manager.\n");
     }
     else{
         //Initis scene manager and loads default scene
-        if( !gSceneManager.startUp(gDisplayManager.SCREEN_ASPECT_RATIO) ){ // <- STEVE CHANGE
+        if( !gSceneManager.startUp() ){
             success = false;
             printf("Failed to initialize scene manager.\n");
         }
@@ -35,21 +36,25 @@ bool Engine::startUp(int w, int h, Uint32 * blob){ // <- STEVE CHANGE
             //rendering tasks (render queue, locating render scene etc)
             //It gets passed references to the other major subsystems for use later
             //on setup of the render queue.
-            if( !gRenderManager.startUp(gDisplayManager, gSceneManager, blob) ){ // <- STEVE CHANGE
+            */if( !gRenderManager.startUp(w, h, blob) ){ // <- STEVE CHANGE
                 success = false;
                 printf("Failed to initialize render manager.\n");
             }
             else{
+                aspect_ratio = w /(float)h; // <- STEVE CHANGE
                 //Initializing input manager that manages all mouse, keyboard and
                 //mousewheel input. It needs access to the scene manager to apply the
                 //changes on the scene caused by user input. 
-                if ( false ){//!gInputManager.startUp(gSceneManager) ){ <- STEVE CHANGE
+                // STEVE CHANGE
+                /*if ( !gInputManager.startUp(gSceneManager) ){
                     success = false;
                     printf("Failed to initialize input manager.\n");
-                }
+                }*/
             }
-        }
-    }
+            // STEVE CHANGE
+            /*}
+    }*/
+    // /STEVE CHANGE
     return success;
 }
 
@@ -62,16 +67,17 @@ void Engine::shutDown(){
 
     gRenderManager.shutDown();
     printf("Closed renderer manager.\n");
-    
+    // STEVE CHANGE
+    /*
     gSceneManager.shutDown();
     printf("Closed Scene manager.\n");
-    
     gDisplayManager.shutDown();
-    printf("Closed display manager.\n");
+    printf("Closed display manager.\n");*/
+    // /STEVE CHANGE
 }
 
 //Runs main application loop 
-void Engine::run(int now, int deltaT){ // <- STEVE CHANGE
+void Engine::run(Scene * currentScene, int deltaT){ // <- STEVE CHANGE
     // STEVE CHANGE
     /*
     //Main flags
@@ -96,10 +102,11 @@ void Engine::run(int now, int deltaT){ // <- STEVE CHANGE
     // /STEVE CHANGE
         //Update all models, camera and lighting in the current scene
         //Also performs view frustrum culling to determine which objects aare visible
-        gSceneManager.update(now, deltaT);
+
+        /*gSceneManager.*/currentScene->update(aspect_ratio, deltaT); // <- STEVE CHANGE
 
         //Contains the render setup and actual software rendering loop
-        gRenderManager.render();
+        gRenderManager.render(currentScene); // <- STEVE CHANGE
     // STEVE CHANGE
     /*
         //Monitoring time taken per frame to gauge engine performance
@@ -115,7 +122,7 @@ void Engine::run(int now, int deltaT){ // <- STEVE CHANGE
 // STEVE CHANGE
 #define ENGINE_TYPE "sceneView3D.ssge.Engine"
 
-struct EngineWrapper : Engine {
+struct EngineWrapper {
     Engine mEngine;
     bool mShutDown{false};
 };
@@ -146,6 +153,28 @@ static void ShutDown (Engine * engine)
 {
     engine->shutDown();
     engine->~Engine();
+}
+
+//
+//
+//
+
+int PushVec3 (lua_State * L, const Vector3f & v)
+{
+    lua_pushnumber(L, v.x); // ..., x
+    lua_pushnumber(L, v.y); // ..., x, y
+    lua_pushnumber(L, v.z); // ..., x, y, z
+
+    return 3;
+}
+
+//
+//
+//
+
+Vector3f MakeVec3 (lua_State * L, int first)
+{
+    return Vector3f{LuaXS::Float(L, first), LuaXS::Float(L, first + 1), LuaXS::Float(L, first + 2)};
 }
 
 //
@@ -200,8 +229,7 @@ void Engine::add_engine (lua_State * L)
 
                                     return 0;
                                 }
-                            },
-                            {
+                            }, {
                                 "getBlob", [](lua_State * L)
                                 {
                                     GetEngine(L); // do checks
@@ -211,161 +239,14 @@ void Engine::add_engine (lua_State * L)
 
                                     return 1;
                                 }
-                            },
-                            {
-                                "getCameraPeriod", [](lua_State * L)
-                                {
-                                    Scene * scene = GetEngine(L)->gSceneManager.getCurrentScene();
-
-                                    lua_pushnumber(L, scene ? scene->getCurrentCamera()->period : 0); // engine, period
-
-                                    return 1;
-                                }
-                            },
-                            {
-                                "getCameraSpeed", [](lua_State * L)
-                                {
-                                    Scene * scene = GetEngine(L)->gSceneManager.getCurrentScene();
-
-                                    lua_pushnumber(L, scene ? scene->getCurrentCamera()->camSpeed : 0); // engine, speed
-
-                                    return 1;
-                                }
-                            },
-                            {
-                                "isCameraOrbiting", [](lua_State * L)
-                                {
-                                    Scene * scene = GetEngine(L)->gSceneManager.getCurrentScene();
-
-                                    lua_pushboolean(L, scene ? scene->getCurrentCamera()->orbiting : 0); // engine, is_orbiting
-
-                                    return 1;
-                                }
-                            },
-                            {
-                                "moveCamera", [](lua_State * L)
-                                {
-                                    Scene * scene = GetEngine(L)->gSceneManager.getCurrentScene();
-
-                                    if (scene)
-                                    {
-                                        Camera * camera = scene->getCurrentCamera();
-
-                                        camera->yaw   += LuaXS::Float(L, 2);
-                                        camera->pitch += -LuaXS::Float(L, 3);
-
-                                        //Limiting the range of the pitch to avoid flips
-                                        if(camera->pitch > 89.0f){
-                                            camera->pitch =  89.0f;
-                                        }
-                                        else if(camera->pitch < -89.0f){
-                                            camera->pitch = -89.0f;
-                                        }
-
-                                        //Updating the front and side vectors to allow wasd movement and 
-                                        //free camera movement.
-                                        camera->front.x = cos( camera->pitch * M_PI / 180.0f ) * cos( camera->yaw * M_PI / 180.0f );
-                                        camera->front.y = sin( camera->pitch * M_PI / 180.0f );
-                                        camera->front.z = cos( camera->pitch * M_PI / 180.0f ) * sin( camera->yaw * M_PI / 180.0f );
-                                        camera->front   = camera->front.normalized();
-                                        camera->side    = camera->front.crossProduct(camera->up);
-                                    }
-
-                                    return 0;
-                                }
-                            },
-                            {
-                                "moveCameraFront", [](lua_State * L)
-                                {
-                                    Scene * scene = GetEngine(L)->gSceneManager.getCurrentScene();
-
-                                    if (scene)
-                                    {
-                                        Camera * camera = scene->getCurrentCamera();
-
-                                        camera->position += camera->front * LuaXS::Float(L, 2);
-                                    }
-
-                                    return 0;
-                                }
-                            },
-                            {
-                                "moveCameraSide", [](lua_State * L)
-                                {
-                                    Scene * scene = GetEngine(L)->gSceneManager.getCurrentScene();
-
-                                    if (scene)
-                                    {
-                                        Camera * camera = scene->getCurrentCamera();
-
-                                        camera->position += camera->side * LuaXS::Float(L, 2);
-                                    }
-
-                                    return 0;
-                                }
-                            },
-                            {
-                                "moveCameraUp", [](lua_State * L)
-                                {
-                                    Scene * scene = GetEngine(L)->gSceneManager.getCurrentScene();
-
-                                    if (scene)
-                                    {
-                                        Camera * camera = scene->getCurrentCamera();
-
-                                        camera->position += camera->up * LuaXS::Float(L, 2);
-                                    }
-
-                                    return 0;
-                                }
-                            },
-                            {
-                                "resetCamera", [](lua_State * L)
-                                {
-                                    Scene * scene = GetEngine(L)->gSceneManager.getCurrentScene();
-
-                                    if (scene) scene->getCurrentCamera()->resetCamera();
-
-                                    return 0;
-                                }
-                            },
-                            {
+                            }, {
                                 "run", [](lua_State * L)
                                 {
-                                    GetEngine(L)->run(LuaXS::Int(L, 2), LuaXS::Int(L, 3));
+                                    GetEngine(L)->run(Scene::Get(L, 2), LuaXS::Int(L, 3));
 
                                     return 0;
                                 }
-                            },
-                            {
-                                "setCameraOrbiting", [](lua_State * L)
-                                {
-                                    Scene * scene = GetEngine(L)->gSceneManager.getCurrentScene();
-
-                                    if (scene) scene->getCurrentCamera()->orbiting = lua_toboolean(L, 2);
-
-                                    return 0;
-                                }
-                            },
-                            {
-                                "setCameraPeriod", [](lua_State * L)
-                                {
-                                    Scene * scene = GetEngine(L)->gSceneManager.getCurrentScene();
-
-                                    if (scene) scene->getCurrentCamera()->period = LuaXS::Float(L, 2);
-
-                                    return 0;
-                                }
-                            },
-                            {
-                                "switchScene", [](lua_State * L)
-                                {
-                                    lua_pushboolean(L, GetEngine(L)->gSceneManager.switchScene(lua_tostring(L, 2))); // engine, name, ok
-
-                                    return 1;
-                                }
-                            },
-                            {
+                            }, {
                                 "shutDown", [](lua_State * L)
                                 {
                                     EngineWrapper * wrapper = GetEngineWrapper(L);
@@ -376,26 +257,6 @@ void Engine::add_engine (lua_State * L)
 
                                         wrapper->mShutDown = true;
                                     }
-
-                                    return 0;
-                                }
-                            },
-                            {
-                                "updateCameraFOV", [](lua_State * L)
-                                {
-                                    Scene * scene = GetEngine(L)->gSceneManager.getCurrentScene();
-
-                                    if (scene) scene->getCurrentCamera()->cameraFrustrum.fov += LuaXS::Float(L, 2);
-
-                                    return 01;
-                                }
-                            },
-                            {
-                                "updateCameraRadius", [](lua_State * L)
-                                {
-                                    Scene * scene = GetEngine(L)->gSceneManager.getCurrentScene();
-
-                                    if (scene) scene->getCurrentCamera()->radius += LuaXS::Float(L, 2);
 
                                     return 0;
                                 }

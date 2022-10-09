@@ -277,7 +277,7 @@ struct TextureMapShader : public IShader {
 // Uses a cook-torrance BRDF for direct light sources. 
 struct PBRShader : public IShader {
     //Variables set per model
-    Texture *albedoT, *normalT, *ambientOT, *roughT, *metalT;
+    const Texture *albedoT, *normalT, *ambientOT, *roughT, *metalT; // <- STEVE CHANGE
     Matrix4 MVP, MV, V, M, N;
     Vector3f cameraPos;
 

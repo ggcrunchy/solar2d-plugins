@@ -21,15 +21,19 @@
 #include "model.h"
 #include "camera.h"
 #include "light.h"
+#include "common.h" // <- STEVE CHANGE
 
 class Scene{
     public:
         //Builds scene using path to folder containing content and txt setup file
-        Scene(const std::string &sceneFolder, float aspect_ratio); // <- STEVE CHANGE
+        Scene(Camera * camera);//const std::string &sceneFolder); <- STEVE CHANGE
         ~Scene();
 
+        bool Load (const std::string &sceneFolder); // <- STEVE CHANGE
+        bool LoadModel (Model * model); // <- STEVE CHANGE
+
         //Updates all models, lights and cameras
-        void update(unsigned int now, unsigned int deltaT); // <- STEVE CHANGE
+        void update(float aspect_ratio, unsigned int deltaT); // <- STEVE CHANGE
 
         //Getters used in the setup of the render queue
         std::queue<Model*>* getVisiblemodels();
@@ -38,13 +42,22 @@ class Scene{
         int getLightCount();
         
         //Signals issues to scene Manager
-        bool checkIfEmpty();  
+        // bool checkIfEmpty(); <- STEVE CHANGE
+
+        void initializeLights (int count); // <- STEVE CHANGE
+
+        // STEVE CHANGE
+        void AddModelToScene (Model * model); // <- STEVE CHANGE
+
+        static void add_scene (lua_State * L);
+        static Scene * Get (lua_State * L, int arg = 1);
+        // /STEVE CHANGE
 
     private:
-        bool emptyScene;
-        Camera mainCamera;
-        int lightCount;
-        BaseLight *lights; //Array of lights in scene
+        // bool emptyScene; <- STEVE CHANGE
+        Camera & mainCamera; // <- STEVE CHANGE
+        int lightCount = 0; // <- STEVE CHANGE
+        BaseLight *lights = nullptr; //Array of lights in scene <- STEVE CHANGE
 
         //Contains the models that remain after frustrum culling
         std::queue<Model*> visibleModels;
@@ -52,10 +65,12 @@ class Scene{
 
         //Loads scene models, checks by looking for the mesh .If it finds it assumes
         // (dangerously) that all the other texture data also exists
-        bool loadContent(const std::string &baseFilePath, const std::string &sceneName);
+        // STEVE CHANGE
+        /*bool loadContent(const std::string &baseFilePath, const std::string &sceneName);
         //Check if scene folder acually exists and also checks accessibility 
         bool findSceneFolder(const std::string &scenePath);
-        void loadSceneModel(const std::string &baseFilePath, const TransformParameters &init ,const std::string modelMeshID, const std::string modelMaterialID);
+        void loadSceneModel(const std::string &baseFilePath, const TransformParameters &init ,const std::string modelMeshID, const std::string modelMaterialID);*/
+        // /STEVE CHANGE
         
         //Finds objects that the camera can see
         void frustrumCulling();

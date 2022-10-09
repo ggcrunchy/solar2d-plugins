@@ -17,7 +17,7 @@
 //Headers
 #include <string>
 #include <type_traits>
-#include <cmath> // <- STEVE CHANGE
+#include <cmath> // "math.h" <- STEVE CHANGE
 
 //Basic 3D vector class for general calculations
 template<typename T>
@@ -129,5 +129,10 @@ struct Vector3{
 //Shorthands for the common vector types
 typedef Vector3<float> Vector3f; 
 typedef Vector3<int> Vector3i; 
+
+// STEVE CHANGE
+int PushVec3 (struct lua_State * L, const Vector3f & v);
+Vector3f MakeVec3 (struct lua_State * L, int first);
+// /STEVE CHANGE
 
 #endif

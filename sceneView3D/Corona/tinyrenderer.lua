@@ -41,13 +41,13 @@ local WantAlpha = false
 local FaceParams = {}
 
 local name = system.pathForFile("squirrel/model_647897911503.obj")
-local object, errmsg = moonassimp.import_file(name, -- post-processing flags:
+local import, errmsg = moonassimp.import_file(name, -- post-processing flags:
 							   "triangulate", "join identical vertices", "sort by p type")
-assert(object, errmsg)
+assert(import, errmsg)
 
-local meshes = object:meshes()
+local meshes = import:meshes()
 
-for i = 1, object:num_meshes() do
+for i = 1, import:num_meshes() do
 	local mesh = meshes[i]
 
 	print("Mesh",i,mesh:name())
@@ -59,6 +59,8 @@ for i = 1, object:num_meshes() do
 	print("NVERTS",i,nverts)
 	print("NFACES",i,nfaces)
 end
+
+moonassimp.release_import(import)
 
 local bm = Bytemap.newTexture{ width = 400, height = 400, format = WantAlpha and "rgba" or "rgb" }
 local image = display.newImage(bm.filename, bm.baseDir)
