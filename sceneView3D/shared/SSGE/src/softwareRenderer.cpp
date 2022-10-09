@@ -7,7 +7,10 @@
 #include "softwareRenderer.h"
 #include "shader.h"
 #include "mesh.h"
-#include "omp.h"
+
+#ifdef _WIN32 // <- STEVE CHANGE
+	#include <omp.h>
+#endif // <- STEVE CHANGE
 #include <vector> // <- STEVE CHANGE
 
 //Dummy Constructor / Destructor

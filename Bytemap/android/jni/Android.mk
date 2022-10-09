@@ -8,8 +8,7 @@ LOCAL_PATH := $(call my-dir)
 ifeq ($(OS),Windows_NT)
 	CORONA_ROOT := C:\PROGRA~2\CORONA~1\Corona\Native
 else
-	CORONA := /Applications/Corona
-	CORONA_ROOT := $(CORONA)/Native
+	CORONA_ROOT := /Applications/Native
 endif
 
 LUA_API_DIR := $(CORONA_ROOT)/Corona/shared/include/lua
@@ -19,8 +18,8 @@ PLUGIN_DIR := ../..
 
 SRC_DIR := $(PLUGIN_DIR)/shared
 BR_DIR := $(PLUGIN_DIR)/../ByteReader
-CEU_DIR := $(PLUGIN_DIR)/../solar2d_native_utils
-CEU_SRC := $(CEU_DIR)/utils
+SNU_DIR := $(PLUGIN_DIR)/../solar2d_native_utils
+SNU_SRC := $(SNU_DIR)/utils
 
 # -----------------------------------------------------------------------------
 
@@ -42,14 +41,14 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := libplugin.Bytemap
 
 LOCAL_C_INCLUDES := \
-	$(SRC_DIR) $(BR_DIR) $(CEU_DIR) $(PLUGIN_DIR)/../math_libraries
+	$(SRC_DIR) $(BR_DIR) $(SNU_DIR) $(PLUGIN_DIR)/../math_libraries
 
 LOCAL_SRC_FILES := \
 	$(SRC_DIR)/plugin.Bytemap.cpp $(SRC_DIR)/BindBlob.cpp $(SRC_DIR)/BytesOpts.cpp \
-	$(SRC_DIR)/GetBytes.cpp $(SRC_DIR)/SetBytes.cpp \
+	$(SRC_DIR)/GetBytes.cpp $(SRC_DIR)/SetBytes.cpp $(SRC_DIR)/MakeSeamless.cpp \
 	$(BR_DIR)/ByteReader.cpp \
-	$(CEU_SRC)/Blob.cpp $(CEU_SRC)/Byte.cpp $(CEU_SRC)/LuaEx.cpp $(CEU_SRC)/Memory.cpp $(CEU_SRC)/Path.cpp \
-	$(CEU_SRC)/Thread.cpp
+	$(SNU_SRC)/Blob.cpp $(SNU_SRC)/Byte.cpp $(SNU_SRC)/LuaEx.cpp $(SNU_SRC)/Memory.cpp $(SNU_SRC)/Path.cpp \
+	$(SNU_SRC)/Thread.cpp
 
 LOCAL_CFLAGS := \
 	-DANDROID_NDK \

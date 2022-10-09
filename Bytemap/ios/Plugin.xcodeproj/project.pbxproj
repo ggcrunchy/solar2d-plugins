@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AA8C24F128E63E7E000D0253 /* MakeSeamless.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8C24F028E63E7E000D0253 /* MakeSeamless.cpp */; };
 		CE05C5121D10AFF80001242B /* BytesOpts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE05C50C1D10AFF80001242B /* BytesOpts.cpp */; };
 		CE05C5141D10AFF80001242B /* GetBytes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE05C50E1D10AFF80001242B /* GetBytes.cpp */; };
 		CE05C5161D10AFF80001242B /* SetBytes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE05C5101D10AFF80001242B /* SetBytes.cpp */; };
@@ -36,6 +37,7 @@
 
 /* Begin PBXFileReference section */
 		A4E253B6166D6FB300DCDC2C /* libplugin_Bytemap.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libplugin_Bytemap.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA8C24F028E63E7E000D0253 /* MakeSeamless.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MakeSeamless.cpp; path = ../shared/MakeSeamless.cpp; sourceTree = "<group>"; };
 		CE05C50B1D10AFF80001242B /* Bytes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Bytes.h; path = ../shared/Bytes.h; sourceTree = "<group>"; };
 		CE05C50C1D10AFF80001242B /* BytesOpts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BytesOpts.cpp; path = ../shared/BytesOpts.cpp; sourceTree = "<group>"; };
 		CE05C50E1D10AFF80001242B /* GetBytes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GetBytes.cpp; path = ../shared/GetBytes.cpp; sourceTree = "<group>"; };
@@ -81,6 +83,7 @@
 				CE8A2C511E0F86E500FCFAFD /* external */,
 				CE6E2BDE1DF23A0600AA7AF8 /* ByteReader */,
 				CE6E2BDD1DF239F100AA7AF8 /* solar2d_native_utils */,
+				AA8C24F028E63E7E000D0253 /* MakeSeamless.cpp */,
 				CE6E2BFD1DF2472B00AA7AF8 /* BindBlob.cpp */,
 				CE0C2BCF1DA381EE00EF95D2 /* Bytemap.h */,
 				CE0C2B901D9F674E00EF95D2 /* plugin.ByteMap.cpp */,
@@ -181,6 +184,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = A484110E15114F700074BD57;
@@ -202,6 +206,7 @@
 				CE6E2BF31DF23A3C00AA7AF8 /* LuaEx.cpp in Sources */,
 				CE05C5141D10AFF80001242B /* GetBytes.cpp in Sources */,
 				CE6E2BFE1DF2472B00AA7AF8 /* BindBlob.cpp in Sources */,
+				AA8C24F128E63E7E000D0253 /* MakeSeamless.cpp in Sources */,
 				CE6E2BF41DF23A3C00AA7AF8 /* Memory.cpp in Sources */,
 				CE6E2BF51DF23A3C00AA7AF8 /* Path.cpp in Sources */,
 				CE0C2B911D9F674E00EF95D2 /* plugin.ByteMap.cpp in Sources */,

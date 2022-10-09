@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AA8C24EF28E63D8F000D0253 /* MakeSeamless.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8C24EE28E63D8F000D0253 /* MakeSeamless.cpp */; };
 		CE05C5021D0F7D280001242B /* Bytes.h in Headers */ = {isa = PBXBuildFile; fileRef = CE05C4F91D0F7D280001242B /* Bytes.h */; };
 		CE05C5031D0F7D280001242B /* BytesOpts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE05C4FA1D0F7D280001242B /* BytesOpts.cpp */; };
 		CE05C5051D0F7D280001242B /* GetBytes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE05C4FC1D0F7D280001242B /* GetBytes.cpp */; };
@@ -52,6 +53,7 @@
 
 /* Begin PBXFileReference section */
 		A49186401641DDB800A39286 /* Bytemap.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = Bytemap.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA8C24EE28E63D8F000D0253 /* MakeSeamless.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MakeSeamless.cpp; path = ../shared/MakeSeamless.cpp; sourceTree = "<group>"; };
 		CE05C4F91D0F7D280001242B /* Bytes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Bytes.h; path = ../shared/Bytes.h; sourceTree = "<group>"; };
 		CE05C4FA1D0F7D280001242B /* BytesOpts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BytesOpts.cpp; path = ../shared/BytesOpts.cpp; sourceTree = "<group>"; };
 		CE05C4FC1D0F7D280001242B /* GetBytes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GetBytes.cpp; path = ../shared/GetBytes.cpp; sourceTree = "<group>"; };
@@ -94,8 +96,9 @@
 			isa = PBXGroup;
 			children = (
 				CE6E2BB71DF1078200AA7AF8 /* ByteReader */,
-				CE6E2BB81DF1078A00AA7AF8 /* solar2d_native_utils */,
 				CE8A2C551E0F8B3200FCFAFD /* external */,
+				CE6E2BB81DF1078A00AA7AF8 /* solar2d_native_utils */,
+				AA8C24EE28E63D8F000D0253 /* MakeSeamless.cpp */,
 				CE6E2BB91DF107AC00AA7AF8 /* BindBlob.cpp */,
 				CE0C2BD41DA3826100EF95D2 /* Bytemap.h */,
 				CE0C2B8A1D9F2D5800EF95D2 /* plugin.ByteMap.cpp */,
@@ -263,6 +266,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA8C24EF28E63D8F000D0253 /* MakeSeamless.cpp in Sources */,
 				CE05C5071D0F7D280001242B /* SetBytes.cpp in Sources */,
 				CE0C2B8B1D9F2D5800EF95D2 /* plugin.ByteMap.cpp in Sources */,
 				CE6E2BD31DF107F800AA7AF8 /* LuaEx.cpp in Sources */,

@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A49186331641DDB800A39286"
-               BuildableName = "plugin_wfc.dylib"
+               BuildableName = "wfc.dylib"
                BlueprintName = "wfc"
                ReferencedContainer = "container:Plugin.xcodeproj">
             </BuildableReference>
@@ -51,7 +51,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A49186331641DDB800A39286"
-            BuildableName = "plugin_wfc.dylib"
+            BuildableName = "wfc.dylib"
             BlueprintName = "wfc"
             ReferencedContainer = "container:Plugin.xcodeproj">
          </BuildableReference>

@@ -3,7 +3,7 @@
 path=`dirname $0`
 
 OUTPUT_DIR=$1
-TARGET_NAME=plugin_msquares
+TARGET_NAME=plugin_moonassimp
 OUTPUT_SUFFIX=a
 CONFIG=Release
 

@@ -7,27 +7,35 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CE0FB7D520AF89D400B5DAED /* ByteReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0FB7D320AF89D400B5DAED /* ByteReader.cpp */; };
-		CE0FB7D620AF89D400B5DAED /* ByteReader.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0FB7D420AF89D400B5DAED /* ByteReader.h */; };
-		CE0FB7E720AF89E400B5DAED /* Memory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0FB7D720AF89E300B5DAED /* Memory.cpp */; };
-		CE0FB7E820AF89E400B5DAED /* Platform.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0FB7D820AF89E300B5DAED /* Platform.h */; };
-		CE0FB7E920AF89E400B5DAED /* Thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0FB7D920AF89E300B5DAED /* Thread.cpp */; };
-		CE0FB7EA20AF89E400B5DAED /* SIMD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0FB7DA20AF89E300B5DAED /* SIMD.cpp */; };
-		CE0FB7EB20AF89E400B5DAED /* Thread.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0FB7DB20AF89E300B5DAED /* Thread.h */; };
-		CE0FB7EC20AF89E400B5DAED /* LuaEx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0FB7DC20AF89E300B5DAED /* LuaEx.cpp */; };
-		CE0FB7ED20AF89E400B5DAED /* LuaEx.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0FB7DD20AF89E300B5DAED /* LuaEx.h */; };
-		CE0FB7EE20AF89E400B5DAED /* Blob.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0FB7DE20AF89E300B5DAED /* Blob.cpp */; };
-		CE0FB7EF20AF89E400B5DAED /* Path.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0FB7DF20AF89E300B5DAED /* Path.cpp */; };
-		CE0FB7F020AF89E400B5DAED /* SIMD.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0FB7E020AF89E300B5DAED /* SIMD.h */; };
-		CE0FB7F120AF89E400B5DAED /* Blob.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0FB7E120AF89E300B5DAED /* Blob.h */; };
-		CE0FB7F220AF89E400B5DAED /* Compat.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0FB7E220AF89E300B5DAED /* Compat.h */; };
-		CE0FB7F320AF89E400B5DAED /* Byte.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0FB7E320AF89E300B5DAED /* Byte.cpp */; };
-		CE0FB7F420AF89E400B5DAED /* Path.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0FB7E420AF89E300B5DAED /* Path.h */; };
-		CE0FB7F520AF89E400B5DAED /* Byte.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0FB7E520AF89E400B5DAED /* Byte.h */; };
-		CE0FB7F620AF89E400B5DAED /* Memory.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0FB7E620AF89E400B5DAED /* Memory.h */; };
-		CE0FB7F820AF89F100B5DAED /* plugin.msquares.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0FB7F720AF89F000B5DAED /* plugin.msquares.cpp */; };
-		CE70DF371D3D5C7800CF04B5 /* par_msquares.h in Headers */ = {isa = PBXBuildFile; fileRef = CE70DF271D3D5C7800CF04B5 /* par_msquares.h */; };
-		CEE59D8E2126B1DD0013C99C /* Namespace.h in Headers */ = {isa = PBXBuildFile; fileRef = CEE59D8D2126B1DD0013C99C /* Namespace.h */; };
+		AA8C251628E7716D000D0253 /* udata.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C24FA28E7716C000D0253 /* udata.c */; };
+		AA8C251728E7716D000D0253 /* objects.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8C24FB28E7716C000D0253 /* objects.h */; };
+		AA8C251828E7716D000D0253 /* enums.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C24FC28E7716C000D0253 /* enums.c */; };
+		AA8C251928E7716D000D0253 /* animation.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C24FD28E7716C000D0253 /* animation.c */; };
+		AA8C251A28E7716D000D0253 /* utils.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C24FE28E7716C000D0253 /* utils.c */; };
+		AA8C251B28E7716D000D0253 /* material.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C24FF28E7716C000D0253 /* material.c */; };
+		AA8C251C28E7716D000D0253 /* compat-5.3.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8C250028E7716C000D0253 /* compat-5.3.h */; };
+		AA8C251D28E7716D000D0253 /* mesh.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C250128E7716C000D0253 /* mesh.c */; };
+		AA8C251E28E7716D000D0253 /* tree.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8C250228E7716C000D0253 /* tree.h */; };
+		AA8C251F28E7716D000D0253 /* internal.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8C250328E7716C000D0253 /* internal.h */; };
+		AA8C252028E7716D000D0253 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C250428E7716C000D0253 /* main.c */; };
+		AA8C252128E7716D000D0253 /* import.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C250528E7716C000D0253 /* import.c */; };
+		AA8C252228E7716D000D0253 /* face.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C250628E7716D000D0253 /* face.c */; };
+		AA8C252328E7716D000D0253 /* bitfields.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C250728E7716D000D0253 /* bitfields.c */; };
+		AA8C252428E7716D000D0253 /* udata.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8C250828E7716D000D0253 /* udata.h */; };
+		AA8C252528E7716D000D0253 /* additional.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C250928E7716D000D0253 /* additional.c */; };
+		AA8C252628E7716D000D0253 /* moonassimp.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8C250A28E7716D000D0253 /* moonassimp.h */; };
+		AA8C252728E7716D000D0253 /* bone.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C250B28E7716D000D0253 /* bone.c */; };
+		AA8C252828E7716D000D0253 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = AA8C250C28E7716D000D0253 /* Makefile */; };
+		AA8C252928E7716D000D0253 /* node.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C250D28E7716D000D0253 /* node.c */; };
+		AA8C252A28E7716D000D0253 /* scene.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C250E28E7716D000D0253 /* scene.c */; };
+		AA8C252B28E7716D000D0253 /* animmesh.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C250F28E7716D000D0253 /* animmesh.c */; };
+		AA8C252C28E7716D000D0253 /* meshanim.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C251028E7716D000D0253 /* meshanim.c */; };
+		AA8C252D28E7716D000D0253 /* texture.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C251128E7716D000D0253 /* texture.c */; };
+		AA8C252E28E7716D000D0253 /* light.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C251228E7716D000D0253 /* light.c */; };
+		AA8C252F28E7716D000D0253 /* camera.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C251328E7716D000D0253 /* camera.c */; };
+		AA8C253028E7716D000D0253 /* compat-5.3.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C251428E7716D000D0253 /* compat-5.3.c */; };
+		AA8C253128E7716D000D0253 /* nodeanim.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C251528E7716D000D0253 /* nodeanim.c */; };
+		AA8C253628E77221000D0253 /* libassimp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA8C253428E7719D000D0253 /* libassimp.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -47,28 +55,37 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXFileReference section */
-		A49186401641DDB800A39286 /* msquares.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = msquares.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
-		CE0FB7D320AF89D400B5DAED /* ByteReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ByteReader.cpp; path = ../../ByteReader/ByteReader.cpp; sourceTree = "<group>"; };
-		CE0FB7D420AF89D400B5DAED /* ByteReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ByteReader.h; path = ../../ByteReader/ByteReader.h; sourceTree = "<group>"; };
-		CE0FB7D720AF89E300B5DAED /* Memory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Memory.cpp; path = ../../solar2d_native_utils/utils/Memory.cpp; sourceTree = "<group>"; };
-		CE0FB7D820AF89E300B5DAED /* Platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Platform.h; path = ../../solar2d_native_utils/utils/Platform.h; sourceTree = "<group>"; };
-		CE0FB7D920AF89E300B5DAED /* Thread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Thread.cpp; path = ../../solar2d_native_utils/utils/Thread.cpp; sourceTree = "<group>"; };
-		CE0FB7DA20AF89E300B5DAED /* SIMD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SIMD.cpp; path = ../../solar2d_native_utils/utils/SIMD.cpp; sourceTree = "<group>"; };
-		CE0FB7DB20AF89E300B5DAED /* Thread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Thread.h; path = ../../solar2d_native_utils/utils/Thread.h; sourceTree = "<group>"; };
-		CE0FB7DC20AF89E300B5DAED /* LuaEx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LuaEx.cpp; path = ../../solar2d_native_utils/utils/LuaEx.cpp; sourceTree = "<group>"; };
-		CE0FB7DD20AF89E300B5DAED /* LuaEx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LuaEx.h; path = ../../solar2d_native_utils/utils/LuaEx.h; sourceTree = "<group>"; };
-		CE0FB7DE20AF89E300B5DAED /* Blob.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Blob.cpp; path = ../../solar2d_native_utils/utils/Blob.cpp; sourceTree = "<group>"; };
-		CE0FB7DF20AF89E300B5DAED /* Path.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Path.cpp; path = ../../solar2d_native_utils/utils/Path.cpp; sourceTree = "<group>"; };
-		CE0FB7E020AF89E300B5DAED /* SIMD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SIMD.h; path = ../../solar2d_native_utils/utils/SIMD.h; sourceTree = "<group>"; };
-		CE0FB7E120AF89E300B5DAED /* Blob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Blob.h; path = ../../solar2d_native_utils/utils/Blob.h; sourceTree = "<group>"; };
-		CE0FB7E220AF89E300B5DAED /* Compat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Compat.h; path = ../../solar2d_native_utils/utils/Compat.h; sourceTree = "<group>"; };
-		CE0FB7E320AF89E300B5DAED /* Byte.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Byte.cpp; path = ../../solar2d_native_utils/utils/Byte.cpp; sourceTree = "<group>"; };
-		CE0FB7E420AF89E300B5DAED /* Path.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Path.h; path = ../../solar2d_native_utils/utils/Path.h; sourceTree = "<group>"; };
-		CE0FB7E520AF89E400B5DAED /* Byte.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Byte.h; path = ../../solar2d_native_utils/utils/Byte.h; sourceTree = "<group>"; };
-		CE0FB7E620AF89E400B5DAED /* Memory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Memory.h; path = ../../solar2d_native_utils/utils/Memory.h; sourceTree = "<group>"; };
-		CE0FB7F720AF89F000B5DAED /* plugin.msquares.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = plugin.msquares.cpp; path = ../shared/plugin.msquares.cpp; sourceTree = "<group>"; };
-		CE70DF271D3D5C7800CF04B5 /* par_msquares.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = par_msquares.h; path = ../shared/par_msquares.h; sourceTree = "<group>"; };
-		CEE59D8D2126B1DD0013C99C /* Namespace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Namespace.h; path = ../../solar2d_native_utils/utils/Namespace.h; sourceTree = "<group>"; };
+		A49186401641DDB800A39286 /* moonassimp.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = moonassimp.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA8C24FA28E7716C000D0253 /* udata.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = udata.c; path = ../shared/src/udata.c; sourceTree = "<group>"; };
+		AA8C24FB28E7716C000D0253 /* objects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = objects.h; path = ../shared/src/objects.h; sourceTree = "<group>"; };
+		AA8C24FC28E7716C000D0253 /* enums.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = enums.c; path = ../shared/src/enums.c; sourceTree = "<group>"; };
+		AA8C24FD28E7716C000D0253 /* animation.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = animation.c; path = ../shared/src/animation.c; sourceTree = "<group>"; };
+		AA8C24FE28E7716C000D0253 /* utils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = utils.c; path = ../shared/src/utils.c; sourceTree = "<group>"; };
+		AA8C24FF28E7716C000D0253 /* material.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = material.c; path = ../shared/src/material.c; sourceTree = "<group>"; };
+		AA8C250028E7716C000D0253 /* compat-5.3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "compat-5.3.h"; path = "../shared/src/compat-5.3.h"; sourceTree = "<group>"; };
+		AA8C250128E7716C000D0253 /* mesh.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mesh.c; path = ../shared/src/mesh.c; sourceTree = "<group>"; };
+		AA8C250228E7716C000D0253 /* tree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tree.h; path = ../shared/src/tree.h; sourceTree = "<group>"; };
+		AA8C250328E7716C000D0253 /* internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = internal.h; path = ../shared/src/internal.h; sourceTree = "<group>"; };
+		AA8C250428E7716C000D0253 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = main.c; path = ../shared/src/main.c; sourceTree = "<group>"; };
+		AA8C250528E7716C000D0253 /* import.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = import.c; path = ../shared/src/import.c; sourceTree = "<group>"; };
+		AA8C250628E7716D000D0253 /* face.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = face.c; path = ../shared/src/face.c; sourceTree = "<group>"; };
+		AA8C250728E7716D000D0253 /* bitfields.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = bitfields.c; path = ../shared/src/bitfields.c; sourceTree = "<group>"; };
+		AA8C250828E7716D000D0253 /* udata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = udata.h; path = ../shared/src/udata.h; sourceTree = "<group>"; };
+		AA8C250928E7716D000D0253 /* additional.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = additional.c; path = ../shared/src/additional.c; sourceTree = "<group>"; };
+		AA8C250A28E7716D000D0253 /* moonassimp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = moonassimp.h; path = ../shared/src/moonassimp.h; sourceTree = "<group>"; };
+		AA8C250B28E7716D000D0253 /* bone.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = bone.c; path = ../shared/src/bone.c; sourceTree = "<group>"; };
+		AA8C250C28E7716D000D0253 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; name = Makefile; path = ../shared/src/Makefile; sourceTree = "<group>"; };
+		AA8C250D28E7716D000D0253 /* node.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = node.c; path = ../shared/src/node.c; sourceTree = "<group>"; };
+		AA8C250E28E7716D000D0253 /* scene.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = scene.c; path = ../shared/src/scene.c; sourceTree = "<group>"; };
+		AA8C250F28E7716D000D0253 /* animmesh.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = animmesh.c; path = ../shared/src/animmesh.c; sourceTree = "<group>"; };
+		AA8C251028E7716D000D0253 /* meshanim.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = meshanim.c; path = ../shared/src/meshanim.c; sourceTree = "<group>"; };
+		AA8C251128E7716D000D0253 /* texture.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = texture.c; path = ../shared/src/texture.c; sourceTree = "<group>"; };
+		AA8C251228E7716D000D0253 /* light.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = light.c; path = ../shared/src/light.c; sourceTree = "<group>"; };
+		AA8C251328E7716D000D0253 /* camera.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = camera.c; path = ../shared/src/camera.c; sourceTree = "<group>"; };
+		AA8C251428E7716D000D0253 /* compat-5.3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "compat-5.3.c"; path = "../shared/src/compat-5.3.c"; sourceTree = "<group>"; };
+		AA8C251528E7716D000D0253 /* nodeanim.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = nodeanim.c; path = ../shared/src/nodeanim.c; sourceTree = "<group>"; };
+		AA8C253228E77181000D0253 /* libassimp-fat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libassimp-fat.a"; path = "../ios/libassimp-fat.a"; sourceTree = "<group>"; };
+		AA8C253428E7719D000D0253 /* libassimp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libassimp.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +93,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA8C253628E77221000D0253 /* libassimp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,10 +103,34 @@
 		A4151F3316879B8200B2B43A /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				CE0FB7F720AF89F000B5DAED /* plugin.msquares.cpp */,
-				CE0FB7D220AF89BD00B5DAED /* solar2d_native_utils */,
-				CE0FB7D120AF89B500B5DAED /* ByteReader */,
-				CE70DF271D3D5C7800CF04B5 /* par_msquares.h */,
+				AA8C250928E7716D000D0253 /* additional.c */,
+				AA8C24FD28E7716C000D0253 /* animation.c */,
+				AA8C250F28E7716D000D0253 /* animmesh.c */,
+				AA8C250728E7716D000D0253 /* bitfields.c */,
+				AA8C250B28E7716D000D0253 /* bone.c */,
+				AA8C251328E7716D000D0253 /* camera.c */,
+				AA8C251428E7716D000D0253 /* compat-5.3.c */,
+				AA8C250028E7716C000D0253 /* compat-5.3.h */,
+				AA8C24FC28E7716C000D0253 /* enums.c */,
+				AA8C250628E7716D000D0253 /* face.c */,
+				AA8C250528E7716C000D0253 /* import.c */,
+				AA8C250328E7716C000D0253 /* internal.h */,
+				AA8C251228E7716D000D0253 /* light.c */,
+				AA8C250428E7716C000D0253 /* main.c */,
+				AA8C250C28E7716D000D0253 /* Makefile */,
+				AA8C24FF28E7716C000D0253 /* material.c */,
+				AA8C250128E7716C000D0253 /* mesh.c */,
+				AA8C251028E7716D000D0253 /* meshanim.c */,
+				AA8C250A28E7716D000D0253 /* moonassimp.h */,
+				AA8C250D28E7716D000D0253 /* node.c */,
+				AA8C251528E7716D000D0253 /* nodeanim.c */,
+				AA8C24FB28E7716C000D0253 /* objects.h */,
+				AA8C250E28E7716D000D0253 /* scene.c */,
+				AA8C251128E7716D000D0253 /* texture.c */,
+				AA8C250228E7716C000D0253 /* tree.h */,
+				AA8C24FA28E7716C000D0253 /* udata.c */,
+				AA8C250828E7716D000D0253 /* udata.h */,
+				AA8C24FE28E7716C000D0253 /* utils.c */,
 			);
 			name = Shared;
 			sourceTree = "<group>";
@@ -105,7 +147,7 @@
 		A482DA8515F9B7E70084DC42 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A49186401641DDB800A39286 /* msquares.dylib */,
+				A49186401641DDB800A39286 /* moonassimp.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -113,41 +155,10 @@
 		A482DA8615F9B7E70084DC42 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AA8C253428E7719D000D0253 /* libassimp.a */,
+				AA8C253228E77181000D0253 /* libassimp-fat.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		CE0FB7D120AF89B500B5DAED /* ByteReader */ = {
-			isa = PBXGroup;
-			children = (
-				CE0FB7D320AF89D400B5DAED /* ByteReader.cpp */,
-				CE0FB7D420AF89D400B5DAED /* ByteReader.h */,
-			);
-			name = ByteReader;
-			sourceTree = "<group>";
-		};
-		CE0FB7D220AF89BD00B5DAED /* solar2d_native_utils */ = {
-			isa = PBXGroup;
-			children = (
-				CEE59D8D2126B1DD0013C99C /* Namespace.h */,
-				CE0FB7DE20AF89E300B5DAED /* Blob.cpp */,
-				CE0FB7E120AF89E300B5DAED /* Blob.h */,
-				CE0FB7E320AF89E300B5DAED /* Byte.cpp */,
-				CE0FB7E520AF89E400B5DAED /* Byte.h */,
-				CE0FB7E220AF89E300B5DAED /* Compat.h */,
-				CE0FB7DC20AF89E300B5DAED /* LuaEx.cpp */,
-				CE0FB7DD20AF89E300B5DAED /* LuaEx.h */,
-				CE0FB7D720AF89E300B5DAED /* Memory.cpp */,
-				CE0FB7E620AF89E400B5DAED /* Memory.h */,
-				CE0FB7DF20AF89E300B5DAED /* Path.cpp */,
-				CE0FB7E420AF89E300B5DAED /* Path.h */,
-				CE0FB7D820AF89E300B5DAED /* Platform.h */,
-				CE0FB7DA20AF89E300B5DAED /* SIMD.cpp */,
-				CE0FB7E020AF89E300B5DAED /* SIMD.h */,
-				CE0FB7D920AF89E300B5DAED /* Thread.cpp */,
-				CE0FB7DB20AF89E300B5DAED /* Thread.h */,
-			);
-			name = solar2d_native_utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -157,27 +168,21 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE0FB7F520AF89E400B5DAED /* Byte.h in Headers */,
-				CE0FB7F420AF89E400B5DAED /* Path.h in Headers */,
-				CE0FB7E820AF89E400B5DAED /* Platform.h in Headers */,
-				CE70DF371D3D5C7800CF04B5 /* par_msquares.h in Headers */,
-				CE0FB7F220AF89E400B5DAED /* Compat.h in Headers */,
-				CE0FB7F120AF89E400B5DAED /* Blob.h in Headers */,
-				CEE59D8E2126B1DD0013C99C /* Namespace.h in Headers */,
-				CE0FB7ED20AF89E400B5DAED /* LuaEx.h in Headers */,
-				CE0FB7F020AF89E400B5DAED /* SIMD.h in Headers */,
-				CE0FB7F620AF89E400B5DAED /* Memory.h in Headers */,
-				CE0FB7EB20AF89E400B5DAED /* Thread.h in Headers */,
-				CE0FB7D620AF89D400B5DAED /* ByteReader.h in Headers */,
+				AA8C251728E7716D000D0253 /* objects.h in Headers */,
+				AA8C251F28E7716D000D0253 /* internal.h in Headers */,
+				AA8C251E28E7716D000D0253 /* tree.h in Headers */,
+				AA8C252428E7716D000D0253 /* udata.h in Headers */,
+				AA8C252628E7716D000D0253 /* moonassimp.h in Headers */,
+				AA8C251C28E7716D000D0253 /* compat-5.3.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		A49186331641DDB800A39286 /* msquares */ = {
+		A49186331641DDB800A39286 /* moonassimp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "msquares" */;
+			buildConfigurationList = A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "moonassimp" */;
 			buildPhases = (
 				A49186341641DDB800A39286 /* Sources */,
 				A49186381641DDB800A39286 /* Frameworks */,
@@ -189,9 +194,9 @@
 			);
 			dependencies = (
 			);
-			name = msquares;
+			name = moonassimp;
 			productName = ads;
-			productReference = A49186401641DDB800A39286 /* msquares.dylib */;
+			productReference = A49186401641DDB800A39286 /* moonassimp.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 /* End PBXNativeTarget section */
@@ -215,7 +220,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A49186331641DDB800A39286 /* msquares */,
+				A49186331641DDB800A39286 /* moonassimp */,
 			);
 		};
 /* End PBXProject section */
@@ -242,15 +247,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE0FB7EE20AF89E400B5DAED /* Blob.cpp in Sources */,
-				CE0FB7E720AF89E400B5DAED /* Memory.cpp in Sources */,
-				CE0FB7EC20AF89E400B5DAED /* LuaEx.cpp in Sources */,
-				CE0FB7F820AF89F100B5DAED /* plugin.msquares.cpp in Sources */,
-				CE0FB7EF20AF89E400B5DAED /* Path.cpp in Sources */,
-				CE0FB7D520AF89D400B5DAED /* ByteReader.cpp in Sources */,
-				CE0FB7F320AF89E400B5DAED /* Byte.cpp in Sources */,
-				CE0FB7EA20AF89E400B5DAED /* SIMD.cpp in Sources */,
-				CE0FB7E920AF89E400B5DAED /* Thread.cpp in Sources */,
+				AA8C251B28E7716D000D0253 /* material.c in Sources */,
+				AA8C251828E7716D000D0253 /* enums.c in Sources */,
+				AA8C253128E7716D000D0253 /* nodeanim.c in Sources */,
+				AA8C251D28E7716D000D0253 /* mesh.c in Sources */,
+				AA8C252728E7716D000D0253 /* bone.c in Sources */,
+				AA8C251A28E7716D000D0253 /* utils.c in Sources */,
+				AA8C252128E7716D000D0253 /* import.c in Sources */,
+				AA8C252A28E7716D000D0253 /* scene.c in Sources */,
+				AA8C251628E7716D000D0253 /* udata.c in Sources */,
+				AA8C251928E7716D000D0253 /* animation.c in Sources */,
+				AA8C252228E7716D000D0253 /* face.c in Sources */,
+				AA8C252F28E7716D000D0253 /* camera.c in Sources */,
+				AA8C253028E7716D000D0253 /* compat-5.3.c in Sources */,
+				AA8C252528E7716D000D0253 /* additional.c in Sources */,
+				AA8C252828E7716D000D0253 /* Makefile in Sources */,
+				AA8C252328E7716D000D0253 /* bitfields.c in Sources */,
+				AA8C252B28E7716D000D0253 /* animmesh.c in Sources */,
+				AA8C252028E7716D000D0253 /* main.c in Sources */,
+				AA8C252928E7716D000D0253 /* node.c in Sources */,
+				AA8C252C28E7716D000D0253 /* meshanim.c in Sources */,
+				AA8C252D28E7716D000D0253 /* texture.c in Sources */,
+				AA8C252E28E7716D000D0253 /* light.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -363,7 +381,12 @@
 				DYLIB_CURRENT_VERSION = 1;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				INSTALL_PATH = "@rpath";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "/Applications/Native/Corona/shared/include/Corona /Applications/Native/Corona/shared/include/lua ${SRCROOT}/../shared/";
 			};
 			name = Debug;
 		};
@@ -378,7 +401,12 @@
 				DYLIB_CURRENT_VERSION = 1;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				INSTALL_PATH = "@rpath";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "/Applications/Native/Corona/shared/include/Corona /Applications/Native/Corona/shared/include/lua ${SRCROOT}/../shared/";
 			};
 			name = Release;
 		};
@@ -394,7 +422,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "msquares" */ = {
+		A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "moonassimp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A491863E1641DDB800A39286 /* Debug */,

@@ -8,6 +8,7 @@
 
 // #include "SDL.h" <- STEVE CHANGE
 #include <type_traits>
+#include <cstring> // <- STEVE CHANGE
 
 //Templated struct to emulate GPU buffers such as 
 //the frame buffer and the ZBuffer 

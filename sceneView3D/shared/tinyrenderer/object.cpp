@@ -209,7 +209,7 @@ void add_object (lua_State * L)
 		AddToStore(L);
 
         return 1;
-    }, 1);  // ..., tinyrendere, NewObject
+    });  // ..., tinyrenderer, NewObject
 	lua_setfield(L, -2, "NewObject"); // ..., tinyrenderer = { ..., NewObject = NewObject }
 }
 
