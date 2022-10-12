@@ -39,6 +39,8 @@ public:
 
 	AnyGenerator<MeshVertex> vertices() const noexcept;
 
+	using Triangles = AnyGenerator<Triangle>; // <- STEVE CHANGE
+
 private:
 
 	class Base {

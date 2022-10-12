@@ -21,18 +21,16 @@
 * [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
 */
 
-#include "common.h"
+#pragma once
+
+#include "CoronaLua.h"
+#include "CoronaLog.h"
+#include "utils/LuaEx.h"
 
 //
 //
 //
 
-CORONA_EXPORT int luaopen_plugin_shapes (lua_State* L)
-{
-    lua_newtable(L); // shapes
-
-	add_par(L);
-	add_yocto(L);
-
-	return 1;
-}
+void add_octasphere (lua_State * L);
+void add_par (lua_State * L);
+void add_yocto (lua_State * L);

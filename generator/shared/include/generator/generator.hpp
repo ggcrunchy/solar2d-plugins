@@ -55,7 +55,7 @@
 #include "MergeShape.hpp"
 #include "MeshVertex.hpp"
 #include "MirrorMesh.hpp"
-#include "ObjWriter.hpp"
+// #include "ObjWriter.hpp" <- STEVE CHANGE
 #include "ParametricMesh.hpp"
 #include "ParametricPath.hpp"
 #include "ParametricShape.hpp"
@@ -80,7 +80,7 @@
 #include "SubdivideMesh.hpp"
 #include "SubdividePath.hpp"
 #include "SubdivideShape.hpp"
-#include "SvgWriter.hpp"
+// #include "SvgWriter.hpp" <- STEVE CHANGE
 #include "TeapotMesh.hpp"
 #include "TorusKnotMesh.hpp"
 #include "TorusMesh.hpp"

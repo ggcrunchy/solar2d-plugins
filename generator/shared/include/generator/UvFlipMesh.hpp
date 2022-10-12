@@ -49,8 +49,8 @@ public:
 
 
 template <typename Mesh>
-UvFlipMesh<Mesh> uvFlipMesh(Mesh mesh) {
-	return UvFlipMesh<Mesh>{std::move(mesh)};
+UvFlipMesh<Mesh> uvFlipMesh(Mesh mesh, bool u, bool v) { // <- STEVE CHANGE
+	return UvFlipMesh<Mesh>{std::move(mesh), u, v}; // <- STEVE CHANGE
 }
 
 

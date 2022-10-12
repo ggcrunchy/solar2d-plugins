@@ -21,18 +21,14 @@
 * [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
 */
 
+#pragma once
+
 #include "common.h"
 
 //
 //
 //
 
-CORONA_EXPORT int luaopen_plugin_shapes (lua_State* L)
+void add_yocto (lua_State * L)
 {
-    lua_newtable(L); // shapes
-
-	add_par(L);
-	add_yocto(L);
-
-	return 1;
 }

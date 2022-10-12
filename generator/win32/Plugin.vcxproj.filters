@@ -1,9 +1,434 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\shared\plugin.wfc.cpp" />
+    <ClCompile Include="..\shared\plugin.generator.cpp" />
+    <ClCompile Include="..\shared\src\AnyMesh.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\AnyPath.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\AnyShape.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\BoxMesh.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\CappedConeMesh.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\CappedCylinderMesh.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\CappedTubeMesh.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\CapsuleMesh.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\CircleShape.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\ConeMesh.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\ConvexPolygonMesh.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\CylinderMesh.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\DiskMesh.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\DodecahedronMesh.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\EmptyMesh.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\EmptyPath.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\EmptyShape.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\GridShape.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\HelixPath.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\IcosahedronMesh.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\IcoSphereMesh.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\KnotPath.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\LinePath.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\LineShape.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\ParametricMesh.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\ParametricPath.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\ParametricShape.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\PlaneMesh.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\RectangleShape.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\RoundedBoxMesh.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\RoundedRectangleShape.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\SphereMesh.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\SphericalConeMesh.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\SphericalTriangleMesh.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\SpringMesh.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\TeapotMesh.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\TorusKnotMesh.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\TorusMesh.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\TriangleMesh.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\TubeMesh.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\generators.cpp" />
+    <ClCompile Include="..\shared\meshes.cpp" />
+    <ClCompile Include="..\shared\paths.cpp" />
+    <ClCompile Include="..\shared\shapes.cpp" />
+    <ClCompile Include="..\shared\specializations.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\shared\wfc.h" />
+    <Filter Include="include">
+      <UniqueIdentifier>{d288bdad-fdaa-4bbc-908e-f3464e1efc78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{05060f14-52a4-431e-aa1d-81c9766c2e8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\gml">
+      <UniqueIdentifier>{b1a3afee-b455-4f99-9670-24417130621a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\shared\include\generator\AnyGenerator.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\AnyMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\AnyPath.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\AnyShape.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\Axis.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\AxisFlipMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\AxisSwapMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\AxisSwapPath.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\AxisSwapShape.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\BezierMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\BezierShape.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\BoxMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\CappedConeMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\CappedCylinderMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\CappedTubeMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\CapsuleMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\CircleShape.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\ConeMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\ConvexPolygonMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\CylinderMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\DiskMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\DodecahedronMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\Edge.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\EmptyMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\EmptyPath.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\EmptyShape.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\ExtrudeMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\FlipMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\FlipPath.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\FlipShape.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\generator.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\GridShape.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\HelixPath.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\IcosahedronMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\IcoSphereMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\Iterator.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\KnotPath.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\LatheMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\LinePath.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\LineShape.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\math.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\MergeMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\MergePath.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\MergeShape.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\MeshVertex.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\MirrorMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\ParametricMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\ParametricPath.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\ParametricShape.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\PathVertex.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\PlaneMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\RectangleShape.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\RepeatMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\RepeatPath.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\RepeatShape.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\RotateMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\RotatePath.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\RotateShape.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\RoundedBoxMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\RoundedRectangleShape.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\ScaleMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\ScalePath.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\ScaleShape.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\ShapeToPath.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\ShapeVertex.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\SphereMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\SphericalConeMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\SphericalTriangleMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\SpherifyMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\SpringMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\SubdivideMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\SubdividePath.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\SubdivideShape.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\TeapotMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\TorusKnotMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\TorusMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\TransformMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\TransformPath.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\TransformShape.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\TranslateMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\TranslatePath.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\TranslateShape.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\Triangle.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\TriangleMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\TubeMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\utils.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\UvFlipMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\UvSwapMesh.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\gml\gml.hpp">
+      <Filter>include\gml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\gml\intersect.hpp">
+      <Filter>include\gml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\gml\mat.hpp">
+      <Filter>include\gml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\gml\quaternion.hpp">
+      <Filter>include\gml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\gml\spline.hpp">
+      <Filter>include\gml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\gml\texture.hpp">
+      <Filter>include\gml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\gml\util.hpp">
+      <Filter>include\gml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\gml\vec.hpp">
+      <Filter>include\gml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\common.h" />
+    <ClInclude Include="..\shared\transform.h" />
   </ItemGroup>
 </Project>

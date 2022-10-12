@@ -11,10 +11,152 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\shared\plugin.wfc.cpp" />
+    <ClCompile Include="..\shared\generators.cpp" />
+    <ClCompile Include="..\shared\meshes.cpp" />
+    <ClCompile Include="..\shared\paths.cpp" />
+    <ClCompile Include="..\shared\plugin.generator.cpp" />
+    <ClCompile Include="..\shared\shapes.cpp" />
+    <ClCompile Include="..\shared\specializations.cpp" />
+    <ClCompile Include="..\shared\src\AnyMesh.cpp" />
+    <ClCompile Include="..\shared\src\AnyPath.cpp" />
+    <ClCompile Include="..\shared\src\AnyShape.cpp" />
+    <ClCompile Include="..\shared\src\BoxMesh.cpp" />
+    <ClCompile Include="..\shared\src\CappedConeMesh.cpp" />
+    <ClCompile Include="..\shared\src\CappedCylinderMesh.cpp" />
+    <ClCompile Include="..\shared\src\CappedTubeMesh.cpp" />
+    <ClCompile Include="..\shared\src\CapsuleMesh.cpp" />
+    <ClCompile Include="..\shared\src\CircleShape.cpp" />
+    <ClCompile Include="..\shared\src\ConeMesh.cpp" />
+    <ClCompile Include="..\shared\src\ConvexPolygonMesh.cpp" />
+    <ClCompile Include="..\shared\src\CylinderMesh.cpp" />
+    <ClCompile Include="..\shared\src\DiskMesh.cpp" />
+    <ClCompile Include="..\shared\src\DodecahedronMesh.cpp" />
+    <ClCompile Include="..\shared\src\EmptyMesh.cpp" />
+    <ClCompile Include="..\shared\src\EmptyPath.cpp" />
+    <ClCompile Include="..\shared\src\EmptyShape.cpp" />
+    <ClCompile Include="..\shared\src\GridShape.cpp" />
+    <ClCompile Include="..\shared\src\HelixPath.cpp" />
+    <ClCompile Include="..\shared\src\IcosahedronMesh.cpp" />
+    <ClCompile Include="..\shared\src\IcoSphereMesh.cpp" />
+    <ClCompile Include="..\shared\src\KnotPath.cpp" />
+    <ClCompile Include="..\shared\src\LinePath.cpp" />
+    <ClCompile Include="..\shared\src\LineShape.cpp" />
+    <ClCompile Include="..\shared\src\ParametricMesh.cpp" />
+    <ClCompile Include="..\shared\src\ParametricPath.cpp" />
+    <ClCompile Include="..\shared\src\ParametricShape.cpp" />
+    <ClCompile Include="..\shared\src\PlaneMesh.cpp" />
+    <ClCompile Include="..\shared\src\RectangleShape.cpp" />
+    <ClCompile Include="..\shared\src\RoundedBoxMesh.cpp" />
+    <ClCompile Include="..\shared\src\RoundedRectangleShape.cpp" />
+    <ClCompile Include="..\shared\src\SphereMesh.cpp" />
+    <ClCompile Include="..\shared\src\SphericalConeMesh.cpp" />
+    <ClCompile Include="..\shared\src\SphericalTriangleMesh.cpp" />
+    <ClCompile Include="..\shared\src\SpringMesh.cpp" />
+    <ClCompile Include="..\shared\src\TeapotMesh.cpp" />
+    <ClCompile Include="..\shared\src\TorusKnotMesh.cpp" />
+    <ClCompile Include="..\shared\src\TorusMesh.cpp" />
+    <ClCompile Include="..\shared\src\TriangleMesh.cpp" />
+    <ClCompile Include="..\shared\src\TubeMesh.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\shared\wfc.h" />
+    <ClInclude Include="..\shared\common.h" />
+    <ClInclude Include="..\shared\include\generator\AnyGenerator.hpp" />
+    <ClInclude Include="..\shared\include\generator\AnyMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\AnyPath.hpp" />
+    <ClInclude Include="..\shared\include\generator\AnyShape.hpp" />
+    <ClInclude Include="..\shared\include\generator\Axis.hpp" />
+    <ClInclude Include="..\shared\include\generator\AxisFlipMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\AxisSwapMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\AxisSwapPath.hpp" />
+    <ClInclude Include="..\shared\include\generator\AxisSwapShape.hpp" />
+    <ClInclude Include="..\shared\include\generator\BezierMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\BezierShape.hpp" />
+    <ClInclude Include="..\shared\include\generator\BoxMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\CappedConeMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\CappedCylinderMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\CappedTubeMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\CapsuleMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\CircleShape.hpp" />
+    <ClInclude Include="..\shared\include\generator\ConeMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\ConvexPolygonMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\CylinderMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\DiskMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\DodecahedronMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\Edge.hpp" />
+    <ClInclude Include="..\shared\include\generator\EmptyMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\EmptyPath.hpp" />
+    <ClInclude Include="..\shared\include\generator\EmptyShape.hpp" />
+    <ClInclude Include="..\shared\include\generator\ExtrudeMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\FlipMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\FlipPath.hpp" />
+    <ClInclude Include="..\shared\include\generator\FlipShape.hpp" />
+    <ClInclude Include="..\shared\include\generator\generator.hpp" />
+    <ClInclude Include="..\shared\include\generator\GridShape.hpp" />
+    <ClInclude Include="..\shared\include\generator\HelixPath.hpp" />
+    <ClInclude Include="..\shared\include\generator\IcosahedronMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\IcoSphereMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\Iterator.hpp" />
+    <ClInclude Include="..\shared\include\generator\KnotPath.hpp" />
+    <ClInclude Include="..\shared\include\generator\LatheMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\LinePath.hpp" />
+    <ClInclude Include="..\shared\include\generator\LineShape.hpp" />
+    <ClInclude Include="..\shared\include\generator\math.hpp" />
+    <ClInclude Include="..\shared\include\generator\MergeMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\MergePath.hpp" />
+    <ClInclude Include="..\shared\include\generator\MergeShape.hpp" />
+    <ClInclude Include="..\shared\include\generator\MeshVertex.hpp" />
+    <ClInclude Include="..\shared\include\generator\MirrorMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\ParametricMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\ParametricPath.hpp" />
+    <ClInclude Include="..\shared\include\generator\ParametricShape.hpp" />
+    <ClInclude Include="..\shared\include\generator\PathVertex.hpp" />
+    <ClInclude Include="..\shared\include\generator\PlaneMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\RectangleShape.hpp" />
+    <ClInclude Include="..\shared\include\generator\RepeatMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\RepeatPath.hpp" />
+    <ClInclude Include="..\shared\include\generator\RepeatShape.hpp" />
+    <ClInclude Include="..\shared\include\generator\RotateMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\RotatePath.hpp" />
+    <ClInclude Include="..\shared\include\generator\RotateShape.hpp" />
+    <ClInclude Include="..\shared\include\generator\RoundedBoxMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\RoundedRectangleShape.hpp" />
+    <ClInclude Include="..\shared\include\generator\ScaleMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\ScalePath.hpp" />
+    <ClInclude Include="..\shared\include\generator\ScaleShape.hpp" />
+    <ClInclude Include="..\shared\include\generator\ShapeToPath.hpp" />
+    <ClInclude Include="..\shared\include\generator\ShapeVertex.hpp" />
+    <ClInclude Include="..\shared\include\generator\SphereMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\SphericalConeMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\SphericalTriangleMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\SpherifyMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\SpringMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\SubdivideMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\SubdividePath.hpp" />
+    <ClInclude Include="..\shared\include\generator\SubdivideShape.hpp" />
+    <ClInclude Include="..\shared\include\generator\TeapotMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\TorusKnotMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\TorusMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\TransformMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\TransformPath.hpp" />
+    <ClInclude Include="..\shared\include\generator\TransformShape.hpp" />
+    <ClInclude Include="..\shared\include\generator\TranslateMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\TranslatePath.hpp" />
+    <ClInclude Include="..\shared\include\generator\TranslateShape.hpp" />
+    <ClInclude Include="..\shared\include\generator\Triangle.hpp" />
+    <ClInclude Include="..\shared\include\generator\TriangleMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\TubeMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\utils.hpp" />
+    <ClInclude Include="..\shared\include\generator\UvFlipMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\UvSwapMesh.hpp" />
+    <ClInclude Include="..\shared\include\gml\gml.hpp" />
+    <ClInclude Include="..\shared\include\gml\intersect.hpp" />
+    <ClInclude Include="..\shared\include\gml\mat.hpp" />
+    <ClInclude Include="..\shared\include\gml\quaternion.hpp" />
+    <ClInclude Include="..\shared\include\gml\spline.hpp" />
+    <ClInclude Include="..\shared\include\gml\texture.hpp" />
+    <ClInclude Include="..\shared\include\gml\util.hpp" />
+    <ClInclude Include="..\shared\include\gml\vec.hpp" />
+    <ClInclude Include="..\shared\transform.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{79F0CACC-457B-4A25-BC54-81277688C361}</ProjectGuid>
@@ -55,7 +197,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(Configuration)\</OutDir>
-    <TargetName>wfc</TargetName>
+    <TargetName>generator</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <PreBuildEvent />
@@ -83,7 +225,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>$(CORONA_ROOT)/Corona/shared/include/Corona;$(CORONA_ROOT)/Corona/shared/include/lua;%(AdditionalIncludeDirectories);$(SolutionDir)../../ByteReader;$(SolutionDir)../../solar2d_native_utils</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(CORONA_ROOT)/Corona/shared/include/Corona;$(CORONA_ROOT)/Corona/shared/include/lua;%(AdditionalIncludeDirectories);$(SolutionDir)../../ByteReader;$(SolutionDir)../../solar2d_native_utils;$(SolutionDir)/../shared/include;$(SolutionDir)/../shared/include/generator</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);LUA_BUILD_AS_DLL;LUA_LIB;_CRT_SECURE_NO_WARNINGS;__HAVE_OGG</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
