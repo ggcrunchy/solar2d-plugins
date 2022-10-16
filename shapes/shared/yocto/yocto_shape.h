@@ -150,7 +150,7 @@ struct fvshape_data {
 // Interpolate vertex data
 vec3f eval_position(const fvshape_data& shape, int element, const vec2f& uv);
 vec3f eval_normal(const fvshape_data& shape, int element, const vec2f& uv);
-vec2f eval_texcoord(const shape_data& shape, int element, const vec2f& uv);
+vec2f eval_texcoord(const fvshape_data& shape, int element, const vec2f& uv); // <- STEVE CHANGE
 
 // Evaluate element normals
 vec3f eval_element_normal(const fvshape_data& shape, int element);
@@ -326,7 +326,7 @@ void quads_normals(vector<vec3f>& normals, const vector<vec4i>& quads,
 // The first three components are the tangent with respect to the u texcoord.
 // The fourth component is the sign of the tangent wrt the v texcoord.
 // Tangent frame is useful in normal mapping.
-vector<vec4f> triangle_tangent_spaces(const vector<vec3i>& triangles,
+vector<vec4f> triangles_tangent_spaces(const vector<vec3i>& triangles, // <- STEVE CHANGE
     const vector<vec3f>& positions, const vector<vec3f>& normals,
     const vector<vec2f>& texcoords);
 
@@ -597,7 +597,7 @@ vector<vec3i> quads_to_triangles(const vector<vec4i>& quads);
 // Convert triangles to quads by creating degenerate quads
 vector<vec4i> triangles_to_quads(const vector<vec3i>& triangles);
 // Convert beziers to lines using 3 lines for each bezier.
-vector<vec4i> bezier_to_lines(vector<vec2i>& lines);
+vector<vec2i> bezier_to_lines(const vector<vec4i>& lines); // <- STEVE CHANGE
 
 // Convert face-varying data to single primitives. Returns the quads indices
 // and filled vectors for pos, norm and texcoord.
@@ -626,7 +626,7 @@ void merge_lines(vector<vec2i>& lines, vector<vec3f>& positions,
     const vector<float>& merge_radius);
 void merge_triangles(vector<vec3i>& triangles, vector<vec3f>& positions,
     vector<vec3f>& normals, vector<vec2f>& texcoords,
-    const vector<vec2i>& merge_triangles, const vector<vec3f>& merge_positions,
+    const vector<vec3i>& merge_triangles, const vector<vec3f>& merge_positions, // <- STEVE CHANGE
     const vector<vec3f>& merge_normals,
     const vector<vec2f>& merge_texturecoords);
 void merge_quads(vector<vec4i>& quads, vector<vec3f>& positions,

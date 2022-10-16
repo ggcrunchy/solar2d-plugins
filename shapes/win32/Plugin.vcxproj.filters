@@ -4,31 +4,31 @@
     <ClInclude Include="..\shared\par_octasphere.h" />
     <ClInclude Include="..\shared\par_shapes.h" />
     <ClInclude Include="..\shared\yocto\yocto_cli.h">
-      <Filter>yocto</Filter>
+      <Filter>yocto_lib</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\yocto\yocto_geometry.h">
-      <Filter>yocto</Filter>
+      <Filter>yocto_lib</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\yocto\yocto_geometryt.h">
-      <Filter>yocto</Filter>
+      <Filter>yocto_lib</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\yocto\yocto_math.h">
-      <Filter>yocto</Filter>
+      <Filter>yocto_lib</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\yocto\yocto_matht.h">
-      <Filter>yocto</Filter>
+      <Filter>yocto_lib</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\yocto\yocto_modelio.h">
-      <Filter>yocto</Filter>
+      <Filter>yocto_lib</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\yocto\yocto_noise.h">
-      <Filter>yocto</Filter>
+      <Filter>yocto_lib</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\yocto\yocto_sampling.h">
-      <Filter>yocto</Filter>
+      <Filter>yocto_lib</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\yocto\yocto_shape.h">
-      <Filter>yocto</Filter>
+      <Filter>yocto_lib</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\fast_float\include\fast_float\ascii_number.h">
       <Filter>fast_float</Filter>
@@ -58,25 +58,66 @@
       <Filter>fast_float</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\common.h" />
+    <ClInclude Include="..\shared\yocto.h">
+      <Filter>yocto_wrap</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\shared\plugin.shapes.cpp" />
     <ClCompile Include="..\shared\yocto\yocto_modelio.cpp">
-      <Filter>yocto</Filter>
+      <Filter>yocto_lib</Filter>
     </ClCompile>
     <ClCompile Include="..\shared\yocto\yocto_shape.cpp">
-      <Filter>yocto</Filter>
+      <Filter>yocto_lib</Filter>
     </ClCompile>
     <ClCompile Include="..\shared\par.cpp" />
-    <ClCompile Include="..\shared\yocto.cpp" />
     <ClCompile Include="..\shared\octasphere.cpp" />
+    <ClCompile Include="..\shared\fvshape_data.cpp">
+      <Filter>yocto_wrap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\yocto.cpp">
+      <Filter>yocto_wrap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\shape_data.cpp">
+      <Filter>yocto_wrap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\specializations.cpp">
+      <Filter>yocto_wrap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\vector1i.cpp">
+      <Filter>yocto_wrap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\vector2i.cpp">
+      <Filter>yocto_wrap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\vector3i.cpp">
+      <Filter>yocto_wrap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\vector4i.cpp">
+      <Filter>yocto_wrap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\vector1f.cpp">
+      <Filter>yocto_wrap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\vector2f.cpp">
+      <Filter>yocto_wrap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\vector3f.cpp">
+      <Filter>yocto_wrap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\vector4f.cpp">
+      <Filter>yocto_wrap</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="yocto">
-      <UniqueIdentifier>{ed87fbb1-d1d2-4693-a235-9786512127eb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="fast_float">
       <UniqueIdentifier>{7b881a93-8c8a-414f-a401-79cf9b93ece9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="yocto_lib">
+      <UniqueIdentifier>{ed87fbb1-d1d2-4693-a235-9786512127eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="yocto_wrap">
+      <UniqueIdentifier>{c3be22f5-992c-45be-b792-477571b19767}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

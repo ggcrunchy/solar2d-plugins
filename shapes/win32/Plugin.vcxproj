@@ -23,6 +23,7 @@
     <ClInclude Include="..\shared\fast_float\include\fast_float\simple_decimal_conversion.h" />
     <ClInclude Include="..\shared\par_octasphere.h" />
     <ClInclude Include="..\shared\par_shapes.h" />
+    <ClInclude Include="..\shared\yocto.h" />
     <ClInclude Include="..\shared\yocto\yocto_cli.h" />
     <ClInclude Include="..\shared\yocto\yocto_geometry.h" />
     <ClInclude Include="..\shared\yocto\yocto_geometryt.h" />
@@ -34,9 +35,20 @@
     <ClInclude Include="..\shared\yocto\yocto_shape.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\shared\fvshape_data.cpp" />
     <ClCompile Include="..\shared\octasphere.cpp" />
     <ClCompile Include="..\shared\par.cpp" />
     <ClCompile Include="..\shared\plugin.shapes.cpp" />
+    <ClCompile Include="..\shared\shape_data.cpp" />
+    <ClCompile Include="..\shared\specializations.cpp" />
+    <ClCompile Include="..\shared\vector1f.cpp" />
+    <ClCompile Include="..\shared\vector1i.cpp" />
+    <ClCompile Include="..\shared\vector2f.cpp" />
+    <ClCompile Include="..\shared\vector2i.cpp" />
+    <ClCompile Include="..\shared\vector3f.cpp" />
+    <ClCompile Include="..\shared\vector3i.cpp" />
+    <ClCompile Include="..\shared\vector4f.cpp" />
+    <ClCompile Include="..\shared\vector4i.cpp" />
     <ClCompile Include="..\shared\yocto.cpp" />
     <ClCompile Include="..\shared\yocto\yocto_modelio.cpp" />
     <ClCompile Include="..\shared\yocto\yocto_shape.cpp" />

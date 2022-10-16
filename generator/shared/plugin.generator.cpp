@@ -9,6 +9,21 @@
 //
 //
 
+gml::dvec2 GetVec2 (lua_State * L, int arg)
+{
+	arg = CoronaLuaNormalize(L, arg);
+
+	luaL_checktype(L, arg, LUA_TTABLE);
+	lua_getfield(L, arg, "x"); // ..., x
+	lua_getfield(L, arg, "y"); // ..., x, y
+
+	return gml::dvec2{luaL_checknumber(L, -2), luaL_checknumber(L, -1)};
+}
+
+//
+//
+//
+
 gml::dvec3 GetVec3 (lua_State * L, int arg)
 {
 	arg = CoronaLuaNormalize(L, arg);

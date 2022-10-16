@@ -17,7 +17,7 @@ template<> gml::dvec2 LuaXS::GetArgBody<gml::dvec2> (lua_State * L, int arg)
 
 	for (int i = 0; i < 2; ++i, lua_pop(L, 1))
 	{
-		lua_rawgeti(L, arg, i); // ..., v, ..., value
+		lua_rawgeti(L, arg, i + 1); // ..., v, ..., value
 
 		v[i] = luaL_checknumber(L, -1);
 	}
@@ -33,7 +33,7 @@ template<> gml::dvec3 LuaXS::GetArgBody<gml::dvec3> (lua_State * L, int arg)
 
 	for (int i = 0; i < 3; ++i, lua_pop(L, 1))
 	{
-		lua_rawgeti(L, arg, i); // ..., v, ..., value
+		lua_rawgeti(L, arg, i + 1); // ..., v, ..., value
 
 		v[i] = luaL_checknumber(L, -1);
 	}
@@ -49,7 +49,7 @@ template<> gml::ivec2 LuaXS::GetArgBody<gml::ivec2> (lua_State * L, int arg)
 
 	for (int i = 0; i < 2; ++i, lua_pop(L, 1))
 	{
-		lua_rawgeti(L, arg, i); // ..., v, ..., value
+		lua_rawgeti(L, arg, i + 1); // ..., v, ..., value
 
 		v[i] = luaL_checkint(L, -1);
 	}
@@ -65,10 +65,15 @@ template<> gml::ivec3 LuaXS::GetArgBody<gml::ivec3> (lua_State * L, int arg)
 
 	for (int i = 0; i < 3; ++i, lua_pop(L, 1))
 	{
-		lua_rawgeti(L, arg, i); // ..., v, ..., value
+		lua_rawgeti(L, arg, i + 1); // ..., v, ..., value
 
 		v[i] = luaL_checkint(L, -1);
 	}
 
 	return v;
+}
+
+template<> generator::Axis LuaXS::GetArgBody<generator::Axis> (lua_State * L, int arg)
+{
+	return GetAxis(L, arg, nullptr);
 }

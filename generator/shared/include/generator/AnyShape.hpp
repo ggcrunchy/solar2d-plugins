@@ -40,6 +40,8 @@ public:
 
 	AnyGenerator<ShapeVertex> vertices() const noexcept;
 
+	using Edges = AnyGenerator<Edge>; // <- STEVE CHANGE
+
 private:
 
 	class Base {

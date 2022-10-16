@@ -5,7 +5,6 @@
 
 #include "common.h"
 #include "transform.h"
-#include "gml/util.hpp"
 #include <vector>
 
 //
@@ -346,13 +345,13 @@ void MakeMeshVertexBox (lua_State * L, generator::MeshVertex * vertex)
 
 template<int D1, int D0> int BezierMesh (lua_State * L, const gml::ivec2 & segments)
 {
-	gml::dvec3 control[D1][D0];
+	gml::dvec3 control[D0][D1];
 
-	for (size_t i = 1, rn = lua_objlen(L, 1); i <= rn; ++i, lua_pop(L, 1))
+	for (int i = 1; i <= D0; ++i, lua_pop(L, 1))
 	{
 		lua_rawgeti(L, 1, i); // control[, params], row
 
-		for (size_t j = 1, cn = lua_objlen(L, -1); j <= cn; ++j, lua_pop(L, 1))
+		for (int j = 1; j <= D1; ++j, lua_pop(L, 1))
 		{
 			lua_rawgeti(L, -1, i); // control[, params], row, v
 
@@ -360,7 +359,7 @@ template<int D1, int D0> int BezierMesh (lua_State * L, const gml::ivec2 & segme
 		}
 	}
 
-	return WrapMesh(L, generator::BezierMesh<D1, D0>(control, segments)); // [params, ]bezier
+	return WrapMesh(L, generator::BezierMesh<D1, D0>{control, segments}); // [params, ]bezier
 }
 
 //
@@ -370,7 +369,7 @@ template<int D1, int D0> int BezierMesh (lua_State * L, const gml::ivec2 & segme
 void add_meshes (lua_State * L)
 {
 	luaL_Reg funcs[] = {
-		/*{
+		{
 			"createBezierMesh", [](lua_State * L)
 			{
 				if (lua_istable(L, 1))
@@ -442,7 +441,7 @@ void add_meshes (lua_State * L)
 					else return BezierMesh<5, 5>(L, segments);
 				} // control[, params], bezier
 			}
-		}, */{
+		}, {
 			"createBoxMesh", [](lua_State * L)
 			{
 				LuaXS::Options opts{L, 1};

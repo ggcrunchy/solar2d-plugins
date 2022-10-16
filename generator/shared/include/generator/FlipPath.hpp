@@ -61,7 +61,7 @@ public:
 		}
 	{ }
 
-	Edges edges() const noexcept { return {*this}; }
+	Edges edges() const noexcept { return {transformPath_};/*{*this}*/; } // <- STEVE CHANGE
 
 	using Vertices = typename Impl::Vertices;
 

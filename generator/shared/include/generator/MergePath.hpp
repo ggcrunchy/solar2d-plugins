@@ -33,7 +33,13 @@ public:
 
 		Edge generate() const {
 			if (!head_.done()) return head_.generate();
-			return tail_.generate() + head_VertexCount;
+
+			// STEVE CHANGE
+			Edge edge = tail_.generate();
+			edge.vertices += head_VertexCount;
+			return edge;
+			//return tail_.generate() + head_VertexCount;
+			// /STEVE CHANGE
 		}
 
 		bool done() const noexcept { return mAllDone; }
@@ -47,16 +53,16 @@ public:
 
 	private:
 
-		typename EdgeGeneratorType<Head>::type  head_;
-		typename EdgeGeneratorType<MergePath<Tail...>>::type tail_;
+		typename EdgeGeneratorType<Head>::Type  head_; // <- STEVE CHANGE
+		typename EdgeGeneratorType<MergePath<Tail...>>::Type tail_; // <- STEVE CHANGE
 
 		int head_VertexCount;
 
 		bool mAllDone;
 
 		Edges(const MergePath& path) :
-			head_{path.head_.triangles()},
-			tail_(path.tail_.triangles()),
+			head_{path.head_./*triangles*/edges()}, // <- STEVE CHANGE
+			tail_(path.tail_./*triangles*/edges()), // <- STEVE CHANGE
 			head_VertexCount{count(path.head_.vertices())},
 			mAllDone{tail_.done() && head_.done()}
 		{ }
@@ -84,8 +90,8 @@ public:
 
 	private:
 
-		typename VertexGeneratorType<Head>::type head_;
-		typename VertexGeneratorType<MergePath<Tail...>>::type tail_;
+		typename VertexGeneratorType<Head>::Type head_; // <- STEVE CHANGE
+		typename VertexGeneratorType<MergePath<Tail...>>::Type tail_; // <- STEVE CHANGE
 		bool mAllDone;
 
 		Vertices(const MergePath& path) :

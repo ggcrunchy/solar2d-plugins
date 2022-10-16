@@ -28,15 +28,15 @@ public:
 		Edge generate() const {
 			Edge edge_ = edges_.generate();
 
-			if (i_ % 2 == 0) return Edge{
+			if (i_ % 2 == 0) return Edge(gml::ivec2{ // <- STEVE CHANGE
 				edge_.vertices[0],
 				static_cast<int>(shape_->vertexCache_.size()) + i_ / 2
-			};
+			}); // <- STEVE CHANGE
 
-			return Edge{
+			return Edge(gml::ivec2{ // <- STEVE CHANGE
 				static_cast<int>(shape_->vertexCache_.size()) + i_ / 2,
 				edge_.vertices[1]
-			};
+			}); // <- STEVE CHANGE
 		}
 
 		void next() {

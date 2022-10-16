@@ -28,6 +28,7 @@ void add_shapes (lua_State * L);
 //
 //
 
+gml::dvec2 GetVec2 (lua_State * L, int arg);
 gml::dvec3 GetVec3 (lua_State * L, int arg);
 generator::Axis GetAxis (lua_State * L, int arg, const char * def = nullptr);
 

@@ -181,7 +181,7 @@ LatheMesh<Shape> lathe(
 	double start = 0.0,
 	double sweep = gml::radians(360.0)
 ) {
-	return LatheMesh<Shape>{std::move(shape), axis, slices, start, sweep};
+	return LatheMesh<Shape>{std::move(shape), axis == Axis::X ? gml::dvec2{1.0, 0.0} : gml::dvec2{0.0, 1.0}, slices, start, sweep}; // <- STEVE CHANGE
 }
 
 

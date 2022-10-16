@@ -21,8 +21,6 @@
 * [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
 */
 
-#pragma once
-
 #include "common.h"
 #include <vector>
 

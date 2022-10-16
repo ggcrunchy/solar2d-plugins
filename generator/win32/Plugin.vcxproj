@@ -231,6 +231,8 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <LanguageStandard>
+      </LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalDependencies>$(CORONA_ROOT)\Corona\win\lib\*.lib;%(AdditionalDependencies);$(Configuration)\solar2d_native_utils.lib</AdditionalDependencies>
