@@ -215,7 +215,7 @@ bool Loader::ResolveZip (mz_zip_archive & zip, const char * archive)
 static bool CheckLoaded (const Loader * loader)
 {
 	if (!loader) CORONA_LOG_WARNING("No loader installed");
-	else if (LUA_REFNIL == loader->mPathForFileRef) CORONA_LOG("No system.pathForFile() available");
+	else if (LUA_REFNIL == loader->mPathForFileRef) CORONA_LOG_WARNING("No `system.pathForFile()` available");
 	else return true;
 
 	return false;
@@ -340,7 +340,7 @@ void AddLoader (lua_State * L)
 		lua_getfield(L, -1, "pathForFile"); // ..., loader, system, system.pathForFile
 
 		if (lua_isfunction(L, -1)) sLoader->mPathForFileRef = lua_ref(L, 1); // ..., loader, system; ref = system.pathForFile
-		else CORONA_LOG_WARNING("Unable to find system.pathForFile(), or not a function");
+		else CORONA_LOG_WARNING("Unable to find `system.pathForFile()`, or not a function");
 	}
 
 	//

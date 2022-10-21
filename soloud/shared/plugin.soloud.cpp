@@ -272,7 +272,16 @@ void Options::Get (lua_State * L, int opts)
 			mVolume = OptFloat(L, -1, -1);
 		}
 
-		lua_settop(L, top);	// ..., opts, ...
+		if (mWantCallback)
+		{
+			lua_getfield(L, opts, "onComplete"); // ..., opts, ...[[[[, pan?], paused?], vel_x, vel_y, vel_z], volume], on_complete
+
+			mGotCallback = lua_type(L, -1) == LUA_TFUNCTION;
+
+			if (mGotCallback) lua_insert(L, ++top); // ..., opts, ...on_complete[[[[, pan?], paused?], vel_x, vel_y, vel_z], volume]
+		}
+
+		lua_settop(L, top);	// ..., opts, ...[, on_complete]
 	}
 
 	else
@@ -281,6 +290,7 @@ void Options::Get (lua_State * L, int opts)
 		if (mWantPaused) mPaused = false;
 		if (mWantVelocity) mVelX = mVelY = mVelZ = 0;
 		if (mWantVolume) mVolume = -1;
+		if (mWantCallback) mGotCallback = false;
 	}
 };
 
@@ -476,27 +486,3 @@ CORONA_EXPORT int luaopen_plugin_soloud (lua_State * L)
 
 	return 1;
 }
-#ifdef _WIN32
-#include <windows.h>
-BOOL APIENTRY DllMain(HANDLE hModule, 
-                      DWORD  ul_reason_for_call, 
-                      LPVOID lpReserved)
-{
-	switch (ul_reason_for_call)
-	{
-	case DLL_PROCESS_ATTACH:
-		CoronaLog("Process ATTACH");
-		break;
-	case DLL_PROCESS_DETACH:
-		CoronaLog("Process DETACH");
-		break;
-	case DLL_THREAD_DETACH:
-		CoronaLog("Thread DETACH");
-		break;
-	case DLL_THREAD_ATTACH:
-		CoronaLog("Thread ATTACH");
-		break;
-	}
-    return TRUE;
-}
-#endif

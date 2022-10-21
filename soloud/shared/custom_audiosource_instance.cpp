@@ -24,10 +24,6 @@
 #include "common.h"
 #include "custom_objects.h"
 
-extern "C" {
-	#include "marshal.h"
-}
-
 //
 //
 //
@@ -43,20 +39,6 @@ CustomSourceInstance::CustomSourceInstance (CustomSource * parent) : mParent{par
 CustomSourceInstance::~CustomSourceInstance ()
 {
 	RemoveFromStore(mL, this);
-}
-
-//
-//
-//
-
-static void DecodeObject (lua_State * L, const char * encoded, size_t len)
-{
-	lua_pushcfunction(L, mar_decode); // ..., mar_decode
-	lua_pushlstring(L, encoded, len); // ..., mar_decode, encoded
-
-	GetDecodeConstants(L); // ..., mar_decode, encoded, constants
-
-	lua_call(L, 2, 1); // ..., decoded
 }
 
 //
@@ -81,7 +63,7 @@ void CustomSourceInstance::Init (lua_State * L, const ParentData * data)
 						bool found = true;
 
 						// TODO: generalize?
-						if (strcmp(key, "channels") == 0) CORONA_LOG_WARNING("unable to assign channels");
+						if (strcmp(key, "channels") == 0) CORONA_LOG_WARNING("Unable to assign channels");
 						else if (strcmp(key, "BaseSamplerate") == 0) instance->mBaseSamplerate = LuaXS::Float(L, 3);
 						else if (strcmp(key, "Samplerate") == 0) instance->mSamplerate = LuaXS::Float(L, 3);
 						else found = false;
@@ -117,45 +99,45 @@ void CustomSourceInstance::Init (lua_State * L, const ParentData * data)
 		});
 	});
 
-	lua_createtable(L, 0, mParent->mHasSeek ? 4 : 3); // ..., dummy, env (hash part: interface, samples, data[, scratch])
+	lua_createtable(L, 0, mParent->mHasSeek ? 4 : 3); // ..., box, env (hash part: interface, samples, data[, scratch])
 
-	DecodeObject(L, mParent->mInterface, mParent->mInterfaceLen); // ..., dummy, env, interface
+	DecodeObject(L, mParent->mInterface, mParent->mInterfaceLen); // ..., box, env, interface
 
-	lua_setfield(L, -2, "interface"); // ..., dummy, env = { interface = interface[, parent_proxy] }
+	lua_setfield(L, -2, "interface"); // ..., box, env = { interface = interface[, parent_proxy] }
 
 	if (mParent->mNewInstance)
 	{
-		DecodeObject(L, mParent->mNewInstance, mParent->mNewInstanceLen); // ..., dummy, env, newInstance
+		DecodeObject(L, mParent->mNewInstance, mParent->mNewInstanceLen); // ..., box, env, newInstance
 
 		if (data)
 		{
-			ParentDataWrapper * pdata = LuaXS::NewTyped<ParentDataWrapper>(L, mParent, *data); // ..., dummy, env, newInstance, parent_data
+			ParentDataWrapper * pdata = LuaXS::NewTyped<ParentDataWrapper>(L, &mParent->mData, *data); // ..., box, env, newInstance, parent_data
 
 			pdata->Init(L);
 		}
 
-		lua_call(L, data ? 1 : 0, 1); // ..., dummy, env, data
-		lua_setfield(L, -2, "data"); // ..., dummy, env = { interface[, parent_proxy], data = data }
+		lua_call(L, data ? 1 : 0, 1); // ..., box, env, data
+		lua_setfield(L, -2, "data"); // ..., box, env = { interface[, parent_proxy], data = data }
 	}
 
-	FloatBuffer * samples = NewFloatBuffer(L); // dummy, env, samples
+	FloatBuffer * samples = NewFloatBuffer(L); // box, env, samples
 
 	samples->mCanWrite = true;
 	samples->mOwnsData = false;
 
-	lua_setfield(L, -2, "samples"); // dummy, env = { interface[, parent_proxy][, data], samples = samples }
+	lua_setfield(L, -2, "samples"); // box, env = { interface[, parent_proxy][, data], samples = samples }
 
 	if (mParent->mHasSeek)
 	{
-		FloatBuffer * scratch = NewFloatBuffer(L); // dummy, env, scratch
+		FloatBuffer * scratch = NewFloatBuffer(L); // box, env, scratch
 		
 		scratch->mCanWrite = true;
 		scratch->mOwnsData = false;
 
-		lua_setfield(L, -2, "scratch"); // dummy, env = { interface[, parent_proxy][, data], samples, scratch = scratch }
+		lua_setfield(L, -2, "scratch"); // box, env = { interface[, parent_proxy][, data], samples, scratch = scratch }
 	}
 
-	lua_setfenv(L, -2); // dummy; dummy.env = env
+	lua_setfenv(L, -2); // box; box.env = env
 
 	*box = this;
 

@@ -363,9 +363,9 @@ namespace SoLoud
 	}
 
 
-	handle Soloud::play3d(AudioSource &aSound, float aPosX, float aPosY, float aPosZ, float aVelX, float aVelY, float aVelZ, float aVolume, bool aPaused, unsigned int aBus)
+	handle Soloud::play3d(AudioSource &aSound, float aPosX, float aPosY, float aPosZ, unsigned int * id, float aVelX, float aVelY, float aVelZ, float aVolume, bool aPaused, unsigned int aBus) // <- STEVE CHANGE
 	{
-		handle h = play(aSound, aVolume, 0, 1, aBus);
+		handle h = play(aSound, id, aVolume, 0, 1, aBus); // <- STEVE CHANGE
 		lockAudioMutex_internal();
 		int v = getVoiceFromHandle_internal(h);
 		if (v < 0) 
@@ -433,9 +433,9 @@ namespace SoLoud
 		return h;
 	}
 
-	handle Soloud::play3dClocked(time aSoundTime, AudioSource &aSound, float aPosX, float aPosY, float aPosZ, float aVelX, float aVelY, float aVelZ, float aVolume, unsigned int aBus)
+	handle Soloud::play3dClocked(time aSoundTime, AudioSource &aSound, float aPosX, float aPosY, float aPosZ, unsigned int * id, float aVelX, float aVelY, float aVelZ, float aVolume, unsigned int aBus) // <- STEVE CHANGE
 	{
-		handle h = play(aSound, aVolume, 0, 1, aBus);
+		handle h = play(aSound, id, aVolume, 0, 1, aBus); // <- STEVE CHANGE
 		lockAudioMutex_internal();
 		int v = getVoiceFromHandle_internal(h);
 		if (v < 0) 

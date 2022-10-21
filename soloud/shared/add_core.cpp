@@ -192,17 +192,125 @@ static unsigned int FilterAttribute (lua_State * L, int arg)
 //
 //
 
+static int sCallbacksRef;
+
+//
+//
+//
+
+static void IssueCallbacks (lua_State * L, SoLoud::Soloud & core)
+{
+	std::vector<SoLoud::OnComplete> finished;
+
+	core.swapOnComplete(finished);
+
+	//
+	//
+	//
+
+	lua_getref(L, sCallbacksRef); // ..., callbacks
+	lua_getfield(L, -1, "handlers"); // ..., callbacks, handlers
+	lua_getfield(L, -2, "event"); // ..., callbacks, handlers, event
+
+	for (auto iter = finished.begin(); iter != finished.end(); ++iter)
+	{
+		lua_pushinteger(L, iter->mID); // ..., callbacks, handlers, event, id
+		lua_rawget(L, -3); // ..., callbacks, handlers, event, on_complete
+		lua_pushinteger(L, iter->mID); // ..., callbacks, handlers, event, on_complete, id
+		lua_pushnil(L); // ..., callbacks, handlers, event, on_complete, id, nil
+		lua_rawset(L, -5); // ..., callbacks, handlers = { ..., [id] = nil }, event, on_complete
+		lua_pushvalue(L, -2); // ..., callbacks, handlers, event, on_complete, event
+		lua_pushboolean(L, iter->mDone); // ..., callbacks, handlers, event, on_complete, event, done
+		lua_setfield(L, -2, "completed"); // ..., callbacks, handlers, event, on_complete, event = { completed = done }
+
+		if (lua_pcall(L, 1, 0, 0) != 0) // ..., callbacks, handlers, event[, err]
+		{
+			CORONA_LOG_WARNING("Error in `onComplete` callback: %s", lua_isstring(L, -1) ? lua_tostring(L, -1) : "?");
+
+			lua_pop(L, 1); // ..., callbacks, handlers, event
+		}
+	}
+
+	lua_pop(L, 3); // ...
+}
+
+//
+//
+//
+
 static void Deinitialize (SoLoud::Soloud & core)
 {
-	core.~Soloud();CoronaLog("DEINIT2");
+	core.~Soloud();
 }
 
 static void Shutdown (lua_State * L, SoLoud::Soloud & core, int arg = 1)
 {
+	IssueCallbacks(L, core);
 	Deinitialize(core);
 
 	RemoveEnvironment(L, arg);
 	RemoveFromStore(L, &core);
+}
+
+//
+//
+//
+
+static int DoOnCompletes (lua_State * L)
+{
+	if (sCurrentCore) IssueCallbacks(L, sCurrentCore->mCore);
+	else CORONA_LOG_WARNING("No core present to deliver `onComplete` results");
+	
+	lua_pushliteral(L, "enterFrame"); // ..., "enterFrame"
+	lua_getref(L, sCallbacksRef); // ..., "enterFrame", callbacks
+	lua_getfield(L, -1, "handlers"); // ..., "enterFrame", callbacks, handlers
+	lua_pushnil(L); // ..., "enterFrame", callbacks, handlers, nil
+
+	if (lua_next(L, -2) == 0) // ..., "enterFrame", callbacks, handlers[, k, v]
+	{
+		lua_pop(L, 1); // ..., "enterFrame", callbacks
+		lua_pushnil(L); // ..., "enterFrame", callbacks, nil
+		lua_setfield(L, -2, "added"); // ..., "enterFrame", callbacks = { ..., added = nil }
+		lua_getfield(L, -1, "Runtime"); // ..., "enterFrame", callbacks, Runtime
+		lua_getfield(L, -1, "removeEventListener"); // ..., "enterFrame", callbacks, Runtime, Runtime:removeEventListener
+		lua_insert(L, -4); // ..., Runtime:removeEventListener, "enterFrame", callbacks, Runtime
+		lua_insert(L, -3); // ..., Runtime:removeEventListener, Runtime, "enterFrame", callbacks
+		lua_call(L, 3, 0); // ...
+	}
+
+	return 0;
+}
+
+//
+//
+//
+
+void PrepareOnComplete (lua_State * L, unsigned int id)
+{
+	lua_getref(L, sCallbacksRef); // ..., on_complete, callbacks
+	lua_getfield(L, -1, "Runtime"); // ..., on_complete, callbacks, Runtime
+
+	if (lua_isnil(L, -1))
+	{
+		CORONA_LOG_ERROR("Unable to find Runtime to register `onComplete` callback");
+
+		lua_pop(L, 3); // ..., on_complete
+	}
+
+	else
+	{
+		lua_insert(L, -3); // ..., Runtime, on_complete, callbacks
+		lua_getfield(L, -1, "handlers"); // ..., Runtime, on_complete, callbacks, handlers
+		lua_pushinteger(L, id); // ..., Runtime, on_complete, callbacks, handlers, id
+		lua_pushvalue(L, -4); // ..., Runtime, on_complete, callbacks, handlers, id, on_complete
+		lua_rawset(L, -3); // ..., Runtime, on_complete, callbacks, handlers = { ..., [id] = on_complete }
+		lua_pop(L, 1); // ..., Runtime, on_complete, callbacks
+		lua_pushliteral(L, "enterFrame"); // ..., Runtime, on_complete, callbacks, "enterFrame"
+		lua_replace(L, -3); // ..., Runtime, "enterFrame", callbacks
+		lua_getfield(L, -3, "addEventListener"); // ..., Runtime, "enterFrame", callbacks = { ..., [id] = on_complete }, Runtime:addEventListener
+		lua_insert(L, -4); // ..., Runtime:addEventListener, Runtime, "enterFrame", callbacks = { ..., [id] = on_complete }
+		lua_call(L, 3, 0); // ...
+	}
 }
 
 //
@@ -469,14 +577,19 @@ void SoloudMethods(lua_State * L)
 			{
 				Options opts;
 
-				opts.mWantVolume = opts.mPaused = true;
+				opts.mWantVolume = opts.mPaused = opts.mWantCallback = true;
 
-				opts.Get(L, 3);
+				opts.Get(L, 3); // soloud, source[, opts][, on_complete]
 
-				return PushHandle(L, GetSoloud(L)->playBackground(
-					*GetAudioSource(L, 2),
+				unsigned int id = 0;
+				SoLoud::handle handle = GetSoloud(L)->playBackground(
+					*GetAudioSource(L, 2), opts.mGotCallback ? &id : nullptr,
 					opts.mVolume, opts.mPaused
-				)); // soloud, source[, opts], handle
+				);
+
+				if (opts.mGotCallback && id > 0) PrepareOnComplete(L, id); // soloud, source, opts
+
+				return PushHandle(L, handle); // soloud, source[, opts][, on_complete], handle
 			}
 		}, {
 			DO_HANDLE_NUMBER(schedulePause)
@@ -515,9 +628,9 @@ void SoloudMethods(lua_State * L)
 			{
 				SoLoud::Soloud * soloud = GetSoloud(L);
 				unsigned int index = LuaXS::Uint(L, 2) - 1;
-				SoLoud::Filter * filter = !lua_isnoneornil(L, 3) ? GetFilter(L, 3) : nullptr;
+				SoLoud::Filter * filter = GetFilter(L, 3); // soloud, index, box / nil[, filter]
 
-				SetFilterRefToEnvironment(L, 1, int(index) + 1, filter);
+				SetFilterRefToEnvironment(L, 1, int(index) + 1); // soloud, index[, box, filter]
 
 				soloud->setGlobalFilter(index, filter);
 
@@ -743,5 +856,25 @@ void add_core (lua_State * L)
 	lua_pushcfunction(L, CreateCore); // soloud, CreateCore
 	lua_setfield(L, -2, "createCore"); // soloud = { ..., createCore = CreateCore }
 
+	//
+	//
+	//
+
 	sCurrentCore = nullptr;
+
+	//
+	//
+	//
+
+	lua_createtable(L, 0, 5); // soloud, callbacks
+	lua_newtable(L); // soloud, callbacks, handlers
+	lua_setfield(L, -2, "handlers"); // soloud, callbacks = { handlers = handlers }
+	lua_pushcfunction(L, DoOnCompletes); // soloud, callbacks, DoOnCompletes
+	lua_setfield(L, -2, "enterFrame"); // soloud, callbacks = { handlers, enterFrame = DoOnCompletes }
+	lua_createtable(L, 0, 2); // soloud, callbacks, event = {}
+	lua_setfield(L, -2, "event"); // soloud, callbacks = { handlers, enterFrame, event = event }
+	lua_getglobal(L, "Runtime"); // soloud, callbacks, Runtime
+	lua_setfield(L, -2, "Runtime"); // soloud, callbacks = { handlers, enterFrame, event, Runtime = Runtime }
+
+	sCallbacksRef = lua_ref(L, 1); // soloud
 }

@@ -273,9 +273,62 @@ void ParentDataWrapper::Init (lua_State * L)
 
 void ParentDataWrapper::Synchronize ()
 {
-	if (mData.mLastUpdate == mParent->mData.mLastUpdate) return;
+	if (mData.mLastUpdate == mParentData->mLastUpdate) return;
 	
-	mData = mParent->mData;
+	mData = *mParentData;
+}
+
+//
+//
+//
+
+static void Assign (lua_State * L, const char * name, bool leave_on_stack)
+{
+	if (!leave_on_stack) lua_setfield(L, -2, name); // object, params, ..., t = { ..., [name] = value }
+	
+	lua_pushnil(L); // object, params, ...[, t][, value], nil
+	lua_setfield(L, 2, name); // object, params = { ..., [name] = nil }, ...[, t][, value]
+}
+
+//
+//
+//
+
+void AssignMember (lua_State * L, const char * name, int type, bool leave_on_stack)
+{
+	luaL_checktype(L, -1, type);
+
+	Assign(L, name, leave_on_stack); // object, params = { ..., [name] = nil }[, t][, func]
+}
+
+//
+//
+//
+
+void GetOptionalMember (lua_State * L, const char * name, int type, bool leave_on_stack)
+{
+	lua_getfield(L, 2, name); // object, params, ...[, t], value?
+
+	if (!lua_isnil(L, -1)) AssignMember(L, name, type, leave_on_stack); // object, params, ...[, t][, value]
+	else if (!leave_on_stack) lua_pop(L, 1); // object, params, ...[, t]
+}
+
+//
+//
+//
+
+bool CheckForKeyInEnv (lua_State * L, const char * name)
+{
+	lua_getfenv(L, 1); // object, k, ..., env
+	lua_getfield(L, -1, name); // object, k, ..., env, t?
+
+	if (!lua_isnil(L, -1))
+	{
+		lua_pushvalue(L, 2); // object, k, ..., env, t, k
+		lua_rawget(L, -2); // object, k, ..., env, t, v?
+	}
+
+	return !lua_isnil(L, -1);
 }
 
 //
@@ -295,13 +348,7 @@ bool CheckForKey (lua_State * L, const char * other)
 		return true;
 	}
 
-	if (other)
-	{
-		lua_getfenv(L, 1); // object, k, v, mt, nil, env
-		lua_getfield(L, -1, other); // object, k, v, mt, nil, env, other
-		lua_pushvalue(L, 2); // object, k, v, mt, nil, env, other, k
-		lua_rawget(L, -2); // object, k, v, mt, nil, env, other, v?
-	}
+	if (other && !CheckForKeyInEnv(L, other)) return false; // object, k, v, mt, nil, env[, other[, v?]]
 
 	if (!lua_isnil(L, -1))
 	{

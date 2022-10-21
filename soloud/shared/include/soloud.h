@@ -28,6 +28,7 @@ freely, subject to the following restrictions:
 #include <stdlib.h> // rand
 #include <math.h> // sin
 #include <atomic> // <- STEVE CHANGE
+#include <vector> // <- STEVE CHANGE
 
 #ifdef SOLOUD_NO_ASSERTS
 #define SOLOUD_ASSERT(x)
@@ -145,6 +146,13 @@ namespace SoLoud
 		// ctor
 		TinyAlignedFloatBuffer();
 	};
+
+	// STEVE CHANGE
+	struct OnComplete {
+		unsigned int mID;
+		bool mDone;
+	};
+	// /STEVE CHANGE
 };
 
 #include "soloud_filter.h"
@@ -262,15 +270,15 @@ namespace SoLoud
 		result getSpeakerPosition(unsigned int aChannel, float &aX, float &aY, float &aZ);
 
 		// Start playing a sound. Returns voice handle, which can be ignored or used to alter the playing sound's parameters. Negative volume means to use default.
-		handle play(AudioSource &aSound, float aVolume = -1.0f, float aPan = 0.0f, bool aPaused = 0, unsigned int aBus = 0);
+		handle play(AudioSource &aSound, unsigned int * id, float aVolume = -1.0f, float aPan = 0.0f, bool aPaused = 0, unsigned int aBus = 0); // <- STEVE CHANGE
 		// Start playing a sound delayed in relation to other sounds called via this function. Negative volume means to use default.
-		handle playClocked(time aSoundTime, AudioSource &aSound, float aVolume = -1.0f, float aPan = 0.0f, unsigned int aBus = 0);
+		handle playClocked(time aSoundTime, AudioSource &aSound, unsigned int * id, float aVolume = -1.0f, float aPan = 0.0f, unsigned int aBus = 0); // <- STEVE CHANGE
 		// Start playing a 3d audio source
-		handle play3d(AudioSource &aSound, float aPosX, float aPosY, float aPosZ, float aVelX = 0.0f, float aVelY = 0.0f, float aVelZ = 0.0f, float aVolume = 1.0f, bool aPaused = 0, unsigned int aBus = 0);
+		handle play3d(AudioSource &aSound, float aPosX, float aPosY, float aPosZ, unsigned int * id, float aVelX = 0.0f, float aVelY = 0.0f, float aVelZ = 0.0f, float aVolume = 1.0f, bool aPaused = 0, unsigned int aBus = 0); // <- STEVE CHANGE
 		// Start playing a 3d audio source, delayed in relation to other sounds called via this function.
-		handle play3dClocked(time aSoundTime, AudioSource &aSound, float aPosX, float aPosY, float aPosZ, float aVelX = 0.0f, float aVelY = 0.0f, float aVelZ = 0.0f, float aVolume = 1.0f, unsigned int aBus = 0);
+		handle play3dClocked(time aSoundTime, AudioSource &aSound, float aPosX, float aPosY, float aPosZ, unsigned int * id, float aVelX = 0.0f, float aVelY = 0.0f, float aVelZ = 0.0f, float aVolume = 1.0f, unsigned int aBus = 0); // <- STEVE CHANGE
 		// Start playing a sound without any panning. It will be played at full volume.
-		handle playBackground(AudioSource &aSound, float aVolume = -1.0f, bool aPaused = 0, unsigned int aBus = 0);
+		handle playBackground(AudioSource &aSound, unsigned int * id, float aVolume = -1.0f, bool aPaused = 0, unsigned int aBus = 0); // <- STEVE CHANGE
 
 		// Seek the audio stream to certain point in time. Some streams can't seek backwards. Relative play speed affects time.
 		result seek(handle aVoiceHandle, time aSeconds);
@@ -335,6 +343,7 @@ namespace SoLoud
 		void setLoopPoint(handle aVoiceHandle, time aLoopPoint);
 		// Set voice's loop state
 		void setLooping(handle aVoiceHandle, bool aLooping);
+		void setLooping(handle aVoiceHandle, int count); // <- STEVE CHANGE
 		// Set whether sound should auto-stop when it ends
 		void setAutoStop(handle aVoiceHandle, bool aAutoStop);
 		// Set current maximum active voice setting
@@ -479,7 +488,7 @@ namespace SoLoud
 		// Converts voice + playindex into handle
 		handle getHandleFromVoice_internal(unsigned int aVoice) const;
 		// Stop voice (not handle).
-		void stopVoice_internal(unsigned int aVoice);
+		void stopVoice_internal(unsigned int aVoice, bool done = false); // <- STEVE CHANGE
 		// Set voice (not handle) pan.
 		void setVoicePan_internal(unsigned int aVoice, float aPan);
 		// Set voice (not handle) relative play speed.
@@ -500,12 +509,14 @@ namespace SoLoud
 		void trimVoiceGroup_internal(handle aVoiceGroupHandle);
 		// Get pointer to the zero-terminated array of voice handles in a voice group
 		handle * voiceGroupHandleToArray_internal(handle aVoiceGroupHandle) const;
-std::atomic<bool> mMixing, mShuttingDown;
+		std::atomic<bool> mMixing, mShuttingDown; // <- STEVE CHANGE
 		// Lock audio thread mutex.
 		void lockAudioMutex_internal();
 
 		// Unlock audio thread mutex.
 		void unlockAudioMutex_internal();
+		
+		void swapOnComplete(std::vector<OnComplete> & other); // <- STEVE CHANGE
 
 		// Max. number of active voices. Busses and tickable inaudibles also count against this.
 		unsigned int mMaxActiveVoices;
@@ -594,6 +605,8 @@ std::atomic<bool> mMixing, mShuttingDown;
 		unsigned int mActiveVoiceCount;
 		// Active voices list needs to be recalculated
 		bool mActiveVoiceDirty;
+		
+		std::vector<OnComplete> mOnComplete; // <- STEVE CHANGE
 	};
 };
 

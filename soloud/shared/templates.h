@@ -93,58 +93,78 @@ template<typename T, T * (*getter)(lua_State *)> void BusCore (lua_State * L)
 			{
 				Options opts;
 
-				opts.mWantPan = opts.mWantVolume = opts.mWantPaused = true;
+				opts.mWantPan = opts.mWantVolume = opts.mWantPaused = opts.mWantCallback = true;
 
-				opts.Get(L, 3);
+				opts.Get(L, 3); // object, source[, opts][, on_complete]
 
-				return PushHandle(L, getter(L)->play(
-					*GetAudioSource(L, 2),
+				unsigned int id = 0;
+				SoLoud::handle handle = getter(L)->play(
+					*GetAudioSource(L, 2), opts.mGotCallback ? &id : nullptr,
 					opts.mVolume, opts.mPan, opts.mPaused
-				)); // object, source[, opts], handle
+				);
+
+				if (opts.mGotCallback && id > 0) PrepareOnComplete(L, id); // object, source, opts
+
+				return PushHandle(L, handle); // object, source[, opts], handle
 			}
 		}, {
 			"playClocked", [](lua_State * L)
 			{
 				Options opts;
 
-				opts.mWantPan = opts.mWantVolume = true;
+				opts.mWantPan = opts.mWantVolume = opts.mWantCallback = true;
 
-				opts.Get(L, 4);
+				opts.Get(L, 4); // object, time, source[, opts][, on_complete]
 
-				return PushHandle(L, getter(L)->playClocked(
-					lua_tonumber(L, 2), *GetAudioSource(L, 3),
+				unsigned int id = 0;
+				SoLoud::handle handle = getter(L)->playClocked(
+					lua_tonumber(L, 2), *GetAudioSource(L, 3), opts.mGotCallback ? &id : nullptr,
 					opts.mVolume, opts.mPan
-				)); // object, time, source[, opts], handle
+				);
+
+				if (opts.mGotCallback && id > 0) PrepareOnComplete(L, id); // object, time, source, opts
+
+				return PushHandle(L, handle); // object, time, source[, opts][, on_complete], handle
 			}
 		}, {
 			"play3d", [](lua_State * L)
 			{
 				Options opts;
 
-				opts.mWantVelocity = opts.mWantVolume = opts.mWantPaused = true;
+				opts.mWantVelocity = opts.mWantVolume = opts.mWantPaused = opts.mWantCallback = true;
 
-				opts.Get(L, 6);
+				opts.Get(L, 6); // object, source, x, y, z[, opts][, on_complete]
 
-				return PushHandle(L, getter(L)->play3d(
-					*GetAudioSource(L, 2), LuaXS::Float(L, 3), LuaXS::Float(L, 4), LuaXS::Float(L, 5),
+				unsigned int id = 0;
+				SoLoud::handle handle = getter(L)->play3d(
+					*GetAudioSource(L, 2), LuaXS::Float(L, 3), LuaXS::Float(L, 4), LuaXS::Float(L, 5), opts.mGotCallback ? &id : nullptr,
 					opts.mVelX, opts.mVelY, opts.mVelZ,
 					opts.mVolume, opts.mPaused
-				)); // object, source, x, y, z[, opts], handle
+				);
+
+				if (opts.mGotCallback && id > 0) PrepareOnComplete(L, id); // object, source, x, y, z, opts
+
+				return PushHandle(L, handle); // object, source, x, y, z[, opts][, on_complete], handle
 			}
 		}, {
 			"play3dClocked", [](lua_State * L)
 			{
 				Options opts;
 
-				opts.mWantVelocity = opts.mWantVolume = true;
+				opts.mWantVelocity = opts.mWantVolume = opts.mWantCallback = true;
 
-				opts.Get(L, 6);
+				opts.Get(L, 6); // object, time, source, x, y, z[, opts][, on_complete]
 
-				return PushHandle(L, getter(L)->play3dClocked(
-					lua_tonumber(L, 2), *GetAudioSource(L, 3), LuaXS::Float(L, 3), LuaXS::Float(L, 4), LuaXS::Float(L, 5),
+				unsigned int id = 0;
+				SoLoud::handle handle = getter(L)->play3dClocked(
+					lua_tonumber(L, 2), *GetAudioSource(L, 3), LuaXS::Float(L, 3), LuaXS::Float(L, 4), LuaXS::Float(L, 5), opts.mGotCallback ? &id : nullptr,
 					opts.mVelX, opts.mVelY, opts.mVelZ,
 					opts.mVolume
-				)); // object, time, source, x, y, z[, opts], handle
+				);
+
+				if (opts.mGotCallback && id > 0) PrepareOnComplete(L, id); // object, time, source, x, y, z, opts
+
+				return PushHandle(L, handle); // object, time, source, x, y, z[, opts][, on_complete], handle
 			}
 		}, {
 			"setVisualizationEnable", [](lua_State * L)

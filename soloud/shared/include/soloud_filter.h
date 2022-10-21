@@ -49,6 +49,7 @@ namespace SoLoud
 		virtual void setFilterParameter(unsigned int aAttributeId, float aValue);
 		virtual void fadeFilterParameter(unsigned int aAttributeId, float aTo, time aTime, time aStartTime);
 		virtual void oscillateFilterParameter(unsigned int aAttributeId, float aFrom, float aTo, time aTime, time aStartTime);
+		virtual void BindCore(Soloud * core) {} // <- STEVE CHANGE
 		virtual ~FilterInstance();
 	};
 

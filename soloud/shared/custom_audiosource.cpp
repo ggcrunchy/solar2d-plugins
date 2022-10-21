@@ -25,10 +25,6 @@
 #include "custom_objects.h"
 #include <utility>
 
-extern "C" {
-	#include "marshal.h"
-}
-
 //
 //
 //
@@ -53,53 +49,6 @@ SoLoud::AudioSourceInstance * CustomSource::createInstance()
 //
 //
 
-static void Assign (lua_State * L, const char * name, bool leave_on_stack = false)
-{
-	if (!leave_on_stack) lua_setfield(L, -2, name); // source, params, ..., t = { ..., [name] = value }
-	
-	lua_pushnil(L); // source, params, ...[, t][, value], nil
-	lua_setfield(L, 2, name); // source, params = { ..., [name] = nil }, ...[, t][, value]
-}
-
-static void AssignMember (lua_State * L, const char * name, int type, bool leave_on_stack = false)
-{
-	luaL_checktype(L, -1, type);
-
-	Assign(L, name, leave_on_stack); // source, params = { ..., [name] = nil }[, t][, func]
-}
-
-static void GetOptionalMember (lua_State * L, const char * name, int type, bool leave_on_stack = false)
-{
-	lua_getfield(L, 2, name); // source, params, ...[, t], value?
-
-	if (!lua_isnil(L, -1)) AssignMember(L, name, type, leave_on_stack); // source, params, ...[, t][, value]
-	else if (!leave_on_stack) lua_pop(L, 1); // source, params, ...[, t]
-}
-
-//
-//
-//
-
-static const char * EncodeObject (lua_State * L, size_t & len)
-{
-	lua_pushcfunction(L, mar_encode); // ..., object, mar_encode
-	lua_insert(L, -2); // ..., mar_encode, object
-	lua_createtable(L, 1, 0); // ..., mar_encode, object, constants
-
-	PushPluginModule(L); // ..., mar_encode, object, constants, soloud
-
-	lua_rawseti(L, -2, 1); // ..., mar_encode, object, constants = { soloud }
-	lua_call(L, 2, 1); // ..., encoded
-
-	len = lua_objlen(L, -1);
-
-	return lua_tostring(L, -1);
-}
-
-//
-//
-//
-
 int CustomSource::Init (lua_State * L)
 {
 	lua_settop(L, 2); // source, params
@@ -108,19 +57,7 @@ int CustomSource::Init (lua_State * L)
 
 	source->mL = L;
 
-	// Make a snapshot of the params table, then use it instead.
-	luaL_checktype(L, 2, LUA_TTABLE);
-	lua_newtable(L); // source, params, params2
-	lua_pushnil(L); // source, params, params2, nil
-
-	while (lua_next(L, 2))
-	{
-		lua_pushvalue(L, -2); // source, params, params2, k, v, k
-		lua_insert(L, -2); // source, params, params2, k, k, v
-		lua_rawset(L, -4); // source, params, params2 = { ..., [k] = v }, k
-	}
-
-	lua_replace(L, 2); // source, params2
+	ReplaceParamsTableWithCopy(L, 2); // source, params2
 
 	// Move any methods into an interface table...
 	lua_getfenv(L, 1); // source, params2, env

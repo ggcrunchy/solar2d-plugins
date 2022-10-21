@@ -29,6 +29,7 @@ freely, subject to the following restrictions:
 #include "soloud_internal.h"
 #include "soloud_thread.h"
 #include "soloud_fft.h"
+#include <utility> // <- STEVE CHANGE
 
 
 #ifdef SOLOUD_SSE_INTRINSICS
@@ -192,7 +193,7 @@ namespace SoLoud
 		delete[] mResampleData;
 		delete[] mResampleDataOwner;
 	}
-#include "CoronaLog.h"
+
 	void Soloud::deinit()
 	{
 		// Make sure no audio operation is currently pending
@@ -205,8 +206,8 @@ namespace SoLoud
 		// STEVE CHANGE
 		}
 		else
-		{CoronaLog("SPin1");
-			while (mMixing) CoronaLog("loop");CoronaLog("Spin2");
+		{
+			while (mMixing) {}
 		}
 		// /STEVE CHANGE
 		SOLOUD_ASSERT(!mInsideAudioThreadMutex);
@@ -1614,7 +1615,7 @@ namespace SoLoud
 		for (k = 0; k < aChannels; k++)
 			aVoice->mCurrentChannelVolume[k] = pand[k];
 	}
-
+#include "CoronaLog.h"
 	void Soloud::mixBus_internal(float *aBuffer, unsigned int aSamplesToRead, unsigned int aBufferSize, float *aScratch, unsigned int aBus, float aSamplerate, unsigned int aChannels, unsigned int aResampler)
 	{
 		unsigned int i, j;
@@ -1686,6 +1687,13 @@ namespace SoLoud
 									while (readcount < SAMPLE_GRANULARITY && voice->seek(voice->mLoopPoint, mScratch.mData, mScratchSize) == SO_NO_ERROR)
 									{
 										voice->mLoopCount++;
+										// STEVE CHANGE
+										if (voice->mLoopCount == voice->mLoopUntil)
+										{
+											voice->mFlags &= ~AudioSourceInstance::LOOPING;
+											break;
+										}
+										// /STEVE CHANGE
 										int inc = voice->getAudio(voice->mResampleData[0] + readcount, SAMPLE_GRANULARITY - readcount, SAMPLE_GRANULARITY);
 										readcount += inc;
 										if (inc == 0) break;
@@ -1812,7 +1820,7 @@ namespace SoLoud
 				// clear voice if the sound is over
 				if (!(voice->mFlags & (AudioSourceInstance::LOOPING | AudioSourceInstance::DISABLE_AUTOSTOP)) && voice->hasEnded())
 				{
-					stopVoice_internal(mActiveVoice[i]);
+					stopVoice_internal(mActiveVoice[i], true); // <- STEVE CHANGE
 				}
 			}
 			else
@@ -1863,6 +1871,13 @@ namespace SoLoud
 									while (readcount < SAMPLE_GRANULARITY && voice->seek(voice->mLoopPoint, mScratch.mData, mScratchSize) == SO_NO_ERROR)
 									{
 										voice->mLoopCount++;
+										// STEVE CHANGE
+										if (voice->mLoopCount == voice->mLoopUntil)
+										{
+											voice->mFlags &= ~AudioSourceInstance::LOOPING;
+											break;
+										}
+										// /STEVE CHANGE
 										readcount += voice->getAudio(voice->mResampleData[0] + readcount, SAMPLE_GRANULARITY - readcount, SAMPLE_GRANULARITY);
 									}
 								}
@@ -1921,7 +1936,7 @@ namespace SoLoud
 				// clear voice if the sound is over
 				if (!(voice->mFlags & (AudioSourceInstance::LOOPING | AudioSourceInstance::DISABLE_AUTOSTOP)) && voice->hasEnded())
 				{
-					stopVoice_internal(mActiveVoice[i]);
+					stopVoice_internal(mActiveVoice[i], true); // <- STEVE CHANGE
 				}
 			}
 		}
@@ -2335,4 +2350,14 @@ namespace SoLoud
 		}
 	}
 
+	// STEVE CHANGE
+	void Soloud::swapOnComplete(std::vector<OnComplete> & other)
+	{
+		lockAudioMutex_internal();
+
+		mOnComplete.swap(other);
+
+		unlockAudioMutex_internal();
+	}
+	// /STEVE CHANGE
 };

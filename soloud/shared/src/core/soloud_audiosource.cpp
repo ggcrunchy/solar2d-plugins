@@ -86,6 +86,8 @@ namespace SoLoud
 		mBusHandle = ~0u;
 		mLoopCount = 0;
 		mLoopPoint = 0;
+		mLoopUntil = 0; // <- STEVE CHANGE
+		mOnCompleteID = 0; // <- STEVE CHANGE
 		for (i = 0; i < FILTERS_PER_STREAM; i++)
 		{
 			mFilter[i] = NULL;
@@ -126,6 +128,8 @@ namespace SoLoud
 		if (aSource.mFlags & AudioSource::SHOULD_LOOP)
 		{
 			mFlags |= AudioSourceInstance::LOOPING;
+
+			if (aSource.mLoopMax) mLoopUntil = aSource.mLoopMax - 1; // <- STEVE CHANGE
 		}
 		if (aSource.mFlags & AudioSource::PROCESS_3D)
 		{
@@ -149,6 +153,16 @@ namespace SoLoud
 		}
 	}
 
+	
+	unsigned int AudioSourceInstance::sCurrentOnCompleteID; // <- STEVE CHANGE
+	// STEVE CHANGE
+	unsigned int AudioSourceInstance::assignOnCompleteID ()
+	{
+		mOnCompleteID = ++sCurrentOnCompleteID;
+
+		return mOnCompleteID;
+	}
+	// /STEVE CHANGE
 	result AudioSourceInstance::rewind()
 	{
 		return NOT_IMPLEMENTED;
@@ -189,6 +203,7 @@ namespace SoLoud
 			mFilter[i] = 0;
 		}
 		mFlags = 0; 
+		mLoopMax = 0; // <- STEVE CHANGE
 		mBaseSamplerate = 44100; 
 		mAudioSourceID = 0;
 		mSoloud = 0;
@@ -235,8 +250,17 @@ namespace SoLoud
 		{
 			mFlags &= ~SHOULD_LOOP;
 		}
-	}
 
+		mLoopMax = 0; // <- STEVE CHANGE
+	}
+	// STEVE CHANGE
+	void AudioSource::setLooping (int count)
+	{
+		setLooping(count > 1);
+
+		if (count > 1) mLoopMax = count;
+	}
+	// /STEVE CHANGE
 	void AudioSource::setSingleInstance(bool aSingleInstance)
 	{
 		if (aSingleInstance)
@@ -267,12 +291,12 @@ namespace SoLoud
 			return;
 		mFilter[aFilterId] = aFilter;
 	}
-#include "CoronaLog.h"
+
 	void AudioSource::stop()
 	{
 		if (mSoloud)
 		{
-			mSoloud->stopAudioSource(*this);CoronaLog("stop");
+			mSoloud->stopAudioSource(*this);
 		}
 	}
 

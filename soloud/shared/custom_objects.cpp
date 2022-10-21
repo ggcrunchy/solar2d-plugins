@@ -24,15 +24,68 @@
 #include "common.h"
 #include "custom_objects.h"
 
+extern "C" {
+	#include "marshal.h"
+}
+
+//
+//
+//
+
+void ReplaceParamsTableWithCopy (lua_State * L, int arg)
+{
+	arg = CoronaLuaNormalize(L, arg);
+
+	luaL_checktype(L, arg, LUA_TTABLE);
+	lua_newtable(L); // ..., params, params2
+	lua_pushnil(L); // ..., params, params2, nil
+
+	while (lua_next(L, arg))
+	{
+		lua_pushvalue(L, -2); // ..., params, params2, k, v, k
+		lua_insert(L, -2); // ..., params, params2, k, k, v
+		lua_rawset(L, -4); // ..., params, params2 = { ..., [k] = v }, k
+	}
+
+	lua_replace(L, arg); // ..., params2
+}
+
 //
 //
 //
 
 static int sDecodeConstantsRef;
 
-void GetDecodeConstants (lua_State * L)
+//
+//
+//
+
+void DecodeObject (lua_State * L, const char * encoded, size_t len)
 {
-	lua_getref(L, sDecodeConstantsRef); // ..., constants
+	lua_pushcfunction(L, mar_decode); // ..., mar_decode
+	lua_pushlstring(L, encoded, len); // ..., mar_decode, encoded
+	lua_getref(L, sDecodeConstantsRef); // ..., mar_decode, encoded, constants
+	lua_call(L, 2, 1); // ..., decoded
+}
+
+//
+//
+//
+
+const char * EncodeObject (lua_State * L, size_t & len)
+{
+	lua_pushcfunction(L, mar_encode); // ..., object, mar_encode
+	lua_insert(L, -2); // ..., mar_encode, object
+	lua_createtable(L, 1, 0); // ..., mar_encode, object, constants
+
+	PushPluginModule(L); // ..., mar_encode, object, constants, soloud
+
+	lua_rawseti(L, -2, 1); // ..., mar_encode, object, constants = { soloud }
+	lua_call(L, 2, 1); // ..., encoded
+
+	len = lua_objlen(L, -1);
+
+	return lua_tostring(L, -1);
 }
 
 //
@@ -62,7 +115,72 @@ void CreateSecondaryState (lua_State * L)
 //
 //
 
-static lua_State * CreateState ()
+static void ImportLibs (lua_State * to, lua_State * from)
+{
+	int top = lua_gettop(from);
+
+	lua_getglobal(from, "package"); // ..., package
+
+	if (!lua_istable(from, -1)) CORONA_LOG_WARNING("Unable to find `package`, or not a table");
+	else
+	{
+		lua_getfield(from, -1, "loaded"); // ..., package, package.loaded
+
+		if (!lua_istable(from, -1)) CORONA_LOG_WARNING("Unable to find `package.loaded`, or not a table");
+		else
+		{
+			lua_getfield(from, -1, "plugin_luaproc"); // ..., package, package.loaded, luaproc?
+
+			if (lua_istable(from, -1))
+			{
+				const char * names[] = { "get_integer", "get_number", "update_integer", "update_number", nullptr };
+
+				lua_createtable(to, 0, sizeof(names) / sizeof(names[0]) - 1); // luaproc2
+
+				for (int i = 0; names[i]; ++i, lua_pop(from, 1))
+				{
+					lua_getfield(from, -1, names[i]); // ..., package, package.loaded, luaproc, func
+
+					if (!lua_iscfunction(from, -1)) CORONA_LOG_WARNING("luaproc's '%s' not a C function", names[i]);
+					else
+					{
+						lua_pushcfunction(to, lua_tocfunction(from, -1)); // luaproc2, func
+						lua_setfield(to, -2, names[i]); // luaproc2 = { ..., [name] = func }
+					}
+				}
+
+				lua_setglobal(to, "luaproc"); // ...; _G.luaproc = luaproc
+				lua_getfield(from, -2, "plugin_MemoryBlob"); // ..., package, package.loaded, luaproc, MemoryBlob?
+
+				if (lua_istable(from, -1))
+				{
+					lua_getfield(from, -1, "Reloader"); // ..., package, package.loaded, luaproc, MemoryBlob, MemoryBlob.Reloader
+
+					if (!lua_iscfunction(from, -1)) CORONA_LOG_WARNING("MemoryBlob's 'Reloader' not a C function");
+					else
+					{
+						lua_pushcfunction(to, lua_tocfunction(from, -1)); // Reloader
+						
+						if (lua_pcall(to, 0, 0, 0) != 0)
+						{
+							CORONA_LOG_WARNING("MemoryBlob 'Reloader' error: %s", lua_isstring(to, -1) ? lua_tostring(to, -1) : "?");
+
+							lua_pop(to, 1); // ...
+						}
+					}
+				}
+			}
+		}
+	}
+
+	lua_settop(from, top); // ...
+}
+
+//
+//
+//
+
+static lua_State * CreateState (lua_State * from)
 {
 	lua_State * L = luaL_newstate();
 
@@ -76,6 +194,7 @@ static lua_State * CreateState ()
 	lua_newtable(L); // soloud
 
 	AddBasics(L);
+	ImportLibs(L, from);
 
 	lua_createtable(L, 1, 0); // soloud, constants
 	lua_pushvalue(L, -2); // soloud, constants, soloud
@@ -100,7 +219,7 @@ lua_State * GetSoLoudState (lua_State * L)
 
 	lua_pop(L, 1); // ...
 
-	if (!*box) *box = CreateState();
+	if (!*box) *box = CreateState(L);
 
 	return *box;
 }

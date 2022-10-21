@@ -113,7 +113,7 @@ namespace SoLoud
 		}
 	}
 
-	void Soloud::stopVoice_internal(unsigned int aVoice)
+	void Soloud::stopVoice_internal(unsigned int aVoice, bool done) // <- STEVE CHANGE
 	{
 		SOLOUD_ASSERT(aVoice < VOICE_COUNT);
 		SOLOUD_ASSERT(mInsideAudioThreadMutex);
@@ -132,6 +132,18 @@ namespace SoLoud
 					mResampleDataOwner[i] = NULL;
 				}
 			}
+
+			// STEVE CHANGE
+			if (v->mOnCompleteID)
+			{
+				OnComplete oc;
+
+				oc.mID = v->mOnCompleteID;
+				oc.mDone = done;
+
+				mOnComplete.push_back(oc);
+			}
+			// /STEVE CHANGE
 
 			delete v;
 		}

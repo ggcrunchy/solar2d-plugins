@@ -102,7 +102,7 @@ namespace SoLoud
 		}
 	}
 
-	result Queue::play(AudioSource &aSound)
+	result Queue::play(AudioSource &aSound, unsigned int * id) // <- STEVE CHANGE
 	{
 		if (!mSoloud)
 		{
@@ -131,6 +131,8 @@ namespace SoLoud
 		}
 		instance->init(aSound, 0);
 		instance->mAudioSourceID = aSound.mAudioSourceID;
+
+		if (id) *id = instance->assignOnCompleteID(); // <- STEVE CHANGE
 
 		mSoloud->lockAudioMutex_internal();
 		mSource[mWriteIndex] = instance;

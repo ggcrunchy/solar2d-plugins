@@ -34,6 +34,7 @@
 #include "soloud_lofifilter.h"
 #include "soloud_robotizefilter.h"
 #include "soloud_waveshaperfilter.h"
+#include "custom_objects.h"
 
 //
 //
@@ -58,6 +59,9 @@ ADD_FILTER_NAME(Freeverb)
 ADD_FILTER_NAME(Lofi)
 ADD_FILTER_NAME(Robotize)
 ADD_FILTER_NAME(WaveShaper)
+
+template<> const char * GetFilterName<CustomFilter> () { return MT_PREFIX "CustomFilter"; }
+template<> const char * GetRawFilterName<CustomFilter> () { return "CustomFilter"; }
 
 //
 //
@@ -88,42 +92,33 @@ T * GetFilter (lua_State * L)
 //
 
 SoLoud::Filter * GetFilter (lua_State * L, int arg)
-{	
-	luaL_argcheck(L, HasMetatable(L, arg, MT_NAME(Filter)), arg, "Non-filter metatable");
+{
+	if (lua_isnil(L, arg)) lua_settop(L, arg); // ..., nil
 
-	FilterBox * box = LuaXS::UD<FilterBox>(L, arg);
+	else
+	{
+		luaL_argcheck(L, HasMetatable(L, arg, MT_NAME(Filter)), arg, "Non-filter metatable");
+		luaL_argcheck(L, LuaXS::UD<FilterBox>(L, arg)->mFilter, arg, "Filter already destroyed");
+		lua_getfenv(L, arg); // ..., box, ..., env
+		lua_getfield(L, -1, "filter"); // ..., box, ..., env, filter
+		lua_remove(L, -2); // ..., box, ..., filter
+	}
 
-	luaL_argcheck(L, box->mFilter, 1, "Filter already destroyed");
-
-	return box->mFilter;
+	return LuaXS::UD<SoLoud::Filter>(L, -1);
 }
 
 //
 //
 //
 
-static void GetFilterRef (lua_State * L, SoLoud::Filter * filter)
+void SetFilterRefToEnvironment (lua_State * L, int arg, int index)
 {
-	if (filter)
-	{
-		lua_pushlightuserdata(L, filter); // ..., filter_ptr
-		lua_rawget(L, LUA_REGISTRYINDEX); // ..., filter?
-	}
+	if (index < 1 || index > FILTERS_PER_STREAM) return;
 
-	else lua_pushnil(L); // ..., nil
-}
-
-void SetFilterRefToEnvironment (lua_State * L, int arg, int index, SoLoud::Filter * filter)
-{
-	if (index >= 1 && index <= FILTERS_PER_STREAM)
-	{
-		lua_getfenv(L, arg); // ..., env
-
-		GetFilterRef(L, filter); // ..., env, filter?
-
-		lua_rawseti(L, -2, index); // ..., env = { ..., [index] = filter? }
-		lua_pop(L, 1); // ...
-	}
+	lua_getfenv(L, arg); // ..., filter?, env
+	lua_insert(L, -2); // ..., env, filter?
+	lua_rawseti(L, -2, index); // ..., env = { ..., [index] = filter? }
+	lua_pop(L, 1); // ...
 }
 
 //
@@ -140,7 +135,11 @@ template<typename T> void AddCommonMethods (lua_State * L)
 
 				if (box->mFilter)
 				{
-					RemoveFromStore(L, box->mFilter);
+					lua_getfenv(L, 1); // box, env
+					lua_pushnil(L); // box, env, nil
+					lua_setfield(L, -2, "filter"); // box, env = { filter = nil }
+					lua_pop(L, 1); // box
+
 					RemoveFromStore(L);
 				}
 
@@ -149,15 +148,8 @@ template<typename T> void AddCommonMethods (lua_State * L)
 				return 0;
 			}
 		}, {
-			"__gc", [](lua_State * L)
-			{
-				FilterBox * box = GetFilterBox<T>(L);
-
-				if (box->mFilter) RemoveFromStore(L, box->mFilter);
-
-				return 0;
-			}
-		},{
+			"__gc", LuaXS::TypedGC<FilterBox>
+		}, {
 			"getParamCount", [](lua_State * L)
 			{
 				lua_pushinteger(L, GetFilter<T>(L)->getParamCount()); // filter, count
@@ -222,24 +214,30 @@ template<typename T> void AddCommonMethods (lua_State * L)
 	luaL_register(L, nullptr, funcs);
 }
 
-template<typename T> void AddFilterType (lua_State * L, lua_CFunction extra = nullptr)
+template<typename T> void AddFilterType (lua_State * L, lua_CFunction body, lua_CFunction init = nullptr)
 {
 	lua_pushliteral(L, "create"); // soloud, "create"
 	lua_pushstring(L, GetRawFilterName<T>()); // soloud, "create", FilterName
 	lua_concat(L, 2); // soloud, "create" .. FilterName
-	
-	if (extra) lua_pushcfunction(L, extra); // soloud, "create" .. FilterName, extra
-	else lua_pushnil(L); // soloud, "create" .. FilterName, nil
+	lua_pushcfunction(L, body); // soloud, "create" .. FilterName, body
+
+	if (init) lua_pushcfunction(L, init); // soloud, "create" .. FilterName, nil
 
 	lua_pushcclosure(L, [](lua_State * L) {
-		FilterBox * box = LuaXS::NewTyped<FilterBox>(L); // box
-		T * filter = LuaXS::NewTyped<T>(L); // box, filter
+		lua_settop(L, 1); // args?
+
+		FilterBox * box = LuaXS::NewTyped<FilterBox>(L); // args?, box
+		bool is_custom = !lua_isnoneornil(L, lua_upvalueindex(2));
+
+		// hash part: filter; cf. CustomFilter::HashValues for rest
+		lua_createtable(L, 0, 1 + (is_custom ? CustomFilter::HashValues : 0)); // args?, box, env
+
+		box->mFilter = LuaXS::NewTyped<T>(L); // args?, box, env, filter
 
 		LuaXS::AttachTypedGC<SoLoud::Filter>(L, MT_NAME(RawFilter));
 
-		AddToStore(L);
-
-		lua_pop(L, 1); // box
+		lua_setfield(L, -2, "filter"); // args?, box, env = { filter = filter }
+		lua_setfenv(L, -2); // args?, box; box.env = env
 
 		LuaXS::AttachMethods(L, GetFilterName<T>(), [](lua_State * L) {
 			AddCommonMethods<T>(L);
@@ -254,13 +252,20 @@ template<typename T> void AddFilterType (lua_State * L, lua_CFunction extra = nu
 			lua_pushliteral(L, MT_NAME(Filter)); // mt, MT_NAME(Filter)
 			lua_setfield(L, -2, "__metatable"); // mt; mt.__metatable = MT_NAME(Filter)
 		});
-
-		box->mFilter = filter;
-
+		
+		// Custom filter? If so, with __gc's in place, do any initialization before storing.
+		if (is_custom)
+		{
+			lua_pushvalue(L, lua_upvalueindex(2)); // args?, box, init
+			lua_pushvalue(L, -2); // args?, box, init, box
+			lua_pushvalue(L, 1); // args?, box, init, box, args?
+			lua_call(L, 2, 0); // args?, box
+		}
+		
 		AddToStore(L);
-
+		
 		return 1;
-	}, 1); // soloud, "create" .. FilterName, CreateFilter; CreateFilter.upvalue1 = extra / nil
+	}, init ? 2 : 1); // soloud, "create" .. FilterName, CreateFilter; CreateFilter.upvalue1.upvalues = { body[, init] }
 	lua_rawset(L, -3); // soloud = { ..., ["create" .. FilterName] = CreateFilter }
 }
 
@@ -551,9 +556,11 @@ static void AddEQFilter (lua_State * L)
 //
 //
 
+static int NoOp (lua_State * L) { return 0; }
+
 static void AddFFTFilter (lua_State * L)
 {
-	AddFilterType<SoLoud::FFTFilter>(L);
+	AddFilterType<SoLoud::FFTFilter>(L, NoOp);
 }
 
 //
@@ -727,6 +734,35 @@ static void AddWaveShaperFilter (lua_State * L)
 	ADD_FILTER_PARAMETER(WaveShaperFilter, AMOUNT);
 }
 
+void AddCustomFilter (lua_State * L)
+{
+	AddFilterType<CustomFilter>(L, [](lua_State * L) {
+		luaL_Reg funcs[] = {
+			{
+				"__newindex", [](lua_State * L)
+				{
+					if (CheckForKey(L, "class")) return 0; // source, k, v[, mt, v?]
+
+					return SetData(L, GetFilter<CustomFilter>(L)->mData, true);
+				}
+			},
+			{ nullptr, nullptr }
+		};
+
+		luaL_register(L, nullptr, funcs);
+
+		LuaXS::AttachProperties(L, [](lua_State * L) {
+			if (CheckForKeyInEnv(L, "class")) return 1; // source, k, env, class[, v?]
+
+			lua_settop(L, 2); // source, k
+
+			return GetData(L, GetFilter<CustomFilter>(L)->mData);
+		});
+
+		return 0;
+	}, CustomFilter::Init);
+}
+
 //
 //
 //
@@ -760,6 +796,7 @@ void add_filters (lua_State * L)
 	AddLofiFilter(L);
 	AddRobotizeFilter(L);
 	AddWaveShaperFilter(L);
+	AddCustomFilter(L);
 
 	lua_insert(L, -2); // soloud, filter_params
 

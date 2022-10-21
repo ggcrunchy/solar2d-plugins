@@ -159,7 +159,7 @@ namespace SoLoud
 		}
 	}
 
-	handle Bus::play(AudioSource &aSound, float aVolume, float aPan, bool aPaused)
+	handle Bus::play(AudioSource &aSound, unsigned int * id, float aVolume, float aPan, bool aPaused) // <- STEVE CHANGE
 	{
 		if (!mInstance || !mSoloud)
 		{
@@ -172,11 +172,11 @@ namespace SoLoud
 		{
 			return 0;
 		}
-		return mSoloud->play(aSound, aVolume, aPan, aPaused, mChannelHandle);
+		return mSoloud->play(aSound, id, aVolume, aPan, aPaused, mChannelHandle); // <- STEVE CHANGE
 	}	
 
 
-	handle Bus::playClocked(time aSoundTime, AudioSource &aSound, float aVolume, float aPan)
+	handle Bus::playClocked(time aSoundTime, AudioSource &aSound, unsigned int * id, float aVolume, float aPan) // <- STEVE CHANGE
 	{
 		if (!mInstance || !mSoloud)
 		{
@@ -190,10 +190,10 @@ namespace SoLoud
 			return 0;
 		}
 
-		return mSoloud->playClocked(aSoundTime, aSound, aVolume, aPan, mChannelHandle);
+		return mSoloud->playClocked(aSoundTime, aSound, id, aVolume, aPan, mChannelHandle); // <- STEVE CHANGE
 	}	
 
-	handle Bus::play3d(AudioSource &aSound, float aPosX, float aPosY, float aPosZ, float aVelX, float aVelY, float aVelZ, float aVolume, bool aPaused)
+	handle Bus::play3d(AudioSource &aSound, float aPosX, float aPosY, float aPosZ, unsigned int * id, float aVelX, float aVelY, float aVelZ, float aVolume, bool aPaused) // <- STEVE CHANGE
 	{
 		if (!mInstance || !mSoloud)
 		{
@@ -206,10 +206,10 @@ namespace SoLoud
 		{
 			return 0;
 		}
-		return mSoloud->play3d(aSound, aPosX, aPosY, aPosZ, aVelX, aVelY, aVelZ, aVolume, aPaused, mChannelHandle);
+		return mSoloud->play3d(aSound, aPosX, aPosY, aPosZ, id, aVelX, aVelY, aVelZ, aVolume, aPaused, mChannelHandle); // <- STEVE CHANGE
 	}
 
-	handle Bus::play3dClocked(time aSoundTime, AudioSource &aSound, float aPosX, float aPosY, float aPosZ, float aVelX, float aVelY, float aVelZ, float aVolume)
+	handle Bus::play3dClocked(time aSoundTime, AudioSource &aSound, float aPosX, float aPosY, float aPosZ, unsigned int * id, float aVelX, float aVelY, float aVelZ, float aVolume) // <- STEVE CHANGE
 	{
 		if (!mInstance || !mSoloud)
 		{
@@ -222,7 +222,7 @@ namespace SoLoud
 		{
 			return 0;
 		}
-		return mSoloud->play3dClocked(aSoundTime, aSound, aPosX, aPosY, aPosZ, aVelX, aVelY, aVelZ, aVolume, mChannelHandle);
+		return mSoloud->play3dClocked(aSoundTime, aSound, aPosX, aPosY, aPosZ, id, aVelX, aVelY, aVelZ, aVolume, mChannelHandle); // <- STEVE CHANGE
 	}
 
 	void Bus::annexSound(handle aVoiceHandle)
@@ -249,6 +249,7 @@ namespace SoLoud
 			if (aFilter)
 			{
 				mInstance->mFilter[aFilterId] = mFilter[aFilterId]->createInstance();
+				mInstance->mFilter[aFilterId]->BindCore(mSoloud); // <- STEVE CHANGE
 			}
 			mSoloud->unlockAudioMutex_internal();
 		}

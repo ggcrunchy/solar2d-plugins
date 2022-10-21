@@ -44,11 +44,12 @@ struct Options {
 	bool mWantPaused{false};
 	bool mWantVelocity{false};
 	bool mWantVolume{false};
+	bool mWantCallback{false};
 
 	void Get (lua_State * L, int opts);
 
 	float mPan, mVolume, mVelX, mVelY, mVelZ;
-	bool mPaused;
+	bool mPaused, mGotCallback;
 };
 
 //
@@ -85,7 +86,8 @@ void add_filters (lua_State * L);
 
 SoLoud::AudioSource * GetAudioSource (lua_State * L, int arg = 1);
 SoLoud::Soloud * GetCore (lua_State * L, int arg = 1);
-SoLoud::Filter * GetFilter (lua_State * L, int arg = 1);
+
+SoLoud::Filter * GetFilter (lua_State * L, int arg);
 
 FloatBuffer * GetFloatBuffer (lua_State * L, int arg = 1);
 FloatBuffer * NewFloatBuffer (lua_State * L);
@@ -96,6 +98,12 @@ FloatBuffer * NewFloatBuffer (lua_State * L);
 
 int PushHandle (lua_State * L, unsigned int handle);
 unsigned int GetHandle (lua_State * L, int arg);
+
+//
+//
+//
+
+void PrepareOnComplete (lua_State * L, unsigned int id);
 
 //
 //
@@ -125,7 +133,7 @@ float OptFloat (lua_State * L, int arg, float def);
 //
 //
 
-void SetFilterRefToEnvironment (lua_State * L, int arg, int index, SoLoud::Filter * filter);
+void SetFilterRefToEnvironment (lua_State * L, int arg, int index);
 void RemoveEnvironment (lua_State * L, int arg = 1);
 
 //

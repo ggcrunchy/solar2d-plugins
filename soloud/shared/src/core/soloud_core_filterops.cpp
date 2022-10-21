@@ -41,6 +41,7 @@ namespace SoLoud
 		if (aFilter)
 		{
 			mFilterInstance[aFilterId] = mFilter[aFilterId]->createInstance();
+			mFilterInstance[aFilterId]->BindCore(this); // <- STEVE CHANGE
 		}
 		unlockAudioMutex_internal();
 	}

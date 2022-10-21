@@ -54,8 +54,6 @@ struct Entry {
 //
 //
 
-struct CustomSource;
-
 struct ParentData {
 	std::map<std::string, Entry> mEntries;
 	uint64_t mLastUpdate{0ULL};
@@ -66,11 +64,11 @@ struct ParentData {
 };
 
 struct ParentDataWrapper {
-	ParentDataWrapper (const CustomSource * parent, const ParentData & data) : mParent{parent}, mData{data}
+	ParentDataWrapper (const ParentData * parent_data, const ParentData & data) : mParentData{parent_data}, mData{data}
 	{
 	}
 
-	const CustomSource * mParent;
+	const ParentData * mParentData;
 	ParentData mData;
 
 	void Init (lua_State * L);
@@ -80,6 +78,8 @@ struct ParentDataWrapper {
 //
 //
 //
+
+struct CustomSource;
 
 struct CustomSourceInstance : public SoLoud::AudioSourceInstance {
 	lua_State * mL;
@@ -167,6 +167,109 @@ struct CustomSource : public SoLoud::AudioSource {
 //
 //
 
+struct CustomFilter;
+
+struct CustomFilterInstance : public SoLoud::FilterInstance {
+	lua_State * mL;
+	CustomFilter * mParent;
+	ParentData * mParentData{nullptr};
+	bool mHasError{false};
+	SoLoud::Soloud * mSoloud{nullptr};
+
+	//
+	//
+	//
+
+	CustomFilterInstance (CustomFilter * parent);
+	virtual ~CustomFilterInstance ();
+
+	//
+	//
+	//
+
+	void Init (lua_State * L, const ParentData * data);
+
+	//
+	//
+	//
+
+	bool PreCall (const char * name, const char * other, int & has_data);
+
+	//
+	//
+	//
+
+	virtual void filter (float * buffer, unsigned int samples, unsigned int size, unsigned int channels, float sample_rate, SoLoud::time time);
+	virtual void BindCore (SoLoud::Soloud * soloud) { mSoloud = soloud; }
+};
+
+//
+//
+//
+
+struct CustomFilter : public SoLoud::Filter {
+	struct Param {
+		SoLoud::Filter::PARAMTYPE mType{Filter::FLOAT_PARAM};
+		float mMin{0}, mMax{0};
+		std::string mName;
+		bool mNamed{false};
+	};
+
+	lua_State * mL;
+	ParentData mData;
+	std::vector<Param> mParams;
+
+	//
+	//
+	//
+
+	enum {
+		HashValues = 6 // interface, new instance, data, class, params, names
+	};
+
+	//
+	//
+	//
+
+	// conveniences, to avoid some lookup:
+	const char * mInterface;
+	const char * mNewInstance{nullptr};
+	size_t mInterfaceLen;
+	size_t mNewInstanceLen{0U};
+
+	//
+	//
+	//
+
+	bool mWantParentData;
+
+	//
+	//
+	//
+	
+	static int Init (lua_State * L);
+
+	//
+	//
+	//
+
+	virtual SoLoud::FilterInstance * createInstance ();
+
+	virtual int getParamCount ();
+	virtual const char * getParamName (unsigned int param_index);
+	virtual unsigned int getParamType (unsigned int param_index);
+	virtual float getParamMax (unsigned int param_index);
+	virtual float getParamMin (unsigned int param_index);
+};
+
+//
+//
+//
+
+void AssignMember (lua_State * L, const char * name, int type, bool leave_on_stack = false);
+void GetOptionalMember (lua_State * L, const char * name, int type, bool leave_on_stack = false);
+
+bool CheckForKeyInEnv (lua_State * L, const char * name);
 bool CheckForKey (lua_State * L, const char * other = nullptr);
 int GetEnvData (lua_State * L);
 int SetEnvData (lua_State * L);
@@ -177,7 +280,9 @@ std::mutex & GetCustomObjectsMutex ();
 
 #define LOCK_SECONDARY_STATE() std::lock_guard<std::mutex> lock(GetCustomObjectsMutex())
 
-void GetDecodeConstants (lua_State * L);
+void ReplaceParamsTableWithCopy (lua_State * L, int arg);
+void DecodeObject (lua_State * L, const char * encoded, size_t len);
+const char * EncodeObject (lua_State * L, size_t & len);
 
 void CreateSecondaryState (lua_State * L);
 lua_State * GetSoLoudState (lua_State * L);

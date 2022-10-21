@@ -131,6 +131,7 @@ namespace SoLoud
 		unsigned int mPlayIndex;
 		// Loop count
 		unsigned int mLoopCount;
+		unsigned int mLoopUntil; // <- STEVE CHANGE
 		// Flags; see AudioSourceInstance::FLAGS
 		unsigned int mFlags;
 		// Pan value, for getPan()
@@ -186,7 +187,11 @@ namespace SoLoud
 		// Number of samples to delay streaming
 		unsigned int mDelaySamples;
 		// When looping, start playing from this time
-		time mLoopPoint;
+		time mLoopPoint; 
+		unsigned int mOnCompleteID; // <- STEVE CHANGE
+		static unsigned int sCurrentOnCompleteID; // <- STEVE CHANGE
+
+		unsigned int assignOnCompleteID (); // <- STEVE CHANGE
 
 		// Get N samples from the stream to the buffer. Report samples written.
 		virtual unsigned int getAudio(float *aBuffer, unsigned int aSamplesToRead, unsigned int aBufferSize) = 0;
@@ -241,6 +246,7 @@ namespace SoLoud
 
 		// Flags. See AudioSource::FLAGS
 		unsigned int mFlags;
+		unsigned int mLoopMax; // STEVE CHANGE
 		// Base sample rate, used to initialize instances
 		float mBaseSamplerate;
 		// Default volume for created instances
@@ -278,6 +284,7 @@ namespace SoLoud
 		void setVolume(float aVolume);
 		// Set the looping of the instances created from this audio source
 		void setLooping(bool aLoop);
+		void setLooping(int count); // <- STEVE CHANGE
 		// Set whether only one instance of this sound should ever be playing at the same time
 		void setSingleInstance(bool aSingleInstance);
 		// Set whether audio should auto-stop when it ends or not

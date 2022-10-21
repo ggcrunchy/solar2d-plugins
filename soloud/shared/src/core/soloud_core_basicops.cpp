@@ -29,7 +29,7 @@ freely, subject to the following restrictions:
 
 namespace SoLoud
 {
-	handle Soloud::play(AudioSource &aSound, float aVolume, float aPan, bool aPaused, unsigned int aBus)
+	handle Soloud::play(AudioSource &aSound, unsigned int * id, float aVolume, float aPan, bool aPaused, unsigned int aBus) // <- STEVE CHANGE
 	{
 		if (aSound.mFlags & AudioSource::SINGLE_INSTANCE)
 		{
@@ -60,6 +60,8 @@ namespace SoLoud
 		mVoice[ch]->mBusHandle = aBus;
 		mVoice[ch]->init(aSound, mPlayIndex);
 		m3dData[ch].init(aSound);
+
+		if (id) *id = mVoice[ch]->assignOnCompleteID(); // <- STEVE CHANGE
 
 		mPlayIndex++;
 
@@ -98,6 +100,7 @@ namespace SoLoud
 			if (aSound.mFilter[i])
 			{
 				mVoice[ch]->mFilter[i] = aSound.mFilter[i]->createInstance();
+				mVoice[ch]->mFilter[i]->BindCore(this); // <- STEVE CHANGE
 			}
 		}
 
@@ -109,9 +112,9 @@ namespace SoLoud
 		return handle;
 	}
 
-	handle Soloud::playClocked(time aSoundTime, AudioSource &aSound, float aVolume, float aPan, unsigned int aBus)
+	handle Soloud::playClocked(time aSoundTime, AudioSource &aSound, unsigned int * id, float aVolume, float aPan, unsigned int aBus) // <- STEVE CHANGE
 	{
-		handle h = play(aSound, aVolume, aPan, 1, aBus);
+		handle h = play(aSound, id, aVolume, aPan, 1, aBus); // <- STEVE CHANGE
 		lockAudioMutex_internal();
 		// mLastClockedTime is cleared to zero at start of every output buffer
 		time lasttime = mLastClockedTime;
@@ -130,9 +133,9 @@ namespace SoLoud
 		return h;
 	}
 
-	handle Soloud::playBackground(AudioSource &aSound, float aVolume, bool aPaused, unsigned int aBus)
+	handle Soloud::playBackground(AudioSource &aSound, unsigned int * id, float aVolume, bool aPaused, unsigned int aBus) // <- STEVE CHANGE
 	{
-		handle h = play(aSound, aVolume, 0.0f, aPaused, aBus);
+		handle h = play(aSound, id, aVolume, 0.0f, aPaused, aBus); // <- STEVE CHANGE
 		setPanAbsolute(h, 1.0f, 1.0f);
 		return h;
 	}
@@ -156,12 +159,12 @@ namespace SoLoud
 			stopVoice_internal(ch);
 		FOR_ALL_VOICES_POST
 	}
-#include "CoronaLog.h"
+
 	void Soloud::stopAudioSource(AudioSource &aSound)
 	{
 		if (aSound.mAudioSourceID)
 		{
-			lockAudioMutex_internal();CoronaLog("sas1.2");
+			lockAudioMutex_internal();
 			
 			int i;
 			for (i = 0; i < (signed)mHighestVoice; i++)

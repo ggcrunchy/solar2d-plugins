@@ -183,7 +183,7 @@ template<typename T> void AddCommonMethods (lua_State * L)
 					// source. Thus, any non-destroyed audio sources are put in a list, whose __gc will fire off
 					// after those for the core (if any) and secondary Lua state (where the instances reside).
 					SoLoud::AudioSource * source = GetAudioSource(L);
-if (source->mSoloud) CoronaLog("sas1, not in mutex = %s",!source->mSoloud->mInsideAudioThreadMutex ? "yes" : "no");
+
 					lua_getref(L, sAudioSourceCleanupRef); // source, late_audiosource_cleanup
 
 					LuaXS::UD<std::vector<SoLoud::AudioSource *>>(L, -1)->push_back(source);
@@ -210,9 +210,9 @@ if (source->mSoloud) CoronaLog("sas1, not in mutex = %s",!source->mSoloud->mInsi
 			{
 				SoLoud::AudioSource * source = GetAudioSource(L);
 				unsigned int index = LuaXS::Uint(L, 2) - 1;
-				SoLoud::Filter * filter = !lua_isnoneornil(L, 3) ? GetFilter(L, 3) : nullptr;
+				SoLoud::Filter * filter = GetFilter(L, 3); // source, index, box / nil[, filter]
 
-				SetFilterRefToEnvironment(L, 1, int(index) + 1, filter);
+				SetFilterRefToEnvironment(L, 1, int(index) + 1); // source, index[, box, filter]
 
 				source->setFilter(index, filter);
 
@@ -228,7 +228,8 @@ if (source->mSoloud) CoronaLog("sas1, not in mutex = %s",!source->mSoloud->mInsi
 		}, {
 			"setLooping", [](lua_State * L)
 			{
-				GetAudioSource(L)->setLooping(lua_toboolean(L, 2));
+				if (lua_isnumber(L, 2)) GetAudioSource(L)->setLooping(lua_tointeger(L, 2));
+				else GetAudioSource(L)->setLooping(lua_toboolean(L, 2));
 
 				return 0;
 			}
@@ -523,7 +524,18 @@ static void AddQueue (lua_State * L)
 			}, {
 				"play", [](lua_State * L)
 				{
-					return Result(L, GetAudioSource<SoLoud::Queue>(L)->play(*GetAudioSource(L, 2)));
+					Options opts;
+
+					opts.mWantCallback = true;
+
+					opts.Get(L, 3); // queue, source[, opts][, on_complete]
+
+					unsigned int id = 0;
+					SoLoud::result result = GetAudioSource<SoLoud::Queue>(L)->play(*GetAudioSource(L, 2), opts.mGotCallback ? &id : nullptr);
+	
+					if (opts.mGotCallback && id > 0) PrepareOnComplete(L, id); // queue, source, opts
+
+					return Result(L, result);
 				}
 			}, {
 				"setParams", [](lua_State * L)
@@ -905,16 +917,7 @@ void AddCustomSource (lua_State * L)
 		luaL_register(L, nullptr, funcs);
 
 		LuaXS::AttachProperties(L, [](lua_State * L) {
-			lua_getfenv(L, 1); // source, k, env
-			lua_getfield(L, -1, "class"); // source, k, env, class?
-
-			if (!lua_isnil(L, -1))
-			{
-				lua_pushvalue(L, 2); // source, k, env, class, k
-				lua_rawget(L, -2); // source, k, env, class, v?
-
-				if (!lua_isnil(L, -1)) return 1;
-			}
+			if (CheckForKeyInEnv(L, "class")) return 1; // source, k, env, class[, v?]
 
 			lua_settop(L, 2); // source, k
 
@@ -936,16 +939,16 @@ void add_audiosources (lua_State * L)
 		using Vector = std::vector<SoLoud::AudioSource *>;
 
 		Vector & cleanup = *LuaXS::UD<Vector>(L, 1);
-CoronaLog("CLEANUP %u", cleanup.size());
+
 		for (size_t i = 0; i < cleanup.size(); ++i)
 		{
 			cleanup[i]->mSoloud = nullptr; // will already be gone
 
 			cleanup[i]->~AudioSource();
 		}
-CoronaLog("CLEANUP2");
+
 		cleanup.~vector();
-CoronaLog("Cleanup ~v");
+
 		return 0;
 	});
 

@@ -49,7 +49,7 @@ namespace SoLoud
 		Queue();
 		virtual QueueInstance *createInstance();
 		// Play sound through the queue
-		result play(AudioSource &aSound);
+		result play(AudioSource &aSound, unsigned int * id); // <- STEVE CHANGE
         // Number of audio sources queued for replay
         unsigned int getQueueCount();
 		// Is this audio source currently playing?
