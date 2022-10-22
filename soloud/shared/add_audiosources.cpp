@@ -228,8 +228,10 @@ template<typename T> void AddCommonMethods (lua_State * L)
 		}, {
 			"setLooping", [](lua_State * L)
 			{
-				if (lua_isnumber(L, 2)) GetAudioSource(L)->setLooping(lua_tointeger(L, 2));
-				else GetAudioSource(L)->setLooping(lua_toboolean(L, 2));
+				bool is_number = lua_isnumber(L, 2);
+				int count = is_number ? lua_tointeger(L, 2) : 0;
+
+				GetAudioSource(L)->setLooping(!is_number && lua_toboolean(L, 2), count);
 
 				return 0;
 			}

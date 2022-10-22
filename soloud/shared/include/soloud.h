@@ -342,8 +342,7 @@ namespace SoLoud
 		// Set voice loop point value
 		void setLoopPoint(handle aVoiceHandle, time aLoopPoint);
 		// Set voice's loop state
-		void setLooping(handle aVoiceHandle, bool aLooping);
-		void setLooping(handle aVoiceHandle, int count); // <- STEVE CHANGE
+		void setLooping(handle aVoiceHandle, bool aLooping, int count); // <- STEVE CHANGE
 		// Set whether sound should auto-stop when it ends
 		void setAutoStop(handle aVoiceHandle, bool aAutoStop);
 		// Set current maximum active voice setting

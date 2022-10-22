@@ -185,8 +185,15 @@ namespace SoLoud
 		FOR_ALL_VOICES_POST
 	}
 
-	void Soloud::setLooping(handle aVoiceHandle, bool aLooping)
+	void Soloud::setLooping(handle aVoiceHandle, bool aLooping, int aCount) // <- STEVE CHANGE
 	{
+		// STEVE CHANGE
+		if (aCount != 0)
+		{
+			aLooping = aCount > 1;
+		}
+		// /STEVE CHANGE
+
 		FOR_ALL_VOICES_PRE
 			if (aLooping)
 			{
@@ -197,27 +204,20 @@ namespace SoLoud
 				mVoice[ch]->mFlags &= ~AudioSourceInstance::LOOPING;
 			}
 		
-			mVoice[ch]->mLoopUntil = 0; // STEVE CHANGE
+			// STEVE CHANGE
+			if (aCount > 1)
+			{
+				mVoice[ch]->mLoopUntil = aCount - 1;
+			}
+
+			else
+			{
+				mVoice[ch]->mLoopUntil = 0;
+			}
+			// /STEVE CHANGE
 		FOR_ALL_VOICES_POST
 	}
-	// STEVE CHANGE
-	void Soloud::setLooping(handle aVoiceHandle, int count)
-	{
-		setLooping(aVoiceHandle, count != 0);
 
-		if (count > 1)
-		{
-			FOR_ALL_VOICES_PRE
-				mVoice[ch]->mLoopUntil = count - 1;
-
-				if (mVoice[ch]->mLoopCount >= mVoice[ch]->mLoopUntil)
-				{
-					mVoice[ch]->mFlags &= ~AudioSourceInstance::LOOPING;
-				}
-			FOR_ALL_VOICES_POST
-		}
-	}
-	// /STEVE CHANGE
 	void Soloud::setAutoStop(handle aVoiceHandle, bool aAutoStop)
 	{
 		FOR_ALL_VOICES_PRE

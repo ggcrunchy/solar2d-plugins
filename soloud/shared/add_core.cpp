@@ -304,7 +304,7 @@ void PrepareOnComplete (lua_State * L, unsigned int id)
 		lua_pushinteger(L, id); // ..., Runtime, on_complete, callbacks, handlers, id
 		lua_pushvalue(L, -4); // ..., Runtime, on_complete, callbacks, handlers, id, on_complete
 		lua_rawset(L, -3); // ..., Runtime, on_complete, callbacks, handlers = { ..., [id] = on_complete }
-		lua_getfield(L, -3, "added"); // ..., Runtime, on_complete, callbacks, handlers, added?
+		lua_getfield(L, -2, "added"); // ..., Runtime, on_complete, callbacks, handlers, added?
 
 		bool already_added = lua_toboolean(L, -1);
 
@@ -656,7 +656,15 @@ void SoloudMethods(lua_State * L)
 				return 0;
 			}
 		}, {
-			DO_HANDLE_BOOLEAN(setLooping)
+			"setLooping", [](lua_State * L)
+			{
+				bool is_number = lua_isnumber(L, 3);
+				int count = is_number ? lua_tointeger(L, 3) : 0;
+
+				GetSoloud(L)->setLooping(GetHandle(L, 2), !is_number && lua_toboolean(L, 3), count);
+
+				return 0;
+			}
 		}, {
 			DO_HANDLE_NUMBER(setLoopPoint)
 		}, {

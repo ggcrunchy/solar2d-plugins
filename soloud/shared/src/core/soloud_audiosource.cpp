@@ -240,8 +240,22 @@ namespace SoLoud
 		return mLoopPoint;
 	}
 
-	void AudioSource::setLooping(bool aLoop)
+	void AudioSource::setLooping(bool aLoop, int aCount) // <- STEVE CHANGE
 	{
+		// STEVE CHANGE
+		mLoopMax = 0;
+
+		if (aCount != 0)
+		{
+			aLoop = aCount > 1;
+
+			if (aLoop)
+			{
+				mLoopMax = aCount;
+			}
+		}
+
+		// /STEVE CHANGE
 		if (aLoop)
 		{
 			mFlags |= SHOULD_LOOP;
@@ -250,17 +264,8 @@ namespace SoLoud
 		{
 			mFlags &= ~SHOULD_LOOP;
 		}
-
-		mLoopMax = 0; // <- STEVE CHANGE
 	}
-	// STEVE CHANGE
-	void AudioSource::setLooping (int count)
-	{
-		setLooping(count > 1);
 
-		if (count > 1) mLoopMax = count;
-	}
-	// /STEVE CHANGE
 	void AudioSource::setSingleInstance(bool aSingleInstance)
 	{
 		if (aSingleInstance)

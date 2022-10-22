@@ -283,8 +283,7 @@ namespace SoLoud
 		// Set default volume for instances
 		void setVolume(float aVolume);
 		// Set the looping of the instances created from this audio source
-		void setLooping(bool aLoop);
-		void setLooping(int count); // <- STEVE CHANGE
+		void setLooping(bool aLoop, int count); // <- STEVE CHANGE
 		// Set whether only one instance of this sound should ever be playing at the same time
 		void setSingleInstance(bool aSingleInstance);
 		// Set whether audio should auto-stop when it ends or not
