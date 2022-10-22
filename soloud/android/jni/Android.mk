@@ -56,6 +56,8 @@ LOCAL_SRC_FILES := \
 	$(SRC_DIR)/add_filters.cpp $(SRC_DIR)/add_floatbuffer.cpp \
 	$(SRC_DIR)/custom_audiosource.cpp \
 	$(SRC_DIR)/custom_audiosource_instance.cpp \
+	$(SRC_DIR)/custom_filter.cpp \
+	$(SRC_DIR)/custom_filter_instance.cpp \
 	$(SRC_DIR)/custom_object_data.cpp $(SRC_DIR)/custom_objects.cpp \
 	$(AS_DIR)/ay/chipplayer.cpp $(AS_DIR)/ay/sndbuffer.cpp \
 	$(AS_DIR)/ay/sndchip.cpp $(AS_DIR)/ay/sndrender.cpp $(AS_DIR)/ay/soloud_ay.cpp \

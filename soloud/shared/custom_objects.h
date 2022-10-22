@@ -253,12 +253,6 @@ struct CustomFilter : public SoLoud::Filter {
 	//
 	//
 
-	virtual ~CustomFilter () {}
-
-	//
-	//
-	//
-
 	virtual SoLoud::FilterInstance * createInstance ();
 
 	virtual int getParamCount ();
