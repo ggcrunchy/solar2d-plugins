@@ -1,0 +1,437 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		AA8C251628E7716D000D0253 /* udata.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C24FA28E7716C000D0253 /* udata.c */; };
+		AA8C251728E7716D000D0253 /* objects.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8C24FB28E7716C000D0253 /* objects.h */; };
+		AA8C251828E7716D000D0253 /* enums.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C24FC28E7716C000D0253 /* enums.c */; };
+		AA8C251928E7716D000D0253 /* animation.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C24FD28E7716C000D0253 /* animation.c */; };
+		AA8C251A28E7716D000D0253 /* utils.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C24FE28E7716C000D0253 /* utils.c */; };
+		AA8C251B28E7716D000D0253 /* material.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C24FF28E7716C000D0253 /* material.c */; };
+		AA8C251C28E7716D000D0253 /* compat-5.3.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8C250028E7716C000D0253 /* compat-5.3.h */; };
+		AA8C251D28E7716D000D0253 /* mesh.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C250128E7716C000D0253 /* mesh.c */; };
+		AA8C251E28E7716D000D0253 /* tree.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8C250228E7716C000D0253 /* tree.h */; };
+		AA8C251F28E7716D000D0253 /* internal.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8C250328E7716C000D0253 /* internal.h */; };
+		AA8C252028E7716D000D0253 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C250428E7716C000D0253 /* main.c */; };
+		AA8C252128E7716D000D0253 /* import.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C250528E7716C000D0253 /* import.c */; };
+		AA8C252228E7716D000D0253 /* face.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C250628E7716D000D0253 /* face.c */; };
+		AA8C252328E7716D000D0253 /* bitfields.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C250728E7716D000D0253 /* bitfields.c */; };
+		AA8C252428E7716D000D0253 /* udata.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8C250828E7716D000D0253 /* udata.h */; };
+		AA8C252528E7716D000D0253 /* additional.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C250928E7716D000D0253 /* additional.c */; };
+		AA8C252628E7716D000D0253 /* moonassimp.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8C250A28E7716D000D0253 /* moonassimp.h */; };
+		AA8C252728E7716D000D0253 /* bone.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C250B28E7716D000D0253 /* bone.c */; };
+		AA8C252828E7716D000D0253 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = AA8C250C28E7716D000D0253 /* Makefile */; };
+		AA8C252928E7716D000D0253 /* node.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C250D28E7716D000D0253 /* node.c */; };
+		AA8C252A28E7716D000D0253 /* scene.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C250E28E7716D000D0253 /* scene.c */; };
+		AA8C252B28E7716D000D0253 /* animmesh.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C250F28E7716D000D0253 /* animmesh.c */; };
+		AA8C252C28E7716D000D0253 /* meshanim.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C251028E7716D000D0253 /* meshanim.c */; };
+		AA8C252D28E7716D000D0253 /* texture.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C251128E7716D000D0253 /* texture.c */; };
+		AA8C252E28E7716D000D0253 /* light.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C251228E7716D000D0253 /* light.c */; };
+		AA8C252F28E7716D000D0253 /* camera.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C251328E7716D000D0253 /* camera.c */; };
+		AA8C253028E7716D000D0253 /* compat-5.3.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C251428E7716D000D0253 /* compat-5.3.c */; };
+		AA8C253128E7716D000D0253 /* nodeanim.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C251528E7716D000D0253 /* nodeanim.c */; };
+		AA8C253628E77221000D0253 /* libassimp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA8C253428E7719D000D0253 /* libassimp.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		A491863C1641DDB800A39286 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.lua";
+			fileType = pattern.proxy;
+			inputFiles = (
+			);
+			isEditable = 1;
+			outputFiles = (
+				"$TARGET_TEMP_DIR/$(INPUT_FILE_BASE).c",
+			);
+			script = "CORONA_DIR=$SRCROOT/Native/Corona\nCORONA_MAC_BIN_DIR=$CORONA_DIR/mac/bin\n\nif [ -e \"$CORONA_MAC_BIN_DIR/lua\" ]; then\n    LUA_DIR=$CORONA_MAC_BIN_DIR/lua\nelse\n    echo \"Could not find proper 32-bit lua build in: $CORONA_MAC_BIN_DIR/lua\"\n    exit 1\nfi\n\necho $CORONA_MAC_BIN_DIR/lua2c.sh $INPUT_FILE_PATH $TARGET_TEMP_DIR $CONFIGURATION\n\"$CORONA_MAC_BIN_DIR/lua2c.sh\" \"$INPUT_FILE_PATH\" \"$TARGET_TEMP_DIR\" \"$CONFIGURATION\" \"$CORONA_MAC_BIN_DIR\"";
+		};
+/* End PBXBuildRule section */
+
+/* Begin PBXFileReference section */
+		A49186401641DDB800A39286 /* moonassimp.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = moonassimp.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA8C24FA28E7716C000D0253 /* udata.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = udata.c; path = ../shared/src/udata.c; sourceTree = "<group>"; };
+		AA8C24FB28E7716C000D0253 /* objects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = objects.h; path = ../shared/src/objects.h; sourceTree = "<group>"; };
+		AA8C24FC28E7716C000D0253 /* enums.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = enums.c; path = ../shared/src/enums.c; sourceTree = "<group>"; };
+		AA8C24FD28E7716C000D0253 /* animation.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = animation.c; path = ../shared/src/animation.c; sourceTree = "<group>"; };
+		AA8C24FE28E7716C000D0253 /* utils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = utils.c; path = ../shared/src/utils.c; sourceTree = "<group>"; };
+		AA8C24FF28E7716C000D0253 /* material.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = material.c; path = ../shared/src/material.c; sourceTree = "<group>"; };
+		AA8C250028E7716C000D0253 /* compat-5.3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "compat-5.3.h"; path = "../shared/src/compat-5.3.h"; sourceTree = "<group>"; };
+		AA8C250128E7716C000D0253 /* mesh.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mesh.c; path = ../shared/src/mesh.c; sourceTree = "<group>"; };
+		AA8C250228E7716C000D0253 /* tree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tree.h; path = ../shared/src/tree.h; sourceTree = "<group>"; };
+		AA8C250328E7716C000D0253 /* internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = internal.h; path = ../shared/src/internal.h; sourceTree = "<group>"; };
+		AA8C250428E7716C000D0253 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = main.c; path = ../shared/src/main.c; sourceTree = "<group>"; };
+		AA8C250528E7716C000D0253 /* import.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = import.c; path = ../shared/src/import.c; sourceTree = "<group>"; };
+		AA8C250628E7716D000D0253 /* face.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = face.c; path = ../shared/src/face.c; sourceTree = "<group>"; };
+		AA8C250728E7716D000D0253 /* bitfields.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = bitfields.c; path = ../shared/src/bitfields.c; sourceTree = "<group>"; };
+		AA8C250828E7716D000D0253 /* udata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = udata.h; path = ../shared/src/udata.h; sourceTree = "<group>"; };
+		AA8C250928E7716D000D0253 /* additional.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = additional.c; path = ../shared/src/additional.c; sourceTree = "<group>"; };
+		AA8C250A28E7716D000D0253 /* moonassimp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = moonassimp.h; path = ../shared/src/moonassimp.h; sourceTree = "<group>"; };
+		AA8C250B28E7716D000D0253 /* bone.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = bone.c; path = ../shared/src/bone.c; sourceTree = "<group>"; };
+		AA8C250C28E7716D000D0253 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; name = Makefile; path = ../shared/src/Makefile; sourceTree = "<group>"; };
+		AA8C250D28E7716D000D0253 /* node.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = node.c; path = ../shared/src/node.c; sourceTree = "<group>"; };
+		AA8C250E28E7716D000D0253 /* scene.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = scene.c; path = ../shared/src/scene.c; sourceTree = "<group>"; };
+		AA8C250F28E7716D000D0253 /* animmesh.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = animmesh.c; path = ../shared/src/animmesh.c; sourceTree = "<group>"; };
+		AA8C251028E7716D000D0253 /* meshanim.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = meshanim.c; path = ../shared/src/meshanim.c; sourceTree = "<group>"; };
+		AA8C251128E7716D000D0253 /* texture.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = texture.c; path = ../shared/src/texture.c; sourceTree = "<group>"; };
+		AA8C251228E7716D000D0253 /* light.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = light.c; path = ../shared/src/light.c; sourceTree = "<group>"; };
+		AA8C251328E7716D000D0253 /* camera.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = camera.c; path = ../shared/src/camera.c; sourceTree = "<group>"; };
+		AA8C251428E7716D000D0253 /* compat-5.3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "compat-5.3.c"; path = "../shared/src/compat-5.3.c"; sourceTree = "<group>"; };
+		AA8C251528E7716D000D0253 /* nodeanim.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = nodeanim.c; path = ../shared/src/nodeanim.c; sourceTree = "<group>"; };
+		AA8C253228E77181000D0253 /* libassimp-fat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libassimp-fat.a"; path = "../ios/libassimp-fat.a"; sourceTree = "<group>"; };
+		AA8C253428E7719D000D0253 /* libassimp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libassimp.a; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A49186381641DDB800A39286 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA8C253628E77221000D0253 /* libassimp.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A4151F3316879B8200B2B43A /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				AA8C250928E7716D000D0253 /* additional.c */,
+				AA8C24FD28E7716C000D0253 /* animation.c */,
+				AA8C250F28E7716D000D0253 /* animmesh.c */,
+				AA8C250728E7716D000D0253 /* bitfields.c */,
+				AA8C250B28E7716D000D0253 /* bone.c */,
+				AA8C251328E7716D000D0253 /* camera.c */,
+				AA8C251428E7716D000D0253 /* compat-5.3.c */,
+				AA8C250028E7716C000D0253 /* compat-5.3.h */,
+				AA8C24FC28E7716C000D0253 /* enums.c */,
+				AA8C250628E7716D000D0253 /* face.c */,
+				AA8C250528E7716C000D0253 /* import.c */,
+				AA8C250328E7716C000D0253 /* internal.h */,
+				AA8C251228E7716D000D0253 /* light.c */,
+				AA8C250428E7716C000D0253 /* main.c */,
+				AA8C250C28E7716D000D0253 /* Makefile */,
+				AA8C24FF28E7716C000D0253 /* material.c */,
+				AA8C250128E7716C000D0253 /* mesh.c */,
+				AA8C251028E7716D000D0253 /* meshanim.c */,
+				AA8C250A28E7716D000D0253 /* moonassimp.h */,
+				AA8C250D28E7716D000D0253 /* node.c */,
+				AA8C251528E7716D000D0253 /* nodeanim.c */,
+				AA8C24FB28E7716C000D0253 /* objects.h */,
+				AA8C250E28E7716D000D0253 /* scene.c */,
+				AA8C251128E7716D000D0253 /* texture.c */,
+				AA8C250228E7716C000D0253 /* tree.h */,
+				AA8C24FA28E7716C000D0253 /* udata.c */,
+				AA8C250828E7716D000D0253 /* udata.h */,
+				AA8C24FE28E7716C000D0253 /* utils.c */,
+			);
+			name = Shared;
+			sourceTree = "<group>";
+		};
+		A482DA7815F9B7E70084DC42 = {
+			isa = PBXGroup;
+			children = (
+				A4151F3316879B8200B2B43A /* Shared */,
+				A482DA8615F9B7E70084DC42 /* Frameworks */,
+				A482DA8515F9B7E70084DC42 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A482DA8515F9B7E70084DC42 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A49186401641DDB800A39286 /* moonassimp.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A482DA8615F9B7E70084DC42 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AA8C253428E7719D000D0253 /* libassimp.a */,
+				AA8C253228E77181000D0253 /* libassimp-fat.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		A491863A1641DDB800A39286 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA8C251728E7716D000D0253 /* objects.h in Headers */,
+				AA8C251F28E7716D000D0253 /* internal.h in Headers */,
+				AA8C251E28E7716D000D0253 /* tree.h in Headers */,
+				AA8C252428E7716D000D0253 /* udata.h in Headers */,
+				AA8C252628E7716D000D0253 /* moonassimp.h in Headers */,
+				AA8C251C28E7716D000D0253 /* compat-5.3.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		A49186331641DDB800A39286 /* moonassimp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "moonassimp" */;
+			buildPhases = (
+				A49186341641DDB800A39286 /* Sources */,
+				A49186381641DDB800A39286 /* Frameworks */,
+				A491863A1641DDB800A39286 /* Headers */,
+				A445A9BA16AE072100A9A764 /* ShellScript */,
+			);
+			buildRules = (
+				A491863C1641DDB800A39286 /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = moonassimp;
+			productName = ads;
+			productReference = A49186401641DDB800A39286 /* moonassimp.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A482DA7A15F9B7E70084DC42 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0940;
+			};
+			buildConfigurationList = A482DA7D15F9B7E70084DC42 /* Build configuration list for PBXProject "Plugin" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				English,
+				en,
+			);
+			mainGroup = A482DA7815F9B7E70084DC42;
+			productRefGroup = A482DA8515F9B7E70084DC42 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A49186331641DDB800A39286 /* moonassimp */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A445A9BA16AE072100A9A764 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#\n# Checks exit value for error\n# \ncheckError() {\n    if [ $? -ne 0 ]\n    then\n        echo \"Exiting due to errors (above)\"\n        exit -1\n    fi\n}\n\nPLUGINS_DIR=~/Library/Application\\ Support/Corona/Simulator/Plugins/\n\n#mkdir -p $PLUGINS_DIR\ncheckError\n\n#cp -v $CONFIGURATION_BUILD_DIR/$FULL_PRODUCT_NAME $PLUGINS_DIR\ncheckError";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A49186341641DDB800A39286 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA8C251B28E7716D000D0253 /* material.c in Sources */,
+				AA8C251828E7716D000D0253 /* enums.c in Sources */,
+				AA8C253128E7716D000D0253 /* nodeanim.c in Sources */,
+				AA8C251D28E7716D000D0253 /* mesh.c in Sources */,
+				AA8C252728E7716D000D0253 /* bone.c in Sources */,
+				AA8C251A28E7716D000D0253 /* utils.c in Sources */,
+				AA8C252128E7716D000D0253 /* import.c in Sources */,
+				AA8C252A28E7716D000D0253 /* scene.c in Sources */,
+				AA8C251628E7716D000D0253 /* udata.c in Sources */,
+				AA8C251928E7716D000D0253 /* animation.c in Sources */,
+				AA8C252228E7716D000D0253 /* face.c in Sources */,
+				AA8C252F28E7716D000D0253 /* camera.c in Sources */,
+				AA8C253028E7716D000D0253 /* compat-5.3.c in Sources */,
+				AA8C252528E7716D000D0253 /* additional.c in Sources */,
+				AA8C252828E7716D000D0253 /* Makefile in Sources */,
+				AA8C252328E7716D000D0253 /* bitfields.c in Sources */,
+				AA8C252B28E7716D000D0253 /* animmesh.c in Sources */,
+				AA8C252028E7716D000D0253 /* main.c in Sources */,
+				AA8C252928E7716D000D0253 /* node.c in Sources */,
+				AA8C252C28E7716D000D0253 /* meshanim.c in Sources */,
+				AA8C252D28E7716D000D0253 /* texture.c in Sources */,
+				AA8C252E28E7716D000D0253 /* light.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A482DA9715F9B7E70084DC42 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					CORONA_DEBUG,
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-undefined",
+					dynamic_lookup,
+				);
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/Native/Corona/shared/include/Corona ${SRCROOT}/Native/Corona/shared/include/lua ${SRCROOT}/Native/Corona/ios/include/Corona ${SRCROOT}/../../ByteReader ${SRCROOT}/../../solar2d_native_utils ${SRCROOT}/../../math_libraries";
+			};
+			name = Debug;
+		};
+		A482DA9815F9B7E70084DC42 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				OTHER_LDFLAGS = (
+					"-undefined",
+					dynamic_lookup,
+				);
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/Native/Corona/shared/include/Corona ${SRCROOT}/Native/Corona/shared/include/lua ${SRCROOT}/Native/Corona/ios/include/Corona ${SRCROOT}/../../ByteReader ${SRCROOT}/../../solar2d_native_utils ${SRCROOT}/../../math_libraries";
+			};
+			name = Release;
+		};
+		A491863E1641DDB800A39286 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				INSTALL_PATH = "@rpath";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "/Applications/Native/Corona/shared/include/Corona /Applications/Native/Corona/shared/include/lua ${SRCROOT}/../shared/";
+			};
+			name = Debug;
+		};
+		A491863F1641DDB800A39286 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				INSTALL_PATH = "@rpath";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "/Applications/Native/Corona/shared/include/Corona /Applications/Native/Corona/shared/include/lua ${SRCROOT}/../shared/";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A482DA7D15F9B7E70084DC42 /* Build configuration list for PBXProject "Plugin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A482DA9715F9B7E70084DC42 /* Debug */,
+				A482DA9815F9B7E70084DC42 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "moonassimp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A491863E1641DDB800A39286 /* Debug */,
+				A491863F1641DDB800A39286 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A482DA7A15F9B7E70084DC42 /* Project object */;
+}

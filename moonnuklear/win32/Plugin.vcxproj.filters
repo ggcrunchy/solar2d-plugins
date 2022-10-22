@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{38221a7e-1a81-4618-ace5-4cc7ab7026ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\nuklear">
+      <UniqueIdentifier>{902c29c3-87e0-472a-b709-0b7db7b062d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ByteReader">
+      <UniqueIdentifier>{1f7a7a7b-5df9-4810-863a-fcfe1a140197}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\shared\src\atlas.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\buffer.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\canvas.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\compat-5.3.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\context.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\cursor.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\edit.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\enums.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\flags.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\font.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\image.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\input.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\layout.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\main.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\nuklear.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\objects.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\panel.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\structs.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\style.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\tracing.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\udata.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\utils.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\versions.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\widgets.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\window.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ByteReader\ByteReader.cpp">
+      <Filter>src\ByteReader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\ByteReader\br_bytes.cpp">
+      <Filter>src\ByteReader</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\shared\src\compat-5.3.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\debug.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\enums.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\internal.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\moonnuklear.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\objects.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\style.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\tree.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\udata.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\nuklear\nuklear.h">
+      <Filter>src\nuklear</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ByteReader\ByteReader.h">
+      <Filter>src\ByteReader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\src\ByteReader\br_bytes.h">
+      <Filter>src\ByteReader</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

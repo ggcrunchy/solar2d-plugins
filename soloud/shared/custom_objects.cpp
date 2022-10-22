@@ -72,6 +72,31 @@ void DecodeObject (lua_State * L, const char * encoded, size_t len)
 //
 //
 
+static bool FindLuaproc (lua_State * L)
+{
+	lua_getglobal(L, "package"); // ..., package
+
+	if (!lua_istable(L, -1)) CORONA_LOG_WARNING("Unable to find `package`, or not a table");
+	else
+	{
+		lua_getfield(L, -1, "loaded"); // ..., package, package.loaded
+
+		if (!lua_istable(L, -1)) CORONA_LOG_WARNING("Unable to find `package.loaded`, or not a table");
+		else
+		{
+			lua_getfield(L, -1, "plugin_luaproc"); // ..., package, package.loaded, luaproc?
+
+			return lua_istable(L, -1);
+		}
+	}
+
+	return false;
+}
+
+//
+//
+//
+
 const char * EncodeObject (lua_State * L, size_t & len)
 {
 	lua_pushcfunction(L, mar_encode); // ..., object, mar_encode
@@ -81,6 +106,17 @@ const char * EncodeObject (lua_State * L, size_t & len)
 	PushPluginModule(L); // ..., mar_encode, object, constants, soloud
 
 	lua_rawseti(L, -2, 1); // ..., mar_encode, object, constants = { soloud }
+
+	int top = lua_gettop(L);
+
+	if (FindLuaproc(L)) // ..., mar_encode, object, constants, package, package.loaded, luaproc?
+	{
+		lua_rawseti(L, -4, 2); // ..., mar_encode, object, constants = { soloud, luaproc }, package, package.loaded
+		lua_getfield(L, -2, "plugin_MemoryBlob"); // ..., mar_encode, object, constants = { soloud, luaproc }, package, package.loaded, MemoryBlob
+		lua_rawseti(L, -4, 3); // ..., mar_encode, object, constants = { soloud, luaproc, MemoryBlob / nil }, package, package.loaded
+	}
+
+	lua_settop(L, top); // ..., mar_encode, object, constants
 	lua_call(L, 2, 1); // ..., encoded
 
 	len = lua_objlen(L, -1);
@@ -119,55 +155,50 @@ static void ImportLibs (lua_State * to, lua_State * from)
 {
 	int top = lua_gettop(from);
 
-	lua_getglobal(from, "package"); // ..., package
-
-	if (!lua_istable(from, -1)) CORONA_LOG_WARNING("Unable to find `package`, or not a table");
-	else
+	if (FindLuaproc(from)) // ..., package, package.loaded, luaproc?
 	{
-		lua_getfield(from, -1, "loaded"); // ..., package, package.loaded
+		const char * names[] = { "get_integer", "get_number", "update_integer", "update_number", nullptr };
 
-		if (!lua_istable(from, -1)) CORONA_LOG_WARNING("Unable to find `package.loaded`, or not a table");
-		else
+		lua_createtable(to, 0, sizeof(names) / sizeof(names[0]) - 1); // constants, luaproc2
+		lua_pushvalue(to, -1); // constants, luaproc2, luaproc2
+		lua_rawseti(to, -3, 2); // constants = { soloud, luaproc2 }, luaproc2
+
+		for (int i = 0; names[i]; ++i, lua_pop(from, 1))
 		{
-			lua_getfield(from, -1, "plugin_luaproc"); // ..., package, package.loaded, luaproc?
+			lua_getfield(from, -1, names[i]); // ..., package, package.loaded, luaproc, func
 
-			if (lua_istable(from, -1))
+			if (!lua_iscfunction(from, -1)) CORONA_LOG_WARNING("luaproc's '%s' not a C function", names[i]);
+			else
 			{
-				const char * names[] = { "get_integer", "get_number", "update_integer", "update_number", nullptr };
+				lua_pushcfunction(to, lua_tocfunction(from, -1)); // luaproc2, func
+				lua_setfield(to, -2, names[i]); // luaproc2 = { ..., [name] = func }
+			}
+		}
 
-				lua_createtable(to, 0, sizeof(names) / sizeof(names[0]) - 1); // luaproc2
+		lua_setglobal(to, "luaproc"); // constants; _G.luaproc = luaproc2
+		lua_getfield(from, -2, "plugin_MemoryBlob"); // ..., package, package.loaded, luaproc, MemoryBlob?
 
-				for (int i = 0; names[i]; ++i, lua_pop(from, 1))
+		if (lua_istable(from, -1))
+		{
+			lua_getfield(from, -1, "Reloader"); // ..., package, package.loaded, luaproc, MemoryBlob, MemoryBlob.Reloader
+
+			if (!lua_iscfunction(from, -1)) CORONA_LOG_WARNING("MemoryBlob's 'Reloader' not a C function");
+			else
+			{
+				lua_pushcfunction(to, lua_tocfunction(from, -1)); // constants, Reloader
+						
+				if (lua_pcall(to, 0, 1, 0) == 0) // constants, MemoryBlob2 / err
 				{
-					lua_getfield(from, -1, names[i]); // ..., package, package.loaded, luaproc, func
-
-					if (!lua_iscfunction(from, -1)) CORONA_LOG_WARNING("luaproc's '%s' not a C function", names[i]);
-					else
-					{
-						lua_pushcfunction(to, lua_tocfunction(from, -1)); // luaproc2, func
-						lua_setfield(to, -2, names[i]); // luaproc2 = { ..., [name] = func }
-					}
+					lua_pushvalue(to, -1); // constants, MemoryBlob2, MemoryBlob2
+					lua_rawseti(to, -3, 3); // constants = { soloud, luaproc, MemoryBlob2 }, MemoryBlob2
+					lua_setglobal(to, "MemoryBlob"); // constants; _G.MemoryBlob = MemoryBlob2
 				}
 
-				lua_setglobal(to, "luaproc"); // ...; _G.luaproc = luaproc
-				lua_getfield(from, -2, "plugin_MemoryBlob"); // ..., package, package.loaded, luaproc, MemoryBlob?
-
-				if (lua_istable(from, -1))
+				else
 				{
-					lua_getfield(from, -1, "Reloader"); // ..., package, package.loaded, luaproc, MemoryBlob, MemoryBlob.Reloader
+					CORONA_LOG_WARNING("MemoryBlob 'Reloader' error: %s", lua_isstring(to, -1) ? lua_tostring(to, -1) : "?");
 
-					if (!lua_iscfunction(from, -1)) CORONA_LOG_WARNING("MemoryBlob's 'Reloader' not a C function");
-					else
-					{
-						lua_pushcfunction(to, lua_tocfunction(from, -1)); // Reloader
-						
-						if (lua_pcall(to, 0, 0, 0) != 0)
-						{
-							CORONA_LOG_WARNING("MemoryBlob 'Reloader' error: %s", lua_isstring(to, -1) ? lua_tostring(to, -1) : "?");
-
-							lua_pop(to, 1); // ...
-						}
-					}
+					lua_pop(to, 1); // ...
 				}
 			}
 		}
@@ -194,11 +225,12 @@ static lua_State * CreateState (lua_State * from)
 	lua_newtable(L); // soloud
 
 	AddBasics(L);
-	ImportLibs(L, from);
 
 	lua_createtable(L, 1, 0); // soloud, constants
 	lua_pushvalue(L, -2); // soloud, constants, soloud
 	lua_rawseti(L, -2, 1); // soloud, constants = { soloud }
+
+	ImportLibs(L, from);
 
 	sDecodeConstantsRef = lua_ref(L, 1); // soloud; ref = constants
 

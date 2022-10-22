@@ -63,7 +63,7 @@ void CustomSourceInstance::Init (lua_State * L, const ParentData * data)
 						bool found = true;
 
 						// TODO: generalize?
-						if (strcmp(key, "channels") == 0) CORONA_LOG_WARNING("Unable to assign channels");
+						if (strcmp(key, "Channels") == 0) CORONA_LOG_WARNING("Unable to assign channels");
 						else if (strcmp(key, "BaseSamplerate") == 0) instance->mBaseSamplerate = LuaXS::Float(L, 3);
 						else if (strcmp(key, "Samplerate") == 0) instance->mSamplerate = LuaXS::Float(L, 3);
 						else found = false;
@@ -87,7 +87,7 @@ void CustomSourceInstance::Init (lua_State * L, const ParentData * data)
 				bool found = true;
 
 				// TODO: generalize?
-				if (strcmp(key, "channels") == 0) lua_pushinteger(L, instance->mChannels); // instance, k, channels
+				if (strcmp(key, "Channels") == 0) lua_pushinteger(L, instance->mChannels); // instance, k, channels
 				else if (strcmp(key, "BaseSamplerate") == 0) lua_pushnumber(L, instance->mBaseSamplerate); // instance, k, base_sample_rate
 				else if (strcmp(key, "Samplerate") == 0) lua_pushnumber(L, instance->mSamplerate); // instance, k, sample_rate
 				else found = false;

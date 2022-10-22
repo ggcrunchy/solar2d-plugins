@@ -304,12 +304,22 @@ void PrepareOnComplete (lua_State * L, unsigned int id)
 		lua_pushinteger(L, id); // ..., Runtime, on_complete, callbacks, handlers, id
 		lua_pushvalue(L, -4); // ..., Runtime, on_complete, callbacks, handlers, id, on_complete
 		lua_rawset(L, -3); // ..., Runtime, on_complete, callbacks, handlers = { ..., [id] = on_complete }
-		lua_pop(L, 1); // ..., Runtime, on_complete, callbacks
-		lua_pushliteral(L, "enterFrame"); // ..., Runtime, on_complete, callbacks, "enterFrame"
-		lua_replace(L, -3); // ..., Runtime, "enterFrame", callbacks
-		lua_getfield(L, -3, "addEventListener"); // ..., Runtime, "enterFrame", callbacks = { ..., [id] = on_complete }, Runtime:addEventListener
-		lua_insert(L, -4); // ..., Runtime:addEventListener, Runtime, "enterFrame", callbacks = { ..., [id] = on_complete }
-		lua_call(L, 3, 0); // ...
+		lua_getfield(L, -3, "added"); // ..., Runtime, on_complete, callbacks, handlers, added?
+
+		bool already_added = lua_toboolean(L, -1);
+
+		lua_pop(L, 2); // ..., Runtime, on_complete, callbacks
+
+		if (!already_added)
+		{
+			lua_pushboolean(L, 1); // ..., Runtime, on_complete, callbacks, true
+			lua_setfield(L, -2, "added"); // ..., Runtime, on_complete, callbacks = { ..., added = true }
+			lua_pushliteral(L, "enterFrame"); // ..., Runtime, on_complete, callbacks, "enterFrame"
+			lua_replace(L, -3); // ..., Runtime, "enterFrame", callbacks
+			lua_getfield(L, -3, "addEventListener"); // ..., Runtime, "enterFrame", callbacks = { ..., [id] = on_complete }, Runtime:addEventListener
+			lua_insert(L, -4); // ..., Runtime:addEventListener, Runtime, "enterFrame", callbacks = { ..., [id] = on_complete }
+			lua_call(L, 3, 0); // ...
+		}
 	}
 }
 

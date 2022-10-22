@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\ByteReader\ByteReader.cpp" />
+    <ClCompile Include="..\shared\src\atlas.c" />
+    <ClCompile Include="..\shared\src\buffer.c" />
+    <ClCompile Include="..\shared\src\ByteReader\br_bytes.cpp" />
+    <ClCompile Include="..\shared\src\canvas.c" />
+    <ClCompile Include="..\shared\src\compat-5.3.c" />
+    <ClCompile Include="..\shared\src\context.c" />
+    <ClCompile Include="..\shared\src\cursor.c" />
+    <ClCompile Include="..\shared\src\edit.c" />
+    <ClCompile Include="..\shared\src\enums.c" />
+    <ClCompile Include="..\shared\src\flags.c" />
+    <ClCompile Include="..\shared\src\font.c" />
+    <ClCompile Include="..\shared\src\image.c" />
+    <ClCompile Include="..\shared\src\input.c" />
+    <ClCompile Include="..\shared\src\layout.c" />
+    <ClCompile Include="..\shared\src\main.c" />
+    <ClCompile Include="..\shared\src\nuklear.c" />
+    <ClCompile Include="..\shared\src\objects.c" />
+    <ClCompile Include="..\shared\src\panel.c" />
+    <ClCompile Include="..\shared\src\structs.c" />
+    <ClCompile Include="..\shared\src\style.c" />
+    <ClCompile Include="..\shared\src\tracing.c" />
+    <ClCompile Include="..\shared\src\udata.c" />
+    <ClCompile Include="..\shared\src\utils.c" />
+    <ClCompile Include="..\shared\src\versions.c" />
+    <ClCompile Include="..\shared\src\widgets.c" />
+    <ClCompile Include="..\shared\src\window.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\ByteReader\ByteReader.h" />
+    <ClInclude Include="..\shared\src\ByteReader\br_bytes.h" />
+    <ClInclude Include="..\shared\src\compat-5.3.h" />
+    <ClInclude Include="..\shared\src\debug.h" />
+    <ClInclude Include="..\shared\src\enums.h" />
+    <ClInclude Include="..\shared\src\internal.h" />
+    <ClInclude Include="..\shared\src\moonnuklear.h" />
+    <ClInclude Include="..\shared\src\nuklear\nuklear.h" />
+    <ClInclude Include="..\shared\src\objects.h" />
+    <ClInclude Include="..\shared\src\style.h" />
+    <ClInclude Include="..\shared\src\tree.h" />
+    <ClInclude Include="..\shared\src\udata.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{79F0CACC-457B-4A25-BC54-81277688C361}</ProjectGuid>
+    <RootNamespace>Plugin</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>7.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v141_xp</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v141_xp</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>12.0.30501.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(Configuration)\</OutDir>
+    <TargetName>plugin_memoryBitmap</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(Configuration)\</OutDir>
+    <TargetName>moonnuklear</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <PreBuildEvent />
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>CoronaEnterprise\Corona\shared\include;CoronaEnterprise\Corona\shared\include\Corona;CoronaEnterprise\Corona\shared\include\lua;..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>CoronaEnterprise\Corona\win\lib\*.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <PostBuildEvent />
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <PreBuildEvent />
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(CORONA_ROOT)/Corona/shared/include/Corona;$(CORONA_ROOT)/Corona/shared/include/lua;$(SolutionDir)../shared/src;$(SolutionDir)../../ByteReader</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);LUA_BUILD_AS_DLL;LUA_LIB;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(CORONA_ROOT)\Corona\win\lib\*.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent />
+    <PostBuildEvent>
+      <Command>set PLUGIN_DIR=$(appdata)\Solar2DPlugins\com.xibalbastudios\plugin.$(TargetName)\win32-sim
+setlocal enableextensions
+mkdir %PLUGIN_DIR%
+set FILENAME=plugin_$(TargetName).dll
+set FULL_NAME=%PLUGIN_DIR%\%FILENAME%
+copy "$(OutDir)$(TargetName).dll" "%FULL_NAME%"
+del "%PLUGIN_DIR%\data.tgz"
+tar -czf "%PLUGIN_DIR%\data.tgz" -C "%PLUGIN_DIR%" %FILENAME%
+del "%FULL_NAME%"
+set SIMULATOR_DIR="$(appdata)\Corona Labs\Corona Simulator\Plugins"
+del %SIMULATOR_DIR%\catalog.json</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
