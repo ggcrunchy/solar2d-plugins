@@ -67,6 +67,8 @@ struct Bytemap
 	void CheckSufficientMemory (void);
 	void PushBlob (void);
 	void ResolveMemory (void);
+
+	static void PremultiplyAlpha (uint32_t * pixel, int len);
 };
 
 #endif

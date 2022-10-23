@@ -96,7 +96,7 @@ static int Init(lua_State *L)
     {
     ud_t *ud;
     nk_buffer_t *buffer = checkbuffer(L, 1, &ud);
-    int sizearg = 2 + lua_isnumber(L, 2); // <- STEVE CHANGE
+    int sizearg = 3 - lua_isnumber(L, 2); // <- STEVE CHANGE
     void *ptr = 3 == sizearg ? checklightuserdata(L, 2) : NULL; // <- STEVE CHANGE
     nk_size size = luaL_checkinteger(L, sizearg/*3*/); // <- STEVE CHANGE
     if(size <= 0) return argerrorc(L, sizearg/*3*/, ERR_VALUE); // <- STEVE CHANGE
@@ -106,18 +106,21 @@ static int Init(lua_State *L)
     if(2 == sizearg)
     {
         lua_getfenv(L, 1);
-
-        ptr = BytesNew(L, size);
-
-        lua_pushvalue(L, -1);
-        lua_setfenv(L, -2);
+        lua_getfield(L, -1, "buffer");
+        if(lua_objlen(L, -1) < size) // else reuse existing
+        {
+            ptr = BytesNew(L, size);
+            lua_pushvalue(L, -1);
+            lua_setfield(L, -4, "buffer");
+        }
+        else ptr = lua_touserdata(L, -1);
     }
     // /STEVE CHANGE
     if(IsInitialized(ud))
         nk_buffer_free(buffer);
     nk_buffer_init_fixed(buffer, ptr, size);
     MarkInitialized(ud);
-    return 3 == sizearg/*0*/; // <- STEVE CHANGE
+    return 2 == sizearg/*0*/; // <- STEVE CHANGE
     }
 
 TYPE_FUNC(buffer)

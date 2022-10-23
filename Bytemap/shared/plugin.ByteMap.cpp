@@ -171,6 +171,56 @@ void Bytemap::ResolveMemory (void)
 	mTemp = false;
 }
 
+void Bytemap::PremultiplyAlpha (uint32_t * pixel, int len)
+{
+	// FastPremult() from https://arxiv.org/pdf/2202.02864v1.pdf
+	for (int i = 0; i < len; ++i, ++pixel)
+	{
+		uint32_t color = *pixel;
+		uint32_t alfa = color >> 24;
+		uint32_t rb, ga;
+
+		color |= 0xff000000;
+
+		rb = color & 0x00ff00ff;
+		rb *= alfa;
+		rb += 0x00800080;
+		rb += (rb >> 8) & 0x00ff00ff;
+		rb &= 0xff00ff00;
+		ga = (color >> 8) & 0x00ff00ff;
+		ga *= alfa;
+		ga += 0x00800080;
+		ga += (ga >> 8) & 0x00ff00ff;
+		ga &= 0xff00ff00;
+
+		*pixel = ga | (rb >> 8);
+	}
+
+	/*
+	for (int i = 0; i < proxy->mSize; i += 4)
+	{
+		unsigned int alpha = uc[i + 3];
+
+		for (int j = 0; j < 3; ++j) uc[i + j] = (unsigned char)((alpha * uc[i + j]) / 255);
+	}
+	*/
+}
+
+static int Premultiply (lua_State * L)
+{
+	Bytemap * bmap = LuaXS::DualUD<Bytemap>(L, 1, BYTEMAP_NAME);
+
+	if (bmap && kExternalBitmapFormat_RGBA == bmap->mFormat)
+	{
+		// If a blob is present, flatten it into normal memory (detaching it).
+		if (bmap->mBlobRef != LUA_NOREF && !bmap->Flatten(true)) return LuaXS::ErrorAfterNil(L);// bmap[, error]
+
+		Bytemap::PremultiplyAlpha(reinterpret_cast<uint32_t *>(bmap->mBytes.data()), int(bmap->mBytes.size() / 4));
+	}
+
+	return LuaXS::PushArgAndReturn(L, true); // bmap, true
+}
+
 static int PushCachedFunction( lua_State *L, lua_CFunction f )
 {
 	// check cache for the funciton, cache key is function address
@@ -234,6 +284,7 @@ static int Bytemap_GetField (lua_State * L, const char * field, void * context)
 	else if (strcmp(field, "Deallocate") == 0) res = PushCachedFunction(L, Bytemap_Deallocate);
 	else if (strcmp(field, "GetBlob") == 0) res = PushCachedFunction(L, Bytemap_GetBlob);
 	else if (strcmp(field, "MakeSeamless") == 0) res = PushCachedFunction(L, Bytemap_MakeSeamless);
+	else if (strcmp(field, "PremultiplyAlpha") == 0) res = PushCachedFunction(L, Premultiply);
 	else if (strcmp(field, "format") == 0) PushFormat(L, static_cast<Bytemap *>(context));
 	else res = 0;
 
@@ -338,6 +389,8 @@ static bool NewBytemap (lua_State * L, int w, int h, CoronaExternalBitmapFormat 
 					"invalidate", LuaXS::NoOp
 				}, {
 					"MakeSeamless", Bytemap_MakeSeamless
+				}, {
+					"PremultiplyAlpha", Premultiply
 				}, {
 					"releaseSelf", LuaXS::NoOp
 				}, {
@@ -584,41 +637,7 @@ CORONA_EXPORT int luaopen_plugin_Bytemap (lua_State * L)
                     proxy->mBytes = uc;
                     proxy->mSize = size_t(w * h * ncomps);
 
-					if (4 == ncomps && !bNoPremultipliedAlpha)
-					{
-						// FastPremult() from https://arxiv.org/pdf/2202.02864v1.pdf
-						uint32_t * pixel = reinterpret_cast<uint32_t *>(uc);
-
-						for (int i = 0, len = proxy->mSize / 4; i < len; ++i, ++pixel)
-						{
-							uint32_t color = *pixel;
-							uint32_t alfa = color >> 24;
-							uint32_t rb, ga;
-
-							color |= 0xff000000;
-
-							rb = color & 0x00ff00ff;
-							rb *= alfa;
-							rb += 0x00800080;
-							rb += (rb >> 8) & 0x00ff00ff;
-							rb &= 0xff00ff00;
-							ga = (color >> 8) & 0x00ff00ff;
-							ga *= alfa;
-							ga += 0x00800080;
-							ga += (ga >> 8) & 0x00ff00ff;
-							ga &= 0xff00ff00;
-
-							*pixel = ga | (rb >> 8);
-						}
-						/*
-						for (int i = 0; i < proxy->mSize; i += 4)
-						{
-							unsigned int alpha = uc[i + 3];
-
-							for (int j = 0; j < 3; ++j) uc[i + j] = (unsigned char)((alpha * uc[i + j]) / 255);
-						}
-						*/
-					}
+					if (4 == ncomps && !bNoPremultipliedAlpha) Bytemap::PremultiplyAlpha(reinterpret_cast<uint32_t *>(uc), proxy->mSize / 4);
 
                     lua_pcall(L, 2, 0, 0);	// params, dirs, format?, is_absolute, filename, bmap
                 }
