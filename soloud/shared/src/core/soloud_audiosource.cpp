@@ -129,7 +129,7 @@ namespace SoLoud
 		{
 			mFlags |= AudioSourceInstance::LOOPING;
 
-			if (aSource.mLoopMax) mLoopUntil = aSource.mLoopMax - 1; // <- STEVE CHANGE
+			if (aSource.mLoopMax) mLoopUntil = aSource.mLoopMax; // <- STEVE CHANGE
 		}
 		if (aSource.mFlags & AudioSource::PROCESS_3D)
 		{
@@ -245,18 +245,13 @@ namespace SoLoud
 		// STEVE CHANGE
 		mLoopMax = 0;
 
-		if (aCount != 0)
+		if (aCount > 0)
 		{
-			aLoop = aCount > 1;
-
-			if (aLoop)
-			{
-				mLoopMax = aCount;
-			}
+			mLoopMax = aCount;
 		}
 
 		// /STEVE CHANGE
-		if (aLoop)
+		if (aLoop || aCount != 0) // <- STEVE CHANGE
 		{
 			mFlags |= SHOULD_LOOP;
 		}

@@ -102,6 +102,10 @@ template<typename T, SoLoud::result (T::*body)(const char *)> void AddFilenameMe
 		PathXS::Directories * dir = LuaXS::UD<PathXS::Directories>(L, lua_upvalueindex(1));
 		const char * filename = dir->Canonicalize(L, true, 2);
 
+		lua_getfenv(L, 1); // source, filename, env
+		lua_pushnil(L); // source, filename, env, nil
+		lua_setfield(L, -2, "memory"); // source, filename, env = { ..., memory = nil }
+
 		return Result(L, (GetAudioSource<T>(L)->*body)(filename));
 	}, 1); // funcs, func
 	lua_setfield(L, -2, name); // funcs = { ..., name = func }
@@ -127,6 +131,13 @@ template<typename T> void AddLoadMethods (lua_State * L)
 				ByteReader mem{ L, 2 };
 
 				const unsigned char * bytes = static_cast<const unsigned char *>(mem.mBytes);
+
+				if (mem.mBytes)
+				{
+					lua_getfenv(L, 1); // source, memory, env
+					lua_pushvalue(L, 2); // source, memory, env, memory
+					lua_setfield(L, -2, "memory"); // source, memory, env = { ..., memory = memory }
+				}
 
 				return Result(L, GetAudioSource<T>(L)->loadMem(const_cast<unsigned char *>(bytes), mem.mCount, false, false));
 			}

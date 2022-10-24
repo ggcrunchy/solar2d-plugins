@@ -130,7 +130,7 @@ struct CustomSource : public SoLoud::AudioSource {
 	//
 
 	enum {
-		HashValues = 4 // interface, new instance, data, class
+		HashValues = 5 // interface, new instance, data, class, memory
 	};
 
 	//
