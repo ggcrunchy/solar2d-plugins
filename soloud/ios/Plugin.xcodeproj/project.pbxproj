@@ -80,6 +80,8 @@
 		AA8C1E7F28D900E6000D0253 /* soloud_wav.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8C1E7828D900E6000D0253 /* soloud_wav.cpp */; };
 		AA8C1E8028D900E6000D0253 /* stb_vorbis.c in Sources */ = {isa = PBXBuildFile; fileRef = AA8C1E7928D900E6000D0253 /* stb_vorbis.c */; };
 		AA8C1E8128D900E6000D0253 /* soloud_wavstream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8C1E7C28D900E6000D0253 /* soloud_wavstream.cpp */; };
+		AA8C25D02907280F000D0253 /* custom_filter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8C25CE2907280F000D0253 /* custom_filter.cpp */; };
+		AA8C25D12907280F000D0253 /* custom_filter_instance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8C25CF2907280F000D0253 /* custom_filter_instance.cpp */; };
 		CE6E2BE11DF23A2B00AA7AF8 /* ByteReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE6E2BDF1DF23A2B00AA7AF8 /* ByteReader.cpp */; };
 /* End PBXBuildFile section */
 
@@ -232,6 +234,8 @@
 		AA8C1E7C28D900E6000D0253 /* soloud_wavstream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = soloud_wavstream.cpp; path = ../../../shared/src/audiosource/wav/soloud_wavstream.cpp; sourceTree = "<group>"; };
 		AA8C1E7D28D900E6000D0253 /* stb_vorbis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stb_vorbis.h; path = ../../../shared/src/audiosource/wav/stb_vorbis.h; sourceTree = "<group>"; };
 		AA8C240528DA8A4F000D0253 /* libplayer.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libplayer.a; path = "../../../../../../../Applications/Corona-3649/Native/Corona/ios/lib/libplayer.a"; sourceTree = "<group>"; };
+		AA8C25CE2907280F000D0253 /* custom_filter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = custom_filter.cpp; path = ../shared/custom_filter.cpp; sourceTree = "<group>"; };
+		AA8C25CF2907280F000D0253 /* custom_filter_instance.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = custom_filter_instance.cpp; path = ../shared/custom_filter_instance.cpp; sourceTree = "<group>"; };
 		CE6E2BDF1DF23A2B00AA7AF8 /* ByteReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ByteReader.cpp; path = ../../ByteReader/ByteReader.cpp; sourceTree = "<group>"; };
 		CE6E2BE01DF23A2B00AA7AF8 /* ByteReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ByteReader.h; path = ../../ByteReader/ByteReader.h; sourceTree = "<group>"; };
 		CE8A2C521E0F86F500FCFAFD /* aligned_allocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = aligned_allocator.h; path = ../../corona_enterprise_utils/external/aligned_allocator.h; sourceTree = "<group>"; };
@@ -351,6 +355,8 @@
 		AA8C1B6128D8E0A7000D0253 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				AA8C25CF2907280F000D0253 /* custom_filter_instance.cpp */,
+				AA8C25CE2907280F000D0253 /* custom_filter.cpp */,
 				AA8C1E3828D8FFCA000D0253 /* audiosource */,
 				AA8C1DFC28D8FE9D000D0253 /* core */,
 				AA8C1DE328D8FE0C000D0253 /* filter */,
@@ -701,6 +707,7 @@
 				AA8C1DB428D8E67B000D0253 /* add_floatbuffer.cpp in Sources */,
 				AA8C1DF528D8FE89000D0253 /* soloud_bassboostfilter.cpp in Sources */,
 				AA8C1E1D28D8FEB8000D0253 /* soloud_core_filterops.cpp in Sources */,
+				AA8C25D12907280F000D0253 /* custom_filter_instance.cpp in Sources */,
 				AA8C1DB928D8E67B000D0253 /* custom_audiosource.cpp in Sources */,
 				AA8C1E1728D8FEB8000D0253 /* soloud_core_faderops.cpp in Sources */,
 				AA8C1E4C28D90031000D0253 /* sndbuffer.cpp in Sources */,
@@ -720,6 +727,7 @@
 				AA8C1DF728D8FE89000D0253 /* soloud_lofifilter.cpp in Sources */,
 				AA8C1E1228D8FEB8000D0253 /* soloud_audiosource.cpp in Sources */,
 				AA8C1E6728D9009D000D0253 /* klatt.cpp in Sources */,
+				AA8C25D02907280F000D0253 /* custom_filter.cpp in Sources */,
 				CE6E2BE11DF23A2B00AA7AF8 /* ByteReader.cpp in Sources */,
 				AA8C1E6F28D900AF000D0253 /* soloud_tedsid.cpp in Sources */,
 				AA8C1DF128D8FE89000D0253 /* soloud_echofilter.cpp in Sources */,

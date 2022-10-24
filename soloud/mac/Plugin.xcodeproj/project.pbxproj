@@ -139,6 +139,8 @@
 		AA8C1B5428D6780D000D0253 /* Path.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8C1B5228D6780D000D0253 /* Path.h */; };
 		AA8C1B5528D6780D000D0253 /* Path.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8C1B5328D6780D000D0253 /* Path.cpp */; };
 		AA8C1B5728D6849C000D0253 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA8C1B5628D6849C000D0253 /* CoreAudio.framework */; };
+		AA8C25CC290727D6000D0253 /* custom_filter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8C25CA290727D6000D0253 /* custom_filter.cpp */; };
+		AA8C25CD290727D6000D0253 /* custom_filter_instance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8C25CB290727D6000D0253 /* custom_filter_instance.cpp */; };
 		CE6E2BBD1DF107E900AA7AF8 /* ByteReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE6E2BBB1DF107E900AA7AF8 /* ByteReader.cpp */; };
 		CE6E2BBE1DF107E900AA7AF8 /* ByteReader.h in Headers */ = {isa = PBXBuildFile; fileRef = CE6E2BBC1DF107E900AA7AF8 /* ByteReader.h */; };
 		CE8A2C571E0F8B4000FCFAFD /* aligned_allocator.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8A2C561E0F8B4000FCFAFD /* aligned_allocator.h */; };
@@ -298,6 +300,8 @@
 		AA8C1B5228D6780D000D0253 /* Path.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Path.h; path = ../../solar2d_native_utils/utils/Path.h; sourceTree = "<group>"; };
 		AA8C1B5328D6780D000D0253 /* Path.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Path.cpp; path = ../../solar2d_native_utils/utils/Path.cpp; sourceTree = "<group>"; };
 		AA8C1B5628D6849C000D0253 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		AA8C25CA290727D6000D0253 /* custom_filter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = custom_filter.cpp; path = ../shared/custom_filter.cpp; sourceTree = "<group>"; };
+		AA8C25CB290727D6000D0253 /* custom_filter_instance.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = custom_filter_instance.cpp; path = ../shared/custom_filter_instance.cpp; sourceTree = "<group>"; };
 		CE6E2BBB1DF107E900AA7AF8 /* ByteReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ByteReader.cpp; path = ../../ByteReader/ByteReader.cpp; sourceTree = "<group>"; };
 		CE6E2BBC1DF107E900AA7AF8 /* ByteReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ByteReader.h; path = ../../ByteReader/ByteReader.h; sourceTree = "<group>"; };
 		CE8A2C561E0F8B4000FCFAFD /* aligned_allocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = aligned_allocator.h; path = ../../corona_enterprise_utils/external/aligned_allocator.h; sourceTree = "<group>"; };
@@ -442,6 +446,8 @@
 		AA8C1AA728D674ED000D0253 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				AA8C25CB290727D6000D0253 /* custom_filter_instance.cpp */,
+				AA8C25CA290727D6000D0253 /* custom_filter.cpp */,
 				AA8C1AA828D674F6000D0253 /* audiosource */,
 				AA8C1AAB28D67513000D0253 /* backend */,
 				AA8C1AAA28D6750A000D0253 /* core */,
@@ -866,6 +872,7 @@
 				AA8C1AEF28D675E4000D0253 /* soloud_audiosource.cpp in Sources */,
 				AA8C1A4B28D66794000D0253 /* custom_audiosource.cpp in Sources */,
 				AA8C1B1D28D676B5000D0253 /* soloud_openmpt_dll.c in Sources */,
+				AA8C25CD290727D6000D0253 /* custom_filter_instance.cpp in Sources */,
 				AA8C1B0E28D67659000D0253 /* sndbuffer.cpp in Sources */,
 				AA8C1ACD28D675CC000D0253 /* soloud_fftfilter.cpp in Sources */,
 				AA8C1A5328D66794000D0253 /* add_core.cpp in Sources */,
@@ -885,6 +892,7 @@
 				AA8C1B2F28D676D1000D0253 /* resonator.cpp in Sources */,
 				AA8C1AC728D675CC000D0253 /* soloud_flangerfilter.cpp in Sources */,
 				AA8C1B4128D67718000D0253 /* soloud_vizsn.cpp in Sources */,
+				AA8C25CC290727D6000D0253 /* custom_filter.cpp in Sources */,
 				AA8C1AB528D6758C000D0253 /* soloud_miniaudio.cpp in Sources */,
 				AA8C1AE828D675E4000D0253 /* soloud_queue.cpp in Sources */,
 				AA8C1AD028D675CC000D0253 /* soloud_robotizefilter.cpp in Sources */,
