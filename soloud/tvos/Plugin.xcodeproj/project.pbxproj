@@ -158,6 +158,8 @@
 		AA8C1F3928D91324000D0253 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA8C1F3828D91324000D0253 /* AudioToolbox.framework */; };
 		AA8C1F3A28D9132F000D0253 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA8C1DC128D8EA66000D0253 /* CoreAudio.framework */; };
 		AA8C1F3C28D91358000D0253 /* AVFAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA8C1F3B28D91358000D0253 /* AVFAudio.framework */; };
+		AA8C25D429072861000D0253 /* custom_filter_instance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8C25D229072861000D0253 /* custom_filter_instance.cpp */; };
+		AA8C25D529072861000D0253 /* custom_filter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8C25D329072861000D0253 /* custom_filter.cpp */; };
 		CED05EC61E00D67800D1893D /* ByteReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CED05EC41E00D67800D1893D /* ByteReader.cpp */; };
 		CED05EC71E00D67800D1893D /* ByteReader.h in Headers */ = {isa = PBXBuildFile; fileRef = CED05EC51E00D67800D1893D /* ByteReader.h */; };
 		CED05EE81E00D69800D1893D /* aligned_allocator.h in Headers */ = {isa = PBXBuildFile; fileRef = CED05EE71E00D69800D1893D /* aligned_allocator.h */; };
@@ -331,6 +333,8 @@
 		AA8C1F3828D91324000D0253 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		AA8C1F3B28D91358000D0253 /* AVFAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFAudio.framework; path = System/Library/Frameworks/AVFAudio.framework; sourceTree = SDKROOT; };
 		AA8C1F4B28D93911000D0253 /* libpthread.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libpthread.tbd; path = usr/lib/libpthread.tbd; sourceTree = SDKROOT; };
+		AA8C25D229072861000D0253 /* custom_filter_instance.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = custom_filter_instance.cpp; path = ../shared/custom_filter_instance.cpp; sourceTree = "<group>"; };
+		AA8C25D329072861000D0253 /* custom_filter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = custom_filter.cpp; path = ../shared/custom_filter.cpp; sourceTree = "<group>"; };
 		CED05EC41E00D67800D1893D /* ByteReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ByteReader.cpp; path = ../../ByteReader/ByteReader.cpp; sourceTree = "<group>"; };
 		CED05EC51E00D67800D1893D /* ByteReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ByteReader.h; path = ../../ByteReader/ByteReader.h; sourceTree = "<group>"; };
 		CED05EE71E00D69800D1893D /* aligned_allocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = aligned_allocator.h; path = ../../corona_enterprise_utils/external/aligned_allocator.h; sourceTree = "<group>"; };
@@ -485,6 +489,8 @@
 		AA8C1B6428D8E0CF000D0253 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				AA8C25D229072861000D0253 /* custom_filter_instance.cpp */,
+				AA8C25D329072861000D0253 /* custom_filter.cpp */,
 				AA8C1ED128D904FC000D0253 /* audiosource */,
 				AA8C1E9B28D9044A000D0253 /* backend */,
 				AA8C1EAA28D904DB000D0253 /* core */,
@@ -879,7 +885,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ ! -d \"$CORONA_ROOT\" ]\nthen\n\t# Assume symlink location\n\tCORONA_ROOT=$PROJECT_DIR/Native\nfi\n\nif [ ! -d \"$CORONA_ROOT\" ]\nthen\n    echo \"Could not find Native directory\"\n    exit -1\nfi\n\n# -------------------------------------------------------------------\n\n\"$CORONA_ROOT\"/Corona/xcode/universal-framework.sh \"appletv\"\n";
+			shellScript = "if [ ! -d \"$CORONA_ROOT\" ]\nthen\n\t# Assume symlink location\n\tCORONA_ROOT=/Applications/Native\nfi\n\nif [ ! -d \"$CORONA_ROOT\" ]\nthen\n    echo \"Could not find Native directory\"\n    exit -1\nfi\n\n# -------------------------------------------------------------------\n\n\"$CORONA_ROOT\"/Corona/xcode/universal-framework.sh \"appletv\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -898,9 +904,11 @@
 				AA8C1EC228D904EE000D0253 /* soloud_filter.cpp in Sources */,
 				AA8C1E9628D9043D000D0253 /* soloud_freeverbfilter.cpp in Sources */,
 				AA8C1E9028D9043D000D0253 /* soloud_dcremovalfilter.cpp in Sources */,
+				AA8C25D429072861000D0253 /* custom_filter_instance.cpp in Sources */,
 				AA8C1E9928D9043D000D0253 /* soloud_flangerfilter.cpp in Sources */,
 				AA8C1EE528D90567000D0253 /* soloud_wav.cpp in Sources */,
 				AA8C1E9228D9043D000D0253 /* soloud_fftfilter.cpp in Sources */,
+				AA8C25D529072861000D0253 /* custom_filter.cpp in Sources */,
 				AA8C1EF928D905A7000D0253 /* soloud_tedsid.cpp in Sources */,
 				AA8C1ECA28D904EE000D0253 /* soloud_core_voiceops.cpp in Sources */,
 				AA8C1F2828D9067F000D0253 /* soloud_ay.cpp in Sources */,
