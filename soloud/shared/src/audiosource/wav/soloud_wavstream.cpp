@@ -88,6 +88,7 @@ namespace SoLoud
 		mCodec.mOgg = 0;
 		mCodec.mFlac = 0;
 		mFile = 0;
+		mIsOgg = false; // <- STEVE CHANGE
 		if (aParent->mMemFile)
 		{
 			MemoryFile *mf = new MemoryFile();
@@ -142,6 +143,7 @@ namespace SoLoud
 				mOggFrameSize = 0;
 				mOggFrameOffset = 0;
 				mOggOutputs = 0;
+				mIsOgg = true; // <- STEVE CHANGE
 			}
 			else
 			if (mParent->mFiletype == WAVSTREAM_FLAC)
@@ -341,7 +343,7 @@ namespace SoLoud
 
 	result WavStreamInstance::seek(double aSeconds, float* mScratch, unsigned int mScratchSize)
 	{
-		if (mCodec.mOgg)
+		if (mIsOgg) // mCodec.mOgg) <- STEVE CHANGE
 		{
 			int pos = (int)floor(mBaseSamplerate * aSeconds);
 			stb_vorbis_seek(mCodec.mOgg, pos);

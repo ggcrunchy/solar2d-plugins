@@ -59,6 +59,7 @@ namespace SoLoud
 		unsigned int mOggFrameSize;
 		unsigned int mOggFrameOffset;
 		float **mOggOutputs;
+		bool mIsOgg; // <- STEVE CHANGE
 	public:
 		WavStreamInstance(WavStream *aParent);
 		virtual unsigned int getAudio(float *aBuffer, unsigned int aSamplesToRead, unsigned int aBufferSize);
