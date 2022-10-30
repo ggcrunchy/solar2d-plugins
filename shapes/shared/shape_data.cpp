@@ -125,47 +125,47 @@ int WrapShapeData (lua_State * L, yocto::shape_data && sd)
 					return RefVector4f(L, &GetShapeData(L).colors); // shape, colors_ref
 				}
 			}, {
-				"set_lines", [](lua_State * L)
+				"get_lines", [](lua_State * L)
 				{
 					return RefVector2i(L, &GetShapeData(L).lines); // shape, lines_ref
 				}
 			}, {
-				"set_normals", [](lua_State * L)
+				"get_normals", [](lua_State * L)
 				{
 					return RefVector3f(L, &GetShapeData(L).normals); // shape, normals_ref
 				}
 			}, {
-				"set_points", [](lua_State * L)
+				"get_points", [](lua_State * L)
 				{
 					return RefVector1i(L, &GetShapeData(L).points); // shape, points_ref
 				}
 			}, {
-				"set_positions", [](lua_State * L)
+				"get_positions", [](lua_State * L)
 				{
 					return RefVector3f(L, &GetShapeData(L).positions); // shape, positions_ref
 				}
 			}, {
-				"set_quads", [](lua_State * L)
+				"get_quads", [](lua_State * L)
 				{
 					return RefVector4i(L, &GetShapeData(L).quads); // shape, quads_ref
 				}
 			}, {
-				"set_radius", [](lua_State * L)
+				"get_radius", [](lua_State * L)
 				{
 					return RefVector1f(L, &GetShapeData(L).radius); // shape, radius_ref
 				}
 			}, {
-				"set_tangents", [](lua_State * L)
+				"get_tangents", [](lua_State * L)
 				{
 					return RefVector4f(L, &GetShapeData(L).tangents); // shape, tangents_ref
 				}
 			}, {
-				"set_texcoords", [](lua_State * L)
+				"get_texcoords", [](lua_State * L)
 				{
 					return RefVector2f(L, &GetShapeData(L).texcoords); // shape, texcoords_ref
 				}
 			}, {
-				"set_triangles", [](lua_State * L)
+				"get_triangles", [](lua_State * L)
 				{
 					return RefVector3i(L, &GetShapeData(L).triangles); // shape, triangles_ref
 				}

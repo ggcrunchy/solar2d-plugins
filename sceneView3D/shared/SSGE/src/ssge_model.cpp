@@ -131,8 +131,8 @@ void Model::add_model (lua_State * L)
                 }, {
                     "AddUV", [](lua_State * L)
                     {
-                        lua_settop(L, 3); // model, x, y
-                        lua_pushnumber(L, 0); // model, x, y, 0
+                        lua_settop(L, 3); // model, u, v
+                        lua_pushnumber(L, 0); // model, u, v, 0
 
                         Model::Get(L)->getMesh()->texels.push_back(MakeVec3(L, 2));
 

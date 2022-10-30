@@ -168,7 +168,6 @@ static int NewProxy (lua_State * L)
 						case Proxy::eAnnotations:
 							lua_pushliteral(L, "annotations");	// proxy, "annotations"
 							break;
-							break;
 						case Proxy::ePositions:
 							lua_pushliteral(L, "positions");// proxy, "positions"
 							break;

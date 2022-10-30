@@ -165,7 +165,7 @@ int WrapShape (lua_State * L, generator::AnyShape && shape)
 			}, {
 				"Subdivide", [](lua_State * L)
 				{
-					return WrapShape(L, generator::SubdivideShape<generator::AnyShape>(*GetShape(L))); // shape, count, subdivided
+					return WrapShape(L, generator::SubdivideShape<generator::AnyShape>(*GetShape(L))); // shape, subdivided
 				}
 			}, {
 				"Transform", [](lua_State * L)
@@ -270,7 +270,7 @@ void MakeShapeVertexBox (lua_State * L, generator::ShapeVertex * vertex)
 					lua_pushnumber(L, n[0]); // vertex, x
 					lua_pushnumber(L, n[1]); // vertex, x, y
 
-					return 3;
+					return 2;
 				}
 			}, {
 				"GetPosition", [](lua_State * L)
@@ -280,7 +280,7 @@ void MakeShapeVertexBox (lua_State * L, generator::ShapeVertex * vertex)
 					lua_pushnumber(L, p[0]); // vertex, x
 					lua_pushnumber(L, p[1]); // vertex, x, y
 
-					return 3;
+					return 2;
 				}
 			}, {
 				"GetTangent", [](lua_State * L)
@@ -290,7 +290,7 @@ void MakeShapeVertexBox (lua_State * L, generator::ShapeVertex * vertex)
 					lua_pushnumber(L, t[0]); // vertex, x
 					lua_pushnumber(L, t[1]); // vertex, x, y
 
-					return 3;
+					return 2;
 				}
 			}, {
 				"GetTexCoord", [](lua_State * L)
@@ -425,7 +425,7 @@ void add_shapes (lua_State * L)
 					lua_insert(L, 1); // func, params
 				}
 
-				luaL_checktype(L, 2, LUA_TFUNCTION);
+				luaL_checktype(L, 1, LUA_TFUNCTION);
 
 				LuaXS::Options opts{L, 2};
 

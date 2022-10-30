@@ -83,7 +83,7 @@ static bool GetBytesFromBitmap (lua_State * L, HDC hdc, HBITMAP hBitmap)
             {
                 used_blob = true;
 
-                if (BlobXS::GetSize(L,top) < size)
+                if (BlobXS::GetSize(L, top) < size)
                 {
                     used_blob = BlobXS::Resize(L, top, size);
                 }

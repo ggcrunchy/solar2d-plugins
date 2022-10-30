@@ -165,11 +165,6 @@ void add_object (lua_State * L)
 						return 0;
 					}
 				}, {
-					"RemoveSelf", [](lua_State * L)
-					{
-						return 0;
-					}
-				}, {
 					"SetNormal", [](lua_State * L)
 					{
 						RenderInfoRAII ri{GetObject(L)};

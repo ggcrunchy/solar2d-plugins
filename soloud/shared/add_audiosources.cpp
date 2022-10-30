@@ -637,7 +637,7 @@ static void AddSpeech (lua_State * L)
 					lua_getfield(L, 2, "baseFrequency"); // speech, params, base_frequency
 					lua_getfield(L, 2, "baseSpeed"); // speech, params, base_frequency, base_speed
 					lua_getfield(L, 2, "baseDeclination"); // speech, params, base_frequency, base_speed, base_declination
-					lua_getfield(L, 2, "baseWaveform"); // speech, params, base_frequency, , base_speed, base_declination, base_waveform
+					lua_getfield(L, 2, "baseWaveform"); // speech, params, base_frequency, base_speed, base_declination, base_waveform
 
 					const char * klatt[] = { "SAW", "TRIANGLE", "SIN", "SQUARE", "PULSE", "NOISE", "WARBLE", nullptr };
 

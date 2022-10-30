@@ -118,7 +118,7 @@ static int BoxMesh (lua_State * L, par_shapes_mesh * mesh)
                 {
                     par_shapes_compute_normals(GetMesh(L));
 
-                    return 6;
+                    return 0;
                 }
             }, {
                 "free_mesh", [](lua_State * L)
@@ -382,7 +382,7 @@ void add_par (lua_State * L)
         }, {
             "create_lsystem", [](lua_State * L)
             {
-                return BoxMesh(L, par_shapes_create_lsystem(luaL_checkstring(L, 1), luaL_checkint(L, 2), luaL_checkint(L, 3))); // slices, maxdepth, lsystem
+                return BoxMesh(L, par_shapes_create_lsystem(luaL_checkstring(L, 1), luaL_checkint(L, 2), luaL_checkint(L, 3))); // text, slices, maxdepth, lsystem
             }
         }, {
             "create_parametric", [](lua_State * L)

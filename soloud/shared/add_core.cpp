@@ -382,9 +382,9 @@ void SoloudMethods(lua_State * L)
 				return 0;
 			}
 		}, {
-			FADE(fadeRelativePlaySpeed)
-		}, {
 			FADE(fadePan)
+		}, {
+			FADE(fadeRelativePlaySpeed)
 		}, {
 			FADE(fadeVolume)
 		}, {
