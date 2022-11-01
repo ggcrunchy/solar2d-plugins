@@ -422,6 +422,13 @@ int NewPacking (lua_State * L)
 
 						return 0;
 					}
+				}, {
+					"PackSetSkipMissingCodepoints", [](lua_State * L)
+					{
+						stbtt_PackSetSkipMissingCodepoints(GetContext(L, false), lua_toboolean(L, 2));
+
+						return 0;
+					}
 				},
 				{ nullptr, nullptr }
 			};

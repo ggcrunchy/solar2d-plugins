@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{5B45F8CA-B2E2-435A-8BD1-EFE21718A800}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>pluginmemoryBitmap</RootNamespace>
+    <WindowsTargetPlatformVersion>7.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141_xp</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <TargetName>SSGE</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;PLUGINMEMORYBITMAP_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);M_PI=3.1415926535897932384;M_1_PIf32=float(1.f/M_PI)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(CORONA_ROOT)/Corona/shared/include/Corona;$(CORONA_ROOT)/Corona/shared/include/lua;$(SolutionDir)../../ByteReader;$(SolutionDir)../../solar2d_native_utils;$(SolutionDir)../shared/SSGE/include;;$(SolutionDir)../shared</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <OpenMPSupport>
+      </OpenMPSupport>
+      <AdditionalOptions>/openmp:experimental %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>$(CORONA_ROOT)/Corona/win/lib/*.lib;$(Configuration)\solar2d_native_utils.lib;winmm.lib</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>set PLUGIN_DIR=$(appdata)\Solar2DPlugins\com.xibalbastudios\plugin.$(TargetName)\win32-sim
+setlocal enableextensions
+mkdir %PLUGIN_DIR%
+set FILENAME=plugin_$(TargetName).dll
+set FULL_NAME=%PLUGIN_DIR%\%FILENAME%
+copy "$(OutDir)$(TargetName).dll" "%FULL_NAME%"
+del "%PLUGIN_DIR%\data.tgz"
+tar -czf "%PLUGIN_DIR%\data.tgz" -C "%PLUGIN_DIR%" %FILENAME%
+del "%FULL_NAME%"
+set SIMULATOR_DIR="$(appdata)\Corona Labs\Corona Simulator\Plugins"
+del %SIMULATOR_DIR%\catalog.json</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\shared\plugin.SSGE.cpp" />
+    <ClCompile Include="..\shared\SSGE\src\camera.cpp" />
+    <ClCompile Include="..\shared\SSGE\src\engine.cpp" />
+    <ClCompile Include="..\shared\SSGE\src\geometry.cpp" />
+    <ClCompile Include="..\shared\SSGE\src\matrix.cpp" />
+    <ClCompile Include="..\shared\SSGE\src\mesh.cpp" />
+    <ClCompile Include="..\shared\SSGE\src\model.cpp" />
+    <ClCompile Include="..\shared\SSGE\src\rasterizer.cpp" />
+    <ClCompile Include="..\shared\SSGE\src\renderManager.cpp" />
+    <ClCompile Include="..\shared\SSGE\src\scene.cpp" />
+    <ClCompile Include="..\shared\SSGE\src\softwareRenderer.cpp" />
+    <ClCompile Include="..\shared\SSGE\src\texture.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\shared\common.h" />
+    <ClInclude Include="..\shared\SSGE\include\buffer.h" />
+    <ClInclude Include="..\shared\SSGE\include\camera.h" />
+    <ClInclude Include="..\shared\SSGE\include\engine.h" />
+    <ClInclude Include="..\shared\SSGE\include\geometry.h" />
+    <ClInclude Include="..\shared\SSGE\include\light.h" />
+    <ClInclude Include="..\shared\SSGE\include\matrix.h" />
+    <ClInclude Include="..\shared\SSGE\include\mesh.h" />
+    <ClInclude Include="..\shared\SSGE\include\model.h" />
+    <ClInclude Include="..\shared\SSGE\include\rasterizer.h" />
+    <ClInclude Include="..\shared\SSGE\include\renderManager.h" />
+    <ClInclude Include="..\shared\SSGE\include\scene.h" />
+    <ClInclude Include="..\shared\SSGE\include\shader.h" />
+    <ClInclude Include="..\shared\SSGE\include\softwareRenderer.h" />
+    <ClInclude Include="..\shared\SSGE\include\texture.h" />
+    <ClInclude Include="..\shared\SSGE\include\vector3D.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,537 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		AA8C256E28EBA228000D0253 /* common.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8C256C28EBA228000D0253 /* common.h */; };
+		AA8C256F28EBA228000D0253 /* plugin.sceneView3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8C256D28EBA228000D0253 /* plugin.sceneView3D.cpp */; };
+		AA8C258428EBA279000D0253 /* mesh.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8C257228EBA279000D0253 /* mesh.h */; };
+		AA8C258528EBA279000D0253 /* objParser.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8C257328EBA279000D0253 /* objParser.h */; };
+		AA8C258628EBA279000D0253 /* model.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8C257428EBA279000D0253 /* model.h */; };
+		AA8C258728EBA279000D0253 /* renderManager.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8C257528EBA279000D0253 /* renderManager.h */; };
+		AA8C258828EBA279000D0253 /* displayManager.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8C257628EBA279000D0253 /* displayManager.h */; };
+		AA8C258928EBA279000D0253 /* rasterizer.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8C257728EBA279000D0253 /* rasterizer.h */; };
+		AA8C258A28EBA279000D0253 /* engine.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8C257828EBA279000D0253 /* engine.h */; };
+		AA8C258B28EBA279000D0253 /* shader.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8C257928EBA279000D0253 /* shader.h */; };
+		AA8C258C28EBA279000D0253 /* vector3D.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8C257A28EBA279000D0253 /* vector3D.h */; };
+		AA8C258D28EBA279000D0253 /* camera.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8C257B28EBA279000D0253 /* camera.h */; };
+		AA8C258E28EBA279000D0253 /* sceneManager.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8C257C28EBA279000D0253 /* sceneManager.h */; };
+		AA8C258F28EBA279000D0253 /* softwareRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8C257D28EBA279000D0253 /* softwareRenderer.h */; };
+		AA8C259028EBA279000D0253 /* light.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8C257E28EBA279000D0253 /* light.h */; };
+		AA8C259128EBA279000D0253 /* geometry.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8C257F28EBA279000D0253 /* geometry.h */; };
+		AA8C259228EBA279000D0253 /* scene.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8C258028EBA279000D0253 /* scene.h */; };
+		AA8C259328EBA279000D0253 /* buffer.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8C258128EBA279000D0253 /* buffer.h */; };
+		AA8C259428EBA279000D0253 /* matrix.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8C258228EBA279000D0253 /* matrix.h */; };
+		AA8C259528EBA279000D0253 /* texture.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8C258328EBA279000D0253 /* texture.h */; };
+		AA8C25A628EBA2AE000D0253 /* ssge_geometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8C259828EBA2AD000D0253 /* ssge_geometry.cpp */; };
+		AA8C25A728EBA2AE000D0253 /* displayManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8C259928EBA2AD000D0253 /* displayManager.cpp */; };
+		AA8C25A828EBA2AE000D0253 /* camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8C259A28EBA2AD000D0253 /* camera.cpp */; };
+		AA8C25A928EBA2AE000D0253 /* ssge_model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8C259B28EBA2AD000D0253 /* ssge_model.cpp */; };
+		AA8C25AA28EBA2AE000D0253 /* engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8C259C28EBA2AD000D0253 /* engine.cpp */; };
+		AA8C25AB28EBA2AE000D0253 /* objParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8C259D28EBA2AD000D0253 /* objParser.cpp */; };
+		AA8C25AC28EBA2AE000D0253 /* renderManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8C259E28EBA2AD000D0253 /* renderManager.cpp */; };
+		AA8C25AD28EBA2AE000D0253 /* matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8C259F28EBA2AD000D0253 /* matrix.cpp */; };
+		AA8C25AE28EBA2AE000D0253 /* rasterizer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8C25A028EBA2AD000D0253 /* rasterizer.cpp */; };
+		AA8C25AF28EBA2AE000D0253 /* mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8C25A128EBA2AD000D0253 /* mesh.cpp */; };
+		AA8C25B028EBA2AE000D0253 /* ssge_texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8C25A228EBA2AD000D0253 /* ssge_texture.cpp */; };
+		AA8C25B128EBA2AE000D0253 /* sceneManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8C25A328EBA2AE000D0253 /* sceneManager.cpp */; };
+		AA8C25B228EBA2AE000D0253 /* softwareRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8C25A428EBA2AE000D0253 /* softwareRenderer.cpp */; };
+		AA8C25B328EBA2AE000D0253 /* ssge_scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8C25A528EBA2AE000D0253 /* ssge_scene.cpp */; };
+		AA8C25B528EBA2C2000D0253 /* stb_image.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8C25B428EBA2C2000D0253 /* stb_image.h */; };
+		AA8C25C028EBA2D0000D0253 /* geometry.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8C25B628EBA2CF000D0253 /* geometry.h */; };
+		AA8C25C128EBA2D0000D0253 /* node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8C25B728EBA2CF000D0253 /* node.cpp */; };
+		AA8C25C228EBA2D0000D0253 /* tiny_model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8C25B828EBA2CF000D0253 /* tiny_model.cpp */; };
+		AA8C25C328EBA2D0000D0253 /* color.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8C25B928EBA2CF000D0253 /* color.cpp */; };
+		AA8C25C428EBA2D0000D0253 /* tiny_texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8C25BA28EBA2CF000D0253 /* tiny_texture.cpp */; };
+		AA8C25C528EBA2D0000D0253 /* utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8C25BB28EBA2CF000D0253 /* utils.cpp */; };
+		AA8C25C628EBA2D0000D0253 /* object.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8C25BC28EBA2D0000D0253 /* object.cpp */; };
+		AA8C25C728EBA2D0000D0253 /* tinyrenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = AA8C25BD28EBA2D0000D0253 /* tinyrenderer.h */; };
+		AA8C25C828EBA2D0000D0253 /* tiny_scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8C25BE28EBA2D0000D0253 /* tiny_scene.cpp */; };
+		AA8C25C928EBA2D0000D0253 /* tiny_geometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8C25BF28EBA2D0000D0253 /* tiny_geometry.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		A491863C1641DDB800A39286 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.lua";
+			fileType = pattern.proxy;
+			inputFiles = (
+			);
+			isEditable = 1;
+			outputFiles = (
+				"$TARGET_TEMP_DIR/$(INPUT_FILE_BASE).c",
+			);
+			script = "CORONA_DIR=$SRCROOT/Native/Corona\nCORONA_MAC_BIN_DIR=$CORONA_DIR/mac/bin\n\nif [ -e \"$CORONA_MAC_BIN_DIR/lua\" ]; then\n    LUA_DIR=$CORONA_MAC_BIN_DIR/lua\nelse\n    echo \"Could not find proper 32-bit lua build in: $CORONA_MAC_BIN_DIR/lua\"\n    exit 1\nfi\n\necho $CORONA_MAC_BIN_DIR/lua2c.sh $INPUT_FILE_PATH $TARGET_TEMP_DIR $CONFIGURATION\n\"$CORONA_MAC_BIN_DIR/lua2c.sh\" \"$INPUT_FILE_PATH\" \"$TARGET_TEMP_DIR\" \"$CONFIGURATION\" \"$CORONA_MAC_BIN_DIR\"";
+		};
+/* End PBXBuildRule section */
+
+/* Begin PBXFileReference section */
+		A49186401641DDB800A39286 /* sceneView3D.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = sceneView3D.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA8C256C28EBA228000D0253 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = common.h; path = ../shared/common.h; sourceTree = "<group>"; };
+		AA8C256D28EBA228000D0253 /* plugin.sceneView3D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = plugin.sceneView3D.cpp; path = ../shared/plugin.sceneView3D.cpp; sourceTree = "<group>"; };
+		AA8C257228EBA279000D0253 /* mesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mesh.h; path = ../shared/SSGE/include/mesh.h; sourceTree = "<group>"; };
+		AA8C257328EBA279000D0253 /* objParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = objParser.h; path = ../shared/SSGE/include/objParser.h; sourceTree = "<group>"; };
+		AA8C257428EBA279000D0253 /* model.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = model.h; path = ../shared/SSGE/include/model.h; sourceTree = "<group>"; };
+		AA8C257528EBA279000D0253 /* renderManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = renderManager.h; path = ../shared/SSGE/include/renderManager.h; sourceTree = "<group>"; };
+		AA8C257628EBA279000D0253 /* displayManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = displayManager.h; path = ../shared/SSGE/include/displayManager.h; sourceTree = "<group>"; };
+		AA8C257728EBA279000D0253 /* rasterizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = rasterizer.h; path = ../shared/SSGE/include/rasterizer.h; sourceTree = "<group>"; };
+		AA8C257828EBA279000D0253 /* engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = engine.h; path = ../shared/SSGE/include/engine.h; sourceTree = "<group>"; };
+		AA8C257928EBA279000D0253 /* shader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = shader.h; path = ../shared/SSGE/include/shader.h; sourceTree = "<group>"; };
+		AA8C257A28EBA279000D0253 /* vector3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vector3D.h; path = ../shared/SSGE/include/vector3D.h; sourceTree = "<group>"; };
+		AA8C257B28EBA279000D0253 /* camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = camera.h; path = ../shared/SSGE/include/camera.h; sourceTree = "<group>"; };
+		AA8C257C28EBA279000D0253 /* sceneManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sceneManager.h; path = ../shared/SSGE/include/sceneManager.h; sourceTree = "<group>"; };
+		AA8C257D28EBA279000D0253 /* softwareRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = softwareRenderer.h; path = ../shared/SSGE/include/softwareRenderer.h; sourceTree = "<group>"; };
+		AA8C257E28EBA279000D0253 /* light.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = light.h; path = ../shared/SSGE/include/light.h; sourceTree = "<group>"; };
+		AA8C257F28EBA279000D0253 /* geometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = geometry.h; path = ../shared/SSGE/include/geometry.h; sourceTree = "<group>"; };
+		AA8C258028EBA279000D0253 /* scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = scene.h; path = ../shared/SSGE/include/scene.h; sourceTree = "<group>"; };
+		AA8C258128EBA279000D0253 /* buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = buffer.h; path = ../shared/SSGE/include/buffer.h; sourceTree = "<group>"; };
+		AA8C258228EBA279000D0253 /* matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = matrix.h; path = ../shared/SSGE/include/matrix.h; sourceTree = "<group>"; };
+		AA8C258328EBA279000D0253 /* texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = texture.h; path = ../shared/SSGE/include/texture.h; sourceTree = "<group>"; };
+		AA8C259828EBA2AD000D0253 /* ssge_geometry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ssge_geometry.cpp; path = ../shared/SSGE/src/ssge_geometry.cpp; sourceTree = "<group>"; };
+		AA8C259928EBA2AD000D0253 /* displayManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = displayManager.cpp; path = ../shared/SSGE/src/displayManager.cpp; sourceTree = "<group>"; };
+		AA8C259A28EBA2AD000D0253 /* camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = camera.cpp; path = ../shared/SSGE/src/camera.cpp; sourceTree = "<group>"; };
+		AA8C259B28EBA2AD000D0253 /* ssge_model.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ssge_model.cpp; path = ../shared/SSGE/src/ssge_model.cpp; sourceTree = "<group>"; };
+		AA8C259C28EBA2AD000D0253 /* engine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = engine.cpp; path = ../shared/SSGE/src/engine.cpp; sourceTree = "<group>"; };
+		AA8C259D28EBA2AD000D0253 /* objParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = objParser.cpp; path = ../shared/SSGE/src/objParser.cpp; sourceTree = "<group>"; };
+		AA8C259E28EBA2AD000D0253 /* renderManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = renderManager.cpp; path = ../shared/SSGE/src/renderManager.cpp; sourceTree = "<group>"; };
+		AA8C259F28EBA2AD000D0253 /* matrix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = matrix.cpp; path = ../shared/SSGE/src/matrix.cpp; sourceTree = "<group>"; };
+		AA8C25A028EBA2AD000D0253 /* rasterizer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = rasterizer.cpp; path = ../shared/SSGE/src/rasterizer.cpp; sourceTree = "<group>"; };
+		AA8C25A128EBA2AD000D0253 /* mesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = mesh.cpp; path = ../shared/SSGE/src/mesh.cpp; sourceTree = "<group>"; };
+		AA8C25A228EBA2AD000D0253 /* ssge_texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ssge_texture.cpp; path = ../shared/SSGE/src/ssge_texture.cpp; sourceTree = "<group>"; };
+		AA8C25A328EBA2AE000D0253 /* sceneManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = sceneManager.cpp; path = ../shared/SSGE/src/sceneManager.cpp; sourceTree = "<group>"; };
+		AA8C25A428EBA2AE000D0253 /* softwareRenderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = softwareRenderer.cpp; path = ../shared/SSGE/src/softwareRenderer.cpp; sourceTree = "<group>"; };
+		AA8C25A528EBA2AE000D0253 /* ssge_scene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ssge_scene.cpp; path = ../shared/SSGE/src/ssge_scene.cpp; sourceTree = "<group>"; };
+		AA8C25B428EBA2C2000D0253 /* stb_image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stb_image.h; path = ../shared/SSGE/libs/stb_image.h; sourceTree = "<group>"; };
+		AA8C25B628EBA2CF000D0253 /* geometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = geometry.h; path = ../shared/tinyrenderer/geometry.h; sourceTree = "<group>"; };
+		AA8C25B728EBA2CF000D0253 /* node.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = node.cpp; path = ../shared/tinyrenderer/node.cpp; sourceTree = "<group>"; };
+		AA8C25B828EBA2CF000D0253 /* tiny_model.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tiny_model.cpp; path = ../shared/tinyrenderer/tiny_model.cpp; sourceTree = "<group>"; };
+		AA8C25B928EBA2CF000D0253 /* color.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = color.cpp; path = ../shared/tinyrenderer/color.cpp; sourceTree = "<group>"; };
+		AA8C25BA28EBA2CF000D0253 /* tiny_texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tiny_texture.cpp; path = ../shared/tinyrenderer/tiny_texture.cpp; sourceTree = "<group>"; };
+		AA8C25BB28EBA2CF000D0253 /* utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = utils.cpp; path = ../shared/tinyrenderer/utils.cpp; sourceTree = "<group>"; };
+		AA8C25BC28EBA2D0000D0253 /* object.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = object.cpp; path = ../shared/tinyrenderer/object.cpp; sourceTree = "<group>"; };
+		AA8C25BD28EBA2D0000D0253 /* tinyrenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tinyrenderer.h; path = ../shared/tinyrenderer/tinyrenderer.h; sourceTree = "<group>"; };
+		AA8C25BE28EBA2D0000D0253 /* tiny_scene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tiny_scene.cpp; path = ../shared/tinyrenderer/tiny_scene.cpp; sourceTree = "<group>"; };
+		AA8C25BF28EBA2D0000D0253 /* tiny_geometry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tiny_geometry.cpp; path = ../shared/tinyrenderer/tiny_geometry.cpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A49186381641DDB800A39286 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A4151F3316879B8200B2B43A /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				AA8C257028EBA22E000D0253 /* SSGE */,
+				AA8C257128EBA235000D0253 /* tinyrenderer */,
+				AA8C256C28EBA228000D0253 /* common.h */,
+				AA8C256D28EBA228000D0253 /* plugin.sceneView3D.cpp */,
+			);
+			name = Shared;
+			sourceTree = "<group>";
+		};
+		A482DA7815F9B7E70084DC42 = {
+			isa = PBXGroup;
+			children = (
+				A4151F3316879B8200B2B43A /* Shared */,
+				A482DA8615F9B7E70084DC42 /* Frameworks */,
+				A482DA8515F9B7E70084DC42 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A482DA8515F9B7E70084DC42 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A49186401641DDB800A39286 /* sceneView3D.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A482DA8615F9B7E70084DC42 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		AA8C257028EBA22E000D0253 /* SSGE */ = {
+			isa = PBXGroup;
+			children = (
+				AA8C25B428EBA2C2000D0253 /* stb_image.h */,
+				AA8C259728EBA286000D0253 /* src */,
+				AA8C259628EBA280000D0253 /* include */,
+			);
+			name = SSGE;
+			sourceTree = "<group>";
+		};
+		AA8C257128EBA235000D0253 /* tinyrenderer */ = {
+			isa = PBXGroup;
+			children = (
+				AA8C25B928EBA2CF000D0253 /* color.cpp */,
+				AA8C25B628EBA2CF000D0253 /* geometry.h */,
+				AA8C25B728EBA2CF000D0253 /* node.cpp */,
+				AA8C25BC28EBA2D0000D0253 /* object.cpp */,
+				AA8C25BF28EBA2D0000D0253 /* tiny_geometry.cpp */,
+				AA8C25B828EBA2CF000D0253 /* tiny_model.cpp */,
+				AA8C25BE28EBA2D0000D0253 /* tiny_scene.cpp */,
+				AA8C25BA28EBA2CF000D0253 /* tiny_texture.cpp */,
+				AA8C25BD28EBA2D0000D0253 /* tinyrenderer.h */,
+				AA8C25BB28EBA2CF000D0253 /* utils.cpp */,
+			);
+			name = tinyrenderer;
+			sourceTree = "<group>";
+		};
+		AA8C259628EBA280000D0253 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				AA8C258128EBA279000D0253 /* buffer.h */,
+				AA8C257B28EBA279000D0253 /* camera.h */,
+				AA8C257628EBA279000D0253 /* displayManager.h */,
+				AA8C257828EBA279000D0253 /* engine.h */,
+				AA8C257F28EBA279000D0253 /* geometry.h */,
+				AA8C257E28EBA279000D0253 /* light.h */,
+				AA8C258228EBA279000D0253 /* matrix.h */,
+				AA8C257228EBA279000D0253 /* mesh.h */,
+				AA8C257428EBA279000D0253 /* model.h */,
+				AA8C257328EBA279000D0253 /* objParser.h */,
+				AA8C257728EBA279000D0253 /* rasterizer.h */,
+				AA8C257528EBA279000D0253 /* renderManager.h */,
+				AA8C258028EBA279000D0253 /* scene.h */,
+				AA8C257C28EBA279000D0253 /* sceneManager.h */,
+				AA8C257928EBA279000D0253 /* shader.h */,
+				AA8C257D28EBA279000D0253 /* softwareRenderer.h */,
+				AA8C258328EBA279000D0253 /* texture.h */,
+				AA8C257A28EBA279000D0253 /* vector3D.h */,
+			);
+			name = include;
+			sourceTree = "<group>";
+		};
+		AA8C259728EBA286000D0253 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				AA8C259A28EBA2AD000D0253 /* camera.cpp */,
+				AA8C259928EBA2AD000D0253 /* displayManager.cpp */,
+				AA8C259C28EBA2AD000D0253 /* engine.cpp */,
+				AA8C259F28EBA2AD000D0253 /* matrix.cpp */,
+				AA8C25A128EBA2AD000D0253 /* mesh.cpp */,
+				AA8C259D28EBA2AD000D0253 /* objParser.cpp */,
+				AA8C25A028EBA2AD000D0253 /* rasterizer.cpp */,
+				AA8C259E28EBA2AD000D0253 /* renderManager.cpp */,
+				AA8C25A328EBA2AE000D0253 /* sceneManager.cpp */,
+				AA8C25A428EBA2AE000D0253 /* softwareRenderer.cpp */,
+				AA8C259828EBA2AD000D0253 /* ssge_geometry.cpp */,
+				AA8C259B28EBA2AD000D0253 /* ssge_model.cpp */,
+				AA8C25A528EBA2AE000D0253 /* ssge_scene.cpp */,
+				AA8C25A228EBA2AD000D0253 /* ssge_texture.cpp */,
+			);
+			name = src;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		A491863A1641DDB800A39286 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA8C258528EBA279000D0253 /* objParser.h in Headers */,
+				AA8C258F28EBA279000D0253 /* softwareRenderer.h in Headers */,
+				AA8C259128EBA279000D0253 /* geometry.h in Headers */,
+				AA8C259528EBA279000D0253 /* texture.h in Headers */,
+				AA8C259428EBA279000D0253 /* matrix.h in Headers */,
+				AA8C258E28EBA279000D0253 /* sceneManager.h in Headers */,
+				AA8C258828EBA279000D0253 /* displayManager.h in Headers */,
+				AA8C258B28EBA279000D0253 /* shader.h in Headers */,
+				AA8C256E28EBA228000D0253 /* common.h in Headers */,
+				AA8C258C28EBA279000D0253 /* vector3D.h in Headers */,
+				AA8C259028EBA279000D0253 /* light.h in Headers */,
+				AA8C25C728EBA2D0000D0253 /* tinyrenderer.h in Headers */,
+				AA8C25C028EBA2D0000D0253 /* geometry.h in Headers */,
+				AA8C258628EBA279000D0253 /* model.h in Headers */,
+				AA8C258D28EBA279000D0253 /* camera.h in Headers */,
+				AA8C259228EBA279000D0253 /* scene.h in Headers */,
+				AA8C258A28EBA279000D0253 /* engine.h in Headers */,
+				AA8C258728EBA279000D0253 /* renderManager.h in Headers */,
+				AA8C25B528EBA2C2000D0253 /* stb_image.h in Headers */,
+				AA8C259328EBA279000D0253 /* buffer.h in Headers */,
+				AA8C258928EBA279000D0253 /* rasterizer.h in Headers */,
+				AA8C258428EBA279000D0253 /* mesh.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		A49186331641DDB800A39286 /* sceneView3D */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "sceneView3D" */;
+			buildPhases = (
+				A49186341641DDB800A39286 /* Sources */,
+				A49186381641DDB800A39286 /* Frameworks */,
+				A491863A1641DDB800A39286 /* Headers */,
+				A445A9BA16AE072100A9A764 /* ShellScript */,
+			);
+			buildRules = (
+				A491863C1641DDB800A39286 /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = sceneView3D;
+			productName = ads;
+			productReference = A49186401641DDB800A39286 /* sceneView3D.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A482DA7A15F9B7E70084DC42 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0940;
+			};
+			buildConfigurationList = A482DA7D15F9B7E70084DC42 /* Build configuration list for PBXProject "Plugin" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				English,
+				en,
+			);
+			mainGroup = A482DA7815F9B7E70084DC42;
+			productRefGroup = A482DA8515F9B7E70084DC42 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A49186331641DDB800A39286 /* sceneView3D */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A445A9BA16AE072100A9A764 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#\n# Checks exit value for error\n# \ncheckError() {\n    if [ $? -ne 0 ]\n    then\n        echo \"Exiting due to errors (above)\"\n        exit -1\n    fi\n}\n\nPLUGINS_DIR=~/Library/Application\\ Support/Corona/Simulator/Plugins/\n\n#mkdir -p $PLUGINS_DIR\ncheckError\n\n#cp -v $CONFIGURATION_BUILD_DIR/$FULL_PRODUCT_NAME $PLUGINS_DIR\ncheckError";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A49186341641DDB800A39286 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA8C25AE28EBA2AE000D0253 /* rasterizer.cpp in Sources */,
+				AA8C25A828EBA2AE000D0253 /* camera.cpp in Sources */,
+				AA8C25AA28EBA2AE000D0253 /* engine.cpp in Sources */,
+				AA8C25B328EBA2AE000D0253 /* ssge_scene.cpp in Sources */,
+				AA8C25A928EBA2AE000D0253 /* ssge_model.cpp in Sources */,
+				AA8C25AB28EBA2AE000D0253 /* objParser.cpp in Sources */,
+				AA8C256F28EBA228000D0253 /* plugin.sceneView3D.cpp in Sources */,
+				AA8C25C628EBA2D0000D0253 /* object.cpp in Sources */,
+				AA8C25AD28EBA2AE000D0253 /* matrix.cpp in Sources */,
+				AA8C25B228EBA2AE000D0253 /* softwareRenderer.cpp in Sources */,
+				AA8C25C428EBA2D0000D0253 /* tiny_texture.cpp in Sources */,
+				AA8C25C328EBA2D0000D0253 /* color.cpp in Sources */,
+				AA8C25C528EBA2D0000D0253 /* utils.cpp in Sources */,
+				AA8C25AC28EBA2AE000D0253 /* renderManager.cpp in Sources */,
+				AA8C25C828EBA2D0000D0253 /* tiny_scene.cpp in Sources */,
+				AA8C25AF28EBA2AE000D0253 /* mesh.cpp in Sources */,
+				AA8C25A628EBA2AE000D0253 /* ssge_geometry.cpp in Sources */,
+				AA8C25B128EBA2AE000D0253 /* sceneManager.cpp in Sources */,
+				AA8C25A728EBA2AE000D0253 /* displayManager.cpp in Sources */,
+				AA8C25B028EBA2AE000D0253 /* ssge_texture.cpp in Sources */,
+				AA8C25C128EBA2D0000D0253 /* node.cpp in Sources */,
+				AA8C25C228EBA2D0000D0253 /* tiny_model.cpp in Sources */,
+				AA8C25C928EBA2D0000D0253 /* tiny_geometry.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A482DA9715F9B7E70084DC42 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					CORONA_DEBUG,
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-undefined",
+					dynamic_lookup,
+				);
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/CoronaEnterprise/Corona/shared/include/Corona ${SRCROOT}/CoronaEnterprise/Corona/shared/include/lua ${SRCROOT}/CoronaEnterprise/Corona/ios/include/Corona ${SRCROOT}/ByteReader ${SRCROOT}/corona_enterprise_utils ${SRCROOT}/../../math_libraries";
+			};
+			name = Debug;
+		};
+		A482DA9815F9B7E70084DC42 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				OTHER_LDFLAGS = (
+					"-undefined",
+					dynamic_lookup,
+				);
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/CoronaEnterprise/Corona/shared/include/Corona ${SRCROOT}/CoronaEnterprise/Corona/shared/include/lua ${SRCROOT}/CoronaEnterprise/Corona/ios/include/Corona ${SRCROOT}/ByteReader ${SRCROOT}/corona_enterprise_utils ${SRCROOT}/../../math_libraries";
+			};
+			name = Release;
+		};
+		A491863E1641DDB800A39286 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GENERATE_MASTER_OBJECT_FILE = NO;
+				INSTALL_PATH = "@rpath";
+				OTHER_LDFLAGS = (
+					"-undefined",
+					dynamic_lookup,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "/Applications/Native/Corona/shared/include/Corona /Applications/Native/Corona/shared/include/lua ${SRCROOT}/../../ByteReader ${SRCROOT}/../../solar2d_native_utils";
+			};
+			name = Debug;
+		};
+		A491863F1641DDB800A39286 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"M_PI=3.1415926535897932384",
+					"M_1_PIf32=float(1.f/M_PI)",
+				);
+				GENERATE_MASTER_OBJECT_FILE = NO;
+				INSTALL_PATH = "@rpath";
+				OTHER_LDFLAGS = (
+					"-undefined",
+					dynamic_lookup,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "/Applications/Native/Corona/shared/include/Corona /Applications/Native/Corona/shared/include/lua ${SRCROOT}/../../ByteReader ${SRCROOT}/../../solar2d_native_utils";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A482DA7D15F9B7E70084DC42 /* Build configuration list for PBXProject "Plugin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A482DA9715F9B7E70084DC42 /* Debug */,
+				A482DA9815F9B7E70084DC42 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "sceneView3D" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A491863E1641DDB800A39286 /* Debug */,
+				A491863F1641DDB800A39286 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A482DA7A15F9B7E70084DC42 /* Project object */;
+}

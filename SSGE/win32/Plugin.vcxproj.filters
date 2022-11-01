@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\SSGE">
+      <UniqueIdentifier>{351bab5c-8cf8-4dc1-b66d-edc9d90e7392}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SSGE">
+      <UniqueIdentifier>{01091e80-e013-4797-ae8b-8f8f9593cd81}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\shared\plugin.SSGE.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\SSGE\src\camera.cpp">
+      <Filter>Source Files\SSGE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\SSGE\src\engine.cpp">
+      <Filter>Source Files\SSGE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\SSGE\src\geometry.cpp">
+      <Filter>Source Files\SSGE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\SSGE\src\matrix.cpp">
+      <Filter>Source Files\SSGE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\SSGE\src\mesh.cpp">
+      <Filter>Source Files\SSGE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\SSGE\src\model.cpp">
+      <Filter>Source Files\SSGE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\SSGE\src\rasterizer.cpp">
+      <Filter>Source Files\SSGE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\SSGE\src\renderManager.cpp">
+      <Filter>Source Files\SSGE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\SSGE\src\scene.cpp">
+      <Filter>Source Files\SSGE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\SSGE\src\softwareRenderer.cpp">
+      <Filter>Source Files\SSGE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\SSGE\src\texture.cpp">
+      <Filter>Source Files\SSGE</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\shared\SSGE\include\buffer.h">
+      <Filter>Header Files\SSGE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\SSGE\include\camera.h">
+      <Filter>Header Files\SSGE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\SSGE\include\engine.h">
+      <Filter>Header Files\SSGE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\SSGE\include\geometry.h">
+      <Filter>Header Files\SSGE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\SSGE\include\light.h">
+      <Filter>Header Files\SSGE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\SSGE\include\matrix.h">
+      <Filter>Header Files\SSGE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\SSGE\include\mesh.h">
+      <Filter>Header Files\SSGE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\SSGE\include\model.h">
+      <Filter>Header Files\SSGE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\SSGE\include\rasterizer.h">
+      <Filter>Header Files\SSGE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\SSGE\include\renderManager.h">
+      <Filter>Header Files\SSGE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\SSGE\include\scene.h">
+      <Filter>Header Files\SSGE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\SSGE\include\shader.h">
+      <Filter>Header Files\SSGE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\SSGE\include\softwareRenderer.h">
+      <Filter>Header Files\SSGE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\SSGE\include\texture.h">
+      <Filter>Header Files\SSGE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\SSGE\include\vector3D.h">
+      <Filter>Header Files\SSGE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
