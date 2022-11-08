@@ -69,7 +69,7 @@ static generator::MeshVertex ** GetVertexBox (lua_State * L, int arg = 1)
 
 int WrapMesh (lua_State * L, generator::AnyMesh && mesh)
 {
-	*LuaXS::AllocTyped<generator::AnyMesh>(L) = std::move(mesh); // mesh
+	LuaXS::NewTyped<generator::AnyMesh>(L, std::move(mesh)); // mesh
 	LuaXS::AttachMethods(L, MESH_NAME, [](lua_State * L) {
 		luaL_Reg funcs[] = {
 			{
@@ -227,6 +227,17 @@ int WrapMesh (lua_State * L, generator::AnyMesh && mesh)
 				{
 					return WrapMeshVertexGenerator(L, GetMesh(L)->vertices()); // mesh, generator
 				}
+			}, {
+				"WriteOBJ", [](lua_State * L)
+				{
+					generator::ObjWriter writer;
+					
+					writer.writeMesh(*GetMesh(L));
+
+					lua_pushstring(L, writer.str().c_str()); // mesh, obj_str
+
+					return 1;
+				}
 			},
 			{ nullptr, nullptr }
 		};
@@ -353,7 +364,7 @@ template<int D1, int D0> int BezierMesh (lua_State * L, const gml::ivec2 & segme
 
 		for (int j = 1; j <= D1; ++j, lua_pop(L, 1))
 		{
-			lua_rawgeti(L, -1, i); // control[, params], row, v
+			lua_rawgeti(L, -1, j); // control[, params], row, v
 
 			control[i - 1][j - 1] = LuaXS::GetArg<gml::dvec3>(L, -1);
 		}
@@ -372,13 +383,10 @@ void add_meshes (lua_State * L)
 		{
 			"createBezierMesh", [](lua_State * L)
 			{
-				if (lua_istable(L, 1))
-				{
-					lua_getfield(L, 1, "control"); // params, control
-					lua_insert(L, 1); // control, params
-				}
-
 				luaL_checktype(L, 1, LUA_TTABLE);
+				lua_getfield(L, 1, "control"); // params, control?
+
+				if (lua_istable(L, -1)) lua_insert(L, 1); // control, params
 
 				size_t rn = lua_objlen(L, 1);
 
@@ -624,6 +632,11 @@ void add_meshes (lua_State * L)
 				return WrapMesh(L, generator::DodecahedronMesh(radius, segments, rings)); // [params, ]dodeca
 			}
 		}, {
+			"createEmptyMesh", [](lua_State * L)
+			{
+				return WrapMesh(L, generator::EmptyMesh()); // [params, ]empty
+			}
+		}, {
 			"createIcosahedronMesh", [](lua_State * L)
 			{
 				LuaXS::Options opts{L, 1};
@@ -859,8 +872,6 @@ void add_meshes (lua_State * L)
 
 						using_vectors = true;
 					});
-
-				luaL_argcheck(L, using_vectors, 1, "Triangle endpoints must be specified in params table");
 
 				if (using_vectors)  return WrapMesh(L, generator::TriangleMesh(v0, v1, v2, segments)); // [params, ]triangle
 				else return WrapMesh(L, generator::TriangleMesh(radius, segments)); // [params, ]triangle

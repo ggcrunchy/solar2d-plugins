@@ -70,7 +70,7 @@ static generator::PathVertex ** GetVertexBox (lua_State * L, int arg = 1)
 
 int WrapPath (lua_State * L, generator::AnyPath && path)
 {
-	*LuaXS::AllocTyped<generator::AnyPath>(L) = std::move(path); // path
+	LuaXS::NewTyped<generator::AnyPath>(L, std::move(path)); // path
 	LuaXS::AttachMethods(L, PATH_NAME, [](lua_State * L) {
 		luaL_Reg funcs[] = {
 			{
@@ -335,6 +335,11 @@ void add_paths (lua_State * L)
 {
 	luaL_Reg funcs[] = {
 		{
+			"createEmptyPath", [](lua_State * L)
+			{
+				return WrapPath(L, generator::EmptyPath()); // [params, ]empty
+			}
+		}, {
 			"createHelixPath", [](lua_State * L)
 			{
 				LuaXS::Options opts{L, 1};

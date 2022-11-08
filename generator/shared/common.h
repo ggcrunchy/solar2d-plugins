@@ -23,6 +23,7 @@
 void add_meshes (lua_State * L);
 void add_paths (lua_State * L);
 void add_shapes (lua_State * L);
+void add_svg_writer (lua_State * L);
 
 //
 //
@@ -30,6 +31,9 @@ void add_shapes (lua_State * L);
 
 gml::dvec2 GetVec2 (lua_State * L, int arg);
 gml::dvec3 GetVec3 (lua_State * L, int arg);
+gml::dvec4 GetVec4 (lua_State * L, int arg);
+gml::dquat GetQuat (lua_State * L, int arg);
+gml::dvec3 GetColor (lua_State * L, int arg);
 generator::Axis GetAxis (lua_State * L, int arg, const char * def = nullptr);
 
 //
