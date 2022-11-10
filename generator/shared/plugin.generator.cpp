@@ -160,7 +160,7 @@ void LookupTransform (lua_State * L, void * key)
 //
 //
 
-CORONA_EXPORT int luaopen_plugin_generator (lua_State* L)
+CORONA_EXPORT int luaopen_plugin_generator (lua_State * L)
 {
     lua_newtable(L); // generator
 

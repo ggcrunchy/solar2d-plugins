@@ -81,7 +81,7 @@ static generator::AnyGenerator<generator::Edge> * GetEdgeGenerator (lua_State * 
 
 int WrapEdgeGenerator (lua_State * L, generator::AnyGenerator<generator::Edge> && edge_generator, int from)
 {
-	*LuaXS::AllocTyped<generator::AnyGenerator<generator::Edge>>(L) = std::move(edge_generator); // edge_generator
+	LuaXS::NewTyped<generator::AnyGenerator<generator::Edge>>(L, std::move(edge_generator)); // edge_generator
 	LuaXS::AttachMethods(L, EDGE_GENERATOR_NAME, [](lua_State * L) {
 		AddCommonMethods<generator::Edge, &GetEdgeGenerator>(L);
 
@@ -301,7 +301,7 @@ static generator::AnyGenerator<generator::Triangle> * GetTriangleGenerator (lua_
 
 int WrapTriangleGenerator (lua_State * L, generator::AnyGenerator<generator::Triangle> && triangle_generator, int from)
 {
-	*LuaXS::AllocTyped<generator::AnyGenerator<generator::Triangle>>(L) = std::move(triangle_generator); // triangle_generator
+	LuaXS::NewTyped<generator::AnyGenerator<generator::Triangle>>(L, std::move(triangle_generator)); // triangle_generator
 	LuaXS::AttachMethods(L, TRIANGLE_GENERATOR_NAME, [](lua_State * L) {
 		AddCommonMethods<generator::Triangle, &GetTriangleGenerator>(L);
 

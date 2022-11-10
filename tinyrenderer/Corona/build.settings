@@ -12,9 +12,15 @@ settings =
 
 	plugins = {
 		["plugin.Bytemap"] = { publisherId = "com.xibalbastudios" },
+		["plugin.impack"] = { publisherId = "com.xibalbastudios" },
 		["plugin.MemoryBlob"] = { publisherId = "com.xibalbastudios" },
 		["plugin.moonassimp"] = { publisherId = "com.xibalbastudios" },
-		["plugin.sceneView3D"] = { publisherId = "com.xibalbastudios" },
+		["plugin.tinyrenderer"] = { publisherId = "com.xibalbastudios" },
+
+    ["plugin.octasphere"] = { publisherId = "com.xibalbastudios" },
+    ["plugin.parshapes"] = { publisherId = "com.xibalbastudios" },
+    ["plugin.generator"] = { publisherId = "com.xibalbastudios" },
+    ["plugin.yoctoshapes"] = { publisherId = "com.xibalbastudios" }
 	},
 
 	excludeFiles =

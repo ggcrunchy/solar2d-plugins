@@ -585,6 +585,10 @@ void merge_shape_inplace(shape_data& shape, const shape_data& merge) {
         {q.x + offset, q.y + offset, q.z + offset, q.w + offset});
   shape.positions.insert(
       shape.positions.end(), merge.positions.begin(), merge.positions.end());
+// STEVE CHANGE
+  shape.normals.insert(
+      shape.normals.end(), merge.normals.begin(), merge.normals.end());
+// /STEVE CHANGE
   shape.tangents.insert(
       shape.tangents.end(), merge.tangents.begin(), merge.tangents.end());
   shape.texcoords.insert(
@@ -683,6 +687,7 @@ shape_data make_box(
   merge_shape_inplace(shape, qshape);
   return shape;
 }
+
 shape_data make_rounded_box(const vec3i& steps, const vec3f& scale,
     const vec3f& uvscale, float radius) {
   auto shape = make_box(steps, scale, uvscale);

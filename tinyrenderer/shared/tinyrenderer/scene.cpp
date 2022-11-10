@@ -246,14 +246,14 @@ void Transform::SetScale (lua_State * L)
 //
 //
 
-Matrix Transform::ToMatrix (void)
+Matrix Transform::ToMatrix (void) const
 {
 	Matrix T, R, S;
 
-	T.set_col(0, Vec4(1.f, 0.f, 0.f, mPosition[0]));
-	T.set_col(1, Vec4(0.f, 1.f, 0.f, mPosition[1]));
-	T.set_col(2, Vec4(0.f, 0.f, 1.f, mPosition[2]));
-	T.set_col(3, Vec4(0.f, 0.f, 0.f, 1.f));
+	T.set_col(0, Vec4(1.f, 0.f, 0.f, 0.f));
+	T.set_col(1, Vec4(0.f, 1.f, 0.f, 0.f));
+	T.set_col(2, Vec4(0.f, 0.f, 1.f, 0.f));
+	T.set_col(3, Vec4(mPosition[0], mPosition[1], mPosition[2], 1.f));
 
 	float qx = mRotation[0], qy = mRotation[1], qz = mRotation[2], qw = mRotation[3];
 
@@ -262,9 +262,9 @@ Matrix Transform::ToMatrix (void)
 	R.set_col(2, Vec4(2.f * (qx * qz + qy * qw), 2.f * (qy * qz - qx * qw), 1.f - 2.f * (qx * qx + qy * qy), 0.f));
 	R.set_col(3, Vec4(0.f, 0.f, 0.f, 1.f));
 
-	S.set_col(0, Vec4(mScale[0], 0.f, 0.f, mPosition[0]));
-	S.set_col(1, Vec4(0.f, mScale[1], 0.f, mPosition[1]));
-	S.set_col(2, Vec4(0.f, 0.f, mScale[2], mPosition[2]));
+	S.set_col(0, Vec4(mScale[0], 0.f, 0.f, 0.f));
+	S.set_col(1, Vec4(0.f, mScale[1], 0.f, 0.f));
+	S.set_col(2, Vec4(0.f, 0.f, mScale[2], 0.f));
 	S.set_col(3, Vec4(0.f, 0.f, 0.f, 1.f));
 
 	return T * R * S;
@@ -297,10 +297,11 @@ template<typename F> void VisitScene (lua_State * L, Scene & scene, Model::Rende
 		for (Object * object : cur->mObjects)
 		{
 			auto vert_fn = object->mInfo->mVertex;
+			Matrix mat = gmat * object->ToMatrix();
 
 			for (int i = 0; i < object->mModel.nfaces(); i++)
 			{
-				for (int j = 0; j < 3; j++) (object->mInfo->*vert_fn)(scene, rs, object->mModel, gmat * object->ToMatrix(), i, j);
+				for (int j = 0; j < 3; j++) (object->mInfo->*vert_fn)(scene, rs, object->mModel, mat, i, j);
 
 				func(*object);
 			}

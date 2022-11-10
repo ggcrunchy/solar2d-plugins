@@ -52,6 +52,10 @@ static int AddMethods (lua_State * L)
 			}, {
 				"__gc", LuaXS::TypedGC<BoxOrVector<yocto::vec2f>>
 			}, {
+				"get", GetValue<yocto::vec2f, &GetVector2f>
+			}, {
+				"__len", GetLength<yocto::vec2f, &GetVector2f>
+			}, {
 				"update", UpdateVector<yocto::vec2f, &GetVector2f>
 			},
 			{ nullptr, nullptr }

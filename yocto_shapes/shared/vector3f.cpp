@@ -94,6 +94,10 @@ void skin_matrices(vector<vec3f>& skinned_positions,
 			}, {
 				"__gc", LuaXS::TypedGC<BoxOrVector<yocto::vec3f>>
 			}, {
+				"get", GetValue<yocto::vec3f, &GetVector3f>
+			}, {
+				"__len", GetLength<yocto::vec3f, &GetVector3f>
+			}, {
 				"lines_to_cylinders", [](lua_State * L)
 				{
 					LuaXS::Options opts{L, 2};

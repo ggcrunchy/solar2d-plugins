@@ -119,7 +119,7 @@ struct Transform {
 	void SetRotation (lua_State * L);
 	void SetScale (lua_State * L);
 
-	Matrix ToMatrix (void);
+	Matrix ToMatrix (void) const;
 };
 
 //

@@ -52,6 +52,10 @@ static int AddMethods (lua_State * L)
 			}, {
 				"__gc", LuaXS::TypedGC<BoxOrVector<float>>
 			}, {
+				"get", GetValue<float, &GetVector1f>
+			}, {
+				"__len", GetLength<float, &GetVector1f>
+			}, {
 				"make_heightfield", [](lua_State * L)
 				{
 					return WrapShapeData(L, make_heightfield(LuaXS::GetArg<yocto::vec2i>(L, 2), GetVector1f(L))); // heights, size, field
