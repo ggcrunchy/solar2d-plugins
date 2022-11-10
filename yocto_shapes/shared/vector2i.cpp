@@ -52,6 +52,10 @@ static int AddMethods (lua_State * L)
 			}, {
 				"__gc", LuaXS::TypedGC<BoxOrVector<yocto::vec2i>>
 			}, {
+				"get_line", GetValue<yocto::vec2i, &GetVector2i>
+			}, {
+				"__len", GetLength<yocto::vec2i, &GetVector2i>
+			}, {
 				"lines_tangents", [](lua_State * L)
 				{
 					if (!lua_isnil(L, 3))

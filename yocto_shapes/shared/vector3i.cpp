@@ -57,6 +57,10 @@ static int AddMethods (lua_State * L)
 			}, {
 				"__gc", LuaXS::TypedGC<BoxOrVector<yocto::vec3i>>
 			}, {
+				"get_triangle", GetValue<yocto::vec3i, &GetVector3i>
+			}, {
+				"__len", GetLength<yocto::vec3i, &GetVector3i>
+			}, {
 				"merge_triangles", [](lua_State * L)
 				{
 					luaL_checktype(L, 2, LUA_TTABLE);

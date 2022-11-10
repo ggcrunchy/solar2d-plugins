@@ -586,27 +586,26 @@ CORONA_EXPORT int luaopen_plugin_yoctoshapes (lua_State* L)
 	};
 
 	luaL_register(L, nullptr, funcs);
-    lua_setfield(L, -2, "yocto"); // ..., shapes
 
     //
     //
     //
 
-    lua_newtable(L); // ..., shapes, wvpt
-    lua_createtable(L, 0, 1); // ..., shapes, wvpt, weak_mt
-    lua_pushliteral(L, "v"); // ..., shapes, wvpt, weak_mt, "v"
-    lua_setfield(L, -2, "__mode"); // ..., shapes, wvpt, weak_mt = { __mode = "v" }
-    lua_setmetatable(L, -2); // ..., shapes, wvpt; wvpt.metatable = weak_mt
+    lua_newtable(L); // ..., yocto, wvpt
+    lua_createtable(L, 0, 1); // ..., yocto, wvpt, weak_mt
+    lua_pushliteral(L, "v"); // ..., yocto, wvpt, weak_mt, "v"
+    lua_setfield(L, -2, "__mode"); // ..., yocto, wvpt, weak_mt = { __mode = "v" }
+    lua_setmetatable(L, -2); // ..., yocto, wvpt; wvpt.metatable = weak_mt
 
-    sWeakParentRef = lua_ref(L, 1); // ..., shapes; ref = wvpt
+    sWeakParentRef = lua_ref(L, 1); // ..., yocto; ref = wvpt
 
     //
     //
     //
 
-    lua_createtable(L, 0, 8); // ..., shapes, counts
+    lua_createtable(L, 0, 8); // ..., yocto, counts
 
-    sComponentCountRef = lua_ref(L, 1); // ..., shapes; ref = counts
+    sComponentCountRef = lua_ref(L, 1); // ..., yocto; ref = counts
 
     return 1;
 }

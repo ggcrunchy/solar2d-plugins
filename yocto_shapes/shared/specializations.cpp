@@ -89,7 +89,7 @@ template<> yocto::vec2i LuaXS::GetArgBody<yocto::vec2i> (lua_State * L, int arg)
 
 	for (int i = 0; i < 2; ++i, lua_pop(L, 1))
 	{
-		lua_rawgeti(L, arg, i); // ..., v, ..., value
+		lua_rawgeti(L, arg, i + 1); // ..., v, ..., value
 
 		v[i] = luaL_checkint(L, -1);
 	}
@@ -105,7 +105,7 @@ template<> yocto::vec3i LuaXS::GetArgBody<yocto::vec3i> (lua_State * L, int arg)
 
 	for (int i = 0; i < 3; ++i, lua_pop(L, 1))
 	{
-		lua_rawgeti(L, arg, i); // ..., v, ..., value
+		lua_rawgeti(L, arg, i + 1); // ..., v, ..., value
 
 		v[i] = luaL_checkint(L, -1);
 	}
@@ -121,7 +121,7 @@ template<> yocto::vec4i LuaXS::GetArgBody<yocto::vec4i> (lua_State * L, int arg)
 
 	for (int i = 0; i < 4; ++i, lua_pop(L, 1))
 	{
-		lua_rawgeti(L, arg, i); // ..., v, ..., value
+		lua_rawgeti(L, arg, i + 1); // ..., v, ..., value
 
 		v[i] = luaL_checkint(L, -1);
 	}

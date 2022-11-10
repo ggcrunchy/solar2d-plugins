@@ -17,7 +17,11 @@ gml::dvec2 GetVec2 (lua_State * L, int arg)
 	lua_getfield(L, arg, "x"); // ..., x
 	lua_getfield(L, arg, "y"); // ..., x, y
 
-	return gml::dvec2{luaL_checknumber(L, -2), luaL_checknumber(L, -1)};
+	gml::dvec2 v{luaL_checknumber(L, -2), luaL_checknumber(L, -1)};
+
+	lua_pop(L, 2); // ...
+
+	return v;
 }
 
 //
@@ -33,7 +37,63 @@ gml::dvec3 GetVec3 (lua_State * L, int arg)
 	lua_getfield(L, arg, "y"); // ..., x, y
 	lua_getfield(L, arg, "z"); // ..., x, y, z
 
-	return gml::dvec3{luaL_checknumber(L, -3), luaL_checknumber(L, -2), luaL_checknumber(L, -1)};
+	gml::dvec3 v{luaL_checknumber(L, -3), luaL_checknumber(L, -2), luaL_checknumber(L, -1)};
+
+	lua_pop(L, 3); // ...
+
+	return v;
+}
+
+//
+//
+//
+
+gml::dvec4 GetVec4 (lua_State * L, int arg)
+{
+	arg = CoronaLuaNormalize(L, arg);
+
+	luaL_checktype(L, arg, LUA_TTABLE);
+	lua_getfield(L, arg, "x"); // ..., x
+	lua_getfield(L, arg, "y"); // ..., x, y
+	lua_getfield(L, arg, "z"); // ..., x, y, z
+	lua_getfield(L, arg, "w"); // ..., x, y, z, w
+
+	gml::dvec4 v{luaL_checknumber(L, -4), luaL_checknumber(L, -3), luaL_checknumber(L, -2), luaL_checknumber(L, -1)};
+
+	lua_pop(L, 4); // ...
+
+	return v;
+}
+
+//
+//
+//
+
+gml::dquat GetQuat (lua_State * L, int arg)
+{
+	gml::dvec4 v = GetVec4(L, arg);
+
+	return gml::dquat{v[3], gml::dvec3{v[0], v[1], v[2]}};
+}
+
+//
+//
+//
+
+gml::dvec3 GetColor (lua_State * L, int arg)
+{
+	arg = CoronaLuaNormalize(L, arg);
+
+	luaL_checktype(L, arg, LUA_TTABLE);
+	lua_getfield(L, arg, "r"); // ..., r
+	lua_getfield(L, arg, "g"); // ..., r, g
+	lua_getfield(L, arg, "b"); // ..., r, g, b
+
+	gml::dvec3 v{luaL_checknumber(L, -3), luaL_checknumber(L, -2), luaL_checknumber(L, -1)};
+
+	lua_pop(L, 3); // ...
+
+	return v;
 }
 
 //
@@ -100,7 +160,7 @@ void LookupTransform (lua_State * L, void * key)
 //
 //
 
-CORONA_EXPORT int luaopen_plugin_generator (lua_State* L)
+CORONA_EXPORT int luaopen_plugin_generator (lua_State * L)
 {
     lua_newtable(L); // generator
 
@@ -111,6 +171,7 @@ CORONA_EXPORT int luaopen_plugin_generator (lua_State* L)
 	add_meshes(L);
 	add_paths(L);
 	add_shapes(L);
+	add_svg_writer(L);
 
 	//
 	//

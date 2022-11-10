@@ -14,7 +14,7 @@ settings =
 		["plugin.Bytemap"] = { publisherId = "com.xibalbastudios" },
 		["plugin.MemoryBlob"] = { publisherId = "com.xibalbastudios" },
 		["plugin.moonassimp"] = { publisherId = "com.xibalbastudios" },
-		["plugin.sceneView3D"] = { publisherId = "com.xibalbastudios" },
+		["plugin.SSGE"] = { publisherId = "com.xibalbastudios" },
 	},
 
 	excludeFiles =

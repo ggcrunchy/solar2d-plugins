@@ -52,6 +52,10 @@ static int AddMethods (lua_State * L)
 			}, {
 				"__gc", LuaXS::TypedGC<BoxOrVector<yocto::vec4f>>
 			}, {
+				"get", GetValue<yocto::vec4f, &GetVector4f>
+			}, {
+				"__len", GetLength<yocto::vec4f, &GetVector4f>
+			}, {
 				"make_heightfield", [](lua_State * L)
 				{
 					return WrapShapeData(L, make_heightfield(LuaXS::GetArg<yocto::vec2i>(L, 2), GetVector4f(L))); // colors, size, field

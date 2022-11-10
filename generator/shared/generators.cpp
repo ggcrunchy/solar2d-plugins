@@ -81,7 +81,7 @@ static generator::AnyGenerator<generator::Edge> * GetEdgeGenerator (lua_State * 
 
 int WrapEdgeGenerator (lua_State * L, generator::AnyGenerator<generator::Edge> && edge_generator, int from)
 {
-	*LuaXS::AllocTyped<generator::AnyGenerator<generator::Edge>>(L) = std::move(edge_generator); // edge_generator
+	LuaXS::NewTyped<generator::AnyGenerator<generator::Edge>>(L, std::move(edge_generator)); // edge_generator
 	LuaXS::AttachMethods(L, EDGE_GENERATOR_NAME, [](lua_State * L) {
 		AddCommonMethods<generator::Edge, &GetEdgeGenerator>(L);
 
@@ -113,6 +113,10 @@ int WrapEdgeGenerator (lua_State * L, generator::AnyGenerator<generator::Edge> &
 //
 
 template<typename T> struct GeneratorAndVertex {
+	GeneratorAndVertex (generator::AnyGenerator<T> && gen) : mGen(std::move(gen))
+	{
+	}
+
 	generator::AnyGenerator<T> mGen;
 	T mVertex;
 };
@@ -138,9 +142,7 @@ static generator::AnyGenerator<generator::MeshVertex> * GetMeshVertexGenerator (
 
 int WrapMeshVertexGenerator (lua_State * L, generator::AnyGenerator<generator::MeshVertex> && mesh_vertex_generator, int from)
 {
-	auto * gav = LuaXS::AllocTyped<GeneratorAndVertex<generator::MeshVertex>>(L); // mesh_vertex_generator
-
-	gav->mGen = std::move(mesh_vertex_generator);
+	auto * gav = LuaXS::NewTyped<GeneratorAndVertex<generator::MeshVertex>>(L, std::move(mesh_vertex_generator)); // mesh_vertex_generator
 
 	LuaXS::AttachMethods(L, MESH_VERTEX_GENERATOR_NAME, [](lua_State * L) {
 		AddCommonMethods<generator::MeshVertex, &GetMeshVertexGenerator>(L);
@@ -193,9 +195,7 @@ static generator::AnyGenerator<generator::PathVertex> * GetPathVertexGenerator (
 
 int WrapPathVertexGenerator (lua_State * L, generator::AnyGenerator<generator::PathVertex> && path_vertex_generator, int from)
 {
-	auto * gav = LuaXS::AllocTyped<GeneratorAndVertex<generator::PathVertex>>(L); // path_vertex_generator
-
-	gav->mGen = std::move(path_vertex_generator);
+	auto * gav = LuaXS::NewTyped<GeneratorAndVertex<generator::PathVertex>>(L, std::move(path_vertex_generator)); // path_vertex_generator
 
 	LuaXS::AttachMethods(L, PATH_VERTEX_GENERATOR_NAME, [](lua_State * L) {
 		AddCommonMethods<generator::PathVertex, &GetPathVertexGenerator>(L);
@@ -248,9 +248,7 @@ generator::AnyGenerator<generator::ShapeVertex> * GetShapeVertexGenerator (lua_S
 
 int WrapShapeVertexGenerator (lua_State * L, generator::AnyGenerator<generator::ShapeVertex> && shape_vertex_generator, int from)
 {
-	auto * gav = LuaXS::AllocTyped<GeneratorAndVertex<generator::ShapeVertex>>(L); // shape_vertex_generator
-
-	gav->mGen = std::move(shape_vertex_generator);
+	auto * gav = LuaXS::NewTyped<GeneratorAndVertex<generator::ShapeVertex>>(L, std::move(shape_vertex_generator)); // shape_vertex_generator
 
 	LuaXS::AttachMethods(L, SHAPE_VERTEX_GENERATOR_NAME, [](lua_State * L) {
 		AddCommonMethods<generator::ShapeVertex, &GetShapeVertexGenerator>(L);
@@ -303,7 +301,7 @@ static generator::AnyGenerator<generator::Triangle> * GetTriangleGenerator (lua_
 
 int WrapTriangleGenerator (lua_State * L, generator::AnyGenerator<generator::Triangle> && triangle_generator, int from)
 {
-	*LuaXS::AllocTyped<generator::AnyGenerator<generator::Triangle>>(L) = std::move(triangle_generator); // triangle_generator
+	LuaXS::NewTyped<generator::AnyGenerator<generator::Triangle>>(L, std::move(triangle_generator)); // triangle_generator
 	LuaXS::AttachMethods(L, TRIANGLE_GENERATOR_NAME, [](lua_State * L) {
 		AddCommonMethods<generator::Triangle, &GetTriangleGenerator>(L);
 

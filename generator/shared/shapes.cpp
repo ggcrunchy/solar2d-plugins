@@ -65,7 +65,8 @@ static generator::ShapeVertex ** GetVertexBox (lua_State * L, int arg = 1)
 
 int WrapShape (lua_State * L, generator::AnyShape && shape)
 {
-	*LuaXS::AllocTyped<generator::AnyShape>(L) = std::move(shape); // shape
+	LuaXS::NewTyped<generator::AnyShape>(L, std::move(shape)); // shape
+
 	LuaXS::AttachMethods(L, SHAPE_NAME, [](lua_State * L) {
 		luaL_Reg funcs[] = {
 			{
@@ -335,13 +336,10 @@ void add_shapes (lua_State * L)
 		{
 			"createBezierShape", [](lua_State * L)
 			{
-				if (lua_istable(L, 1))
-				{
-					lua_getfield(L, 1, "control"); // params, control
-					lua_insert(L, 1); // control, params
-				}
-
 				luaL_checktype(L, 1, LUA_TTABLE);
+				lua_getfield(L, 1, "control"); // params, control?
+
+				if (lua_istable(L, -1)) lua_insert(L, 1); // control, params
 
 				size_t rn = lua_objlen(L, 1);
 
@@ -387,6 +385,11 @@ void add_shapes (lua_State * L)
 					.NV_PAIR(segments);
 
 				return WrapShape(L, generator::CircleShape(radius, segments, start, sweep)); // [params, ]circle
+			}
+		}, {
+			"createEmptyShape", [](lua_State * L)
+			{
+				return WrapShape(L, generator::EmptyShape()); // [params, ]empty
 			}
 		}, {
 			"createGridShape", [](lua_State * L)

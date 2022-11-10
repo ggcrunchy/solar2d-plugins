@@ -41,6 +41,7 @@
     <ClCompile Include="..\shared\src\KnotPath.cpp" />
     <ClCompile Include="..\shared\src\LinePath.cpp" />
     <ClCompile Include="..\shared\src\LineShape.cpp" />
+    <ClCompile Include="..\shared\src\ObjWriter.cpp" />
     <ClCompile Include="..\shared\src\ParametricMesh.cpp" />
     <ClCompile Include="..\shared\src\ParametricPath.cpp" />
     <ClCompile Include="..\shared\src\ParametricShape.cpp" />
@@ -52,11 +53,13 @@
     <ClCompile Include="..\shared\src\SphericalConeMesh.cpp" />
     <ClCompile Include="..\shared\src\SphericalTriangleMesh.cpp" />
     <ClCompile Include="..\shared\src\SpringMesh.cpp" />
+    <ClCompile Include="..\shared\src\SvgWriter.cpp" />
     <ClCompile Include="..\shared\src\TeapotMesh.cpp" />
     <ClCompile Include="..\shared\src\TorusKnotMesh.cpp" />
     <ClCompile Include="..\shared\src\TorusMesh.cpp" />
     <ClCompile Include="..\shared\src\TriangleMesh.cpp" />
     <ClCompile Include="..\shared\src\TubeMesh.cpp" />
+    <ClCompile Include="..\shared\svg_writer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\shared\common.h" />
@@ -106,6 +109,7 @@
     <ClInclude Include="..\shared\include\generator\MergeShape.hpp" />
     <ClInclude Include="..\shared\include\generator\MeshVertex.hpp" />
     <ClInclude Include="..\shared\include\generator\MirrorMesh.hpp" />
+    <ClInclude Include="..\shared\include\generator\ObjWriter.hpp" />
     <ClInclude Include="..\shared\include\generator\ParametricMesh.hpp" />
     <ClInclude Include="..\shared\include\generator\ParametricPath.hpp" />
     <ClInclude Include="..\shared\include\generator\ParametricShape.hpp" />
@@ -133,6 +137,7 @@
     <ClInclude Include="..\shared\include\generator\SubdivideMesh.hpp" />
     <ClInclude Include="..\shared\include\generator\SubdividePath.hpp" />
     <ClInclude Include="..\shared\include\generator\SubdivideShape.hpp" />
+    <ClInclude Include="..\shared\include\generator\SvgWriter.hpp" />
     <ClInclude Include="..\shared\include\generator\TeapotMesh.hpp" />
     <ClInclude Include="..\shared\include\generator\TorusKnotMesh.hpp" />
     <ClInclude Include="..\shared\include\generator\TorusMesh.hpp" />

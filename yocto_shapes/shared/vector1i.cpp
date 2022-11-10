@@ -52,6 +52,10 @@ static int AddMethods (lua_State * L)
 			}, {
 				"__gc", LuaXS::TypedGC<BoxOrVector<int>>
 			}, {
+				"get_point", GetValue<int, &GetVector1i>
+			}, {
+				"__len", GetLength<int, &GetVector1i>
+			}, {
 				"update_point", UpdateVector<int, &GetVector1i>
 			},
 			{ nullptr, nullptr }

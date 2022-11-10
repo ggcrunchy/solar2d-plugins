@@ -25,6 +25,7 @@
 
 #include "yocto/yocto_shape.h"
 #include <string>
+#include <type_traits>
 #include <utility>
 #include <vector>
 
@@ -169,6 +170,53 @@ template<typename T, std::vector<T> & (*getter)(lua_State *, int)> int AppendToV
 	getter(L, 1).push_back(GetVector<T>(L, 2));
 
 	return 0;
+}
+
+//
+//
+//
+
+template<typename T, std::vector<T> & (*getter)(lua_State *, int)> int GetLength (lua_State * L)
+{
+	lua_pushinteger(L, getter(L, 1).size()); // v, length
+
+	return 1;
+}
+
+//
+//
+//
+
+static void PushComponent (lua_State * L, float f)
+{
+	lua_pushnumber(L, f); // ..., v
+}
+
+static void PushComponent (lua_State * L, int i)
+{
+	lua_pushinteger(L, i + 1); // ..., v
+}
+
+template<typename T, std::vector<T> & (*getter)(lua_State *, int)> int GetValue (lua_State * L)
+{
+	auto & vec = getter(L, 1);
+	int index = luaL_checkint(L, 2) - 1;
+
+	if constexpr (!std::is_same_v<T, int> && !std::is_same_v<T, float>)
+	{
+		const T & item = vec[index];
+
+		for (int i = 0; i < VectorCount<T>::value; ++i) PushComponent(L, item[i]); // ..., v1, ...
+
+		return VectorCount<T>::value;
+	}
+
+	else
+	{
+		PushComponent(L, vec[index]); // ..., v
+
+		return 1;
+	}
 }
 
 //

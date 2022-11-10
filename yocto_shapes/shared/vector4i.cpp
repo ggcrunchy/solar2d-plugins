@@ -62,6 +62,10 @@ static int AddMethods (lua_State * L)
 			}, {
 				"__gc", LuaXS::TypedGC<BoxOrVector<yocto::vec4i>>
 			}, {
+				"get_quad", GetValue<yocto::vec4i, &GetVector4i>
+			}, {
+				"__len", GetLength<yocto::vec4i, &GetVector4i>
+			}, {
 				"merge_quads", [](lua_State * L)
 				{
 					luaL_checktype(L, 2, LUA_TTABLE);

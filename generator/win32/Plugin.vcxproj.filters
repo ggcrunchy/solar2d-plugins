@@ -127,6 +127,13 @@
     <ClCompile Include="..\shared\paths.cpp" />
     <ClCompile Include="..\shared\shapes.cpp" />
     <ClCompile Include="..\shared\specializations.cpp" />
+    <ClCompile Include="..\shared\src\ObjWriter.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\src\SvgWriter.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\svg_writer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="include">
@@ -430,5 +437,11 @@
     </ClInclude>
     <ClInclude Include="..\shared\common.h" />
     <ClInclude Include="..\shared\transform.h" />
+    <ClInclude Include="..\shared\include\generator\ObjWriter.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\include\generator\SvgWriter.hpp">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

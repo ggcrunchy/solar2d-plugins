@@ -24,6 +24,7 @@
 #include "CoronaLua.h"
 #include "CoronaLog.h"
 #include "utils/LuaEx.h"
+#include "utils/Path.h"
 #include <vector>
 
 #define PAR_SHAPES_IMPLEMENTATION
@@ -68,7 +69,7 @@ static bool GetVec3 (lua_State * L, int arg, float & x, float & y, float & z)
         lua_getfield(L, arg, "y"); // ..., vec, x, y
         lua_getfield(L, arg, "z"); // ..., vec, x, y, z
 
-        ++arg;
+        arg = -3;
     }
 
     x = LuaXS::Float(L, arg);
@@ -84,6 +85,8 @@ static bool GetVec3 (lua_State * L, int arg, float & x, float & y, float & z)
 
 static int BoxMesh (lua_State * L, par_shapes_mesh * mesh)
 {
+    if (!mesh) return LuaXS::PushArgAndReturn(L, LuaXS::Nil{}); // ..., nil
+
     *LuaXS::NewTyped<par_shapes_mesh *>(L) = mesh; // ..., box
 
     LuaXS::AttachMethods(L, PAR_SHAPES_MESH_NAME, [](lua_State * L){
@@ -155,7 +158,7 @@ static int BoxMesh (lua_State * L, par_shapes_mesh * mesh)
                                 
                     for (int i = 0, offset = i * 3; i < 3; ++i) lua_pushinteger(L, mesh->normals[offset + i]); // mesh, index, x, y, z
 
-                    return 1;
+                    return 3;
                 }
             }, {
                 "get_point", [](lua_State * L)
@@ -167,7 +170,7 @@ static int BoxMesh (lua_State * L, par_shapes_mesh * mesh)
                                 
                     for (int i = 0, offset = i * 3; i < 3; ++i) lua_pushinteger(L, mesh->points[offset + i]); // mesh, index, x, y, z
 
-                    return 1;
+                    return 3;
                 }
             }, {
                 "get_point_count", [](lua_State * L)
@@ -308,6 +311,20 @@ static int BoxMesh (lua_State * L, par_shapes_mesh * mesh)
         };
 
         luaL_register(L, nullptr, funcs);
+
+        PathXS::Directories::Instantiate(L); // ..., mt, dirs
+
+        lua_pushcclosure(L, [](lua_State * L) {
+            par_shapes_mesh * mesh = GetMesh(L);
+            PathXS::Directories * dirs = LuaXS::UD<PathXS::Directories>(L, lua_upvalueindex(1));
+                
+            luaL_checkstring(L, 2);
+
+            par_shapes_export(mesh, dirs->Canonicalize(L, false, 2));
+
+            return 0;
+        }, 1); // ..., mt, Export
+        lua_setfield(L, -2, "export"); // ..., mt = { ..., export = Export }
     });
 
     return 1;
