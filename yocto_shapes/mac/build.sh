@@ -3,7 +3,7 @@
 path=`dirname $0`
 
 OUTPUT_DIR=$1
-TARGET_NAME=wfc
+TARGET_NAME=yoctoshapes
 OUTPUT_SUFFIX=dylib
 CONFIG=Release
 

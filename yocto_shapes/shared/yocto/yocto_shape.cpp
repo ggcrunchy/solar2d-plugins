@@ -39,7 +39,7 @@
 #include <string>
 
 #include "yocto_geometry.h"
-#include "yocto_modelio.h"
+//#include "yocto_modelio.h" <- STEVE CHANGE
 #include "yocto_noise.h"
 #include "yocto_sampling.h"
 

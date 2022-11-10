@@ -3,7 +3,7 @@
 path=`dirname $0`
 
 OUTPUT_DIR=$1
-TARGET_NAME=plugin_moonassimp
+TARGET_NAME=plugin_moonnuklear
 OUTPUT_SUFFIX=a
 CONFIG=Release
 

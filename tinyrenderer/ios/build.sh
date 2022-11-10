@@ -3,7 +3,7 @@
 path=`dirname $0`
 
 OUTPUT_DIR=$1
-TARGET_NAME=plugin_object3d
+TARGET_NAME=plugin_tinyrenderer
 OUTPUT_SUFFIX=a
 CONFIG=Release
 

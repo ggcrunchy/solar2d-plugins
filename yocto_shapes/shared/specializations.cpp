@@ -153,12 +153,12 @@ template<> float GetVectorComponent<float> (lua_State * L, int arg) { return Lua
 //
 //
 
-const int VectorCount<yocto::vec2i>::value = 2;
-const int VectorCount<yocto::vec3i>::value = 3;
-const int VectorCount<yocto::vec4i>::value = 4;
-const int VectorCount<yocto::vec2f>::value = 2;
-const int VectorCount<yocto::vec3f>::value = 3;
-const int VectorCount<yocto::vec4f>::value = 4;
+template<> const int VectorCount<yocto::vec2i>::value = 2;
+template<> const int VectorCount<yocto::vec3i>::value = 3;
+template<> const int VectorCount<yocto::vec4i>::value = 4;
+template<> const int VectorCount<yocto::vec2f>::value = 2;
+template<> const int VectorCount<yocto::vec3f>::value = 3;
+template<> const int VectorCount<yocto::vec4f>::value = 4;
 
 //
 //

@@ -8,8 +8,7 @@ LOCAL_PATH := $(call my-dir)
 ifeq ($(OS),Windows_NT)
 	CORONA_ROOT := C:\PROGRA~2\CORONA~1\Corona\Native
 else
-	CORONA := /Applications/Corona
-	CORONA_ROOT := $(CORONA)/Native
+	CORONA_ROOT := /Applications/Native
 endif
 
 LUA_API_DIR := $(CORONA_ROOT)/Corona/shared/include/lua

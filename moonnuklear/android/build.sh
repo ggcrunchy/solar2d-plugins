@@ -6,7 +6,7 @@ set -o errexit
 
 path=`dirname $0`
 
-TARGET_NAME=moonassimp
+TARGET_NAME=moonnuklear
 CONFIG=Release
 DEVICE_TYPE=all
 BUILD_TYPE=clean
@@ -72,10 +72,8 @@ fi
 # Copy .so files
 LIBS_DST_DIR="$path/corona-libs"
 mkdir -p "$LIBS_DST_DIR"
-mkdir -p "$path/assimp-libs"
 
 unzip -u "$LIBS_SRC_DIR" "jni/*/*.so" -d "$LIBS_DST_DIR"
-unzip -u "$path/assimp-libs.zip" "*/*.a" -d "$path/assimp-libs"
 
 if [ -z "$CFLAGS" ]
 then

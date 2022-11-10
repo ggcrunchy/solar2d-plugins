@@ -6,7 +6,7 @@ set -o errexit
 
 path=`dirname $0`
 
-TARGET_NAME=wfc
+TARGET_NAME=parshapes
 CONFIG=Release
 DEVICE_TYPE=all
 BUILD_TYPE=clean

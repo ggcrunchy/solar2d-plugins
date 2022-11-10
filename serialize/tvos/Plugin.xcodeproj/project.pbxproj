@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -22,15 +22,13 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		A49EC1AB1BD77C530093F529 /* CoronaCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A49EC1AA1BD77C530093F529 /* CoronaCards.framework */; };
+		AA2C695F291307540093B0BE /* CoronaCards.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA2C695E291307540093B0BE /* CoronaCards.xcframework */; };
+		AA2C6960291307540093B0BE /* CoronaCards.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AA2C695E291307540093B0BE /* CoronaCards.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CE51A1FF1CE15B6300F115D7 /* plugin.serialize.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE51A1FA1CE15B6300F115D7 /* plugin.serialize.cpp */; };
 		CE51A2001CE15B6300F115D7 /* stdafx.h in Headers */ = {isa = PBXBuildFile; fileRef = CE51A1FB1CE15B6300F115D7 /* stdafx.h */; };
 		CE8E82AE1E6E4130000F2322 /* struct.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8E82AD1E6E4130000F2322 /* struct.m */; };
 		CE8E82B01E6E413F000F2322 /* marshal.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8E82AF1E6E413F000F2322 /* marshal.m */; };
 		CE8E82B21E6E4148000F2322 /* lpack.m in Sources */ = {isa = PBXBuildFile; fileRef = CE8E82B11E6E4148000F2322 /* lpack.m */; };
-		CE963CBF2335561E006EF13A /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = CE963C8D2335561E006EF13A /* .gitignore */; };
-		CE963CC62335561E006EF13A /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = CE963C962335561E006EF13A /* LICENSE */; };
-		CE963CD72335561E006EF13A /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = CE963CA82335561E006EF13A /* README.md */; };
 		CE963CD82335561E006EF13A /* Blob.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE963CAA2335561E006EF13A /* Blob.cpp */; };
 		CE963CD92335561E006EF13A /* Blob.h in Headers */ = {isa = PBXBuildFile; fileRef = CE963CAB2335561E006EF13A /* Blob.h */; };
 		CE963CDA2335561E006EF13A /* Byte.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE963CAC2335561E006EF13A /* Byte.cpp */; };
@@ -48,14 +46,8 @@
 		CE963CE62335561E006EF13A /* SIMD.h in Headers */ = {isa = PBXBuildFile; fileRef = CE963CB82335561E006EF13A /* SIMD.h */; };
 		CE963CE72335561E006EF13A /* Thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE963CB92335561E006EF13A /* Thread.cpp */; };
 		CE963CE82335561E006EF13A /* Thread.h in Headers */ = {isa = PBXBuildFile; fileRef = CE963CBA2335561E006EF13A /* Thread.h */; };
-		CE963CF42335563E006EF13A /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = CE963CEC2335563E006EF13A /* .gitignore */; };
 		CE963CF52335563E006EF13A /* ByteReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE963CED2335563E006EF13A /* ByteReader.cpp */; };
 		CE963CF62335563E006EF13A /* ByteReader.h in Headers */ = {isa = PBXBuildFile; fileRef = CE963CEE2335563E006EF13A /* ByteReader.h */; };
-		CE963CF72335563E006EF13A /* ByteReader.lua in Resources */ = {isa = PBXBuildFile; fileRef = CE963CEF2335563E006EF13A /* ByteReader.lua */; };
-		CE963CF82335563E006EF13A /* config.ld in Resources */ = {isa = PBXBuildFile; fileRef = CE963CF02335563E006EF13A /* config.ld */; };
-		CE963CF92335563E006EF13A /* ldoc.bat in Resources */ = {isa = PBXBuildFile; fileRef = CE963CF12335563E006EF13A /* ldoc.bat */; };
-		CE963CFA2335563E006EF13A /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = CE963CF22335563E006EF13A /* LICENSE */; };
-		CE963CFB2335563E006EF13A /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = CE963CF32335563E006EF13A /* README.md */; };
 		CE963CFD23355647006EF13A /* stdafx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE963CFC23355647006EF13A /* stdafx.cpp */; };
 		CE963D0023355832006EF13A /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE963CFF23355832006EF13A /* Accelerate.framework */; };
 /* End PBXBuildFile section */
@@ -66,6 +58,8 @@
 			compilerSpec = com.apple.compilers.proxy.script;
 			filePatterns = "*.lua";
 			fileType = pattern.proxy;
+			inputFiles = (
+			);
 			isEditable = 1;
 			outputFiles = (
 				"$(DERIVED_FILE_DIR)/$(INPUT_FILE_BASE).c",
@@ -84,10 +78,25 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		AA2C6961291307540093B0BE /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				AA2C6960291307540093B0BE /* CoronaCards.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		A49EC1861BD779560093F529 /* Corona_plugin_serialize.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Corona_plugin_serialize.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A49EC18B1BD779560093F529 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = Plugin/Info.plist; sourceTree = "<group>"; };
 		A49EC1AA1BD77C530093F529 /* CoronaCards.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoronaCards.framework; path = CoronaEnterprise/Corona/tvos/frameworks/CoronaCards.framework; sourceTree = "<group>"; };
+		AA2C695E291307540093B0BE /* CoronaCards.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CoronaCards.xcframework; path = "../../../../../../../Applications/Corona-3674/Native/Corona/tvos/frameworks/CoronaCards.xcframework"; sourceTree = "<group>"; };
 		CE51A1FA1CE15B6300F115D7 /* plugin.serialize.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = plugin.serialize.cpp; path = ../shared/plugin.serialize.cpp; sourceTree = "<group>"; };
 		CE51A1FB1CE15B6300F115D7 /* stdafx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stdafx.h; path = ../shared/stdafx.h; sourceTree = "<group>"; };
 		CE8E82AD1E6E4130000F2322 /* struct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = struct.m; path = ../shared/struct.m; sourceTree = "<group>"; };
@@ -131,7 +140,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE963D0023355832006EF13A /* Accelerate.framework in Frameworks */,
-				A49EC1AB1BD77C530093F529 /* CoronaCards.framework in Frameworks */,
+				AA2C695F291307540093B0BE /* CoronaCards.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -174,6 +183,7 @@
 		A49EC1AC1BD77C5A0093F529 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AA2C695E291307540093B0BE /* CoronaCards.xcframework */,
 				CE963CFF23355832006EF13A /* Accelerate.framework */,
 				A49EC1AA1BD77C530093F529 /* CoronaCards.framework */,
 			);
@@ -265,6 +275,7 @@
 				A49EC1821BD779560093F529 /* Frameworks */,
 				A49EC1831BD779560093F529 /* Headers */,
 				A49EC1841BD779560093F529 /* Resources */,
+				AA2C6961291307540093B0BE /* Embed Frameworks */,
 			);
 			buildRules = (
 				A40A8FE21BD97297001D2038 /* PBXBuildRule */,
@@ -298,6 +309,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = A49EC17C1BD779560093F529;
@@ -316,15 +328,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE963CF42335563E006EF13A /* .gitignore in Resources */,
-				CE963CC62335561E006EF13A /* LICENSE in Resources */,
-				CE963CFA2335563E006EF13A /* LICENSE in Resources */,
-				CE963CF92335563E006EF13A /* ldoc.bat in Resources */,
-				CE963CF72335563E006EF13A /* ByteReader.lua in Resources */,
-				CE963CF82335563E006EF13A /* config.ld in Resources */,
-				CE963CFB2335563E006EF13A /* README.md in Resources */,
-				CE963CD72335561E006EF13A /* README.md in Resources */,
-				CE963CBF2335561E006EF13A /* .gitignore in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -343,7 +346,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ ! -d \"$CORONA_ROOT\" ]\nthen\n\t# Assume symlink location\n\tCORONA_ROOT=$PROJECT_DIR/CoronaEnterprise\nfi\n\nif [ ! -d \"$CORONA_ROOT\" ]\nthen\n    echo \"Could not find Corona Enterprise directory\"\n    exit -1\nfi\n\n# -------------------------------------------------------------------\n\n\"$CORONA_ROOT\"/Corona/xcode/universal-framework.sh \"appletv\"";
+			shellScript = "if [ ! -d \"$CORONA_ROOT\" ]\nthen\n\t# Assume symlink location\n\tCORONA_ROOT=/Applications/Native\nfi\n\nif [ ! -d \"$CORONA_ROOT\" ]\nthen\n    echo \"Could not find Corona Enterprise directory\"\n    exit -1\nfi\n\n# -------------------------------------------------------------------\n\n\"$CORONA_ROOT\"/Corona/xcode/universal-framework.sh \"appletv\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -390,7 +393,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/../../ByteReader ${SRCROOT}/../../solar2d_native_utils ${SRCROOT}/../../math_libraries";
+				USER_HEADER_SEARCH_PATHS = (
+					"${SRCROOT}/../../ByteReader",
+					"${SRCROOT}/../../solar2d_native_utils",
+					"${SRCROOT}/../../math_libraries",
+				);
 			};
 			name = Release;
 		};
@@ -509,11 +516,20 @@
 				);
 				INFOPLIST_FILE = Plugin/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.coronalabs.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/CoronaEnterprise/Corona/tvos/frameworks/CoronaCards.framework/PrivateHeaders ${SRCROOT}/../../ByteReader ${SRCROOT}/../../solar2d_native_utils ${SRCROOT}/../../math_libraries";
+				USER_HEADER_SEARCH_PATHS = (
+					"${PROJECT_DIR}/CoronaEnterprise/Corona/tvos/frameworks/CoronaCards.framework/PrivateHeaders",
+					"${SRCROOT}/../../ByteReader",
+					"${SRCROOT}/../../solar2d_native_utils",
+					"${SRCROOT}/../../math_libraries",
+				);
 			};
 			name = Debug;
 		};
@@ -532,11 +548,22 @@
 				);
 				INFOPLIST_FILE = Plugin/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.coronalabs.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/CoronaEnterprise/Corona/tvos/frameworks/CoronaCards.framework/PrivateHeaders ${SRCROOT}/../../ByteReader ${SRCROOT}/../../solar2d_native_utils ${SRCROOT}/../../math_libraries";
+				USER_HEADER_SEARCH_PATHS = (
+					"${PROJECT_DIR}/CoronaEnterprise/Corona/tvos/frameworks/CoronaCards.framework/PrivateHeaders",
+					/Applications/Native/Corona/shared/include/Corona,
+					/Applications/Native/Corona/shared/include/lua,
+					"${SRCROOT}/../../ByteReader",
+					"${SRCROOT}/../../solar2d_native_utils",
+					"${SRCROOT}/../../math_libraries",
+				);
 			};
 			name = Release;
 		};

@@ -17,6 +17,7 @@ LUA_API_CORONA := $(CORONA_ROOT)/Corona/shared/include/Corona
 PLUGIN_DIR := ../..
 
 SRC_DIR := $(PLUGIN_DIR)/shared
+YOCTO_DIR := $(PLUGIN_DIR)/shared/yocto
 BR_DIR := $(PLUGIN_DIR)/../ByteReader
 SNU_DIR := $(PLUGIN_DIR)/../solar2d_native_utils
 SNU_SRC := $(SNU_DIR)/utils
@@ -38,13 +39,18 @@ include $(PREBUILT_SHARED_LIBRARY)
 # -----------------------------------------------------------------------------
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := libplugin.wfc
+LOCAL_MODULE := libplugin.yoctoshapes
 
 LOCAL_C_INCLUDES := \
-	$(SRC_DIR) $(BR_DIR) $(SNU_DIR)
+	$(SRC_DIR) $(SRC_DIR)/fast_float/include $(YOCTO_DIR) $(BR_DIR) $(SNU_DIR)
 
 LOCAL_SRC_FILES := \
-	$(SRC_DIR)/plugin.wfc.cpp $(BR_DIR)/ByteReader.cpp \
+	$(SRC_DIR)/plugin.yoctoshapes.cpp $(SRC_DIR)/fvshape_data.cpp $(SRC_DIR)/shape_data.cpp \
+	$(SRC_DIR)/specializations.cpp $(SRC_DIR)/vector1f.cpp $(SRC_DIR)/vector2f.cpp \
+	$(SRC_DIR)/vector3f.cpp $(SRC_DIR)/vector4f.cpp $(SRC_DIR)/vector1i.cpp \
+	$(SRC_DIR)/vector2i.cpp $(SRC_DIR)/vector3i.cpp $(SRC_DIR)/vector4i.cpp \
+	$(YOCTO_DIR)/yocto_shape.cpp \
+	$(BR_DIR)/ByteReader.cpp \
 	$(SNU_SRC)/Blob.cpp $(SNU_SRC)/Byte.cpp $(SNU_SRC)/LuaEx.cpp
 
 LOCAL_CFLAGS := \
@@ -63,7 +69,7 @@ LOCAL_CFLAGS += -D_ARM_ASSEM_ -D_M_ARM
 endif
 
 # LOCAL_CFLAGS += -mfloat-abi=softfp -mfpu=neon -march=armv7 -mthumb
-LOCAL_CPPFLAGS += -std=c++11
+LOCAL_CPPFLAGS += -std=c++17
 LOCAL_CPP_FEATURES += exceptions
 
 # Arm vs Thumb.

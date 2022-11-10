@@ -3,7 +3,7 @@
 path=`dirname $0`
 
 OUTPUT_DIR=$1
-TARGET_NAME=plugin_wfc
+TARGET_NAME=plugin_generator
 OUTPUT_SUFFIX=a
 CONFIG=Release
 

@@ -3,7 +3,7 @@
 path=`dirname $0`
 
 OUTPUT_DIR=$1
-TARGET_NAME=moonassimp
+TARGET_NAME=moonnuklear
 OUTPUT_SUFFIX=dylib
 CONFIG=Release
 

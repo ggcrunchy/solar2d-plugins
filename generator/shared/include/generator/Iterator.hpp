@@ -9,6 +9,7 @@
 
 #include <cassert>
 #include <stdexcept>
+#include <iterator> // <- STEVE CHANGE
 
 
 #include "utils.hpp"

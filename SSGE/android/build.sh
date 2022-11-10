@@ -6,11 +6,21 @@ set -o errexit
 
 path=`dirname $0`
 
-TARGET_NAME=object3d
+TARGET_NAME=SSGE
 CONFIG=Release
 DEVICE_TYPE=all
 BUILD_TYPE=clean
 
+if [ $OS == Windows_NT ]
+then
+	ANDROID_NDK="D:/android-ndk-r21b"
+	LIBS_SRC_DIR="$CORONA_ROOT/Corona/android/lib/gradle/Corona.aar"
+	CMD="cmd //c "
+else
+    ANDROID_NDK="$HOME/Library/Android/sdk/ndk/24.0.8215888"
+    LIBS_SRC_DIR="/Applications/Native/Corona/android/lib/gradle/Corona.aar"
+	CMD=
+fi
 #
 # Checks exit value for error
 # 
@@ -44,7 +54,7 @@ fi
 if [ "clean" == "$BUILD_TYPE" ]
 then
 	echo "== Clean build =="
-	rm -rf $path/obj/ $path/libs/
+	rm -rf $path/obj/ $path/libs/ $path/data.tgz
 	FLAGS="-B"
 else
 	echo "== Incremental build =="
@@ -60,12 +70,10 @@ then
 fi
 
 # Copy .so files
-LIBS_SRC_DIR=/Applications/CoronaEnterprise/Corona/android/lib/Corona/libs/armeabi-v7a
-LIBS_DST_DIR=$path
+LIBS_DST_DIR="$path/corona-libs"
 mkdir -p "$LIBS_DST_DIR"
 
-cp -v "$LIBS_SRC_DIR"/liblua.so "$LIBS_DST_DIR"
-cp -v "$LIBS_SRC_DIR"/libcorona.so "$LIBS_DST_DIR"
+unzip -u "$LIBS_SRC_DIR" "jni/*/*.so" -d "$LIBS_DST_DIR"
 
 if [ -z "$CFLAGS" ]
 then
@@ -73,16 +81,19 @@ then
 	echo "$ANDROID_NDK/ndk-build $FLAGS V=1 APP_OPTIM=$OPTIM_FLAGS"
 	echo "----------------------------------------------------------------------------"
 
-	$ANDROID_NDK/ndk-build $FLAGS V=1 APP_OPTIM=$OPTIM_FLAGS
+	$CMD $ANDROID_NDK/ndk-build $FLAGS V=1 APP_OPTIM=$OPTIM_FLAGS
 else
 	echo "----------------------------------------------------------------------------"
 	echo "$ANDROID_NDK/ndk-build $FLAGS V=1 MY_CFLAGS="$CFLAGS" APP_OPTIM=$OPTIM_FLAGS"
 	echo "----------------------------------------------------------------------------"
 
-	$ANDROID_NDK/ndk-build $FLAGS V=1 MY_CFLAGS="$CFLAGS" APP_OPTIM=$OPTIM_FLAGS
+	$CMD $ANDROID_NDK/ndk-build $FLAGS V=1 MY_CFLAGS="$CFLAGS" APP_OPTIM=$OPTIM_FLAGS
 fi
 
-cp -v ../metadata.lua $path/libs/armeabi-v7a
+find "$path/libs" \( -name liblua.so -or -name libcorona.so \)  -delete
+echo "$path/libs"
+rm -rf "$path/jniLibs"
+mv "$path/libs" "$path/jniLibs"
 
 popd > /dev/null
 
@@ -91,4 +102,9 @@ popd > /dev/null
 ######################
 
 echo Done.
-echo $path/libs/armeabi-v7a/libplugin.object3d.so
+echo $path/jniLibs/armeabi-v7a/libplugin.$TARGET_NAME.so
+
+echo Packing binaries...
+tar -czvf data.tgz -C $path jniLibs -C $path/jniLibs/armeabi-v7a libplugin.$TARGET_NAME.so
+echo $path/data.tgz.
+

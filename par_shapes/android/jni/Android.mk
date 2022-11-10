@@ -38,13 +38,13 @@ include $(PREBUILT_SHARED_LIBRARY)
 # -----------------------------------------------------------------------------
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := libplugin.wfc
+LOCAL_MODULE := libplugin.parshapes
 
 LOCAL_C_INCLUDES := \
 	$(SRC_DIR) $(BR_DIR) $(SNU_DIR)
 
 LOCAL_SRC_FILES := \
-	$(SRC_DIR)/plugin.wfc.cpp $(BR_DIR)/ByteReader.cpp \
+	$(SRC_DIR)/par.cpp $(BR_DIR)/ByteReader.cpp \
 	$(SNU_SRC)/Blob.cpp $(SNU_SRC)/Byte.cpp $(SNU_SRC)/LuaEx.cpp
 
 LOCAL_CFLAGS := \

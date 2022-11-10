@@ -3,7 +3,7 @@
 path=`dirname $0`
 
 OUTPUT_DIR=$1
-TARGET_NAME=sceneView3D
+TARGET_NAME=SSGE
 OUTPUT_SUFFIX=dylib
 CONFIG=Release
 

@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AA87A281279B6AB900E57026 /* wfc.h in Headers */ = {isa = PBXBuildFile; fileRef = AA87A27F279B6AB900E57026 /* wfc.h */; };
-		AA87A282279B6AB900E57026 /* plugin.wfc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA87A280279B6AB900E57026 /* plugin.wfc.cpp */; };
+		AA2C67C12911C5B60093B0BE /* par_octasphere.h in Headers */ = {isa = PBXBuildFile; fileRef = AA2C65D52911AD530093B0BE /* par_octasphere.h */; };
+		AA2C67C22911C5B90093B0BE /* plugin.octasphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C65D62911AD530093B0BE /* plugin.octasphere.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -28,13 +28,11 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXFileReference section */
-		A49186401641DDB800A39286 /* wfc.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = wfc.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
-		AA87A27F279B6AB900E57026 /* wfc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wfc.h; path = ../shared/wfc.h; sourceTree = "<group>"; };
-		AA87A280279B6AB900E57026 /* plugin.wfc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = plugin.wfc.cpp; path = ../shared/plugin.wfc.cpp; sourceTree = "<group>"; };
+		A49186401641DDB800A39286 /* octasphere.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = octasphere.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA2C65D52911AD530093B0BE /* par_octasphere.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = par_octasphere.h; path = ../shared/par_octasphere.h; sourceTree = "<group>"; };
+		AA2C65D62911AD530093B0BE /* plugin.octasphere.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = plugin.octasphere.cpp; path = ../shared/plugin.octasphere.cpp; sourceTree = "<group>"; };
 		AA8C19D62878E8FF000D0253 /* ByteReader */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ByteReader; path = ../../ByteReader; sourceTree = "<group>"; };
 		AA8C19D72878E8FF000D0253 /* solar2d_native_utils */ = {isa = PBXFileReference; lastKnownFileType = folder; name = solar2d_native_utils; path = ../../solar2d_native_utils; sourceTree = "<group>"; };
-		CE353A2D1D690309000D2E95 /* libvlc.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libvlc.dylib; path = "../../../../Library/Application Support/Corona/Simulator/Plugins/plugin/lib/libvlc.dylib"; sourceTree = "<group>"; };
-		CE353A2E1D690309000D2E95 /* libvlccore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libvlccore.dylib; path = "../../../../Library/Application Support/Corona/Simulator/Plugins/plugin/lib/libvlccore.dylib"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,10 +49,10 @@
 		A4151F3316879B8200B2B43A /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				AA2C65D52911AD530093B0BE /* par_octasphere.h */,
+				AA2C65D62911AD530093B0BE /* plugin.octasphere.cpp */,
 				AA8C19D62878E8FF000D0253 /* ByteReader */,
 				AA8C19D72878E8FF000D0253 /* solar2d_native_utils */,
-				AA87A280279B6AB900E57026 /* plugin.wfc.cpp */,
-				AA87A27F279B6AB900E57026 /* wfc.h */,
 			);
 			name = Shared;
 			sourceTree = "<group>";
@@ -71,7 +69,7 @@
 		A482DA8515F9B7E70084DC42 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A49186401641DDB800A39286 /* wfc.dylib */,
+				A49186401641DDB800A39286 /* octasphere.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -79,8 +77,6 @@
 		A482DA8615F9B7E70084DC42 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CE353A2D1D690309000D2E95 /* libvlc.dylib */,
-				CE353A2E1D690309000D2E95 /* libvlccore.dylib */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -92,16 +88,16 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA87A281279B6AB900E57026 /* wfc.h in Headers */,
+				AA2C67C12911C5B60093B0BE /* par_octasphere.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		A49186331641DDB800A39286 /* wfc */ = {
+		A49186331641DDB800A39286 /* octasphere */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "wfc" */;
+			buildConfigurationList = A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "octasphere" */;
 			buildPhases = (
 				A49186341641DDB800A39286 /* Sources */,
 				A49186381641DDB800A39286 /* Frameworks */,
@@ -113,9 +109,9 @@
 			);
 			dependencies = (
 			);
-			name = wfc;
+			name = octasphere;
 			productName = ads;
-			productReference = A49186401641DDB800A39286 /* wfc.dylib */;
+			productReference = A49186401641DDB800A39286 /* octasphere.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 /* End PBXNativeTarget section */
@@ -139,7 +135,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A49186331641DDB800A39286 /* wfc */,
+				A49186331641DDB800A39286 /* octasphere */,
 			);
 		};
 /* End PBXProject section */
@@ -156,7 +152,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#\n# Checks exit value for error\n# \ncheckError() {\n    if [ $? -ne 0 ]\n    then\n        echo \"Exiting due to errors (above)\"\n        exit -1\n    fi\n}\n\nPLUGINS_DIR=~/Library/Application\\ Support/Corona/Simulator/Plugins/\n\n#mkdir -p $PLUGINS_DIR\ncheckError\n\n#cp -v $CONFIGURATION_BUILD_DIR/$FULL_PRODUCT_NAME $PLUGINS_DIR\ncheckError";
+			shellScript = "#\n# Checks exit value for error\n# \ncheckError() {\n    if [ $? -ne 0 ]\n    then\n        echo \"Exiting due to errors (above)\"\n        exit -1\n    fi\n}\n\nPLUGINS_DIR=~/Library/Application\\ Support/Corona/Simulator/Plugins/\n\n#mkdir -p $PLUGINS_DIR\ncheckError\n\n#cp -v $CONFIGURATION_BUILD_DIR/$FULL_PRODUCT_NAME $PLUGINS_DIR\ncheckError\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -166,7 +162,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA87A282279B6AB900E57026 /* plugin.wfc.cpp in Sources */,
+				AA2C67C22911C5B90093B0BE /* plugin.octasphere.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -324,7 +320,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "wfc" */ = {
+		A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "octasphere" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A491863E1641DDB800A39286 /* Debug */,

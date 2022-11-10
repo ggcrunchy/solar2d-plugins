@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A49186331641DDB800A39286"
-               BuildableName = "plugin_object3d.dylib"
+               BuildableName = "soloud.dylib"
                BlueprintName = "soloud"
                ReferencedContainer = "container:Plugin.xcodeproj">
             </BuildableReference>
@@ -51,7 +51,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A49186331641DDB800A39286"
-            BuildableName = "plugin_object3d.dylib"
+            BuildableName = "soloud.dylib"
             BlueprintName = "soloud"
             ReferencedContainer = "container:Plugin.xcodeproj">
          </BuildableReference>
