@@ -23,7 +23,6 @@
 
 #include "CoronaAssert.h"
 #include "CoronaGraphics.h"
-#include "CoronaMemory.h"
 #include "CoronaLua.h"
 #include "ByteReader.h"
 #include "Bytemap.h"
@@ -562,89 +561,7 @@ CORONA_EXPORT int luaopen_plugin_Bytemap (lua_State * L)
 	
 	luaL_register(L, nullptr, bytemap_funcs);
 
-// LIGHT USERDATA TEST:
-{
-	CoronaMemoryInterfaceInfo info = {};
-	static unsigned int buffer[16];
-
-	for (int i = 0; i < 16; ++i)
-	{
-		buffer[i] = (rand() << 16) | rand();
-
-		CoronaLog("Buffer element %i = %x", i, buffer[i]);
-	}
-
-	info.callbacks.getReadableBytes = [](CoronaMemoryWorkspace * ws)
-	{
-		return ws->vars[0].cp;
-	};
-
-	info.callbacks.getByteCount = [](CoronaMemoryWorkspace * ws)
-	{
-		return sizeof(unsigned int);
-	};
-
-	info.getObject = [](lua_State * L, int arg, CoronaMemoryWorkspace * ws)
-	{
-		ws->vars[0].cp = &buffer[ws->vars[2].u];
-
-		return 1;
-	};
-
-	uint16_t slot;
-	CoronaMemoryCreateInterface(L, &info); // ..., memory_proxy
-	CoronaMemoryBindLookupSlot(L, &slot); // ...; lookup[slot] = memory_proxy
-
-	CoronaLog("Slot bound = %i", slot);
-
-	lua_pushinteger(L, slot); // ..., slot
-	lua_setglobal(L, "SLOT"); // ...; _G.SLOT = slot
-
-	for (int i = 0; i < 16; ++i)
-	{
-		lua_pushfstring(L, "CONTEXT%d", i); // ..., name
-
-		CoronaMemoryPushLookupEncoding(L, slot, (uint16_t)i); // ..., name, encoding
-
-		lua_rawset(L, LUA_GLOBALSINDEX); // ...; _G[name] = encoding
-	}
-}
-// /LIGHT USERDATA TEST
-
-// USERDATA TEST (loadTexture() goes through ByteProxy)
-LuaXS::NewTyped<ByteProxy>(L); // ..., byte_proxy
-
-luaL_newmetatable(L, BYTEMAP_TYPE_NAME(proxy)); // ..., byte_proxy, mt
-
-CoronaMemoryInterfaceInfo info = {};
-
-info.callbacks.getReadableBytes = [](CoronaMemoryWorkspace * ws)
-{
-	return ws->vars[0].cp;
-};
-
-info.callbacks.getByteCount = [](CoronaMemoryWorkspace * ws)
-{
-	return ws->vars[1].size;
-};
-
-info.getObject = [](lua_State * L, int arg, CoronaMemoryWorkspace * ws)
-{
-	ByteProxy * proxy = LuaXS::UD<ByteProxy>(L, arg);
-
-	ws->vars[0].cp = proxy->mBytes;
-	ws->vars[1].size = proxy->mSize;
-
-	return 1;
-};
-
-CoronaMemoryCreateInterface(L, &info); // ..., byte_proxy, mt, memory_proxy
-
-lua_setfield(L, -2, "__memory"); // ..., byte_proxy; mt.__memory = memory_proxy
-lua_setmetatable(L, -2); // ..., byte_proxy; byte_proxy.metatable = mt
-// /USERDATA TEST
-
-//	NewByteSource<ByteProxy>(L, BYTEMAP_TYPE_NAME(proxy), RegisterByteProxyReader(L)); // bytemap, proxy
+	NewByteSource<ByteProxy>(L, BYTEMAP_TYPE_NAME(proxy), RegisterByteProxyReader(L)); // bytemap, proxy
 	PathXS::Directories::Instantiate(L);// bytemap, proxy, dirs
 
 	NewByteSource<BytemapRef>(L, BYTEMAP_TYPE_NAME(ptr), RegisterBytemapReaderWriter(L)); // bytemap, proxy, dirs, bmap_ref

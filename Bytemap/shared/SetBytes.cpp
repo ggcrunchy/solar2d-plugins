@@ -22,7 +22,6 @@
 */
 
 #include "CoronaGraphics.h"
-#include "CoronaMemory.h"
 #include "Bytemap.h"
 #include "Bytes.h"
 #include "utils/Byte.h"
@@ -172,11 +171,9 @@ int Bytemap_SetBytes (lua_State * L)
 		if (bmap->mBlobRef != LUA_NOREF && !bmap->mTemp && !bmap->Flatten(true)) return LuaXS::ErrorAfterNil(L);// bmap, bytes, ...[, error]
 
 		// Proceed to rest of algorithm.
-	//	ByteReader bytes{L, 2};	// bmap, bytes, ...[, error]
-		CoronaMemoryAcquireState state;
-		const void * bytes = nullptr;
+		ByteReader bytes{L, 2};	// bmap, bytes, ...[, error]
 
-		if (CoronaMemoryAcquireInterface(L, 2, &state) && (bytes = CORONA_MEMORY_GET(state, ReadableBytes))) // bytes.mBytes)
+		if (bytes.mBytes)
 		{
 			BytesOpts opts{L, 3, bmap, true};
 
@@ -185,7 +182,7 @@ int Bytemap_SetBytes (lua_State * L)
 				// Get the pixel count: this will either be the bytemap area or the number of
 				// (whole) pixels available in the bytes, whichever is lesser. Given this
 				// amount, try to pare off any extra rows.
-				size_t n = (std::min)(/*bytes.mCount*/CORONA_MEMORY_GET(state, ByteCount) / CoronaExternalFormatBPP(opts.mFormat), size_t(bmap->mW * bmap->mH));
+				size_t n = (std::min)(bytes.mCount / CoronaExternalFormatBPP(opts.mFormat), size_t(bmap->mW * bmap->mH));
 
 				if (opts.mWidth != 0) // width = 0 when region is empty
 				{
@@ -202,10 +199,10 @@ int Bytemap_SetBytes (lua_State * L)
 					// If the component counts match, we only care what region we want from
 					// the bytemap. This is easy when the full rect is requested: blast all
 					// bytes into it.
-					if (opts.CanCopy(bmap) && !opts.mColorKey) memcpy(bmap->mBytes.data(), bytes/*.mBytes*/, n * bmap->GetEffectiveBPP());
+					if (opts.CanCopy(bmap) && !opts.mColorKey) memcpy(bmap->mBytes.data(), bytes.mBytes, n * bmap->GetEffectiveBPP());
 
 					// Otherwise, we must assign pixel by pixel.
-					else AuxSetBytes(L, bmap, bytes/*.mBytes*/, opts, n);
+					else AuxSetBytes(L, bmap, bytes.mBytes, opts, n);
 
 					// Perform any extrusion.
 					if (opts.mExtrude > 0U && opts.mProps.IsCustomRect(bmap)) Extrude(L, bmap, opts);

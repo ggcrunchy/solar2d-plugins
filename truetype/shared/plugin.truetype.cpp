@@ -53,6 +53,13 @@ static luaL_Reg truetype_funcs[] = {
             return LuaXS::PushArgAndReturn(L, !!stbtt_CompareUTF8toUTF16_bigendian(luaL_checkstring(L, 1), lua_objlen(L, 1), luaL_checkstring(L, 2), lua_objlen(L, 2))); // str1, str2, match
         }
     }, {
+		"GetFontOffsetForIndex", [](lua_State * L)
+		{
+			ByteReader reader{L, 1};
+
+			return LuaXS::PushArgAndReturn(L, GetOffset(L, reader));// bytes[, index], offset
+		}
+	}, {
 		"InitFont", NewFont
     }, {
 		"PackBegin", NewPacking
@@ -66,80 +73,9 @@ static luaL_Reg truetype_funcs[] = {
 //
 //
 
-PathXS::Directories * PrepareData (lua_State * L, const char * key1, const char * key2 = nullptr)
-{
-    lua_pushvalue(L, lua_upvalueindex(1)); // params / filename[, base_dir?], ..., dirs
-        
-    PathXS::Directories * dirs = LuaXS::UD<PathXS::Directories>(L, -1);
-
-    if (lua_istable(L, 1))
-    {
-        lua_getfield(L, 1, key1); // params, ..., dirs, arg1?
-        lua_insert(L, 2); // params, arg1?, ..., dirs
-
-        if (key2)
-        {
-            lua_getfield(L, 1, key2); // params, arg1?, ..., dirs, arg2?
-            lua_replace(L, 3); // params, arg1?, arg2?, ..., dirs
-        }
-
-        lua_getfield(L, 1, "from_memory"); // params, arg1?[, arg2?], ..., dirs, from_memory?
-
-        if (!lua_isnil(L, -1))
-        {
-            lua_pushboolean(L, 0); // params, arg1?[, arg2?], ..., dirs, from_memory, false
-            lua_insert(L, -3); // params, arg1?[, arg2?], ..., false, dirs, from_memory
-        }
-
-        else
-        {
-            lua_getfield(L, 1, "is_absolute"); // params, arg1?[, arg2?], ..., dirs, is_absolute
-            lua_getfield(L, 1, "filename"); // params, arg1?[, arg2?], ..., dirs, is_absolute, filename
-            lua_getfield(L, 1, "baseDir"); // params, arg1?[, arg2?], ..., dirs, is_absolute, filename, base_dir
-        }
-    }
-        
-    else
-    {
-        bool is_dir = dirs->IsDir(L, 2);
-
-        lua_pushnil(L); // filename, base_dir?, ..., dirs, nil
-        lua_pushvalue(L, 1); // filename, base_dir?, ..., dirs, nil, filename
-        lua_pushvalue(L, is_dir ? 2 : -2); // filename, base_dir?, ..., dirs, nil, filename, base_dir / nil
-
-        if (is_dir) lua_remove(L, 2); // filename, ..., dirs, nil, filename, base_dir / nil
-
-        int top = lua_gettop(L) - 3, wanted_top = key2 ? 3 : 2;
-
-        while (top < wanted_top)
-        {
-            lua_pushnil(L); // filename, ..., dirs, nil, filename, base_dir / nil, nil
-            lua_insert(L, ++top); // filename, ..., nil, ..., dirs, nil, filename, base_dir / nil
-        }
-    }
-
-    return dirs;
-}
-
-//
-//
-//
-
 MemoryXS::LuaMemory * truetype_GetMemory (void)
 {
 	return tls_truetypeMM;
-}
-
-//
-//
-//
-
-static int GetMatchFlag (lua_State * L, int arg)
-{
-    const char * names[] = { "DONTCARE", "BOLD", "ITALIC", "UNDERSCORE", "NONE", nullptr };
-    int flags[] = { STBTT_MACSTYLE_DONTCARE, STBTT_MACSTYLE_BOLD, STBTT_MACSTYLE_ITALIC, STBTT_MACSTYLE_UNDERSCORE, STBTT_MACSTYLE_NONE };
-
-    return flags[luaL_checkoption(L, arg, nullptr, names)];
 }
 
 //
@@ -155,60 +91,46 @@ CORONA_EXPORT int luaopen_plugin_truetype (lua_State * L)
 
     PathXS::Directories::Instantiate(L); // truetype, dirs
     
-    luaL_Reg closures[] = {
-        {
-            "FindMatchingFont", [](lua_State * L)
-            {
-                PathXS::Directories * dirs = PrepareData(L, "name", "flags"); // params / filename, name, flags, dirs, is_absolute, filename, base_dir? 
-                int offset = -1;
-
-                dirs->WithFileContentsDo(L, -2, -3, [L, &offset](ByteReader & bytes) {
-                    offset = stbtt_FindMatchingFont(static_cast<const unsigned char *>(bytes.mBytes), luaL_checkstring(L, 2), GetMatchFlag(L, 3));
-
-                    return true;
-                });
-
-                return LuaXS::PushArgAndReturn(L, offset); // params / filename, name, flags, dirs, is_absolute, filename, base_dir?, offset
-            }
-        }, {
-            "GetFontOffsetForIndex", [](lua_State * L)
-		    {
-                PathXS::Directories * dirs = PrepareData(L, "index"); // params / filename, index?, dirs, is_absolute, filename, base_dir? 
-                int offset = -1;
-
-                dirs->WithFileContentsDo(L, -2, -3, [L, &offset](ByteReader & bytes) {
-                    offset = GetOffset(L, bytes);
-
-                    return true;
-                });
-
-			    return LuaXS::PushArgAndReturn(L, offset); // params / filename, index?, dirs, is_absolute, filename, base_dir?, offset
-            }
-        }, {
-            "LoadFont", [](lua_State * L)
-            {
-                PathXS::Directories * dirs = PrepareData(L, "index"); // params / filename, index?, dirs, is_absolute, filename, base_dir?
+    lua_pushcclosure(L, [](lua_State * L) {
+        lua_settop(L, 2);   // params / filename, base_dir?
+        lua_pushvalue(L, lua_upvalueindex(1));  // params / filename, base_dir?, dirs
         
-                return LuaXS::ResultOrNil(L, dirs->WithFileContentsDo(L, -2, -3, [L](ByteReader & bytes) {
-                    lua_pushvalue(L, -1); // params / filename, index?, ..., font_data, font_data
-                    lua_replace(L, 1); // font_data, index?, ..., font_data; NewFont looks for data in arg #1
+        PathXS::Directories * dirs = LuaXS::UD<PathXS::Directories>(L, -1);
+        
+        if (lua_istable(L, 1))
+        {
+            lua_getfield(L, 1, "index");   // params, base_dir?, dirs, index?
+            lua_replace(L, 2);  // params, index?, dirs; NewFont looks for offset in arg #2
+            lua_getfield(L, 1, "is_absolute");    // params, index?, dirs, is_absolute
+            lua_getfield(L, 1, "filename");    // params, index?, dirs, is_absolute, filename
+            lua_getfield(L, 1, "baseDir");  // params, index?, dirs, is_absolute, filename, base_dir
+        }
+        
+        else
+        {
+            lua_pushnil(L); // filename, base_dir?, dirs, nil
+            lua_pushvalue(L, 1);// filename, base_dir?, dirs, nil, filename
+            lua_pushvalue(L, dirs->IsDir(L, 2) ? 2 : -2);   // filename, base_dir?, dirs, nil, filename, base_dir / nil
+            lua_pushnil(L); // filename, base_dir?, dirs, nil, filename, base_dir / nil, nil
+            lua_replace(L, 2);  // filename, nil, dirs, nil, filename, base_dir / nil; NewFont looks for offset in arg #2
+        }
+        
+        return LuaXS::ResultOrNil(L, dirs->WithFileContentsDo(L, -2, -3, [L](ByteReader & bytes) {
+            lua_pushvalue(L, -1);   // filename, index?, ..., font_data, font_data
+            lua_replace(L, 1);  // font_data, index?, ..., font_data; NewFont looks for data in arg #1
 
-                    if (!lua_isnil(L, 2))
-                    {
-                        lua_pushinteger(L, GetOffset(L, bytes)); // font_data, index, ..., font_data, offset
-                        lua_replace(L, 2); // font_data, offset, ..., font_data
-                    }
-            
-                    NewFont(L); // font_data, offset?, ..., font_data, font / nil
-
-                    return !lua_isnil(L, -1);
-                })); // params / filename / font_data, dirs, is_absolute, filename, base_dir / nil, font / nil[, nil]
+            if (!lua_isnil(L, 2))
+            {
+                lua_pushinteger(L, GetOffset(L, bytes));// font_data, index, ..., font_data, offset
+                lua_replace(L, 2);  // font_data, offset, ..., font_data
             }
-        },
-        { nullptr, nullptr }
-    };
+            
+            NewFont(L); // font_data, offset?, ..., font_data, font / nil
 
-    LuaXS::AddClosures(L, closures, 1); // truetype
+            return !lua_isnil(L, -1);
+        }));// params / filename / font_data, dirs, is_absolute, filename, base_dir / nil, font / nil[, nil]
+    }, 1);  // truetype, LoadFont
+    lua_setfield(L, -2, "LoadFont");// truetype = { ..., LoadFont = LoadFont }
         
     return 1;
 }
