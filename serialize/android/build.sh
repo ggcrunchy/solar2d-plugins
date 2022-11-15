@@ -11,18 +11,23 @@ CONFIG=Release
 DEVICE_TYPE=all
 BUILD_TYPE=clean
 
-#
-# Checks exit value for error
-# 
 if [ $OS == Windows_NT ]
 then
-	ANDROID_NDK="D:/android-ndk-r20"
+	ANDROID_NDK="D:/android-ndk-r21b"
 	LIBS_SRC_DIR="$CORONA_ROOT/Corona/android/lib/gradle/Corona.aar"
 	CMD="cmd //c "
 else
-    ANDROID_NDK="/Applications/android-ndk-r20"
-    LIBS_SRC_DIR="$HOME/Library/Application Support/Corona/Native/Corona/android/lib/gradle/Corona.aar"
+    ANDROID_NDK="$HOME/Library/Android/sdk/ndk/24.0.8215888"
+    LIBS_SRC_DIR="/Applications/Native/Corona/android/lib/gradle/Corona.aar"
 	CMD=
+fi
+#
+# Checks exit value for error
+# 
+if [ -z "$ANDROID_NDK" ]
+then
+	echo "ERROR: ANDROID_NDK environment variable must be defined"
+	exit 0
 fi
 
 # Canonicalize paths
@@ -49,7 +54,7 @@ fi
 if [ "clean" == "$BUILD_TYPE" ]
 then
 	echo "== Clean build =="
-	rm -rf $path/obj/ $path/libs/
+	rm -rf $path/obj/ $path/libs/ $path/data.tgz
 	FLAGS="-B"
 else
 	echo "== Incremental build =="
@@ -97,4 +102,8 @@ popd > /dev/null
 ######################
 
 echo Done.
-echo $path/libs/armeabi-v7a/libplugin.serialize.so
+echo $path/jniLibs/armeabi-v7a/libplugin.$TARGET_NAME.so
+
+echo Packing binaries...
+tar -czvf data.tgz -C $path jniLibs -C $path/jniLibs/armeabi-v7a libplugin.$TARGET_NAME.so
+echo $path/data.tgz.

@@ -5,47 +5,50 @@
 
 LOCAL_PATH := $(call my-dir)
 
-CORONA_ENTERPRISE := /Applications/CoronaEnterprise
-CORONA_ROOT := $(CORONA_ENTERPRISE)/Corona
-LUA_API_DIR := $(CORONA_ROOT)/shared/include/lua
-LUA_API_CORONA := $(CORONA_ROOT)/shared/include/Corona
+ifeq ($(OS),Windows_NT)
+	CORONA_ROOT := C:\PROGRA~2\CORONA~1\Corona\Native
+else
+	CORONA_ROOT := /Applications/Native
+endif
+
+LUA_API_DIR := $(CORONA_ROOT)/Corona/shared/include/lua
+LUA_API_CORONA := $(CORONA_ROOT)/Corona/shared/include/Corona
 
 PLUGIN_DIR := ../..
 
 SRC_DIR := $(PLUGIN_DIR)/shared
+TR_DIR := $(SRC_DIR)/tinyrenderer
 BR_DIR := $(PLUGIN_DIR)/../ByteReader
-CEU_DIR := $(PLUGIN_DIR)/../corona_enterprise_utils
-CEU_SRC := $(CEU_DIR)/utils
+SNU_DIR := $(PLUGIN_DIR)/../solar2d_native_utils
+SNU_SRC := $(SNU_DIR)/utils
 
 # -----------------------------------------------------------------------------
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := liblua
-LOCAL_SRC_FILES := ../liblua.so
+LOCAL_SRC_FILES := ../corona-libs/jni/$(TARGET_ARCH_ABI)/liblua.so
 LOCAL_EXPORT_C_INCLUDES := $(LUA_API_DIR)
 include $(PREBUILT_SHARED_LIBRARY)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := libcorona
-LOCAL_SRC_FILES := ../libcorona.so
+LOCAL_SRC_FILES := ../corona-libs/jni/$(TARGET_ARCH_ABI)/libcorona.so
 LOCAL_EXPORT_C_INCLUDES := $(LUA_API_CORONA)
 include $(PREBUILT_SHARED_LIBRARY)
 
 # -----------------------------------------------------------------------------
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := libplugin.object3d
+LOCAL_MODULE := libplugin.tinyrenderer
 
 LOCAL_C_INCLUDES := \
-	$(SRC_DIR) $(BR_DIR) $(CEU_DIR)
+	$(SRC_DIR) $(TR_DIR) $(BR_DIR) $(SNU_DIR)
 
 LOCAL_SRC_FILES := \
-	$(SRC_DIR)/plugin.object3d.cpp $(SRC_DIR)/geometry.cpp  \
-	$(BR_DIR)/ByteReader.cpp \
-	$(CEU_SRC)/Blob.cpp $(CEU_SRC)/Byte.cpp $(CEU_SRC)/LuaEx.cpp $(CEU_SRC)/Memory.cpp $(CEU_SRC)/Path.cpp \
-	$(CEU_SRC)/SIMD.cpp $(CEU_SRC)/Thread.cpp
-
-	
+	$(SRC_DIR)/plugin.tinyrenderer.cpp $(TR_DIR)/color.cpp $(TR_DIR)/geometry.cpp \
+	$(TR_DIR)/model.cpp $(TR_DIR)/node.cpp $(TR_DIR)/object.cpp $(TR_DIR)/scene.cpp \
+	$(TR_DIR)/texture.cpp $(TR_DIR)/utils.cpp $(BR_DIR)/ByteReader.cpp \
+	$(SNU_SRC)/Blob.cpp $(SNU_SRC)/Byte.cpp $(SNU_SRC)/LuaEx.cpp
 
 LOCAL_CFLAGS := \
 	-DANDROID_NDK \
@@ -55,9 +58,6 @@ LOCAL_CFLAGS := \
 
 LOCAL_LDLIBS := -llog
 
-LOCAL_CFLAGS += -fopenmp
-LOCAL_LDFLAGS += -fopenmp
-
 LOCAL_SHARED_LIBRARIES := \
 	liblua libcorona
 
@@ -65,17 +65,11 @@ ifeq ($(TARGET_ARCH),arm)
 LOCAL_CFLAGS += -D_ARM_ASSEM_ -D_M_ARM
 endif
 
-ifeq ($(TARGET_ARCH),armeabi-v7a)
-LOCAL_CFLAGS += -DHAVENEON=1
-endif
-
-LOCAL_WHOLE_STATIC_LIBRARIES += cpufeatures
-LOCAL_CFLAGS += -mfloat-abi=softfp -mfpu=neon -march=armv7 -mthumb
+# LOCAL_CFLAGS += -mfloat-abi=softfp -mfpu=neon -march=armv7 -mthumb
 LOCAL_CPPFLAGS += -std=c++11
+LOCAL_CPP_FEATURES += exceptions
 
 # Arm vs Thumb.
 LOCAL_ARM_MODE := arm
 LOCAL_ARM_NEON := true
 include $(BUILD_SHARED_LIBRARY)
-
-$(call import-module, android/cpufeatures)

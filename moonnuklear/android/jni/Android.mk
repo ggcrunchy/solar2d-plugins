@@ -16,22 +16,9 @@ LUA_API_CORONA := $(CORONA_ROOT)/Corona/shared/include/Corona
 
 PLUGIN_DIR := ../..
 
-SHARED_DIR := $(PLUGIN_DIR)/shared
-SRC_DIR := $(SHARED_DIR)/src
+SRC_DIR := $(PLUGIN_DIR)/shared/src
 
 # -----------------------------------------------------------------------------
-
-include $(CLEAR_VARS)
-LOCAL_MODULE := libassimp
-LOCAL_SRC_FILES := ../assimp-libs/$(TARGET_ARCH_ABI)/libassimp.a
-LOCAL_EXPORT_C_INCLUDES := $(ASSIMP_DIR)
-include $(PREBUILT_STATIC_LIBRARY)
-
-include $(CLEAR_VARS)
-LOCAL_MODULE := libzlibstatic
-LOCAL_SRC_FILES := ../assimp-libs/$(TARGET_ARCH_ABI)/libzlibstatic.a
-LOCAL_EXPORT_C_INCLUDES := $(ASSIMP_DIR)
-include $(PREBUILT_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := liblua
@@ -48,27 +35,24 @@ include $(PREBUILT_SHARED_LIBRARY)
 # -----------------------------------------------------------------------------
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := libplugin.moonassimp
+LOCAL_MODULE := libplugin.moonnuklear
 
 LOCAL_C_INCLUDES := \
-	$(SRC_DIR) $(SHARED_DIR)
+	$(SRC_DIR) $(SRC_DIR)/ByteReader $(SRC_DIR)/nuklear
 
-LOCAL_SRC_FILES := $(SRC_DIR)/additional.c $(SRC_DIR)/animation.c $(SRC_DIR)/animmesh.c \
-	$(SRC_DIR)/bitfields.c $(SRC_DIR)/bone.c $(SRC_DIR)/camera.c $(SRC_DIR)/compat-5.3.c \
-	$(SRC_DIR)/enums.c $(SRC_DIR)/face.c $(SRC_DIR)/import.c $(SRC_DIR)/light.c \
-	$(SRC_DIR)/main.c $(SRC_DIR)/material.c $(SRC_DIR)/mesh.c $(SRC_DIR)/meshanim.c \
-	$(SRC_DIR)/node.c $(SRC_DIR)/nodeanim.c $(SRC_DIR)/scene.c $(SRC_DIR)/texture.c \
-	$(SRC_DIR)/udata.c $(SRC_DIR)/utils.c
-	
+LOCAL_SRC_FILES := $(SRC_DIR)/atlas.c $(SRC_DIR)/buffer.c $(SRC_DIR)/canvas \
+	$(SRC_DIR)/compat-5.3.c $(SRC_DIR)/context.c $(SRC_DIR)/cursor.c $(SRC_DIR)/edit.c \
+	$(SRC_DIR)/enums.c $(SRC_DIR)/flags.c $(SRC_DIR)/font.c $(SRC_DIR)/image.c \
+	$(SRC_DIR)/input.c $(SRC_DIR)/layout.c $(SRC_DIR)/main.c $(SRC_DIR)/nuklear.c \
+	$(SRC_DIR)/objects.c $(SRC_DIR)/panel.c $(SRC_DIR)/structs.c $(SRC_DIR)/style.c \
+	$(SRC_DIR)/tracing.c $(SRC_DIR)/udata.c $(SRC_DIR)/utils.c $(SRC_DIR)/versions.c \
+	$(SRC_DIR)/widgets.c $(SRC_DIR)/window.c
 
 LOCAL_CFLAGS := \
 	-DANDROID_NDK \
 	-DNDEBUG \
 	-D_REENTRANT \
 	-DRtt_ANDROID_ENV
-
-LOCAL_STATIC_LIBRARIES := \
-	libzlibstatic libassimp
 
 LOCAL_LDLIBS := -llog
 

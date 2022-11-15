@@ -7,8 +7,142 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AA87A281279B6AB900E57026 /* wfc.h in Headers */ = {isa = PBXBuildFile; fileRef = AA87A27F279B6AB900E57026 /* wfc.h */; };
-		AA87A282279B6AB900E57026 /* plugin.wfc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA87A280279B6AB900E57026 /* plugin.wfc.cpp */; };
+		AA2C646F2910D5950093B0BE /* LinePath.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64152910D5940093B0BE /* LinePath.hpp */; };
+		AA2C64702910D5950093B0BE /* CircleShape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64162910D5940093B0BE /* CircleShape.hpp */; };
+		AA2C64712910D5950093B0BE /* SubdividePath.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64172910D5940093B0BE /* SubdividePath.hpp */; };
+		AA2C64722910D5950093B0BE /* BoxMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64182910D5940093B0BE /* BoxMesh.hpp */; };
+		AA2C64732910D5950093B0BE /* FlipMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64192910D5940093B0BE /* FlipMesh.hpp */; };
+		AA2C64742910D5950093B0BE /* DodecahedronMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C641A2910D5940093B0BE /* DodecahedronMesh.hpp */; };
+		AA2C64752910D5950093B0BE /* Axis.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C641B2910D5940093B0BE /* Axis.hpp */; };
+		AA2C64762910D5950093B0BE /* IcoSphereMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C641C2910D5940093B0BE /* IcoSphereMesh.hpp */; };
+		AA2C64772910D5950093B0BE /* RoundedBoxMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C641D2910D5940093B0BE /* RoundedBoxMesh.hpp */; };
+		AA2C64782910D5950093B0BE /* ParametricMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C641E2910D5940093B0BE /* ParametricMesh.hpp */; };
+		AA2C64792910D5950093B0BE /* utils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C641F2910D5940093B0BE /* utils.hpp */; };
+		AA2C647A2910D5950093B0BE /* LineShape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64202910D5940093B0BE /* LineShape.hpp */; };
+		AA2C647B2910D5950093B0BE /* generator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64212910D5940093B0BE /* generator.hpp */; };
+		AA2C647C2910D5950093B0BE /* CappedCylinderMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64222910D5940093B0BE /* CappedCylinderMesh.hpp */; };
+		AA2C647D2910D5950093B0BE /* AnyShape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64232910D5940093B0BE /* AnyShape.hpp */; };
+		AA2C647E2910D5950093B0BE /* IcosahedronMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64242910D5940093B0BE /* IcosahedronMesh.hpp */; };
+		AA2C647F2910D5950093B0BE /* MeshVertex.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64252910D5940093B0BE /* MeshVertex.hpp */; };
+		AA2C64802910D5950093B0BE /* CappedConeMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64262910D5940093B0BE /* CappedConeMesh.hpp */; };
+		AA2C64812910D5950093B0BE /* PathVertex.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64272910D5940093B0BE /* PathVertex.hpp */; };
+		AA2C64822910D5950093B0BE /* RoundedRectangleShape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64282910D5940093B0BE /* RoundedRectangleShape.hpp */; };
+		AA2C64832910D5950093B0BE /* AnyMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64292910D5940093B0BE /* AnyMesh.hpp */; };
+		AA2C64842910D5950093B0BE /* ScalePath.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C642A2910D5940093B0BE /* ScalePath.hpp */; };
+		AA2C64852910D5950093B0BE /* TranslateShape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C642B2910D5940093B0BE /* TranslateShape.hpp */; };
+		AA2C64862910D5950093B0BE /* RepeatPath.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C642C2910D5940093B0BE /* RepeatPath.hpp */; };
+		AA2C64882910D5950093B0BE /* CapsuleMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C642E2910D5940093B0BE /* CapsuleMesh.hpp */; };
+		AA2C64892910D5950093B0BE /* AxisSwapShape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C642F2910D5940093B0BE /* AxisSwapShape.hpp */; };
+		AA2C648A2910D5950093B0BE /* SubdivideShape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64302910D5940093B0BE /* SubdivideShape.hpp */; };
+		AA2C648B2910D5950093B0BE /* TranslatePath.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64312910D5940093B0BE /* TranslatePath.hpp */; };
+		AA2C648C2910D5950093B0BE /* TorusMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64322910D5940093B0BE /* TorusMesh.hpp */; };
+		AA2C648D2910D5950093B0BE /* UvFlipMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64332910D5940093B0BE /* UvFlipMesh.hpp */; };
+		AA2C648E2910D5950093B0BE /* ParametricShape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64342910D5940093B0BE /* ParametricShape.hpp */; };
+		AA2C648F2910D5950093B0BE /* CappedTubeMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64352910D5940093B0BE /* CappedTubeMesh.hpp */; };
+		AA2C64902910D5950093B0BE /* SphericalConeMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64362910D5940093B0BE /* SphericalConeMesh.hpp */; };
+		AA2C64912910D5950093B0BE /* LatheMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64372910D5940093B0BE /* LatheMesh.hpp */; };
+		AA2C64922910D5950093B0BE /* RepeatMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64382910D5940093B0BE /* RepeatMesh.hpp */; };
+		AA2C64932910D5950093B0BE /* ConvexPolygonMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64392910D5940093B0BE /* ConvexPolygonMesh.hpp */; };
+		AA2C64942910D5950093B0BE /* TranslateMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C643A2910D5940093B0BE /* TranslateMesh.hpp */; };
+		AA2C64952910D5950093B0BE /* Triangle.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C643B2910D5940093B0BE /* Triangle.hpp */; };
+		AA2C64962910D5950093B0BE /* MergePath.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C643C2910D5940093B0BE /* MergePath.hpp */; };
+		AA2C64972910D5950093B0BE /* MergeShape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C643D2910D5940093B0BE /* MergeShape.hpp */; };
+		AA2C64982910D5950093B0BE /* GridShape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C643E2910D5940093B0BE /* GridShape.hpp */; };
+		AA2C64992910D5950093B0BE /* ConeMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C643F2910D5940093B0BE /* ConeMesh.hpp */; };
+		AA2C649A2910D5950093B0BE /* ScaleMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64402910D5940093B0BE /* ScaleMesh.hpp */; };
+		AA2C649B2910D5950093B0BE /* SubdivideMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64412910D5940093B0BE /* SubdivideMesh.hpp */; };
+		AA2C649C2910D5950093B0BE /* TriangleMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64422910D5940093B0BE /* TriangleMesh.hpp */; };
+		AA2C649D2910D5950093B0BE /* SpringMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64432910D5940093B0BE /* SpringMesh.hpp */; };
+		AA2C649E2910D5950093B0BE /* RotatePath.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64442910D5940093B0BE /* RotatePath.hpp */; };
+		AA2C649F2910D5950093B0BE /* UvSwapMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64452910D5940093B0BE /* UvSwapMesh.hpp */; };
+		AA2C64A02910D5950093B0BE /* AxisFlipMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64462910D5940093B0BE /* AxisFlipMesh.hpp */; };
+		AA2C64A12910D5950093B0BE /* CylinderMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64472910D5940093B0BE /* CylinderMesh.hpp */; };
+		AA2C64A22910D5950093B0BE /* Iterator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64482910D5940093B0BE /* Iterator.hpp */; };
+		AA2C64A32910D5950093B0BE /* EmptyMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64492910D5940093B0BE /* EmptyMesh.hpp */; };
+		AA2C64A42910D5950093B0BE /* RotateMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C644A2910D5940093B0BE /* RotateMesh.hpp */; };
+		AA2C64A52910D5950093B0BE /* TransformMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C644B2910D5940093B0BE /* TransformMesh.hpp */; };
+		AA2C64A62910D5950093B0BE /* BezierShape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C644C2910D5950093B0BE /* BezierShape.hpp */; };
+		AA2C64A72910D5950093B0BE /* PlaneMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C644D2910D5950093B0BE /* PlaneMesh.hpp */; };
+		AA2C64A82910D5950093B0BE /* SphereMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C644E2910D5950093B0BE /* SphereMesh.hpp */; };
+		AA2C64A92910D5950093B0BE /* AxisSwapMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C644F2910D5950093B0BE /* AxisSwapMesh.hpp */; };
+		AA2C64AA2910D5950093B0BE /* ShapeVertex.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64502910D5950093B0BE /* ShapeVertex.hpp */; };
+		AA2C64AB2910D5950093B0BE /* FlipShape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64512910D5950093B0BE /* FlipShape.hpp */; };
+		AA2C64AD2910D5950093B0BE /* SphericalTriangleMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64532910D5950093B0BE /* SphericalTriangleMesh.hpp */; };
+		AA2C64AE2910D5950093B0BE /* ParametricPath.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64542910D5950093B0BE /* ParametricPath.hpp */; };
+		AA2C64AF2910D5950093B0BE /* ExtrudeMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64552910D5950093B0BE /* ExtrudeMesh.hpp */; };
+		AA2C64B02910D5950093B0BE /* MergeMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64562910D5950093B0BE /* MergeMesh.hpp */; };
+		AA2C64B12910D5950093B0BE /* MirrorMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64572910D5950093B0BE /* MirrorMesh.hpp */; };
+		AA2C64B22910D5950093B0BE /* RepeatShape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64582910D5950093B0BE /* RepeatShape.hpp */; };
+		AA2C64B32910D5950093B0BE /* math.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64592910D5950093B0BE /* math.hpp */; };
+		AA2C64B42910D5950093B0BE /* HelixPath.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C645A2910D5950093B0BE /* HelixPath.hpp */; };
+		AA2C64B52910D5950093B0BE /* EmptyShape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C645B2910D5950093B0BE /* EmptyShape.hpp */; };
+		AA2C64B62910D5950093B0BE /* BezierMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C645C2910D5950093B0BE /* BezierMesh.hpp */; };
+		AA2C64B72910D5950093B0BE /* ScaleShape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C645D2910D5950093B0BE /* ScaleShape.hpp */; };
+		AA2C64B82910D5950093B0BE /* SpherifyMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C645E2910D5950093B0BE /* SpherifyMesh.hpp */; };
+		AA2C64B92910D5950093B0BE /* TransformShape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C645F2910D5950093B0BE /* TransformShape.hpp */; };
+		AA2C64BA2910D5950093B0BE /* Edge.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64602910D5950093B0BE /* Edge.hpp */; };
+		AA2C64BB2910D5950093B0BE /* ShapeToPath.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64612910D5950093B0BE /* ShapeToPath.hpp */; };
+		AA2C64BC2910D5950093B0BE /* EmptyPath.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64622910D5950093B0BE /* EmptyPath.hpp */; };
+		AA2C64BD2910D5950093B0BE /* AnyPath.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64632910D5950093B0BE /* AnyPath.hpp */; };
+		AA2C64BE2910D5950093B0BE /* RotateShape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64642910D5950093B0BE /* RotateShape.hpp */; };
+		AA2C64BF2910D5950093B0BE /* TubeMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64652910D5950093B0BE /* TubeMesh.hpp */; };
+		AA2C64C02910D5950093B0BE /* TransformPath.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64662910D5950093B0BE /* TransformPath.hpp */; };
+		AA2C64C12910D5950093B0BE /* DiskMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64672910D5950093B0BE /* DiskMesh.hpp */; };
+		AA2C64C22910D5950093B0BE /* FlipPath.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64682910D5950093B0BE /* FlipPath.hpp */; };
+		AA2C64C32910D5950093B0BE /* RectangleShape.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64692910D5950093B0BE /* RectangleShape.hpp */; };
+		AA2C64C42910D5950093B0BE /* TorusKnotMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C646A2910D5950093B0BE /* TorusKnotMesh.hpp */; };
+		AA2C64C52910D5950093B0BE /* AxisSwapPath.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C646B2910D5950093B0BE /* AxisSwapPath.hpp */; };
+		AA2C64C62910D5950093B0BE /* TeapotMesh.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C646C2910D5950093B0BE /* TeapotMesh.hpp */; };
+		AA2C64C72910D5950093B0BE /* AnyGenerator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C646D2910D5950093B0BE /* AnyGenerator.hpp */; };
+		AA2C64C82910D5950093B0BE /* KnotPath.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C646E2910D5950093B0BE /* KnotPath.hpp */; };
+		AA2C64D12910D5AB0093B0BE /* vec.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64C92910D5AB0093B0BE /* vec.hpp */; };
+		AA2C64D22910D5AB0093B0BE /* intersect.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64CA2910D5AB0093B0BE /* intersect.hpp */; };
+		AA2C64D32910D5AB0093B0BE /* mat.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64CB2910D5AB0093B0BE /* mat.hpp */; };
+		AA2C64D42910D5AB0093B0BE /* texture.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64CC2910D5AB0093B0BE /* texture.hpp */; };
+		AA2C64D52910D5AB0093B0BE /* quaternion.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64CD2910D5AB0093B0BE /* quaternion.hpp */; };
+		AA2C64D62910D5AB0093B0BE /* spline.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64CE2910D5AB0093B0BE /* spline.hpp */; };
+		AA2C64D72910D5AB0093B0BE /* util.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64CF2910D5AB0093B0BE /* util.hpp */; };
+		AA2C64D82910D5AB0093B0BE /* gml.hpp in Headers */ = {isa = PBXBuildFile; fileRef = AA2C64D02910D5AB0093B0BE /* gml.hpp */; };
+		AA2C65022910D5CD0093B0BE /* LineShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64D92910D5CC0093B0BE /* LineShape.cpp */; };
+		AA2C65032910D5CD0093B0BE /* TorusKnotMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64DA2910D5CC0093B0BE /* TorusKnotMesh.cpp */; };
+		AA2C65042910D5CD0093B0BE /* AnyMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64DB2910D5CC0093B0BE /* AnyMesh.cpp */; };
+		AA2C65052910D5CD0093B0BE /* DodecahedronMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64DC2910D5CC0093B0BE /* DodecahedronMesh.cpp */; };
+		AA2C65062910D5CD0093B0BE /* TubeMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64DD2910D5CC0093B0BE /* TubeMesh.cpp */; };
+		AA2C65072910D5CD0093B0BE /* EmptyPath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64DE2910D5CC0093B0BE /* EmptyPath.cpp */; };
+		AA2C65082910D5CD0093B0BE /* CapsuleMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64DF2910D5CC0093B0BE /* CapsuleMesh.cpp */; };
+		AA2C65092910D5CD0093B0BE /* ConvexPolygonMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64E02910D5CD0093B0BE /* ConvexPolygonMesh.cpp */; };
+		AA2C650A2910D5CD0093B0BE /* ConeMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64E12910D5CD0093B0BE /* ConeMesh.cpp */; };
+		AA2C650B2910D5CD0093B0BE /* SpringMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64E22910D5CD0093B0BE /* SpringMesh.cpp */; };
+		AA2C650C2910D5CD0093B0BE /* TorusMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64E32910D5CD0093B0BE /* TorusMesh.cpp */; };
+		AA2C650D2910D5CD0093B0BE /* EmptyShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64E42910D5CD0093B0BE /* EmptyShape.cpp */; };
+		AA2C650E2910D5CD0093B0BE /* PlaneMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64E52910D5CD0093B0BE /* PlaneMesh.cpp */; };
+		AA2C650F2910D5CD0093B0BE /* IcoSphereMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64E62910D5CD0093B0BE /* IcoSphereMesh.cpp */; };
+		AA2C65102910D5CD0093B0BE /* AnyShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64E72910D5CD0093B0BE /* AnyShape.cpp */; };
+		AA2C65112910D5CD0093B0BE /* IcosahedronMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64E82910D5CD0093B0BE /* IcosahedronMesh.cpp */; };
+		AA2C65122910D5CD0093B0BE /* CylinderMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64E92910D5CD0093B0BE /* CylinderMesh.cpp */; };
+		AA2C65132910D5CD0093B0BE /* SphereMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64EA2910D5CD0093B0BE /* SphereMesh.cpp */; };
+		AA2C65142910D5CD0093B0BE /* TeapotMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64EB2910D5CD0093B0BE /* TeapotMesh.cpp */; };
+		AA2C65152910D5CD0093B0BE /* CircleShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64EC2910D5CD0093B0BE /* CircleShape.cpp */; };
+		AA2C65162910D5CD0093B0BE /* RectangleShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64ED2910D5CD0093B0BE /* RectangleShape.cpp */; };
+		AA2C65172910D5CD0093B0BE /* CappedCylinderMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64EE2910D5CD0093B0BE /* CappedCylinderMesh.cpp */; };
+		AA2C65182910D5CD0093B0BE /* AnyPath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64EF2910D5CD0093B0BE /* AnyPath.cpp */; };
+		AA2C65192910D5CD0093B0BE /* LinePath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64F02910D5CD0093B0BE /* LinePath.cpp */; };
+		AA2C651A2910D5CD0093B0BE /* CappedTubeMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64F12910D5CD0093B0BE /* CappedTubeMesh.cpp */; };
+		AA2C651B2910D5CD0093B0BE /* HelixPath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64F22910D5CD0093B0BE /* HelixPath.cpp */; };
+		AA2C651C2910D5CD0093B0BE /* TriangleMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64F32910D5CD0093B0BE /* TriangleMesh.cpp */; };
+		AA2C651D2910D5CD0093B0BE /* GridShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64F42910D5CD0093B0BE /* GridShape.cpp */; };
+		AA2C651E2910D5CD0093B0BE /* BoxMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64F52910D5CD0093B0BE /* BoxMesh.cpp */; };
+		AA2C651F2910D5CD0093B0BE /* RoundedRectangleShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64F62910D5CD0093B0BE /* RoundedRectangleShape.cpp */; };
+		AA2C65202910D5CD0093B0BE /* EmptyMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64F72910D5CD0093B0BE /* EmptyMesh.cpp */; };
+		AA2C65212910D5CD0093B0BE /* ParametricPath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64F82910D5CD0093B0BE /* ParametricPath.cpp */; };
+		AA2C65222910D5CD0093B0BE /* SphericalConeMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64F92910D5CD0093B0BE /* SphericalConeMesh.cpp */; };
+		AA2C65232910D5CD0093B0BE /* ParametricShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64FA2910D5CD0093B0BE /* ParametricShape.cpp */; };
+		AA2C65242910D5CD0093B0BE /* ParametricMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64FB2910D5CD0093B0BE /* ParametricMesh.cpp */; };
+		AA2C65252910D5CD0093B0BE /* KnotPath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64FD2910D5CD0093B0BE /* KnotPath.cpp */; };
+		AA2C65262910D5CD0093B0BE /* CappedConeMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64FE2910D5CD0093B0BE /* CappedConeMesh.cpp */; };
+		AA2C65272910D5CD0093B0BE /* DiskMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C64FF2910D5CD0093B0BE /* DiskMesh.cpp */; };
+		AA2C65282910D5CD0093B0BE /* RoundedBoxMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C65002910D5CD0093B0BE /* RoundedBoxMesh.cpp */; };
+		AA2C65292910D5CD0093B0BE /* SphericalTriangleMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C65012910D5CD0093B0BE /* SphericalTriangleMesh.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -28,9 +162,151 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXFileReference section */
-		A49186401641DDB800A39286 /* wfc.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = wfc.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
-		AA87A27F279B6AB900E57026 /* wfc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wfc.h; path = ../shared/wfc.h; sourceTree = "<group>"; };
-		AA87A280279B6AB900E57026 /* plugin.wfc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = plugin.wfc.cpp; path = ../shared/plugin.wfc.cpp; sourceTree = "<group>"; };
+		A49186401641DDB800A39286 /* generator.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = generator.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA2C64092910D54E0093B0BE /* paths.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = paths.cpp; path = ../shared/paths.cpp; sourceTree = "<group>"; };
+		AA2C640A2910D54E0093B0BE /* plugin.generator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = plugin.generator.cpp; path = ../shared/plugin.generator.cpp; sourceTree = "<group>"; };
+		AA2C640B2910D54E0093B0BE /* generators.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = generators.cpp; path = ../shared/generators.cpp; sourceTree = "<group>"; };
+		AA2C640C2910D54E0093B0BE /* specializations.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = specializations.cpp; path = ../shared/specializations.cpp; sourceTree = "<group>"; };
+		AA2C640D2910D54E0093B0BE /* meshes.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = meshes.cpp; path = ../shared/meshes.cpp; sourceTree = "<group>"; };
+		AA2C640E2910D54E0093B0BE /* shapes.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = shapes.cpp; path = ../shared/shapes.cpp; sourceTree = "<group>"; };
+		AA2C640F2910D54E0093B0BE /* common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = common.h; path = ../shared/common.h; sourceTree = "<group>"; };
+		AA2C64102910D54E0093B0BE /* transform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = transform.h; path = ../shared/transform.h; sourceTree = "<group>"; };
+		AA2C64152910D5940093B0BE /* LinePath.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = LinePath.hpp; path = ../shared/include/generator/LinePath.hpp; sourceTree = "<group>"; };
+		AA2C64162910D5940093B0BE /* CircleShape.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = CircleShape.hpp; path = ../shared/include/generator/CircleShape.hpp; sourceTree = "<group>"; };
+		AA2C64172910D5940093B0BE /* SubdividePath.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SubdividePath.hpp; path = ../shared/include/generator/SubdividePath.hpp; sourceTree = "<group>"; };
+		AA2C64182910D5940093B0BE /* BoxMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = BoxMesh.hpp; path = ../shared/include/generator/BoxMesh.hpp; sourceTree = "<group>"; };
+		AA2C64192910D5940093B0BE /* FlipMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = FlipMesh.hpp; path = ../shared/include/generator/FlipMesh.hpp; sourceTree = "<group>"; };
+		AA2C641A2910D5940093B0BE /* DodecahedronMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = DodecahedronMesh.hpp; path = ../shared/include/generator/DodecahedronMesh.hpp; sourceTree = "<group>"; };
+		AA2C641B2910D5940093B0BE /* Axis.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Axis.hpp; path = ../shared/include/generator/Axis.hpp; sourceTree = "<group>"; };
+		AA2C641C2910D5940093B0BE /* IcoSphereMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = IcoSphereMesh.hpp; path = ../shared/include/generator/IcoSphereMesh.hpp; sourceTree = "<group>"; };
+		AA2C641D2910D5940093B0BE /* RoundedBoxMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = RoundedBoxMesh.hpp; path = ../shared/include/generator/RoundedBoxMesh.hpp; sourceTree = "<group>"; };
+		AA2C641E2910D5940093B0BE /* ParametricMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ParametricMesh.hpp; path = ../shared/include/generator/ParametricMesh.hpp; sourceTree = "<group>"; };
+		AA2C641F2910D5940093B0BE /* utils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = utils.hpp; path = ../shared/include/generator/utils.hpp; sourceTree = "<group>"; };
+		AA2C64202910D5940093B0BE /* LineShape.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = LineShape.hpp; path = ../shared/include/generator/LineShape.hpp; sourceTree = "<group>"; };
+		AA2C64212910D5940093B0BE /* generator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = generator.hpp; path = ../shared/include/generator/generator.hpp; sourceTree = "<group>"; };
+		AA2C64222910D5940093B0BE /* CappedCylinderMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = CappedCylinderMesh.hpp; path = ../shared/include/generator/CappedCylinderMesh.hpp; sourceTree = "<group>"; };
+		AA2C64232910D5940093B0BE /* AnyShape.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = AnyShape.hpp; path = ../shared/include/generator/AnyShape.hpp; sourceTree = "<group>"; };
+		AA2C64242910D5940093B0BE /* IcosahedronMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = IcosahedronMesh.hpp; path = ../shared/include/generator/IcosahedronMesh.hpp; sourceTree = "<group>"; };
+		AA2C64252910D5940093B0BE /* MeshVertex.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = MeshVertex.hpp; path = ../shared/include/generator/MeshVertex.hpp; sourceTree = "<group>"; };
+		AA2C64262910D5940093B0BE /* CappedConeMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = CappedConeMesh.hpp; path = ../shared/include/generator/CappedConeMesh.hpp; sourceTree = "<group>"; };
+		AA2C64272910D5940093B0BE /* PathVertex.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = PathVertex.hpp; path = ../shared/include/generator/PathVertex.hpp; sourceTree = "<group>"; };
+		AA2C64282910D5940093B0BE /* RoundedRectangleShape.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = RoundedRectangleShape.hpp; path = ../shared/include/generator/RoundedRectangleShape.hpp; sourceTree = "<group>"; };
+		AA2C64292910D5940093B0BE /* AnyMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = AnyMesh.hpp; path = ../shared/include/generator/AnyMesh.hpp; sourceTree = "<group>"; };
+		AA2C642A2910D5940093B0BE /* ScalePath.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScalePath.hpp; path = ../shared/include/generator/ScalePath.hpp; sourceTree = "<group>"; };
+		AA2C642B2910D5940093B0BE /* TranslateShape.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = TranslateShape.hpp; path = ../shared/include/generator/TranslateShape.hpp; sourceTree = "<group>"; };
+		AA2C642C2910D5940093B0BE /* RepeatPath.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = RepeatPath.hpp; path = ../shared/include/generator/RepeatPath.hpp; sourceTree = "<group>"; };
+		AA2C642E2910D5940093B0BE /* CapsuleMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = CapsuleMesh.hpp; path = ../shared/include/generator/CapsuleMesh.hpp; sourceTree = "<group>"; };
+		AA2C642F2910D5940093B0BE /* AxisSwapShape.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = AxisSwapShape.hpp; path = ../shared/include/generator/AxisSwapShape.hpp; sourceTree = "<group>"; };
+		AA2C64302910D5940093B0BE /* SubdivideShape.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SubdivideShape.hpp; path = ../shared/include/generator/SubdivideShape.hpp; sourceTree = "<group>"; };
+		AA2C64312910D5940093B0BE /* TranslatePath.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = TranslatePath.hpp; path = ../shared/include/generator/TranslatePath.hpp; sourceTree = "<group>"; };
+		AA2C64322910D5940093B0BE /* TorusMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = TorusMesh.hpp; path = ../shared/include/generator/TorusMesh.hpp; sourceTree = "<group>"; };
+		AA2C64332910D5940093B0BE /* UvFlipMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = UvFlipMesh.hpp; path = ../shared/include/generator/UvFlipMesh.hpp; sourceTree = "<group>"; };
+		AA2C64342910D5940093B0BE /* ParametricShape.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ParametricShape.hpp; path = ../shared/include/generator/ParametricShape.hpp; sourceTree = "<group>"; };
+		AA2C64352910D5940093B0BE /* CappedTubeMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = CappedTubeMesh.hpp; path = ../shared/include/generator/CappedTubeMesh.hpp; sourceTree = "<group>"; };
+		AA2C64362910D5940093B0BE /* SphericalConeMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SphericalConeMesh.hpp; path = ../shared/include/generator/SphericalConeMesh.hpp; sourceTree = "<group>"; };
+		AA2C64372910D5940093B0BE /* LatheMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = LatheMesh.hpp; path = ../shared/include/generator/LatheMesh.hpp; sourceTree = "<group>"; };
+		AA2C64382910D5940093B0BE /* RepeatMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = RepeatMesh.hpp; path = ../shared/include/generator/RepeatMesh.hpp; sourceTree = "<group>"; };
+		AA2C64392910D5940093B0BE /* ConvexPolygonMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ConvexPolygonMesh.hpp; path = ../shared/include/generator/ConvexPolygonMesh.hpp; sourceTree = "<group>"; };
+		AA2C643A2910D5940093B0BE /* TranslateMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = TranslateMesh.hpp; path = ../shared/include/generator/TranslateMesh.hpp; sourceTree = "<group>"; };
+		AA2C643B2910D5940093B0BE /* Triangle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Triangle.hpp; path = ../shared/include/generator/Triangle.hpp; sourceTree = "<group>"; };
+		AA2C643C2910D5940093B0BE /* MergePath.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = MergePath.hpp; path = ../shared/include/generator/MergePath.hpp; sourceTree = "<group>"; };
+		AA2C643D2910D5940093B0BE /* MergeShape.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = MergeShape.hpp; path = ../shared/include/generator/MergeShape.hpp; sourceTree = "<group>"; };
+		AA2C643E2910D5940093B0BE /* GridShape.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = GridShape.hpp; path = ../shared/include/generator/GridShape.hpp; sourceTree = "<group>"; };
+		AA2C643F2910D5940093B0BE /* ConeMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ConeMesh.hpp; path = ../shared/include/generator/ConeMesh.hpp; sourceTree = "<group>"; };
+		AA2C64402910D5940093B0BE /* ScaleMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScaleMesh.hpp; path = ../shared/include/generator/ScaleMesh.hpp; sourceTree = "<group>"; };
+		AA2C64412910D5940093B0BE /* SubdivideMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SubdivideMesh.hpp; path = ../shared/include/generator/SubdivideMesh.hpp; sourceTree = "<group>"; };
+		AA2C64422910D5940093B0BE /* TriangleMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = TriangleMesh.hpp; path = ../shared/include/generator/TriangleMesh.hpp; sourceTree = "<group>"; };
+		AA2C64432910D5940093B0BE /* SpringMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SpringMesh.hpp; path = ../shared/include/generator/SpringMesh.hpp; sourceTree = "<group>"; };
+		AA2C64442910D5940093B0BE /* RotatePath.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = RotatePath.hpp; path = ../shared/include/generator/RotatePath.hpp; sourceTree = "<group>"; };
+		AA2C64452910D5940093B0BE /* UvSwapMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = UvSwapMesh.hpp; path = ../shared/include/generator/UvSwapMesh.hpp; sourceTree = "<group>"; };
+		AA2C64462910D5940093B0BE /* AxisFlipMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = AxisFlipMesh.hpp; path = ../shared/include/generator/AxisFlipMesh.hpp; sourceTree = "<group>"; };
+		AA2C64472910D5940093B0BE /* CylinderMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = CylinderMesh.hpp; path = ../shared/include/generator/CylinderMesh.hpp; sourceTree = "<group>"; };
+		AA2C64482910D5940093B0BE /* Iterator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Iterator.hpp; path = ../shared/include/generator/Iterator.hpp; sourceTree = "<group>"; };
+		AA2C64492910D5940093B0BE /* EmptyMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = EmptyMesh.hpp; path = ../shared/include/generator/EmptyMesh.hpp; sourceTree = "<group>"; };
+		AA2C644A2910D5940093B0BE /* RotateMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = RotateMesh.hpp; path = ../shared/include/generator/RotateMesh.hpp; sourceTree = "<group>"; };
+		AA2C644B2910D5940093B0BE /* TransformMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = TransformMesh.hpp; path = ../shared/include/generator/TransformMesh.hpp; sourceTree = "<group>"; };
+		AA2C644C2910D5950093B0BE /* BezierShape.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = BezierShape.hpp; path = ../shared/include/generator/BezierShape.hpp; sourceTree = "<group>"; };
+		AA2C644D2910D5950093B0BE /* PlaneMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = PlaneMesh.hpp; path = ../shared/include/generator/PlaneMesh.hpp; sourceTree = "<group>"; };
+		AA2C644E2910D5950093B0BE /* SphereMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SphereMesh.hpp; path = ../shared/include/generator/SphereMesh.hpp; sourceTree = "<group>"; };
+		AA2C644F2910D5950093B0BE /* AxisSwapMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = AxisSwapMesh.hpp; path = ../shared/include/generator/AxisSwapMesh.hpp; sourceTree = "<group>"; };
+		AA2C64502910D5950093B0BE /* ShapeVertex.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ShapeVertex.hpp; path = ../shared/include/generator/ShapeVertex.hpp; sourceTree = "<group>"; };
+		AA2C64512910D5950093B0BE /* FlipShape.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = FlipShape.hpp; path = ../shared/include/generator/FlipShape.hpp; sourceTree = "<group>"; };
+		AA2C64532910D5950093B0BE /* SphericalTriangleMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SphericalTriangleMesh.hpp; path = ../shared/include/generator/SphericalTriangleMesh.hpp; sourceTree = "<group>"; };
+		AA2C64542910D5950093B0BE /* ParametricPath.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ParametricPath.hpp; path = ../shared/include/generator/ParametricPath.hpp; sourceTree = "<group>"; };
+		AA2C64552910D5950093B0BE /* ExtrudeMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ExtrudeMesh.hpp; path = ../shared/include/generator/ExtrudeMesh.hpp; sourceTree = "<group>"; };
+		AA2C64562910D5950093B0BE /* MergeMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = MergeMesh.hpp; path = ../shared/include/generator/MergeMesh.hpp; sourceTree = "<group>"; };
+		AA2C64572910D5950093B0BE /* MirrorMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = MirrorMesh.hpp; path = ../shared/include/generator/MirrorMesh.hpp; sourceTree = "<group>"; };
+		AA2C64582910D5950093B0BE /* RepeatShape.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = RepeatShape.hpp; path = ../shared/include/generator/RepeatShape.hpp; sourceTree = "<group>"; };
+		AA2C64592910D5950093B0BE /* math.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = math.hpp; path = ../shared/include/generator/math.hpp; sourceTree = "<group>"; };
+		AA2C645A2910D5950093B0BE /* HelixPath.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = HelixPath.hpp; path = ../shared/include/generator/HelixPath.hpp; sourceTree = "<group>"; };
+		AA2C645B2910D5950093B0BE /* EmptyShape.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = EmptyShape.hpp; path = ../shared/include/generator/EmptyShape.hpp; sourceTree = "<group>"; };
+		AA2C645C2910D5950093B0BE /* BezierMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = BezierMesh.hpp; path = ../shared/include/generator/BezierMesh.hpp; sourceTree = "<group>"; };
+		AA2C645D2910D5950093B0BE /* ScaleShape.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScaleShape.hpp; path = ../shared/include/generator/ScaleShape.hpp; sourceTree = "<group>"; };
+		AA2C645E2910D5950093B0BE /* SpherifyMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SpherifyMesh.hpp; path = ../shared/include/generator/SpherifyMesh.hpp; sourceTree = "<group>"; };
+		AA2C645F2910D5950093B0BE /* TransformShape.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = TransformShape.hpp; path = ../shared/include/generator/TransformShape.hpp; sourceTree = "<group>"; };
+		AA2C64602910D5950093B0BE /* Edge.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Edge.hpp; path = ../shared/include/generator/Edge.hpp; sourceTree = "<group>"; };
+		AA2C64612910D5950093B0BE /* ShapeToPath.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ShapeToPath.hpp; path = ../shared/include/generator/ShapeToPath.hpp; sourceTree = "<group>"; };
+		AA2C64622910D5950093B0BE /* EmptyPath.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = EmptyPath.hpp; path = ../shared/include/generator/EmptyPath.hpp; sourceTree = "<group>"; };
+		AA2C64632910D5950093B0BE /* AnyPath.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = AnyPath.hpp; path = ../shared/include/generator/AnyPath.hpp; sourceTree = "<group>"; };
+		AA2C64642910D5950093B0BE /* RotateShape.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = RotateShape.hpp; path = ../shared/include/generator/RotateShape.hpp; sourceTree = "<group>"; };
+		AA2C64652910D5950093B0BE /* TubeMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = TubeMesh.hpp; path = ../shared/include/generator/TubeMesh.hpp; sourceTree = "<group>"; };
+		AA2C64662910D5950093B0BE /* TransformPath.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = TransformPath.hpp; path = ../shared/include/generator/TransformPath.hpp; sourceTree = "<group>"; };
+		AA2C64672910D5950093B0BE /* DiskMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = DiskMesh.hpp; path = ../shared/include/generator/DiskMesh.hpp; sourceTree = "<group>"; };
+		AA2C64682910D5950093B0BE /* FlipPath.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = FlipPath.hpp; path = ../shared/include/generator/FlipPath.hpp; sourceTree = "<group>"; };
+		AA2C64692910D5950093B0BE /* RectangleShape.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = RectangleShape.hpp; path = ../shared/include/generator/RectangleShape.hpp; sourceTree = "<group>"; };
+		AA2C646A2910D5950093B0BE /* TorusKnotMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = TorusKnotMesh.hpp; path = ../shared/include/generator/TorusKnotMesh.hpp; sourceTree = "<group>"; };
+		AA2C646B2910D5950093B0BE /* AxisSwapPath.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = AxisSwapPath.hpp; path = ../shared/include/generator/AxisSwapPath.hpp; sourceTree = "<group>"; };
+		AA2C646C2910D5950093B0BE /* TeapotMesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = TeapotMesh.hpp; path = ../shared/include/generator/TeapotMesh.hpp; sourceTree = "<group>"; };
+		AA2C646D2910D5950093B0BE /* AnyGenerator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = AnyGenerator.hpp; path = ../shared/include/generator/AnyGenerator.hpp; sourceTree = "<group>"; };
+		AA2C646E2910D5950093B0BE /* KnotPath.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = KnotPath.hpp; path = ../shared/include/generator/KnotPath.hpp; sourceTree = "<group>"; };
+		AA2C64C92910D5AB0093B0BE /* vec.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = vec.hpp; path = ../shared/include/gml/vec.hpp; sourceTree = "<group>"; };
+		AA2C64CA2910D5AB0093B0BE /* intersect.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = intersect.hpp; path = ../shared/include/gml/intersect.hpp; sourceTree = "<group>"; };
+		AA2C64CB2910D5AB0093B0BE /* mat.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = mat.hpp; path = ../shared/include/gml/mat.hpp; sourceTree = "<group>"; };
+		AA2C64CC2910D5AB0093B0BE /* texture.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = texture.hpp; path = ../shared/include/gml/texture.hpp; sourceTree = "<group>"; };
+		AA2C64CD2910D5AB0093B0BE /* quaternion.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = quaternion.hpp; path = ../shared/include/gml/quaternion.hpp; sourceTree = "<group>"; };
+		AA2C64CE2910D5AB0093B0BE /* spline.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = spline.hpp; path = ../shared/include/gml/spline.hpp; sourceTree = "<group>"; };
+		AA2C64CF2910D5AB0093B0BE /* util.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = util.hpp; path = ../shared/include/gml/util.hpp; sourceTree = "<group>"; };
+		AA2C64D02910D5AB0093B0BE /* gml.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = gml.hpp; path = ../shared/include/gml/gml.hpp; sourceTree = "<group>"; };
+		AA2C64D92910D5CC0093B0BE /* LineShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LineShape.cpp; path = ../shared/src/LineShape.cpp; sourceTree = "<group>"; };
+		AA2C64DA2910D5CC0093B0BE /* TorusKnotMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TorusKnotMesh.cpp; path = ../shared/src/TorusKnotMesh.cpp; sourceTree = "<group>"; };
+		AA2C64DB2910D5CC0093B0BE /* AnyMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AnyMesh.cpp; path = ../shared/src/AnyMesh.cpp; sourceTree = "<group>"; };
+		AA2C64DC2910D5CC0093B0BE /* DodecahedronMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DodecahedronMesh.cpp; path = ../shared/src/DodecahedronMesh.cpp; sourceTree = "<group>"; };
+		AA2C64DD2910D5CC0093B0BE /* TubeMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TubeMesh.cpp; path = ../shared/src/TubeMesh.cpp; sourceTree = "<group>"; };
+		AA2C64DE2910D5CC0093B0BE /* EmptyPath.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EmptyPath.cpp; path = ../shared/src/EmptyPath.cpp; sourceTree = "<group>"; };
+		AA2C64DF2910D5CC0093B0BE /* CapsuleMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CapsuleMesh.cpp; path = ../shared/src/CapsuleMesh.cpp; sourceTree = "<group>"; };
+		AA2C64E02910D5CD0093B0BE /* ConvexPolygonMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ConvexPolygonMesh.cpp; path = ../shared/src/ConvexPolygonMesh.cpp; sourceTree = "<group>"; };
+		AA2C64E12910D5CD0093B0BE /* ConeMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ConeMesh.cpp; path = ../shared/src/ConeMesh.cpp; sourceTree = "<group>"; };
+		AA2C64E22910D5CD0093B0BE /* SpringMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SpringMesh.cpp; path = ../shared/src/SpringMesh.cpp; sourceTree = "<group>"; };
+		AA2C64E32910D5CD0093B0BE /* TorusMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TorusMesh.cpp; path = ../shared/src/TorusMesh.cpp; sourceTree = "<group>"; };
+		AA2C64E42910D5CD0093B0BE /* EmptyShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EmptyShape.cpp; path = ../shared/src/EmptyShape.cpp; sourceTree = "<group>"; };
+		AA2C64E52910D5CD0093B0BE /* PlaneMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PlaneMesh.cpp; path = ../shared/src/PlaneMesh.cpp; sourceTree = "<group>"; };
+		AA2C64E62910D5CD0093B0BE /* IcoSphereMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = IcoSphereMesh.cpp; path = ../shared/src/IcoSphereMesh.cpp; sourceTree = "<group>"; };
+		AA2C64E72910D5CD0093B0BE /* AnyShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AnyShape.cpp; path = ../shared/src/AnyShape.cpp; sourceTree = "<group>"; };
+		AA2C64E82910D5CD0093B0BE /* IcosahedronMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = IcosahedronMesh.cpp; path = ../shared/src/IcosahedronMesh.cpp; sourceTree = "<group>"; };
+		AA2C64E92910D5CD0093B0BE /* CylinderMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CylinderMesh.cpp; path = ../shared/src/CylinderMesh.cpp; sourceTree = "<group>"; };
+		AA2C64EA2910D5CD0093B0BE /* SphereMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SphereMesh.cpp; path = ../shared/src/SphereMesh.cpp; sourceTree = "<group>"; };
+		AA2C64EB2910D5CD0093B0BE /* TeapotMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TeapotMesh.cpp; path = ../shared/src/TeapotMesh.cpp; sourceTree = "<group>"; };
+		AA2C64EC2910D5CD0093B0BE /* CircleShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CircleShape.cpp; path = ../shared/src/CircleShape.cpp; sourceTree = "<group>"; };
+		AA2C64ED2910D5CD0093B0BE /* RectangleShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RectangleShape.cpp; path = ../shared/src/RectangleShape.cpp; sourceTree = "<group>"; };
+		AA2C64EE2910D5CD0093B0BE /* CappedCylinderMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CappedCylinderMesh.cpp; path = ../shared/src/CappedCylinderMesh.cpp; sourceTree = "<group>"; };
+		AA2C64EF2910D5CD0093B0BE /* AnyPath.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AnyPath.cpp; path = ../shared/src/AnyPath.cpp; sourceTree = "<group>"; };
+		AA2C64F02910D5CD0093B0BE /* LinePath.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LinePath.cpp; path = ../shared/src/LinePath.cpp; sourceTree = "<group>"; };
+		AA2C64F12910D5CD0093B0BE /* CappedTubeMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CappedTubeMesh.cpp; path = ../shared/src/CappedTubeMesh.cpp; sourceTree = "<group>"; };
+		AA2C64F22910D5CD0093B0BE /* HelixPath.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = HelixPath.cpp; path = ../shared/src/HelixPath.cpp; sourceTree = "<group>"; };
+		AA2C64F32910D5CD0093B0BE /* TriangleMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TriangleMesh.cpp; path = ../shared/src/TriangleMesh.cpp; sourceTree = "<group>"; };
+		AA2C64F42910D5CD0093B0BE /* GridShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GridShape.cpp; path = ../shared/src/GridShape.cpp; sourceTree = "<group>"; };
+		AA2C64F52910D5CD0093B0BE /* BoxMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BoxMesh.cpp; path = ../shared/src/BoxMesh.cpp; sourceTree = "<group>"; };
+		AA2C64F62910D5CD0093B0BE /* RoundedRectangleShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RoundedRectangleShape.cpp; path = ../shared/src/RoundedRectangleShape.cpp; sourceTree = "<group>"; };
+		AA2C64F72910D5CD0093B0BE /* EmptyMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EmptyMesh.cpp; path = ../shared/src/EmptyMesh.cpp; sourceTree = "<group>"; };
+		AA2C64F82910D5CD0093B0BE /* ParametricPath.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ParametricPath.cpp; path = ../shared/src/ParametricPath.cpp; sourceTree = "<group>"; };
+		AA2C64F92910D5CD0093B0BE /* SphericalConeMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SphericalConeMesh.cpp; path = ../shared/src/SphericalConeMesh.cpp; sourceTree = "<group>"; };
+		AA2C64FA2910D5CD0093B0BE /* ParametricShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ParametricShape.cpp; path = ../shared/src/ParametricShape.cpp; sourceTree = "<group>"; };
+		AA2C64FB2910D5CD0093B0BE /* ParametricMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ParametricMesh.cpp; path = ../shared/src/ParametricMesh.cpp; sourceTree = "<group>"; };
+		AA2C64FD2910D5CD0093B0BE /* KnotPath.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KnotPath.cpp; path = ../shared/src/KnotPath.cpp; sourceTree = "<group>"; };
+		AA2C64FE2910D5CD0093B0BE /* CappedConeMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CappedConeMesh.cpp; path = ../shared/src/CappedConeMesh.cpp; sourceTree = "<group>"; };
+		AA2C64FF2910D5CD0093B0BE /* DiskMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DiskMesh.cpp; path = ../shared/src/DiskMesh.cpp; sourceTree = "<group>"; };
+		AA2C65002910D5CD0093B0BE /* RoundedBoxMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RoundedBoxMesh.cpp; path = ../shared/src/RoundedBoxMesh.cpp; sourceTree = "<group>"; };
+		AA2C65012910D5CD0093B0BE /* SphericalTriangleMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SphericalTriangleMesh.cpp; path = ../shared/src/SphericalTriangleMesh.cpp; sourceTree = "<group>"; };
 		AA8C19D62878E8FF000D0253 /* ByteReader */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ByteReader; path = ../../ByteReader; sourceTree = "<group>"; };
 		AA8C19D72878E8FF000D0253 /* solar2d_native_utils */ = {isa = PBXFileReference; lastKnownFileType = folder; name = solar2d_native_utils; path = ../../solar2d_native_utils; sourceTree = "<group>"; };
 		CE353A2D1D690309000D2E95 /* libvlc.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libvlc.dylib; path = "../../../../Library/Application Support/Corona/Simulator/Plugins/plugin/lib/libvlc.dylib"; sourceTree = "<group>"; };
@@ -51,10 +327,18 @@
 		A4151F3316879B8200B2B43A /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				AA2C64112910D5530093B0BE /* include */,
+				AA2C64122910D55A0093B0BE /* src */,
+				AA2C640F2910D54E0093B0BE /* common.h */,
+				AA2C640B2910D54E0093B0BE /* generators.cpp */,
+				AA2C640D2910D54E0093B0BE /* meshes.cpp */,
+				AA2C64092910D54E0093B0BE /* paths.cpp */,
+				AA2C640A2910D54E0093B0BE /* plugin.generator.cpp */,
+				AA2C640E2910D54E0093B0BE /* shapes.cpp */,
+				AA2C640C2910D54E0093B0BE /* specializations.cpp */,
+				AA2C64102910D54E0093B0BE /* transform.h */,
 				AA8C19D62878E8FF000D0253 /* ByteReader */,
 				AA8C19D72878E8FF000D0253 /* solar2d_native_utils */,
-				AA87A280279B6AB900E57026 /* plugin.wfc.cpp */,
-				AA87A27F279B6AB900E57026 /* wfc.h */,
 			);
 			name = Shared;
 			sourceTree = "<group>";
@@ -71,7 +355,7 @@
 		A482DA8515F9B7E70084DC42 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A49186401641DDB800A39286 /* wfc.dylib */,
+				A49186401641DDB800A39286 /* generator.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -85,6 +369,172 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		AA2C64112910D5530093B0BE /* include */ = {
+			isa = PBXGroup;
+			children = (
+				AA2C64132910D5750093B0BE /* generator */,
+				AA2C64142910D57D0093B0BE /* gml */,
+			);
+			name = include;
+			sourceTree = "<group>";
+		};
+		AA2C64122910D55A0093B0BE /* src */ = {
+			isa = PBXGroup;
+			children = (
+				AA2C64DB2910D5CC0093B0BE /* AnyMesh.cpp */,
+				AA2C64EF2910D5CD0093B0BE /* AnyPath.cpp */,
+				AA2C64E72910D5CD0093B0BE /* AnyShape.cpp */,
+				AA2C64F52910D5CD0093B0BE /* BoxMesh.cpp */,
+				AA2C64FE2910D5CD0093B0BE /* CappedConeMesh.cpp */,
+				AA2C64EE2910D5CD0093B0BE /* CappedCylinderMesh.cpp */,
+				AA2C64F12910D5CD0093B0BE /* CappedTubeMesh.cpp */,
+				AA2C64DF2910D5CC0093B0BE /* CapsuleMesh.cpp */,
+				AA2C64EC2910D5CD0093B0BE /* CircleShape.cpp */,
+				AA2C64E12910D5CD0093B0BE /* ConeMesh.cpp */,
+				AA2C64E02910D5CD0093B0BE /* ConvexPolygonMesh.cpp */,
+				AA2C64E92910D5CD0093B0BE /* CylinderMesh.cpp */,
+				AA2C64FF2910D5CD0093B0BE /* DiskMesh.cpp */,
+				AA2C64DC2910D5CC0093B0BE /* DodecahedronMesh.cpp */,
+				AA2C64F72910D5CD0093B0BE /* EmptyMesh.cpp */,
+				AA2C64DE2910D5CC0093B0BE /* EmptyPath.cpp */,
+				AA2C64E42910D5CD0093B0BE /* EmptyShape.cpp */,
+				AA2C64F42910D5CD0093B0BE /* GridShape.cpp */,
+				AA2C64F22910D5CD0093B0BE /* HelixPath.cpp */,
+				AA2C64E82910D5CD0093B0BE /* IcosahedronMesh.cpp */,
+				AA2C64E62910D5CD0093B0BE /* IcoSphereMesh.cpp */,
+				AA2C64FD2910D5CD0093B0BE /* KnotPath.cpp */,
+				AA2C64F02910D5CD0093B0BE /* LinePath.cpp */,
+				AA2C64D92910D5CC0093B0BE /* LineShape.cpp */,
+				AA2C64FB2910D5CD0093B0BE /* ParametricMesh.cpp */,
+				AA2C64F82910D5CD0093B0BE /* ParametricPath.cpp */,
+				AA2C64FA2910D5CD0093B0BE /* ParametricShape.cpp */,
+				AA2C64E52910D5CD0093B0BE /* PlaneMesh.cpp */,
+				AA2C64ED2910D5CD0093B0BE /* RectangleShape.cpp */,
+				AA2C65002910D5CD0093B0BE /* RoundedBoxMesh.cpp */,
+				AA2C64F62910D5CD0093B0BE /* RoundedRectangleShape.cpp */,
+				AA2C64EA2910D5CD0093B0BE /* SphereMesh.cpp */,
+				AA2C64F92910D5CD0093B0BE /* SphericalConeMesh.cpp */,
+				AA2C65012910D5CD0093B0BE /* SphericalTriangleMesh.cpp */,
+				AA2C64E22910D5CD0093B0BE /* SpringMesh.cpp */,
+				AA2C64EB2910D5CD0093B0BE /* TeapotMesh.cpp */,
+				AA2C64DA2910D5CC0093B0BE /* TorusKnotMesh.cpp */,
+				AA2C64E32910D5CD0093B0BE /* TorusMesh.cpp */,
+				AA2C64F32910D5CD0093B0BE /* TriangleMesh.cpp */,
+				AA2C64DD2910D5CC0093B0BE /* TubeMesh.cpp */,
+			);
+			name = src;
+			sourceTree = "<group>";
+		};
+		AA2C64132910D5750093B0BE /* generator */ = {
+			isa = PBXGroup;
+			children = (
+				AA2C646D2910D5950093B0BE /* AnyGenerator.hpp */,
+				AA2C64292910D5940093B0BE /* AnyMesh.hpp */,
+				AA2C64632910D5950093B0BE /* AnyPath.hpp */,
+				AA2C64232910D5940093B0BE /* AnyShape.hpp */,
+				AA2C641B2910D5940093B0BE /* Axis.hpp */,
+				AA2C64462910D5940093B0BE /* AxisFlipMesh.hpp */,
+				AA2C644F2910D5950093B0BE /* AxisSwapMesh.hpp */,
+				AA2C646B2910D5950093B0BE /* AxisSwapPath.hpp */,
+				AA2C642F2910D5940093B0BE /* AxisSwapShape.hpp */,
+				AA2C645C2910D5950093B0BE /* BezierMesh.hpp */,
+				AA2C644C2910D5950093B0BE /* BezierShape.hpp */,
+				AA2C64182910D5940093B0BE /* BoxMesh.hpp */,
+				AA2C64262910D5940093B0BE /* CappedConeMesh.hpp */,
+				AA2C64222910D5940093B0BE /* CappedCylinderMesh.hpp */,
+				AA2C64352910D5940093B0BE /* CappedTubeMesh.hpp */,
+				AA2C642E2910D5940093B0BE /* CapsuleMesh.hpp */,
+				AA2C64162910D5940093B0BE /* CircleShape.hpp */,
+				AA2C643F2910D5940093B0BE /* ConeMesh.hpp */,
+				AA2C64392910D5940093B0BE /* ConvexPolygonMesh.hpp */,
+				AA2C64472910D5940093B0BE /* CylinderMesh.hpp */,
+				AA2C64672910D5950093B0BE /* DiskMesh.hpp */,
+				AA2C641A2910D5940093B0BE /* DodecahedronMesh.hpp */,
+				AA2C64602910D5950093B0BE /* Edge.hpp */,
+				AA2C64492910D5940093B0BE /* EmptyMesh.hpp */,
+				AA2C64622910D5950093B0BE /* EmptyPath.hpp */,
+				AA2C645B2910D5950093B0BE /* EmptyShape.hpp */,
+				AA2C64552910D5950093B0BE /* ExtrudeMesh.hpp */,
+				AA2C64192910D5940093B0BE /* FlipMesh.hpp */,
+				AA2C64682910D5950093B0BE /* FlipPath.hpp */,
+				AA2C64512910D5950093B0BE /* FlipShape.hpp */,
+				AA2C64212910D5940093B0BE /* generator.hpp */,
+				AA2C643E2910D5940093B0BE /* GridShape.hpp */,
+				AA2C645A2910D5950093B0BE /* HelixPath.hpp */,
+				AA2C64242910D5940093B0BE /* IcosahedronMesh.hpp */,
+				AA2C641C2910D5940093B0BE /* IcoSphereMesh.hpp */,
+				AA2C64482910D5940093B0BE /* Iterator.hpp */,
+				AA2C646E2910D5950093B0BE /* KnotPath.hpp */,
+				AA2C64372910D5940093B0BE /* LatheMesh.hpp */,
+				AA2C64152910D5940093B0BE /* LinePath.hpp */,
+				AA2C64202910D5940093B0BE /* LineShape.hpp */,
+				AA2C64592910D5950093B0BE /* math.hpp */,
+				AA2C64562910D5950093B0BE /* MergeMesh.hpp */,
+				AA2C643C2910D5940093B0BE /* MergePath.hpp */,
+				AA2C643D2910D5940093B0BE /* MergeShape.hpp */,
+				AA2C64252910D5940093B0BE /* MeshVertex.hpp */,
+				AA2C64572910D5950093B0BE /* MirrorMesh.hpp */,
+				AA2C641E2910D5940093B0BE /* ParametricMesh.hpp */,
+				AA2C64542910D5950093B0BE /* ParametricPath.hpp */,
+				AA2C64342910D5940093B0BE /* ParametricShape.hpp */,
+				AA2C64272910D5940093B0BE /* PathVertex.hpp */,
+				AA2C644D2910D5950093B0BE /* PlaneMesh.hpp */,
+				AA2C64692910D5950093B0BE /* RectangleShape.hpp */,
+				AA2C64382910D5940093B0BE /* RepeatMesh.hpp */,
+				AA2C642C2910D5940093B0BE /* RepeatPath.hpp */,
+				AA2C64582910D5950093B0BE /* RepeatShape.hpp */,
+				AA2C644A2910D5940093B0BE /* RotateMesh.hpp */,
+				AA2C64442910D5940093B0BE /* RotatePath.hpp */,
+				AA2C64642910D5950093B0BE /* RotateShape.hpp */,
+				AA2C641D2910D5940093B0BE /* RoundedBoxMesh.hpp */,
+				AA2C64282910D5940093B0BE /* RoundedRectangleShape.hpp */,
+				AA2C64402910D5940093B0BE /* ScaleMesh.hpp */,
+				AA2C642A2910D5940093B0BE /* ScalePath.hpp */,
+				AA2C645D2910D5950093B0BE /* ScaleShape.hpp */,
+				AA2C64612910D5950093B0BE /* ShapeToPath.hpp */,
+				AA2C64502910D5950093B0BE /* ShapeVertex.hpp */,
+				AA2C644E2910D5950093B0BE /* SphereMesh.hpp */,
+				AA2C64362910D5940093B0BE /* SphericalConeMesh.hpp */,
+				AA2C64532910D5950093B0BE /* SphericalTriangleMesh.hpp */,
+				AA2C645E2910D5950093B0BE /* SpherifyMesh.hpp */,
+				AA2C64432910D5940093B0BE /* SpringMesh.hpp */,
+				AA2C64412910D5940093B0BE /* SubdivideMesh.hpp */,
+				AA2C64172910D5940093B0BE /* SubdividePath.hpp */,
+				AA2C64302910D5940093B0BE /* SubdivideShape.hpp */,
+				AA2C646C2910D5950093B0BE /* TeapotMesh.hpp */,
+				AA2C646A2910D5950093B0BE /* TorusKnotMesh.hpp */,
+				AA2C64322910D5940093B0BE /* TorusMesh.hpp */,
+				AA2C644B2910D5940093B0BE /* TransformMesh.hpp */,
+				AA2C64662910D5950093B0BE /* TransformPath.hpp */,
+				AA2C645F2910D5950093B0BE /* TransformShape.hpp */,
+				AA2C643A2910D5940093B0BE /* TranslateMesh.hpp */,
+				AA2C64312910D5940093B0BE /* TranslatePath.hpp */,
+				AA2C642B2910D5940093B0BE /* TranslateShape.hpp */,
+				AA2C643B2910D5940093B0BE /* Triangle.hpp */,
+				AA2C64422910D5940093B0BE /* TriangleMesh.hpp */,
+				AA2C64652910D5950093B0BE /* TubeMesh.hpp */,
+				AA2C641F2910D5940093B0BE /* utils.hpp */,
+				AA2C64332910D5940093B0BE /* UvFlipMesh.hpp */,
+				AA2C64452910D5940093B0BE /* UvSwapMesh.hpp */,
+			);
+			name = generator;
+			sourceTree = "<group>";
+		};
+		AA2C64142910D57D0093B0BE /* gml */ = {
+			isa = PBXGroup;
+			children = (
+				AA2C64D02910D5AB0093B0BE /* gml.hpp */,
+				AA2C64CA2910D5AB0093B0BE /* intersect.hpp */,
+				AA2C64CB2910D5AB0093B0BE /* mat.hpp */,
+				AA2C64CD2910D5AB0093B0BE /* quaternion.hpp */,
+				AA2C64CE2910D5AB0093B0BE /* spline.hpp */,
+				AA2C64CC2910D5AB0093B0BE /* texture.hpp */,
+				AA2C64CF2910D5AB0093B0BE /* util.hpp */,
+				AA2C64C92910D5AB0093B0BE /* vec.hpp */,
+			);
+			name = gml;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -92,16 +542,111 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA87A281279B6AB900E57026 /* wfc.h in Headers */,
+				AA2C647A2910D5950093B0BE /* LineShape.hpp in Headers */,
+				AA2C64C52910D5950093B0BE /* AxisSwapPath.hpp in Headers */,
+				AA2C649D2910D5950093B0BE /* SpringMesh.hpp in Headers */,
+				AA2C64D82910D5AB0093B0BE /* gml.hpp in Headers */,
+				AA2C64B92910D5950093B0BE /* TransformShape.hpp in Headers */,
+				AA2C64772910D5950093B0BE /* RoundedBoxMesh.hpp in Headers */,
+				AA2C648E2910D5950093B0BE /* ParametricShape.hpp in Headers */,
+				AA2C64D42910D5AB0093B0BE /* texture.hpp in Headers */,
+				AA2C648B2910D5950093B0BE /* TranslatePath.hpp in Headers */,
+				AA2C64932910D5950093B0BE /* ConvexPolygonMesh.hpp in Headers */,
+				AA2C64C42910D5950093B0BE /* TorusKnotMesh.hpp in Headers */,
+				AA2C64902910D5950093B0BE /* SphericalConeMesh.hpp in Headers */,
+				AA2C64A62910D5950093B0BE /* BezierShape.hpp in Headers */,
+				AA2C64842910D5950093B0BE /* ScalePath.hpp in Headers */,
+				AA2C64A22910D5950093B0BE /* Iterator.hpp in Headers */,
+				AA2C64B12910D5950093B0BE /* MirrorMesh.hpp in Headers */,
+				AA2C64C62910D5950093B0BE /* TeapotMesh.hpp in Headers */,
+				AA2C64C12910D5950093B0BE /* DiskMesh.hpp in Headers */,
+				AA2C649F2910D5950093B0BE /* UvSwapMesh.hpp in Headers */,
+				AA2C64892910D5950093B0BE /* AxisSwapShape.hpp in Headers */,
+				AA2C648A2910D5950093B0BE /* SubdivideShape.hpp in Headers */,
+				AA2C64822910D5950093B0BE /* RoundedRectangleShape.hpp in Headers */,
+				AA2C64D12910D5AB0093B0BE /* vec.hpp in Headers */,
+				AA2C647C2910D5950093B0BE /* CappedCylinderMesh.hpp in Headers */,
+				AA2C64702910D5950093B0BE /* CircleShape.hpp in Headers */,
+				AA2C649A2910D5950093B0BE /* ScaleMesh.hpp in Headers */,
+				AA2C64C82910D5950093B0BE /* KnotPath.hpp in Headers */,
+				AA2C64B52910D5950093B0BE /* EmptyShape.hpp in Headers */,
+				AA2C64C32910D5950093B0BE /* RectangleShape.hpp in Headers */,
+				AA2C64742910D5950093B0BE /* DodecahedronMesh.hpp in Headers */,
+				AA2C647E2910D5950093B0BE /* IcosahedronMesh.hpp in Headers */,
+				AA2C64992910D5950093B0BE /* ConeMesh.hpp in Headers */,
+				AA2C64B02910D5950093B0BE /* MergeMesh.hpp in Headers */,
+				AA2C64C02910D5950093B0BE /* TransformPath.hpp in Headers */,
+				AA2C64B42910D5950093B0BE /* HelixPath.hpp in Headers */,
+				AA2C64D32910D5AB0093B0BE /* mat.hpp in Headers */,
+				AA2C64782910D5950093B0BE /* ParametricMesh.hpp in Headers */,
+				AA2C649B2910D5950093B0BE /* SubdivideMesh.hpp in Headers */,
+				AA2C64A72910D5950093B0BE /* PlaneMesh.hpp in Headers */,
+				AA2C64922910D5950093B0BE /* RepeatMesh.hpp in Headers */,
+				AA2C64852910D5950093B0BE /* TranslateShape.hpp in Headers */,
+				AA2C64712910D5950093B0BE /* SubdividePath.hpp in Headers */,
+				AA2C64BF2910D5950093B0BE /* TubeMesh.hpp in Headers */,
+				AA2C64942910D5950093B0BE /* TranslateMesh.hpp in Headers */,
+				AA2C64912910D5950093B0BE /* LatheMesh.hpp in Headers */,
+				AA2C64792910D5950093B0BE /* utils.hpp in Headers */,
+				AA2C64B82910D5950093B0BE /* SpherifyMesh.hpp in Headers */,
+				AA2C64AE2910D5950093B0BE /* ParametricPath.hpp in Headers */,
+				AA2C64802910D5950093B0BE /* CappedConeMesh.hpp in Headers */,
+				AA2C64BC2910D5950093B0BE /* EmptyPath.hpp in Headers */,
+				AA2C64A12910D5950093B0BE /* CylinderMesh.hpp in Headers */,
+				AA2C64732910D5950093B0BE /* FlipMesh.hpp in Headers */,
+				AA2C647F2910D5950093B0BE /* MeshVertex.hpp in Headers */,
+				AA2C64962910D5950093B0BE /* MergePath.hpp in Headers */,
+				AA2C64D52910D5AB0093B0BE /* quaternion.hpp in Headers */,
+				AA2C64AD2910D5950093B0BE /* SphericalTriangleMesh.hpp in Headers */,
+				AA2C64882910D5950093B0BE /* CapsuleMesh.hpp in Headers */,
+				AA2C647B2910D5950093B0BE /* generator.hpp in Headers */,
+				AA2C64AF2910D5950093B0BE /* ExtrudeMesh.hpp in Headers */,
+				AA2C64A42910D5950093B0BE /* RotateMesh.hpp in Headers */,
+				AA2C64D22910D5AB0093B0BE /* intersect.hpp in Headers */,
+				AA2C64C22910D5950093B0BE /* FlipPath.hpp in Headers */,
+				AA2C646F2910D5950093B0BE /* LinePath.hpp in Headers */,
+				AA2C649E2910D5950093B0BE /* RotatePath.hpp in Headers */,
+				AA2C64982910D5950093B0BE /* GridShape.hpp in Headers */,
+				AA2C648C2910D5950093B0BE /* TorusMesh.hpp in Headers */,
+				AA2C64752910D5950093B0BE /* Axis.hpp in Headers */,
+				AA2C64952910D5950093B0BE /* Triangle.hpp in Headers */,
+				AA2C64BE2910D5950093B0BE /* RotateShape.hpp in Headers */,
+				AA2C648D2910D5950093B0BE /* UvFlipMesh.hpp in Headers */,
+				AA2C648F2910D5950093B0BE /* CappedTubeMesh.hpp in Headers */,
+				AA2C64A52910D5950093B0BE /* TransformMesh.hpp in Headers */,
+				AA2C64A02910D5950093B0BE /* AxisFlipMesh.hpp in Headers */,
+				AA2C64A82910D5950093B0BE /* SphereMesh.hpp in Headers */,
+				AA2C64D72910D5AB0093B0BE /* util.hpp in Headers */,
+				AA2C64862910D5950093B0BE /* RepeatPath.hpp in Headers */,
+				AA2C64D62910D5AB0093B0BE /* spline.hpp in Headers */,
+				AA2C64B22910D5950093B0BE /* RepeatShape.hpp in Headers */,
+				AA2C64762910D5950093B0BE /* IcoSphereMesh.hpp in Headers */,
+				AA2C64972910D5950093B0BE /* MergeShape.hpp in Headers */,
+				AA2C64BB2910D5950093B0BE /* ShapeToPath.hpp in Headers */,
+				AA2C64AA2910D5950093B0BE /* ShapeVertex.hpp in Headers */,
+				AA2C64A92910D5950093B0BE /* AxisSwapMesh.hpp in Headers */,
+				AA2C649C2910D5950093B0BE /* TriangleMesh.hpp in Headers */,
+				AA2C64A32910D5950093B0BE /* EmptyMesh.hpp in Headers */,
+				AA2C64C72910D5950093B0BE /* AnyGenerator.hpp in Headers */,
+				AA2C64B32910D5950093B0BE /* math.hpp in Headers */,
+				AA2C64B72910D5950093B0BE /* ScaleShape.hpp in Headers */,
+				AA2C64B62910D5950093B0BE /* BezierMesh.hpp in Headers */,
+				AA2C647D2910D5950093B0BE /* AnyShape.hpp in Headers */,
+				AA2C64BA2910D5950093B0BE /* Edge.hpp in Headers */,
+				AA2C64AB2910D5950093B0BE /* FlipShape.hpp in Headers */,
+				AA2C64BD2910D5950093B0BE /* AnyPath.hpp in Headers */,
+				AA2C64722910D5950093B0BE /* BoxMesh.hpp in Headers */,
+				AA2C64832910D5950093B0BE /* AnyMesh.hpp in Headers */,
+				AA2C64812910D5950093B0BE /* PathVertex.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		A49186331641DDB800A39286 /* wfc */ = {
+		A49186331641DDB800A39286 /* generator */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "wfc" */;
+			buildConfigurationList = A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "generator" */;
 			buildPhases = (
 				A49186341641DDB800A39286 /* Sources */,
 				A49186381641DDB800A39286 /* Frameworks */,
@@ -113,9 +658,9 @@
 			);
 			dependencies = (
 			);
-			name = wfc;
+			name = generator;
 			productName = ads;
-			productReference = A49186401641DDB800A39286 /* wfc.dylib */;
+			productReference = A49186401641DDB800A39286 /* generator.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 /* End PBXNativeTarget section */
@@ -139,7 +684,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A49186331641DDB800A39286 /* wfc */,
+				A49186331641DDB800A39286 /* generator */,
 			);
 		};
 /* End PBXProject section */
@@ -166,7 +711,46 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA87A282279B6AB900E57026 /* plugin.wfc.cpp in Sources */,
+				AA2C65112910D5CD0093B0BE /* IcosahedronMesh.cpp in Sources */,
+				AA2C65172910D5CD0093B0BE /* CappedCylinderMesh.cpp in Sources */,
+				AA2C65192910D5CD0093B0BE /* LinePath.cpp in Sources */,
+				AA2C65232910D5CD0093B0BE /* ParametricShape.cpp in Sources */,
+				AA2C65142910D5CD0093B0BE /* TeapotMesh.cpp in Sources */,
+				AA2C65032910D5CD0093B0BE /* TorusKnotMesh.cpp in Sources */,
+				AA2C651C2910D5CD0093B0BE /* TriangleMesh.cpp in Sources */,
+				AA2C65162910D5CD0093B0BE /* RectangleShape.cpp in Sources */,
+				AA2C65292910D5CD0093B0BE /* SphericalTriangleMesh.cpp in Sources */,
+				AA2C65042910D5CD0093B0BE /* AnyMesh.cpp in Sources */,
+				AA2C65062910D5CD0093B0BE /* TubeMesh.cpp in Sources */,
+				AA2C65262910D5CD0093B0BE /* CappedConeMesh.cpp in Sources */,
+				AA2C651A2910D5CD0093B0BE /* CappedTubeMesh.cpp in Sources */,
+				AA2C65122910D5CD0093B0BE /* CylinderMesh.cpp in Sources */,
+				AA2C65102910D5CD0093B0BE /* AnyShape.cpp in Sources */,
+				AA2C65082910D5CD0093B0BE /* CapsuleMesh.cpp in Sources */,
+				AA2C651E2910D5CD0093B0BE /* BoxMesh.cpp in Sources */,
+				AA2C65182910D5CD0093B0BE /* AnyPath.cpp in Sources */,
+				AA2C65052910D5CD0093B0BE /* DodecahedronMesh.cpp in Sources */,
+				AA2C650A2910D5CD0093B0BE /* ConeMesh.cpp in Sources */,
+				AA2C651F2910D5CD0093B0BE /* RoundedRectangleShape.cpp in Sources */,
+				AA2C65132910D5CD0093B0BE /* SphereMesh.cpp in Sources */,
+				AA2C651D2910D5CD0093B0BE /* GridShape.cpp in Sources */,
+				AA2C65072910D5CD0093B0BE /* EmptyPath.cpp in Sources */,
+				AA2C65272910D5CD0093B0BE /* DiskMesh.cpp in Sources */,
+				AA2C650B2910D5CD0093B0BE /* SpringMesh.cpp in Sources */,
+				AA2C65092910D5CD0093B0BE /* ConvexPolygonMesh.cpp in Sources */,
+				AA2C650F2910D5CD0093B0BE /* IcoSphereMesh.cpp in Sources */,
+				AA2C65212910D5CD0093B0BE /* ParametricPath.cpp in Sources */,
+				AA2C650E2910D5CD0093B0BE /* PlaneMesh.cpp in Sources */,
+				AA2C650C2910D5CD0093B0BE /* TorusMesh.cpp in Sources */,
+				AA2C65242910D5CD0093B0BE /* ParametricMesh.cpp in Sources */,
+				AA2C65022910D5CD0093B0BE /* LineShape.cpp in Sources */,
+				AA2C650D2910D5CD0093B0BE /* EmptyShape.cpp in Sources */,
+				AA2C65222910D5CD0093B0BE /* SphericalConeMesh.cpp in Sources */,
+				AA2C65152910D5CD0093B0BE /* CircleShape.cpp in Sources */,
+				AA2C65282910D5CD0093B0BE /* RoundedBoxMesh.cpp in Sources */,
+				AA2C65202910D5CD0093B0BE /* EmptyMesh.cpp in Sources */,
+				AA2C65252910D5CD0093B0BE /* KnotPath.cpp in Sources */,
+				AA2C651B2910D5CD0093B0BE /* HelixPath.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,7 +870,7 @@
 					Support/Corona/Simulator/Plugins/plugin/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "/Applications/Native/Corona/shared/include/Corona /Applications/Native/Corona/shared/include/lua ${SRCROOT}/../../ByteReader ${SRCROOT}/../../solar2d_native_utils";
+				USER_HEADER_SEARCH_PATHS = "/Applications/Native/Corona/shared/include/Corona /Applications/Native/Corona/shared/include/lua ${SRCROOT}/../../ByteReader ${SRCROOT}/../../solar2d_native_utils ${SRCROOT}/../shared/include";
 			};
 			name = Debug;
 		};
@@ -308,7 +892,7 @@
 				);
 				"LIBRARY_SEARCH_PATHS[arch=*]" = "\"~/Library/Application Support/Corona/Simulator/Plugins/plugin/lib\"";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "/Applications/Native/Corona/shared/include/Corona /Applications/Native/Corona/shared/include/lua ${SRCROOT}/../../ByteReader ${SRCROOT}/../../solar2d_native_utils";
+				USER_HEADER_SEARCH_PATHS = "/Applications/Native/Corona/shared/include/Corona /Applications/Native/Corona/shared/include/lua ${SRCROOT}/../../ByteReader ${SRCROOT}/../../solar2d_native_utils ${SRCROOT}/../shared/include";
 			};
 			name = Release;
 		};
@@ -324,7 +908,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "wfc" */ = {
+		A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "generator" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A491863E1641DDB800A39286 /* Debug */,

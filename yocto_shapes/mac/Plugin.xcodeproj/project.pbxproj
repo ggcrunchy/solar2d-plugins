@@ -7,8 +7,38 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AA87A281279B6AB900E57026 /* wfc.h in Headers */ = {isa = PBXBuildFile; fileRef = AA87A27F279B6AB900E57026 /* wfc.h */; };
-		AA87A282279B6AB900E57026 /* plugin.wfc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA87A280279B6AB900E57026 /* plugin.wfc.cpp */; };
+		AA2C65862910DD150093B0BE /* digit_comparison.h in Headers */ = {isa = PBXBuildFile; fileRef = AA2C657D2910DD150093B0BE /* digit_comparison.h */; };
+		AA2C65872910DD150093B0BE /* parse_number.h in Headers */ = {isa = PBXBuildFile; fileRef = AA2C657E2910DD150093B0BE /* parse_number.h */; };
+		AA2C65882910DD150093B0BE /* ascii_number.h in Headers */ = {isa = PBXBuildFile; fileRef = AA2C657F2910DD150093B0BE /* ascii_number.h */; };
+		AA2C65892910DD150093B0BE /* simple_decimal_conversion.h in Headers */ = {isa = PBXBuildFile; fileRef = AA2C65802910DD150093B0BE /* simple_decimal_conversion.h */; };
+		AA2C658A2910DD150093B0BE /* fast_float.h in Headers */ = {isa = PBXBuildFile; fileRef = AA2C65812910DD150093B0BE /* fast_float.h */; };
+		AA2C658B2910DD150093B0BE /* fast_table.h in Headers */ = {isa = PBXBuildFile; fileRef = AA2C65822910DD150093B0BE /* fast_table.h */; };
+		AA2C658C2910DD150093B0BE /* float_common.h in Headers */ = {isa = PBXBuildFile; fileRef = AA2C65832910DD150093B0BE /* float_common.h */; };
+		AA2C658D2910DD150093B0BE /* decimal_to_binary.h in Headers */ = {isa = PBXBuildFile; fileRef = AA2C65842910DD150093B0BE /* decimal_to_binary.h */; };
+		AA2C658E2910DD150093B0BE /* bigint.h in Headers */ = {isa = PBXBuildFile; fileRef = AA2C65852910DD150093B0BE /* bigint.h */; };
+		AA2C659C2910DD6B0093B0BE /* yocto_noise.h in Headers */ = {isa = PBXBuildFile; fileRef = AA2C65912910DD6B0093B0BE /* yocto_noise.h */; };
+		AA2C659D2910DD6B0093B0BE /* yocto_sampling.h in Headers */ = {isa = PBXBuildFile; fileRef = AA2C65922910DD6B0093B0BE /* yocto_sampling.h */; };
+		AA2C659E2910DD6B0093B0BE /* yocto_shape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C65932910DD6B0093B0BE /* yocto_shape.cpp */; };
+		AA2C659F2910DD6B0093B0BE /* yocto_geometry.h in Headers */ = {isa = PBXBuildFile; fileRef = AA2C65942910DD6B0093B0BE /* yocto_geometry.h */; };
+		AA2C65A02910DD6B0093B0BE /* yocto_cli.h in Headers */ = {isa = PBXBuildFile; fileRef = AA2C65952910DD6B0093B0BE /* yocto_cli.h */; };
+		AA2C65A12910DD6B0093B0BE /* yocto_math.h in Headers */ = {isa = PBXBuildFile; fileRef = AA2C65962910DD6B0093B0BE /* yocto_math.h */; };
+		AA2C65A22910DD6B0093B0BE /* yocto_shape.h in Headers */ = {isa = PBXBuildFile; fileRef = AA2C65972910DD6B0093B0BE /* yocto_shape.h */; };
+		AA2C65A32910DD6B0093B0BE /* yocto_geometryt.h in Headers */ = {isa = PBXBuildFile; fileRef = AA2C65982910DD6B0093B0BE /* yocto_geometryt.h */; };
+		AA2C65A42910DD6B0093B0BE /* yocto_matht.h in Headers */ = {isa = PBXBuildFile; fileRef = AA2C65992910DD6B0093B0BE /* yocto_matht.h */; };
+		AA2C65B32910DD800093B0BE /* vector4f.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C65A52910DD800093B0BE /* vector4f.cpp */; };
+		AA2C65B42910DD800093B0BE /* vector3f.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C65A62910DD800093B0BE /* vector3f.cpp */; };
+		AA2C65B52910DD800093B0BE /* vector2i.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C65A72910DD800093B0BE /* vector2i.cpp */; };
+		AA2C65B62910DD800093B0BE /* shape_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C65A82910DD800093B0BE /* shape_data.cpp */; };
+		AA2C65B72910DD800093B0BE /* common.h in Headers */ = {isa = PBXBuildFile; fileRef = AA2C65A92910DD800093B0BE /* common.h */; };
+		AA2C65B82910DD800093B0BE /* specializations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C65AA2910DD800093B0BE /* specializations.cpp */; };
+		AA2C65B92910DD800093B0BE /* vector1i.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C65AB2910DD800093B0BE /* vector1i.cpp */; };
+		AA2C65BA2910DD800093B0BE /* plugin.yoctoshapes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C65AC2910DD800093B0BE /* plugin.yoctoshapes.cpp */; };
+		AA2C65BB2910DD800093B0BE /* vector4i.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C65AD2910DD800093B0BE /* vector4i.cpp */; };
+		AA2C65BC2910DD800093B0BE /* yocto.h in Headers */ = {isa = PBXBuildFile; fileRef = AA2C65AE2910DD800093B0BE /* yocto.h */; };
+		AA2C65BD2910DD800093B0BE /* vector3i.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C65AF2910DD800093B0BE /* vector3i.cpp */; };
+		AA2C65BE2910DD800093B0BE /* vector1f.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C65B02910DD800093B0BE /* vector1f.cpp */; };
+		AA2C65BF2910DD800093B0BE /* fvshape_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C65B12910DD800093B0BE /* fvshape_data.cpp */; };
+		AA2C65C02910DD800093B0BE /* vector2f.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C65B22910DD800093B0BE /* vector2f.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -23,14 +53,44 @@
 			outputFiles = (
 				"$TARGET_TEMP_DIR/$(INPUT_FILE_BASE).c",
 			);
-			script = "CORONA_DIR=$SRCROOT/CoronaEnterprise/Corona\nCORONA_MAC_BIN_DIR=$CORONA_DIR/mac/bin\n\nif [ -e \"$CORONA_MAC_BIN_DIR/lua\" ]; then\n    LUA_DIR=$CORONA_MAC_BIN_DIR/lua\nelse\n    echo \"Could not find proper 32-bit lua build in: $CORONA_MAC_BIN_DIR/lua\"\n    exit 1\nfi\n\necho $CORONA_MAC_BIN_DIR/lua2c.sh $INPUT_FILE_PATH $TARGET_TEMP_DIR $CONFIGURATION\n\"$CORONA_MAC_BIN_DIR/lua2c.sh\" \"$INPUT_FILE_PATH\" \"$TARGET_TEMP_DIR\" \"$CONFIGURATION\" \"$CORONA_MAC_BIN_DIR\"";
+			script = "CORONA_DIR=$SRCROOT/CoronaEnterprise/Corona\nCORONA_MAC_BIN_DIR=$CORONA_DIR/mac/bin\n\nif [ -e \"$CORONA_MAC_BIN_DIR/lua\" ]; then\n    LUA_DIR=$CORONA_MAC_BIN_DIR/lua\nelse\n    echo \"Could not find proper 32-bit lua build in: $CORONA_MAC_BIN_DIR/lua\"\n    exit 1\nfi\n\necho $CORONA_MAC_BIN_DIR/lua2c.sh $INPUT_FILE_PATH $TARGET_TEMP_DIR $CONFIGURATION\n\"$CORONA_MAC_BIN_DIR/lua2c.sh\" \"$INPUT_FILE_PATH\" \"$TARGET_TEMP_DIR\" \"$CONFIGURATION\" \"$CORONA_MAC_BIN_DIR\"\n";
 		};
 /* End PBXBuildRule section */
 
 /* Begin PBXFileReference section */
-		A49186401641DDB800A39286 /* wfc.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = wfc.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
-		AA87A27F279B6AB900E57026 /* wfc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wfc.h; path = ../shared/wfc.h; sourceTree = "<group>"; };
-		AA87A280279B6AB900E57026 /* plugin.wfc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = plugin.wfc.cpp; path = ../shared/plugin.wfc.cpp; sourceTree = "<group>"; };
+		A49186401641DDB800A39286 /* yoctoshapes.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = yoctoshapes.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA2C657D2910DD150093B0BE /* digit_comparison.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = digit_comparison.h; path = ../shared/fast_float/include/fast_float/digit_comparison.h; sourceTree = "<group>"; };
+		AA2C657E2910DD150093B0BE /* parse_number.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = parse_number.h; path = ../shared/fast_float/include/fast_float/parse_number.h; sourceTree = "<group>"; };
+		AA2C657F2910DD150093B0BE /* ascii_number.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ascii_number.h; path = ../shared/fast_float/include/fast_float/ascii_number.h; sourceTree = "<group>"; };
+		AA2C65802910DD150093B0BE /* simple_decimal_conversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = simple_decimal_conversion.h; path = ../shared/fast_float/include/fast_float/simple_decimal_conversion.h; sourceTree = "<group>"; };
+		AA2C65812910DD150093B0BE /* fast_float.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fast_float.h; path = ../shared/fast_float/include/fast_float/fast_float.h; sourceTree = "<group>"; };
+		AA2C65822910DD150093B0BE /* fast_table.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fast_table.h; path = ../shared/fast_float/include/fast_float/fast_table.h; sourceTree = "<group>"; };
+		AA2C65832910DD150093B0BE /* float_common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = float_common.h; path = ../shared/fast_float/include/fast_float/float_common.h; sourceTree = "<group>"; };
+		AA2C65842910DD150093B0BE /* decimal_to_binary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = decimal_to_binary.h; path = ../shared/fast_float/include/fast_float/decimal_to_binary.h; sourceTree = "<group>"; };
+		AA2C65852910DD150093B0BE /* bigint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bigint.h; path = ../shared/fast_float/include/fast_float/bigint.h; sourceTree = "<group>"; };
+		AA2C65912910DD6B0093B0BE /* yocto_noise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = yocto_noise.h; path = ../shared/yocto/yocto_noise.h; sourceTree = "<group>"; };
+		AA2C65922910DD6B0093B0BE /* yocto_sampling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = yocto_sampling.h; path = ../shared/yocto/yocto_sampling.h; sourceTree = "<group>"; };
+		AA2C65932910DD6B0093B0BE /* yocto_shape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = yocto_shape.cpp; path = ../shared/yocto/yocto_shape.cpp; sourceTree = "<group>"; };
+		AA2C65942910DD6B0093B0BE /* yocto_geometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = yocto_geometry.h; path = ../shared/yocto/yocto_geometry.h; sourceTree = "<group>"; };
+		AA2C65952910DD6B0093B0BE /* yocto_cli.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = yocto_cli.h; path = ../shared/yocto/yocto_cli.h; sourceTree = "<group>"; };
+		AA2C65962910DD6B0093B0BE /* yocto_math.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = yocto_math.h; path = ../shared/yocto/yocto_math.h; sourceTree = "<group>"; };
+		AA2C65972910DD6B0093B0BE /* yocto_shape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = yocto_shape.h; path = ../shared/yocto/yocto_shape.h; sourceTree = "<group>"; };
+		AA2C65982910DD6B0093B0BE /* yocto_geometryt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = yocto_geometryt.h; path = ../shared/yocto/yocto_geometryt.h; sourceTree = "<group>"; };
+		AA2C65992910DD6B0093B0BE /* yocto_matht.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = yocto_matht.h; path = ../shared/yocto/yocto_matht.h; sourceTree = "<group>"; };
+		AA2C65A52910DD800093B0BE /* vector4f.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = vector4f.cpp; path = ../shared/vector4f.cpp; sourceTree = "<group>"; };
+		AA2C65A62910DD800093B0BE /* vector3f.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = vector3f.cpp; path = ../shared/vector3f.cpp; sourceTree = "<group>"; };
+		AA2C65A72910DD800093B0BE /* vector2i.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = vector2i.cpp; path = ../shared/vector2i.cpp; sourceTree = "<group>"; };
+		AA2C65A82910DD800093B0BE /* shape_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = shape_data.cpp; path = ../shared/shape_data.cpp; sourceTree = "<group>"; };
+		AA2C65A92910DD800093B0BE /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = common.h; path = ../shared/common.h; sourceTree = "<group>"; };
+		AA2C65AA2910DD800093B0BE /* specializations.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = specializations.cpp; path = ../shared/specializations.cpp; sourceTree = "<group>"; };
+		AA2C65AB2910DD800093B0BE /* vector1i.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = vector1i.cpp; path = ../shared/vector1i.cpp; sourceTree = "<group>"; };
+		AA2C65AC2910DD800093B0BE /* plugin.yoctoshapes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = plugin.yoctoshapes.cpp; path = ../shared/plugin.yoctoshapes.cpp; sourceTree = "<group>"; };
+		AA2C65AD2910DD800093B0BE /* vector4i.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = vector4i.cpp; path = ../shared/vector4i.cpp; sourceTree = "<group>"; };
+		AA2C65AE2910DD800093B0BE /* yocto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = yocto.h; path = ../shared/yocto.h; sourceTree = "<group>"; };
+		AA2C65AF2910DD800093B0BE /* vector3i.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = vector3i.cpp; path = ../shared/vector3i.cpp; sourceTree = "<group>"; };
+		AA2C65B02910DD800093B0BE /* vector1f.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = vector1f.cpp; path = ../shared/vector1f.cpp; sourceTree = "<group>"; };
+		AA2C65B12910DD800093B0BE /* fvshape_data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = fvshape_data.cpp; path = ../shared/fvshape_data.cpp; sourceTree = "<group>"; };
+		AA2C65B22910DD800093B0BE /* vector2f.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = vector2f.cpp; path = ../shared/vector2f.cpp; sourceTree = "<group>"; };
 		AA8C19D62878E8FF000D0253 /* ByteReader */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ByteReader; path = ../../ByteReader; sourceTree = "<group>"; };
 		AA8C19D72878E8FF000D0253 /* solar2d_native_utils */ = {isa = PBXFileReference; lastKnownFileType = folder; name = solar2d_native_utils; path = ../../solar2d_native_utils; sourceTree = "<group>"; };
 		CE353A2D1D690309000D2E95 /* libvlc.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libvlc.dylib; path = "../../../../Library/Application Support/Corona/Simulator/Plugins/plugin/lib/libvlc.dylib"; sourceTree = "<group>"; };
@@ -51,10 +111,24 @@
 		A4151F3316879B8200B2B43A /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				AA2C657B2910DCF40093B0BE /* fast_float */,
+				AA2C657C2910DCFD0093B0BE /* yocto */,
+				AA2C65A92910DD800093B0BE /* common.h */,
+				AA2C65B12910DD800093B0BE /* fvshape_data.cpp */,
+				AA2C65AC2910DD800093B0BE /* plugin.yoctoshapes.cpp */,
+				AA2C65A82910DD800093B0BE /* shape_data.cpp */,
+				AA2C65AA2910DD800093B0BE /* specializations.cpp */,
+				AA2C65B02910DD800093B0BE /* vector1f.cpp */,
+				AA2C65AB2910DD800093B0BE /* vector1i.cpp */,
+				AA2C65B22910DD800093B0BE /* vector2f.cpp */,
+				AA2C65A72910DD800093B0BE /* vector2i.cpp */,
+				AA2C65A62910DD800093B0BE /* vector3f.cpp */,
+				AA2C65AF2910DD800093B0BE /* vector3i.cpp */,
+				AA2C65A52910DD800093B0BE /* vector4f.cpp */,
+				AA2C65AD2910DD800093B0BE /* vector4i.cpp */,
+				AA2C65AE2910DD800093B0BE /* yocto.h */,
 				AA8C19D62878E8FF000D0253 /* ByteReader */,
 				AA8C19D72878E8FF000D0253 /* solar2d_native_utils */,
-				AA87A280279B6AB900E57026 /* plugin.wfc.cpp */,
-				AA87A27F279B6AB900E57026 /* wfc.h */,
 			);
 			name = Shared;
 			sourceTree = "<group>";
@@ -71,7 +145,7 @@
 		A482DA8515F9B7E70084DC42 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A49186401641DDB800A39286 /* wfc.dylib */,
+				A49186401641DDB800A39286 /* yoctoshapes.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -85,6 +159,38 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		AA2C657B2910DCF40093B0BE /* fast_float */ = {
+			isa = PBXGroup;
+			children = (
+				AA2C657F2910DD150093B0BE /* ascii_number.h */,
+				AA2C65852910DD150093B0BE /* bigint.h */,
+				AA2C65842910DD150093B0BE /* decimal_to_binary.h */,
+				AA2C657D2910DD150093B0BE /* digit_comparison.h */,
+				AA2C65812910DD150093B0BE /* fast_float.h */,
+				AA2C65822910DD150093B0BE /* fast_table.h */,
+				AA2C65832910DD150093B0BE /* float_common.h */,
+				AA2C657E2910DD150093B0BE /* parse_number.h */,
+				AA2C65802910DD150093B0BE /* simple_decimal_conversion.h */,
+			);
+			name = fast_float;
+			sourceTree = "<group>";
+		};
+		AA2C657C2910DCFD0093B0BE /* yocto */ = {
+			isa = PBXGroup;
+			children = (
+				AA2C65952910DD6B0093B0BE /* yocto_cli.h */,
+				AA2C65942910DD6B0093B0BE /* yocto_geometry.h */,
+				AA2C65982910DD6B0093B0BE /* yocto_geometryt.h */,
+				AA2C65962910DD6B0093B0BE /* yocto_math.h */,
+				AA2C65992910DD6B0093B0BE /* yocto_matht.h */,
+				AA2C65912910DD6B0093B0BE /* yocto_noise.h */,
+				AA2C65922910DD6B0093B0BE /* yocto_sampling.h */,
+				AA2C65932910DD6B0093B0BE /* yocto_shape.cpp */,
+				AA2C65972910DD6B0093B0BE /* yocto_shape.h */,
+			);
+			name = yocto;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -92,16 +198,34 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA87A281279B6AB900E57026 /* wfc.h in Headers */,
+				AA2C658E2910DD150093B0BE /* bigint.h in Headers */,
+				AA2C65A22910DD6B0093B0BE /* yocto_shape.h in Headers */,
+				AA2C65A02910DD6B0093B0BE /* yocto_cli.h in Headers */,
+				AA2C658A2910DD150093B0BE /* fast_float.h in Headers */,
+				AA2C65882910DD150093B0BE /* ascii_number.h in Headers */,
+				AA2C65A42910DD6B0093B0BE /* yocto_matht.h in Headers */,
+				AA2C65BC2910DD800093B0BE /* yocto.h in Headers */,
+				AA2C659F2910DD6B0093B0BE /* yocto_geometry.h in Headers */,
+				AA2C65862910DD150093B0BE /* digit_comparison.h in Headers */,
+				AA2C659C2910DD6B0093B0BE /* yocto_noise.h in Headers */,
+				AA2C658B2910DD150093B0BE /* fast_table.h in Headers */,
+				AA2C65B72910DD800093B0BE /* common.h in Headers */,
+				AA2C65A12910DD6B0093B0BE /* yocto_math.h in Headers */,
+				AA2C65892910DD150093B0BE /* simple_decimal_conversion.h in Headers */,
+				AA2C658C2910DD150093B0BE /* float_common.h in Headers */,
+				AA2C658D2910DD150093B0BE /* decimal_to_binary.h in Headers */,
+				AA2C659D2910DD6B0093B0BE /* yocto_sampling.h in Headers */,
+				AA2C65872910DD150093B0BE /* parse_number.h in Headers */,
+				AA2C65A32910DD6B0093B0BE /* yocto_geometryt.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		A49186331641DDB800A39286 /* wfc */ = {
+		A49186331641DDB800A39286 /* yoctoshapes */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "wfc" */;
+			buildConfigurationList = A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "yoctoshapes" */;
 			buildPhases = (
 				A49186341641DDB800A39286 /* Sources */,
 				A49186381641DDB800A39286 /* Frameworks */,
@@ -113,9 +237,9 @@
 			);
 			dependencies = (
 			);
-			name = wfc;
+			name = yoctoshapes;
 			productName = ads;
-			productReference = A49186401641DDB800A39286 /* wfc.dylib */;
+			productReference = A49186401641DDB800A39286 /* yoctoshapes.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 /* End PBXNativeTarget section */
@@ -139,7 +263,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A49186331641DDB800A39286 /* wfc */,
+				A49186331641DDB800A39286 /* yoctoshapes */,
 			);
 		};
 /* End PBXProject section */
@@ -156,7 +280,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#\n# Checks exit value for error\n# \ncheckError() {\n    if [ $? -ne 0 ]\n    then\n        echo \"Exiting due to errors (above)\"\n        exit -1\n    fi\n}\n\nPLUGINS_DIR=~/Library/Application\\ Support/Corona/Simulator/Plugins/\n\n#mkdir -p $PLUGINS_DIR\ncheckError\n\n#cp -v $CONFIGURATION_BUILD_DIR/$FULL_PRODUCT_NAME $PLUGINS_DIR\ncheckError";
+			shellScript = "#\n# Checks exit value for error\n# \ncheckError() {\n    if [ $? -ne 0 ]\n    then\n        echo \"Exiting due to errors (above)\"\n        exit -1\n    fi\n}\n\nPLUGINS_DIR=~/Library/Application\\ Support/Corona/Simulator/Plugins/\n\n#mkdir -p $PLUGINS_DIR\ncheckError\n\n#cp -v $CONFIGURATION_BUILD_DIR/$FULL_PRODUCT_NAME $PLUGINS_DIR\ncheckError\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -166,7 +290,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA87A282279B6AB900E57026 /* plugin.wfc.cpp in Sources */,
+				AA2C65BF2910DD800093B0BE /* fvshape_data.cpp in Sources */,
+				AA2C65B32910DD800093B0BE /* vector4f.cpp in Sources */,
+				AA2C65B42910DD800093B0BE /* vector3f.cpp in Sources */,
+				AA2C65B92910DD800093B0BE /* vector1i.cpp in Sources */,
+				AA2C65BE2910DD800093B0BE /* vector1f.cpp in Sources */,
+				AA2C659E2910DD6B0093B0BE /* yocto_shape.cpp in Sources */,
+				AA2C65B82910DD800093B0BE /* specializations.cpp in Sources */,
+				AA2C65BD2910DD800093B0BE /* vector3i.cpp in Sources */,
+				AA2C65B52910DD800093B0BE /* vector2i.cpp in Sources */,
+				AA2C65B62910DD800093B0BE /* shape_data.cpp in Sources */,
+				AA2C65BA2910DD800093B0BE /* plugin.yoctoshapes.cpp in Sources */,
+				AA2C65C02910DD800093B0BE /* vector2f.cpp in Sources */,
+				AA2C65BB2910DD800093B0BE /* vector4i.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -273,6 +409,7 @@
 		A491863E1641DDB800A39286 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -286,13 +423,14 @@
 					Support/Corona/Simulator/Plugins/plugin/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "/Applications/Native/Corona/shared/include/Corona /Applications/Native/Corona/shared/include/lua ${SRCROOT}/../../ByteReader ${SRCROOT}/../../solar2d_native_utils";
+				USER_HEADER_SEARCH_PATHS = "/Applications/Native/Corona/shared/include/Corona /Applications/Native/Corona/shared/include/lua ${SRCROOT}/../../ByteReader ${SRCROOT}/../../solar2d_native_utils ${SRCROOT}/../shared/fast_float/include";
 			};
 			name = Debug;
 		};
 		A491863F1641DDB800A39286 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -308,7 +446,7 @@
 				);
 				"LIBRARY_SEARCH_PATHS[arch=*]" = "\"~/Library/Application Support/Corona/Simulator/Plugins/plugin/lib\"";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "/Applications/Native/Corona/shared/include/Corona /Applications/Native/Corona/shared/include/lua ${SRCROOT}/../../ByteReader ${SRCROOT}/../../solar2d_native_utils";
+				USER_HEADER_SEARCH_PATHS = "/Applications/Native/Corona/shared/include/Corona /Applications/Native/Corona/shared/include/lua ${SRCROOT}/../../ByteReader ${SRCROOT}/../../solar2d_native_utils ${SRCROOT}/../shared/fast_float/include";
 			};
 			name = Release;
 		};
@@ -324,7 +462,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "wfc" */ = {
+		A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "yoctoshapes" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A491863E1641DDB800A39286 /* Debug */,

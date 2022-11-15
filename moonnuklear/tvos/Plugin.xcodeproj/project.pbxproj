@@ -3,26 +3,29 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
-		A40A8FE61BD973A8001D2038 /* Corona_plugin_msquares.framework */ = {
+		A40A8FE61BD973A8001D2038 /* Corona_plugin_moonnuklear.framework */ = {
 			isa = PBXAggregateTarget;
-			buildConfigurationList = A40A8FE91BD973A8001D2038 /* Build configuration list for PBXAggregateTarget "Corona_plugin_msquares.framework" */;
+			buildConfigurationList = A40A8FE91BD973A8001D2038 /* Build configuration list for PBXAggregateTarget "Corona_plugin_moonnuklear.framework" */;
 			buildPhases = (
 				A40A8FEC1BD973B8001D2038 /* Build Universal Binary */,
 			);
 			dependencies = (
 				A40A8FEB1BD973B2001D2038 /* PBXTargetDependency */,
 			);
-			name = Corona_plugin_msquares.framework;
+			name = Corona_plugin_moonnuklear.framework;
 			productName = Corona_plugin_library.framework;
 		};
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		A49EC1AB1BD77C530093F529 /* CoronaCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A49EC1AA1BD77C530093F529 /* CoronaCards.framework */; };
+		AA2C681B2911D1090093B0BE /* nuklear.h in Headers */ = {isa = PBXBuildFile; fileRef = AA2C681A2911D1090093B0BE /* nuklear.h */; };
+		AA2C681E2911D1140093B0BE /* br_bytes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C681C2911D1140093B0BE /* br_bytes.cpp */; };
+		AA2C681F2911D1140093B0BE /* br_bytes.h in Headers */ = {isa = PBXBuildFile; fileRef = AA2C681D2911D1140093B0BE /* br_bytes.h */; };
+		AA2C68212911D4160093B0BE /* CoronaCards.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA2C68202911D4160093B0BE /* CoronaCards.xcframework */; };
 		CE0FB80520AF8D4F00B5DAED /* ByteReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0FB80320AF8D4F00B5DAED /* ByteReader.cpp */; };
 		CE0FB80620AF8D4F00B5DAED /* ByteReader.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0FB80420AF8D4F00B5DAED /* ByteReader.h */; };
 		CE0FB81720AF8D5D00B5DAED /* Memory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0FB80720AF8D5C00B5DAED /* Memory.cpp */; };
@@ -41,9 +44,7 @@
 		CE0FB82420AF8D5D00B5DAED /* Path.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0FB81420AF8D5D00B5DAED /* Path.h */; };
 		CE0FB82520AF8D5D00B5DAED /* Byte.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0FB81520AF8D5D00B5DAED /* Byte.h */; };
 		CE0FB82620AF8D5D00B5DAED /* Memory.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0FB81620AF8D5D00B5DAED /* Memory.h */; };
-		CE0FB82820AF8D6F00B5DAED /* plugin.msquares.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0FB82720AF8D6F00B5DAED /* plugin.msquares.cpp */; };
 		CE0FB82E20AF905000B5DAED /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE0FB82D20AF905000B5DAED /* Accelerate.framework */; };
-		CE70DF6F1D3D603000CF04B5 /* par_msquares.h in Headers */ = {isa = PBXBuildFile; fileRef = CE70DF5F1D3D603000CF04B5 /* par_msquares.h */; };
 		CEE59D902126B2000013C99C /* Namespace.h in Headers */ = {isa = PBXBuildFile; fileRef = CEE59D8F2126B2000013C99C /* Namespace.h */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +54,8 @@
 			compilerSpec = com.apple.compilers.proxy.script;
 			filePatterns = "*.lua";
 			fileType = pattern.proxy;
+			inputFiles = (
+			);
 			isEditable = 1;
 			outputFiles = (
 				"$(DERIVED_FILE_DIR)/$(INPUT_FILE_BASE).c",
@@ -72,9 +75,48 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		A49EC1861BD779560093F529 /* Corona_plugin_msquares.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Corona_plugin_msquares.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A49EC1861BD779560093F529 /* Corona_plugin_moonnuklear.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Corona_plugin_moonnuklear.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A49EC18B1BD779560093F529 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = Plugin/Info.plist; sourceTree = "<group>"; };
 		A49EC1AA1BD77C530093F529 /* CoronaCards.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoronaCards.framework; path = CoronaEnterprise/Corona/tvos/frameworks/CoronaCards.framework; sourceTree = "<group>"; };
+		AA2C67F72911D0F70093B0BE /* panel.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = panel.c; path = ../shared/src/panel.c; sourceTree = "<group>"; };
+		AA2C67F82911D0F70093B0BE /* udata.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = udata.c; path = ../shared/src/udata.c; sourceTree = "<group>"; };
+		AA2C67F92911D0F70093B0BE /* context.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = context.c; path = ../shared/src/context.c; sourceTree = "<group>"; };
+		AA2C67FA2911D0F70093B0BE /* edit.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = edit.c; path = ../shared/src/edit.c; sourceTree = "<group>"; };
+		AA2C67FB2911D0F70093B0BE /* cursor.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = cursor.c; path = ../shared/src/cursor.c; sourceTree = "<group>"; };
+		AA2C67FC2911D0F70093B0BE /* window.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = window.c; path = ../shared/src/window.c; sourceTree = "<group>"; };
+		AA2C67FD2911D0F70093B0BE /* atlas.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = atlas.c; path = ../shared/src/atlas.c; sourceTree = "<group>"; };
+		AA2C67FE2911D0F70093B0BE /* enums.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = enums.h; path = ../shared/src/enums.h; sourceTree = "<group>"; };
+		AA2C67FF2911D0F70093B0BE /* objects.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = objects.c; path = ../shared/src/objects.c; sourceTree = "<group>"; };
+		AA2C68002911D0F70093B0BE /* utils.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = utils.c; path = ../shared/src/utils.c; sourceTree = "<group>"; };
+		AA2C68012911D0F70093B0BE /* versions.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = versions.c; path = ../shared/src/versions.c; sourceTree = "<group>"; };
+		AA2C68022911D0F70093B0BE /* tree.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = tree.h; path = ../shared/src/tree.h; sourceTree = "<group>"; };
+		AA2C68032911D0F70093B0BE /* canvas.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = canvas.c; path = ../shared/src/canvas.c; sourceTree = "<group>"; };
+		AA2C68042911D0F70093B0BE /* moonnuklear.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = moonnuklear.h; path = ../shared/src/moonnuklear.h; sourceTree = "<group>"; };
+		AA2C68052911D0F70093B0BE /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = main.c; path = ../shared/src/main.c; sourceTree = "<group>"; };
+		AA2C68062911D0F70093B0BE /* compat-5.3.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = "compat-5.3.c"; path = "../shared/src/compat-5.3.c"; sourceTree = "<group>"; };
+		AA2C68072911D0F70093B0BE /* tracing.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = tracing.c; path = ../shared/src/tracing.c; sourceTree = "<group>"; };
+		AA2C68082911D0F70093B0BE /* debug.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = debug.h; path = ../shared/src/debug.h; sourceTree = "<group>"; };
+		AA2C68092911D0F70093B0BE /* style.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = style.c; path = ../shared/src/style.c; sourceTree = "<group>"; };
+		AA2C680A2911D0F70093B0BE /* enums.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = enums.c; path = ../shared/src/enums.c; sourceTree = "<group>"; };
+		AA2C680B2911D0F70093B0BE /* style.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = style.h; path = ../shared/src/style.h; sourceTree = "<group>"; };
+		AA2C680C2911D0F70093B0BE /* font.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = font.c; path = ../shared/src/font.c; sourceTree = "<group>"; };
+		AA2C680D2911D0F70093B0BE /* internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = internal.h; path = ../shared/src/internal.h; sourceTree = "<group>"; };
+		AA2C680E2911D0F70093B0BE /* image.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = image.c; path = ../shared/src/image.c; sourceTree = "<group>"; };
+		AA2C680F2911D0F70093B0BE /* layout.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = layout.c; path = ../shared/src/layout.c; sourceTree = "<group>"; };
+		AA2C68102911D0F70093B0BE /* buffer.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = buffer.c; path = ../shared/src/buffer.c; sourceTree = "<group>"; };
+		AA2C68112911D0F70093B0BE /* udata.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = udata.h; path = ../shared/src/udata.h; sourceTree = "<group>"; };
+		AA2C68122911D0F70093B0BE /* flags.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = flags.c; path = ../shared/src/flags.c; sourceTree = "<group>"; };
+		AA2C68132911D0F70093B0BE /* widgets.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = widgets.c; path = ../shared/src/widgets.c; sourceTree = "<group>"; };
+		AA2C68142911D0F70093B0BE /* objects.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = objects.h; path = ../shared/src/objects.h; sourceTree = "<group>"; };
+		AA2C68152911D0F70093B0BE /* nuklear.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = nuklear.c; path = ../shared/src/nuklear.c; sourceTree = "<group>"; };
+		AA2C68162911D0F70093B0BE /* input.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = input.c; path = ../shared/src/input.c; sourceTree = "<group>"; };
+		AA2C68172911D0F70093B0BE /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; name = Makefile; path = ../shared/src/Makefile; sourceTree = "<group>"; };
+		AA2C68182911D0F70093B0BE /* structs.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = structs.c; path = ../shared/src/structs.c; sourceTree = "<group>"; };
+		AA2C68192911D0F70093B0BE /* compat-5.3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "compat-5.3.h"; path = "../shared/src/compat-5.3.h"; sourceTree = "<group>"; };
+		AA2C681A2911D1090093B0BE /* nuklear.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = nuklear.h; path = ../shared/src/nuklear/nuklear.h; sourceTree = "<group>"; };
+		AA2C681C2911D1140093B0BE /* br_bytes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = br_bytes.cpp; path = ../shared/src/ByteReader/br_bytes.cpp; sourceTree = "<group>"; };
+		AA2C681D2911D1140093B0BE /* br_bytes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = br_bytes.h; path = ../shared/src/ByteReader/br_bytes.h; sourceTree = "<group>"; };
+		AA2C68202911D4160093B0BE /* CoronaCards.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CoronaCards.xcframework; path = "../../../../../../../Applications/Corona-3674/Native/Corona/tvos/frameworks/CoronaCards.xcframework"; sourceTree = "<group>"; };
 		CE0FB80320AF8D4F00B5DAED /* ByteReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ByteReader.cpp; path = ../../ByteReader/ByteReader.cpp; sourceTree = "<group>"; };
 		CE0FB80420AF8D4F00B5DAED /* ByteReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ByteReader.h; path = ../../ByteReader/ByteReader.h; sourceTree = "<group>"; };
 		CE0FB80720AF8D5C00B5DAED /* Memory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Memory.cpp; path = ../../solar2d_native_utils/utils/Memory.cpp; sourceTree = "<group>"; };
@@ -93,9 +135,7 @@
 		CE0FB81420AF8D5D00B5DAED /* Path.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Path.h; path = ../../solar2d_native_utils/utils/Path.h; sourceTree = "<group>"; };
 		CE0FB81520AF8D5D00B5DAED /* Byte.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Byte.h; path = ../../solar2d_native_utils/utils/Byte.h; sourceTree = "<group>"; };
 		CE0FB81620AF8D5D00B5DAED /* Memory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Memory.h; path = ../../solar2d_native_utils/utils/Memory.h; sourceTree = "<group>"; };
-		CE0FB82720AF8D6F00B5DAED /* plugin.msquares.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = plugin.msquares.cpp; path = ../shared/plugin.msquares.cpp; sourceTree = "<group>"; };
 		CE0FB82D20AF905000B5DAED /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
-		CE70DF5F1D3D603000CF04B5 /* par_msquares.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = par_msquares.h; path = ../shared/par_msquares.h; sourceTree = "<group>"; };
 		CEE59D8F2126B2000013C99C /* Namespace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Namespace.h; path = ../../solar2d_native_utils/utils/Namespace.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -104,8 +144,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA2C68212911D4160093B0BE /* CoronaCards.xcframework in Frameworks */,
 				CE0FB82E20AF905000B5DAED /* Accelerate.framework in Frameworks */,
-				A49EC1AB1BD77C530093F529 /* CoronaCards.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -115,10 +155,45 @@
 		A40A8FBE1BD96ED5001D2038 /* Plugin */ = {
 			isa = PBXGroup;
 			children = (
-				CE0FB82720AF8D6F00B5DAED /* plugin.msquares.cpp */,
+				AA2C67FD2911D0F70093B0BE /* atlas.c */,
+				AA2C68102911D0F70093B0BE /* buffer.c */,
+				AA2C68032911D0F70093B0BE /* canvas.c */,
+				AA2C68062911D0F70093B0BE /* compat-5.3.c */,
+				AA2C68192911D0F70093B0BE /* compat-5.3.h */,
+				AA2C67F92911D0F70093B0BE /* context.c */,
+				AA2C67FB2911D0F70093B0BE /* cursor.c */,
+				AA2C68082911D0F70093B0BE /* debug.h */,
+				AA2C67FA2911D0F70093B0BE /* edit.c */,
+				AA2C680A2911D0F70093B0BE /* enums.c */,
+				AA2C67FE2911D0F70093B0BE /* enums.h */,
+				AA2C68122911D0F70093B0BE /* flags.c */,
+				AA2C680C2911D0F70093B0BE /* font.c */,
+				AA2C680E2911D0F70093B0BE /* image.c */,
+				AA2C68162911D0F70093B0BE /* input.c */,
+				AA2C680D2911D0F70093B0BE /* internal.h */,
+				AA2C680F2911D0F70093B0BE /* layout.c */,
+				AA2C68052911D0F70093B0BE /* main.c */,
+				AA2C68172911D0F70093B0BE /* Makefile */,
+				AA2C68042911D0F70093B0BE /* moonnuklear.h */,
+				AA2C68152911D0F70093B0BE /* nuklear.c */,
+				AA2C67FF2911D0F70093B0BE /* objects.c */,
+				AA2C68142911D0F70093B0BE /* objects.h */,
+				AA2C67F72911D0F70093B0BE /* panel.c */,
+				AA2C68182911D0F70093B0BE /* structs.c */,
+				AA2C68092911D0F70093B0BE /* style.c */,
+				AA2C680B2911D0F70093B0BE /* style.h */,
+				AA2C68072911D0F70093B0BE /* tracing.c */,
+				AA2C68022911D0F70093B0BE /* tree.h */,
+				AA2C67F82911D0F70093B0BE /* udata.c */,
+				AA2C68112911D0F70093B0BE /* udata.h */,
+				AA2C68002911D0F70093B0BE /* utils.c */,
+				AA2C68012911D0F70093B0BE /* versions.c */,
+				AA2C68132911D0F70093B0BE /* widgets.c */,
+				AA2C67FC2911D0F70093B0BE /* window.c */,
+				AA2C67F62911D0B10093B0BE /* nuklear */,
+				AA2C67F52911D0AA0093B0BE /* ByteReader */,
 				CE0FB80220AF8D2800B5DAED /* solar2d_native_utils */,
 				CE0FB80120AF8D2000B5DAED /* ByteReader */,
-				CE70DF5F1D3D603000CF04B5 /* par_msquares.h */,
 				A49EC18B1BD779560093F529 /* Info.plist */,
 			);
 			name = Plugin;
@@ -136,7 +211,7 @@
 		A49EC1871BD779560093F529 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A49EC1861BD779560093F529 /* Corona_plugin_msquares.framework */,
+				A49EC1861BD779560093F529 /* Corona_plugin_moonnuklear.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -144,10 +219,28 @@
 		A49EC1AC1BD77C5A0093F529 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AA2C68202911D4160093B0BE /* CoronaCards.xcframework */,
 				CE0FB82D20AF905000B5DAED /* Accelerate.framework */,
 				A49EC1AA1BD77C530093F529 /* CoronaCards.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		AA2C67F52911D0AA0093B0BE /* ByteReader */ = {
+			isa = PBXGroup;
+			children = (
+				AA2C681C2911D1140093B0BE /* br_bytes.cpp */,
+				AA2C681D2911D1140093B0BE /* br_bytes.h */,
+			);
+			name = ByteReader;
+			sourceTree = "<group>";
+		};
+		AA2C67F62911D0B10093B0BE /* nuklear */ = {
+			isa = PBXGroup;
+			children = (
+				AA2C681A2911D1090093B0BE /* nuklear.h */,
+			);
+			name = nuklear;
 			sourceTree = "<group>";
 		};
 		CE0FB80120AF8D2000B5DAED /* ByteReader */ = {
@@ -193,14 +286,15 @@
 				CE0FB82520AF8D5D00B5DAED /* Byte.h in Headers */,
 				CE0FB82420AF8D5D00B5DAED /* Path.h in Headers */,
 				CE0FB81820AF8D5D00B5DAED /* Platform.h in Headers */,
-				CE70DF6F1D3D603000CF04B5 /* par_msquares.h in Headers */,
 				CE0FB82220AF8D5D00B5DAED /* Compat.h in Headers */,
 				CE0FB82120AF8D5D00B5DAED /* Blob.h in Headers */,
 				CEE59D902126B2000013C99C /* Namespace.h in Headers */,
 				CE0FB81D20AF8D5D00B5DAED /* LuaEx.h in Headers */,
 				CE0FB82020AF8D5D00B5DAED /* SIMD.h in Headers */,
 				CE0FB82620AF8D5D00B5DAED /* Memory.h in Headers */,
+				AA2C681B2911D1090093B0BE /* nuklear.h in Headers */,
 				CE0FB81B20AF8D5D00B5DAED /* Thread.h in Headers */,
+				AA2C681F2911D1140093B0BE /* br_bytes.h in Headers */,
 				CE0FB80620AF8D4F00B5DAED /* ByteReader.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -208,9 +302,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		A49EC1851BD779560093F529 /* Corona_plugin_msquares */ = {
+		A49EC1851BD779560093F529 /* Corona_plugin_moonnuklear */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A49EC18E1BD779560093F529 /* Build configuration list for PBXNativeTarget "Corona_plugin_msquares" */;
+			buildConfigurationList = A49EC18E1BD779560093F529 /* Build configuration list for PBXNativeTarget "Corona_plugin_moonnuklear" */;
 			buildPhases = (
 				A49EC1811BD779560093F529 /* Sources */,
 				A49EC1821BD779560093F529 /* Frameworks */,
@@ -222,9 +316,9 @@
 			);
 			dependencies = (
 			);
-			name = Corona_plugin_msquares;
+			name = Corona_plugin_moonnuklear;
 			productName = Corona_plugin_library;
-			productReference = A49EC1861BD779560093F529 /* Corona_plugin_msquares.framework */;
+			productReference = A49EC1861BD779560093F529 /* Corona_plugin_moonnuklear.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -249,6 +343,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = A49EC17C1BD779560093F529;
@@ -256,8 +351,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A49EC1851BD779560093F529 /* Corona_plugin_msquares */,
-				A40A8FE61BD973A8001D2038 /* Corona_plugin_msquares.framework */,
+				A49EC1851BD779560093F529 /* Corona_plugin_moonnuklear */,
+				A40A8FE61BD973A8001D2038 /* Corona_plugin_moonnuklear.framework */,
 			);
 		};
 /* End PBXProject section */
@@ -285,7 +380,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ ! -d \"$CORONA_ROOT\" ]\nthen\n\t# Assume symlink location\n\tCORONA_ROOT=$PROJECT_DIR/Native\nfi\n\nif [ ! -d \"$CORONA_ROOT\" ]\nthen\n    echo \"Could not find Native directory\"\n    exit -1\nfi\n\n# -------------------------------------------------------------------\n\n\"$CORONA_ROOT\"/Corona/xcode/universal-framework.sh \"appletv\"";
+			shellScript = "if [ ! -d \"$CORONA_ROOT\" ]\nthen\n\t# Assume symlink location\n\tCORONA_ROOT=/Applications/Native\nfi\n\nif [ ! -d \"$CORONA_ROOT\" ]\nthen\n    echo \"Could not find Native directory\"\n    exit -1\nfi\n\n# -------------------------------------------------------------------\n\n\"$CORONA_ROOT\"/Corona/xcode/universal-framework.sh \"appletv\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -297,11 +392,11 @@
 				CE0FB81E20AF8D5D00B5DAED /* Blob.cpp in Sources */,
 				CE0FB81720AF8D5D00B5DAED /* Memory.cpp in Sources */,
 				CE0FB81C20AF8D5D00B5DAED /* LuaEx.cpp in Sources */,
-				CE0FB82820AF8D6F00B5DAED /* plugin.msquares.cpp in Sources */,
 				CE0FB81F20AF8D5D00B5DAED /* Path.cpp in Sources */,
 				CE0FB80520AF8D4F00B5DAED /* ByteReader.cpp in Sources */,
 				CE0FB82320AF8D5D00B5DAED /* Byte.cpp in Sources */,
 				CE0FB81A20AF8D5D00B5DAED /* SIMD.cpp in Sources */,
+				AA2C681E2911D1140093B0BE /* br_bytes.cpp in Sources */,
 				CE0FB81920AF8D5D00B5DAED /* Thread.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -311,7 +406,7 @@
 /* Begin PBXTargetDependency section */
 		A40A8FEB1BD973B2001D2038 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = A49EC1851BD779560093F529 /* Corona_plugin_msquares */;
+			target = A49EC1851BD779560093F529 /* Corona_plugin_moonnuklear */;
 			targetProxy = A40A8FEA1BD973B2001D2038 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -446,7 +541,11 @@
 				);
 				INFOPLIST_FILE = Plugin/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.coronalabs.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -469,18 +568,29 @@
 				);
 				INFOPLIST_FILE = Plugin/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.coronalabs.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/CoronaEnterprise/Corona/tvos/frameworks/CoronaCards.framework/PrivateHeaders ${SRCROOT}/Native/Corona/shared/include/Corona ${SRCROOT}/Native/Corona/shared/include/lua ${SRCROOT}/../../ByteReader ${SRCROOT}/../../solar2d_native_utils ${SRCROOT}/../../math_libraries";
+				USER_HEADER_SEARCH_PATHS = (
+					/Applications/Native/Corona/shared/include/Corona,
+					/Applications/Native/Corona/shared/include/lua,
+					"${SRCROOT}/../../ByteReader",
+					"${SRCROOT}/../../solar2d_native_utils",
+					"${SRCROOT}/../../math_libraries",
+					"${SRCROOT}/../shared/src",
+				);
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A40A8FE91BD973A8001D2038 /* Build configuration list for PBXAggregateTarget "Corona_plugin_msquares.framework" */ = {
+		A40A8FE91BD973A8001D2038 /* Build configuration list for PBXAggregateTarget "Corona_plugin_moonnuklear.framework" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A40A8FE71BD973A8001D2038 /* Debug */,
@@ -498,7 +608,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A49EC18E1BD779560093F529 /* Build configuration list for PBXNativeTarget "Corona_plugin_msquares" */ = {
+		A49EC18E1BD779560093F529 /* Build configuration list for PBXNativeTarget "Corona_plugin_moonnuklear" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A49EC18F1BD779560093F529 /* Debug */,

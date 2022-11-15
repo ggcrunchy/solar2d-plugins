@@ -7,16 +7,16 @@
 	objects = {
 
 /* Begin PBXAggregateTarget section */
-		A40A8FE61BD973A8001D2038 /* Corona_plugin_wfc.framework */ = {
+		A40A8FE61BD973A8001D2038 /* Corona_plugin_parshapes.framework */ = {
 			isa = PBXAggregateTarget;
-			buildConfigurationList = A40A8FE91BD973A8001D2038 /* Build configuration list for PBXAggregateTarget "Corona_plugin_wfc.framework" */;
+			buildConfigurationList = A40A8FE91BD973A8001D2038 /* Build configuration list for PBXAggregateTarget "Corona_plugin_parshapes.framework" */;
 			buildPhases = (
 				A40A8FEC1BD973B8001D2038 /* Build Universal Binary */,
 			);
 			dependencies = (
 				A40A8FEB1BD973B2001D2038 /* PBXTargetDependency */,
 			);
-			name = Corona_plugin_wfc.framework;
+			name = Corona_plugin_parshapes.framework;
 			productName = Corona_plugin_library.framework;
 		};
 /* End PBXAggregateTarget section */
@@ -72,12 +72,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		A49EC1861BD779560093F529 /* Corona_plugin_wfc.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Corona_plugin_wfc.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A49EC1861BD779560093F529 /* Corona_plugin_parshapes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Corona_plugin_parshapes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A49EC18B1BD779560093F529 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = Plugin/Info.plist; sourceTree = "<group>"; };
 		A49EC1AA1BD77C530093F529 /* CoronaCards.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoronaCards.framework; path = CoronaEnterprise/Corona/tvos/frameworks/CoronaCards.framework; sourceTree = "<group>"; };
+		AA2C682A2911DA530093B0BE /* par_shapes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = par_shapes.h; path = ../shared/par_shapes.h; sourceTree = "<group>"; };
+		AA2C682B2911DA530093B0BE /* par.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = par.cpp; path = ../shared/par.cpp; sourceTree = "<group>"; };
 		AA8C19E2287A3B3A000D0253 /* CoronaCards.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CoronaCards.xcframework; path = "../../../../../../../Applications/Corona-3674/Native/Corona/tvos/frameworks/CoronaCards.xcframework"; sourceTree = "<group>"; };
-		AA8C1A1B287A4D2F000D0253 /* plugin.wfc.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = plugin.wfc.cpp; path = ../shared/plugin.wfc.cpp; sourceTree = "<group>"; };
-		AA8C1A1C287A4D2F000D0253 /* wfc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = wfc.h; path = ../shared/wfc.h; sourceTree = "<group>"; };
 		CE0FB80320AF8D4F00B5DAED /* ByteReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ByteReader.cpp; path = ../../ByteReader/ByteReader.cpp; sourceTree = "<group>"; };
 		CE0FB80420AF8D4F00B5DAED /* ByteReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ByteReader.h; path = ../../ByteReader/ByteReader.h; sourceTree = "<group>"; };
 		CE0FB80720AF8D5C00B5DAED /* Memory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Memory.cpp; path = ../../solar2d_native_utils/utils/Memory.cpp; sourceTree = "<group>"; };
@@ -116,8 +116,8 @@
 		A40A8FBE1BD96ED5001D2038 /* Plugin */ = {
 			isa = PBXGroup;
 			children = (
-				AA8C1A1B287A4D2F000D0253 /* plugin.wfc.cpp */,
-				AA8C1A1C287A4D2F000D0253 /* wfc.h */,
+				AA2C682A2911DA530093B0BE /* par_shapes.h */,
+				AA2C682B2911DA530093B0BE /* par.cpp */,
 				CE0FB80220AF8D2800B5DAED /* solar2d_native_utils */,
 				CE0FB80120AF8D2000B5DAED /* ByteReader */,
 				A49EC18B1BD779560093F529 /* Info.plist */,
@@ -137,7 +137,7 @@
 		A49EC1871BD779560093F529 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A49EC1861BD779560093F529 /* Corona_plugin_wfc.framework */,
+				A49EC1861BD779560093F529 /* Corona_plugin_parshapes.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -209,9 +209,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		A49EC1851BD779560093F529 /* Corona_plugin_wfc */ = {
+		A49EC1851BD779560093F529 /* Corona_plugin_parshapes */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A49EC18E1BD779560093F529 /* Build configuration list for PBXNativeTarget "Corona_plugin_wfc" */;
+			buildConfigurationList = A49EC18E1BD779560093F529 /* Build configuration list for PBXNativeTarget "Corona_plugin_parshapes" */;
 			buildPhases = (
 				A49EC1811BD779560093F529 /* Sources */,
 				A49EC1821BD779560093F529 /* Frameworks */,
@@ -223,9 +223,9 @@
 			);
 			dependencies = (
 			);
-			name = Corona_plugin_wfc;
+			name = Corona_plugin_parshapes;
 			productName = Corona_plugin_library;
-			productReference = A49EC1861BD779560093F529 /* Corona_plugin_wfc.framework */;
+			productReference = A49EC1861BD779560093F529 /* Corona_plugin_parshapes.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -258,8 +258,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A49EC1851BD779560093F529 /* Corona_plugin_wfc */,
-				A40A8FE61BD973A8001D2038 /* Corona_plugin_wfc.framework */,
+				A49EC1851BD779560093F529 /* Corona_plugin_parshapes */,
+				A40A8FE61BD973A8001D2038 /* Corona_plugin_parshapes.framework */,
 			);
 		};
 /* End PBXProject section */
@@ -312,7 +312,7 @@
 /* Begin PBXTargetDependency section */
 		A40A8FEB1BD973B2001D2038 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = A49EC1851BD779560093F529 /* Corona_plugin_wfc */;
+			target = A49EC1851BD779560093F529 /* Corona_plugin_parshapes */;
 			targetProxy = A40A8FEA1BD973B2001D2038 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -495,7 +495,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A40A8FE91BD973A8001D2038 /* Build configuration list for PBXAggregateTarget "Corona_plugin_wfc.framework" */ = {
+		A40A8FE91BD973A8001D2038 /* Build configuration list for PBXAggregateTarget "Corona_plugin_parshapes.framework" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A40A8FE71BD973A8001D2038 /* Debug */,
@@ -513,7 +513,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A49EC18E1BD779560093F529 /* Build configuration list for PBXNativeTarget "Corona_plugin_wfc" */ = {
+		A49EC18E1BD779560093F529 /* Build configuration list for PBXNativeTarget "Corona_plugin_parshapes" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A49EC18F1BD779560093F529 /* Debug */,

@@ -5,10 +5,7 @@
 APP_PLATFORM := android-8
 #APP_ABI := armeabi 
 #APP_ABI := armeabi armeabi-v7a
-APP_ABI := armeabi-v7a
+APP_ABI := armeabi-v7a arm64-v8a x86 x86_64
 
 # Box2D needs this
-APP_STL := gnustl_static
-
-# Avoid the shared object
-APP_LIBCRYSTAX := static
+APP_STL := c++_static

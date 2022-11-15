@@ -35,6 +35,14 @@
 
 #define NV_PAIR(NAME) Add(#NAME, NAME)
 
+
+
+//
+//
+//
+
+void PushWeakValuedParentTable (lua_State * L);
+
 //
 //
 //
@@ -224,12 +232,6 @@ template<typename T, std::vector<T> & (*getter)(lua_State *, int)> int UpdateVec
 
 	return 0;
 }
-
-//
-//
-//
-
-void PushWeakValuedParentTable (lua_State * L);
 
 //
 //

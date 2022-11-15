@@ -292,7 +292,7 @@ int WrapMesh (lua_State * L, generator::AnyMesh && mesh)
 //
 //
 
-static generator::MeshVertex * GetMeshVertex (lua_State * L, int arg)
+generator::MeshVertex * GetMeshVertex (lua_State * L, int arg)
 {
 	generator::MeshVertex ** box = GetVertexBox(L, arg);
 
