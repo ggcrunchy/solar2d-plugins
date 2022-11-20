@@ -81,26 +81,8 @@ using cuckoo_map = cuckoohash_map<std::string, Entry, CityHasher<std::string>>;
 
 static cuckoo_map * sInts, * sNums, * sEvents, * sFuncs;
 
-static struct MapLifetime {
-	~MapLifetime (void)
-	{
-	#ifdef _WIN32
-		for (auto iter = sEvents->begin(); !iter.is_end(); ++iter)
-	#else
-		auto locks = sEvents->lock_table();
-
-		for (auto iter = locks.begin(); iter != locks.end(); ++iter)
-    #endif
-		{
-			DestroyEvent(iter->second.mEvent);
-		}
-	}
-} sMapLifetime;
-
 static void MapsDestructor (void)
 {
-	sMapLifetime.~MapLifetime();
-
 	sInts->clear();
 	sNums->clear();
 	sEvents->clear();
@@ -235,7 +217,23 @@ CORONA_EXTERN_C void RemoveNumber (const char * name)
 
 // Plugin support
 
-CORONA_EXTERN_C void InitExtensions (void)
+static int CleanupMap (cuckoo_map & map)
+{
+#ifdef _WIN32
+	for (auto iter = map.begin(); !iter.is_end(); ++iter)
+#else
+	auto locks = map.lock_table();
+
+	for (auto iter = locks.begin(); iter != locks.end(); ++iter)
+#endif
+	{
+		neosmart::DestroyEvent(iter->second.mEvent);
+	}
+
+	return 0;
+}
+
+CORONA_EXTERN_C void InitExtensions (lua_State * L)
 {
 	static cuckoo_map sIntMap, sNumMap, sEventMap, sFuncMap;
 
@@ -243,6 +241,15 @@ CORONA_EXTERN_C void InitExtensions (void)
 	sNums = &sNumMap;
 	sEvents = &sEventMap;
 	sFuncs = &sFuncMap;
+
+	lua_newuserdata(L, 0); // ..., dummy
+	lua_createtable(L, 0, 1); // ..., dummy, mt
+	lua_pushcfunction(L, [](lua_State *) {
+		return CleanupMap(sEventMap);
+	}); // ..., dummy, mt, GC
+	lua_setfield(L, -2, "__gc"); // ..., dummy, mt = { __gc = GC }
+	lua_setmetatable(L, -2); // ..., dummy; dummy.metatable = mt
+	lua_setfield(L, LUA_REGISTRYINDEX, "LUAPROC_EVENTS_CLEANUP"); // ...; registry[EVENTS_CLEANUP] = dummy
 }
 
 CORONA_EXTERN_C int AddFunction (const char * name, lua_CFunction func, void * payload)

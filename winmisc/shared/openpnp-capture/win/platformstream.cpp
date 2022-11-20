@@ -155,7 +155,7 @@ void PlatformStream::close()
     SafeRelease(&m_sampleGrabber);CoronaLog("C5.6");
     SafeRelease(&m_camControl);CoronaLog("C5.7");
     SafeRelease(&m_nullRenderer);CoronaLog("C5.8");
-    SafeRelease(&m_videoProcAmp);CoronaLog("C5.9");
+//    SafeRelease(&m_videoProcAmp);CoronaLog("C5.9");
     CoronaLog("C6");
     if (m_callbackHandler != 0)
     {

@@ -363,114 +363,6 @@ static int luaproc_Sleep (lua_State * L)
 	return 0;
 }
 
-static char TEST_STRING[4096];
-
-static int TEST_STRING_LENGTH;
-
-static int TEST_RANDOM[4096];
-
-static int TEST_RANDOM_RPOS, TEST_RANDOM_WPOS;
-
-static pthread_mutex_t TEST_MUTEX = PTHREAD_MUTEX_INITIALIZER;
-
-static int luaproc_TEST_GET_RANDOM_INTEGER (lua_State * L)
-{
-	int i;
-
-	pthread_mutex_lock(&TEST_MUTEX);
-
-	i = TEST_RANDOM[TEST_RANDOM_RPOS++];
-
-	pthread_mutex_unlock(&TEST_MUTEX);
-
-	lua_pushinteger(L, i);
-
-	return 1;
-}
-
-static int luaproc_TEST_PUSH_RANDOM_INTEGER (lua_State * L)
-{
-	int i = luaL_checkint(L, 1);
-
-	pthread_mutex_lock(&TEST_MUTEX);
-
-	TEST_RANDOM[TEST_RANDOM_WPOS++] = i;
-
-	pthread_mutex_unlock(&TEST_MUTEX);
-
-	return 0;
-}
-
-static int luaproc_TEST_APPEND_STRING (lua_State * L)
-{
-	size_t len = lua_objlen(L, 1);
-	int cur, to, add_zero;
-
-	pthread_mutex_lock(&TEST_MUTEX);
-
-	cur = TEST_STRING_LENGTH;
-	TEST_STRING_LENGTH += len;
-
-	if (TEST_STRING_LENGTH > 4096) TEST_STRING_LENGTH = 4096;
-
-	add_zero = TEST_STRING_LENGTH < 4096;
-	to = TEST_STRING_LENGTH;
-	
-	if (add_zero) ++TEST_STRING_LENGTH;
-
-	pthread_mutex_unlock(&TEST_MUTEX);
-
-	if (len && cur < 4096)
-	{
-		strncpy(&TEST_STRING[cur], lua_tostring(L, 1), (size_t)(to - cur));
-
-		if (add_zero) TEST_STRING[to] = '\0';
-	}
-
-	return 0;
-}
-
-static int luaproc_TEST_PRINT_FROM_TO (lua_State * L)
-{
-	int from = luaL_checkint(L, 1) - 1, n = luaL_checkint(L, 2), nstrs = 0;
-	char buf[4096];
-
-	if (from < 0) from = 0;
-	if (n > 4096) n = 4096;
-
-	lua_newtable(L);
-
-	while (from < n)
-	{
-		int i;
-
-		for (i = 0; (from + i) < 4096 && TEST_STRING[from + i]; ++i)
-		{
-			buf[i] = TEST_STRING[from + i];
-		}
-
-		++nstrs;
-
-		lua_pushlstring(L, buf, (size_t)i);
-		lua_rawseti(L, -2, nstrs);
-
-		from += i + 1;
-	}
-
-	return 1;
-}
-
-static int luaproc_TEST_STRING_LENGTH (lua_State * L)
-{
-	pthread_mutex_lock(&TEST_MUTEX);
-
-	lua_pushinteger(L, TEST_STRING_LENGTH);
-
-	pthread_mutex_unlock(&TEST_MUTEX);
-
-	return 1;
-}
-
 static int GetOp (lua_State * L)
 {
 	const char * names[] = { "assign", "add", "sub", "and", "or", "xor", NULL };
@@ -639,11 +531,6 @@ static const struct luaL_Reg luaproc_funcs[] = {
 	{ "send_allow_from_main", luaproc_send_allow_from_main },
 	{ "set_event", luaproc_SetEvent },
 	{ "sleep", luaproc_Sleep },
-	{ "TEST_APPEND_STRING", luaproc_TEST_APPEND_STRING },
-	{ "TEST_GET_RANDOM_INTEGER", luaproc_TEST_GET_RANDOM_INTEGER },
-	{ "TEST_PRINT_FROM_TO", luaproc_TEST_PRINT_FROM_TO },
-	{ "TEST_PUSH_RANDOM_INTEGER", luaproc_TEST_PUSH_RANDOM_INTEGER },
-	{ "TEST_STRING_LENGTH", luaproc_TEST_STRING_LENGTH },
 	{ "update_integer", luaproc_UpdateInteger },
 	{ "update_number", luaproc_UpdateNumber },
 	{ "wait_for_all_events", luaproc_WaitForAllEvents },
@@ -918,7 +805,6 @@ static int luaproc_join_workers(lua_State *L) {
 	sched_join_workers(L); // <- STEVE CHANGE
 	lua_close(chanls);
 // STEVE CHANGE
-    TEST_STRING_LENGTH = TEST_RANDOM_RPOS = TEST_RANDOM_WPOS = 0;
 	ExtDestructors();
 	ProcDestructors();
 	SchedDestructors();
@@ -2388,29 +2274,29 @@ static const char * GetLuaPath (lua_State * L, const char * name)
 {
 	const char * path = NULL;
 
-	lua_getfield(L, -1, name);	// ..., package, path
+	lua_getfield(L, -1, name); // ..., package, path
 
 	if (lua_isstring(L, -1))
 	{
 		path = lua_tostring(L, -1);
 
-		lua_pushlightuserdata(L, (void *)path);	// ..., package, path, pathstr_ptr
-		lua_pushboolean(L, 1);	// ..., package, path, pathstr_ptr, true
-		lua_settable(L, LUA_REGISTRYINDEX);	// ..., package, path; registry = { ..., [pathstr_ptr] = true }
+		lua_pushlightuserdata(L, (void *)path); // ..., package, path, pathstr_ptr
+		lua_pushboolean(L, 1); // ..., package, path, pathstr_ptr, true
+		lua_rawset(L, LUA_REGISTRYINDEX); // ..., package, path; registry = { ..., [pathstr_ptr] = true }
 	}
 
-	lua_pop(L, 1);	// ..., package
+	lua_pop(L, 1); // ..., package
 
 	return path;
 }
 
 static void SetLuaPath (lua_State * L, const char * name, const char * str)
 {
-	if (str) lua_pushstring(L, str);// ..., package, str
+	if (str) lua_pushstring(L, str); // ..., package, str
 
-	else lua_pushnil(L);// ..., package, nil
+	else lua_pushnil(L); // ..., package, nil
 
-	lua_setfield(L, -2, name);	// ..., package
+	lua_setfield(L, -2, name); // ..., package
 }
 
 #define PRELOAD(n) { #n, NULL }
@@ -2580,7 +2466,8 @@ static void luaproc_openlualibs(lua_State *L) {
 	lua_setmetatable(L, -2);
 	lua_pop(L, 1);
 // STEVE CHANGE
-	InitExtensions();
+
+	InitExtensions(L);
 	AddSystem(L);
 
 	lua_getfield(L, -1, "newchannel"); // luaproc, luaproc.newchannel
@@ -2620,7 +2507,7 @@ static void luaproc_openlualibs(lua_State *L) {
 
 		lua_pushlightuserdata(L, &sLoaders);// luaproc, package, package.preload, package.loaders, loaders_key
 
-		sLoaders = lua_newuserdata(L, sizeof(lua_CFunction) * n + 1);	// luaproc, package, package.preload, package.loaders, loaders_key, loaders_arr
+		sLoaders = lua_newuserdata(L, sizeof(lua_CFunction) * (n + 1));	// luaproc, package, package.preload, package.loaders, loaders_key, loaders_arr
 
 		lua_rawset(L, LUA_REGISTRYINDEX);	// luaproc, package, package.preload, package.loaders; registry = { ..., [loaders_key] = loaders_arr }
 

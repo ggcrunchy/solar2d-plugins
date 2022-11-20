@@ -50,7 +50,7 @@ CORONA_EXTERN_C int WaitForMultipleEventsX (const char * names[], uint64_t ms, i
 enum { eEventOK, eEventTimeout, eEventError };
 
 // Plugin support
-CORONA_EXTERN_C void InitExtensions (void);
+CORONA_EXTERN_C void InitExtensions (lua_State * L);
 CORONA_EXTERN_C int AddFunction (const char * name, lua_CFunction func, void * payload);
 CORONA_EXTERN_C int PopFunction (const char * name, lua_CFunction * func, void ** payload);
 
