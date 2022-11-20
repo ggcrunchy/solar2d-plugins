@@ -45,7 +45,7 @@ LOCAL_C_INCLUDES := \
 
 LOCAL_SRC_FILES := \
 	$(SRC_DIR)/par.cpp $(BR_DIR)/ByteReader.cpp \
-	$(SNU_SRC)/Blob.cpp $(SNU_SRC)/Byte.cpp $(SNU_SRC)/LuaEx.cpp
+	$(SNU_SRC)/Blob.cpp $(SNU_SRC)/Byte.cpp $(SNU_SRC)/LuaEx.cpp $(SNU_SRC)/Path.cpp
 
 LOCAL_CFLAGS := \
 	-DANDROID_NDK \
