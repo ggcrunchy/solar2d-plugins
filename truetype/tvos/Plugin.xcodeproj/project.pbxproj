@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -22,13 +22,13 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		AA2C6AF8292354020093B0BE /* CoronaCards.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA2C6AF7292354020093B0BE /* CoronaCards.xcframework */; };
 		CE0C2C0C1DA38B7500EF95D2 /* truetype.h in Headers */ = {isa = PBXBuildFile; fileRef = CE0C2C0A1DA38B7500EF95D2 /* truetype.h */; };
 		CE0C2C0D1DA38B7500EF95D2 /* plugin.truetype.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0C2C0B1DA38B7500EF95D2 /* plugin.truetype.cpp */; };
 		CE28BCC31D7B894200F30E15 /* font.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE28BCBD1D7B894200F30E15 /* font.cpp */; };
 		CE28BCC41D7B894200F30E15 /* packing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE28BCBE1D7B894200F30E15 /* packing.cpp */; };
 		CE28BCC61D7B894200F30E15 /* stb_rect_pack.h in Headers */ = {isa = PBXBuildFile; fileRef = CE28BCC01D7B894200F30E15 /* stb_rect_pack.h */; };
 		CE28BCC71D7B894200F30E15 /* stb_truetype.h in Headers */ = {isa = PBXBuildFile; fileRef = CE28BCC11D7B894200F30E15 /* stb_truetype.h */; };
-		CE39D59B20BDFAEA00061FB3 /* CoronaCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE39D59A20BDFAEA00061FB3 /* CoronaCards.framework */; };
 		CE8A2CBF1E10851700FCFAFD /* aligned_allocator.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8A2CBE1E10851700FCFAFD /* aligned_allocator.h */; };
 		CE8A2CD01E10852100FCFAFD /* Blob.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE8A2CC01E10852100FCFAFD /* Blob.cpp */; };
 		CE8A2CD11E10852100FCFAFD /* Blob.h in Headers */ = {isa = PBXBuildFile; fileRef = CE8A2CC11E10852100FCFAFD /* Blob.h */; };
@@ -57,6 +57,8 @@
 			compilerSpec = com.apple.compilers.proxy.script;
 			filePatterns = "*.lua";
 			fileType = pattern.proxy;
+			inputFiles = (
+			);
 			isEditable = 1;
 			outputFiles = (
 				"$(DERIVED_FILE_DIR)/$(INPUT_FILE_BASE).c",
@@ -79,6 +81,7 @@
 		A49EC1861BD779560093F529 /* Corona_plugin_truetype.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Corona_plugin_truetype.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A49EC18B1BD779560093F529 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = Plugin/Info.plist; sourceTree = "<group>"; };
 		A49EC1AA1BD77C530093F529 /* CoronaCards.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoronaCards.framework; path = CoronaEnterprise/Corona/tvos/frameworks/CoronaCards.framework; sourceTree = "<group>"; };
+		AA2C6AF7292354020093B0BE /* CoronaCards.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CoronaCards.xcframework; path = "../../../../../../../Applications/Corona-3674/Native/Corona/tvos/frameworks/CoronaCards.xcframework"; sourceTree = "<group>"; };
 		CE0C2C0A1DA38B7500EF95D2 /* truetype.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = truetype.h; path = ../shared/truetype.h; sourceTree = "<group>"; };
 		CE0C2C0B1DA38B7500EF95D2 /* plugin.truetype.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = plugin.truetype.cpp; path = ../shared/plugin.truetype.cpp; sourceTree = "<group>"; };
 		CE28BCBD1D7B894200F30E15 /* font.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = font.cpp; path = ../shared/font.cpp; sourceTree = "<group>"; };
@@ -113,7 +116,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE39D59B20BDFAEA00061FB3 /* CoronaCards.framework in Frameworks */,
+				AA2C6AF8292354020093B0BE /* CoronaCards.xcframework in Frameworks */,
 				CE8A2CE51E10857800FCFAFD /* Accelerate.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -157,6 +160,7 @@
 		A49EC1AC1BD77C5A0093F529 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AA2C6AF7292354020093B0BE /* CoronaCards.xcframework */,
 				CE39D59A20BDFAEA00061FB3 /* CoronaCards.framework */,
 				CE8A2CE41E10857800FCFAFD /* Accelerate.framework */,
 				A49EC1AA1BD77C530093F529 /* CoronaCards.framework */,
@@ -281,6 +285,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = A49EC17C1BD779560093F529;
@@ -317,7 +322,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ ! -d \"$CORONA_ROOT\" ]\nthen\n\t# Assume symlink location\n\tCORONA_ROOT=$PROJECT_DIR/Native\nfi\n\nif [ ! -d \"$CORONA_ROOT\" ]\nthen\n    echo \"Could not find Native directory\"\n    exit -1\nfi\n\n# -------------------------------------------------------------------\n\n\"$CORONA_ROOT\"/Corona/xcode/universal-framework.sh \"appletv\"";
+			shellScript = "if [ ! -d \"$CORONA_ROOT\" ]\nthen\n\t# Assume symlink location\n\tCORONA_ROOT=/Applications/Native\nfi\n\nif [ ! -d \"$CORONA_ROOT\" ]\nthen\n    echo \"Could not find Native directory\"\n    exit -1\nfi\n\n# -------------------------------------------------------------------\n\n\"$CORONA_ROOT\"/Corona/xcode/universal-framework.sh \"appletv\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -480,11 +485,22 @@
 				);
 				INFOPLIST_FILE = Plugin/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.coronalabs.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/Native/Corona/tvos/frameworks/CoronaCards.framework/PrivateHeaders ${SRCROOT}/../../ByteReader ${SRCROOT}/../../solar2d_native_utils ${SRCROOT}/../../math_libraries";
+				USER_HEADER_SEARCH_PATHS = (
+					"${PROJECT_DIR}/Native/Corona/tvos/frameworks/CoronaCards.framework/PrivateHeaders",
+					"${SRCROOT}/../../ByteReader",
+					"${SRCROOT}/../../solar2d_native_utils",
+					"${SRCROOT}/../../math_libraries",
+					/Applications/Native/Corona/shared/include/Corona,
+					/Applications/Native/Corona/shared/include/lua,
+				);
 			};
 			name = Debug;
 		};
@@ -503,11 +519,22 @@
 				);
 				INFOPLIST_FILE = Plugin/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.coronalabs.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/Native/Corona/tvos/frameworks/CoronaCards.framework/PrivateHeaders ${SRCROOT}/../../ByteReader ${SRCROOT}/../../solar2d_native_utils ${SRCROOT}/../../math_libraries";
+				USER_HEADER_SEARCH_PATHS = (
+					"${PROJECT_DIR}/Native/Corona/tvos/frameworks/CoronaCards.framework/PrivateHeaders",
+					"${SRCROOT}/../../ByteReader",
+					"${SRCROOT}/../../solar2d_native_utils",
+					"${SRCROOT}/../../math_libraries",
+					/Applications/Native/Corona/shared/include/Corona,
+					/Applications/Native/Corona/shared/include/lua,
+				);
 			};
 			name = Release;
 		};

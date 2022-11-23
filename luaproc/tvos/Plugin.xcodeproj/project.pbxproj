@@ -72,7 +72,6 @@
 /* Begin PBXFileReference section */
 		A49EC1861BD779560093F529 /* Corona_plugin_luaproc.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Corona_plugin_luaproc.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A49EC18B1BD779560093F529 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = Plugin/Info.plist; sourceTree = "<group>"; };
-		A49EC1AA1BD77C530093F529 /* CoronaCards.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoronaCards.framework; path = CoronaEnterprise/Corona/tvos/frameworks/CoronaCards.framework; sourceTree = "<group>"; };
 		AA8C19DC287A1E89000D0253 /* CoronaCards.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = CoronaCards.xcframework; path = "../../../../../../../Applications/Corona-3674/Native/Corona/tvos/frameworks/CoronaCards.xcframework"; sourceTree = "<group>"; };
 		CE51A1661CDC0D2C00F115D7 /* lpsched.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lpsched.h; path = ../shared/lpsched.h; sourceTree = "<group>"; };
 		CE51A1681CDC0D2C00F115D7 /* luaproc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = luaproc.h; path = ../shared/luaproc.h; sourceTree = "<group>"; };
@@ -141,7 +140,6 @@
 			isa = PBXGroup;
 			children = (
 				AA8C19DC287A1E89000D0253 /* CoronaCards.xcframework */,
-				A49EC1AA1BD77C530093F529 /* CoronaCards.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -278,7 +276,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ ! -d \"$CORONA_ROOT\" ]\nthen\n\t# Assume symlink location\n\tCORONA_ROOT=$PROJECT_DIR/Native\nfi\n\nif [ ! -d \"$CORONA_ROOT\" ]\nthen\n    echo \"Could not find Native directory\"\n    exit -1\nfi\n\n# -------------------------------------------------------------------\n\n\"$CORONA_ROOT\"/Corona/xcode/universal-framework.sh \"appletv\"\n";
+			shellScript = "if [ ! -d \"$CORONA_ROOT\" ]\nthen\n\t# Assume symlink location\n\tCORONA_ROOT=/Applications/Native\nfi\n\nif [ ! -d \"$CORONA_ROOT\" ]\nthen\n    echo \"Could not find Native directory\"\n    exit -1\nfi\n\n# -------------------------------------------------------------------\n\n\"$CORONA_ROOT\"/Corona/xcode/universal-framework.sh \"appletv\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -431,7 +429,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				USER_HEADER_SEARCH_PATHS = (
-					"${PROJECT_DIR}/Native/Corona/tvos/frameworks/CoronaCards.framework/PrivateHeaders",
+					/Applications/Native/Corona/shared/include/Corona,
+					/Applications/Native/Corona/shared/include/lua,
 					"${SRCROOT}/../..",
 					"${SRCROOT}/../../solar2d_native_utils/",
 				);
@@ -464,7 +463,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				USER_HEADER_SEARCH_PATHS = (
-					"${PROJECT_DIR}/Native/Corona/tvos/frameworks/CoronaCards.framework/PrivateHeaders",
+					/Applications/Native/Corona/shared/include/Corona,
+					/Applications/Native/Corona/shared/include/lua,
 					"${SRCROOT}/../..",
 					"${SRCROOT}/../../solar2d_native_utils/",
 				);
