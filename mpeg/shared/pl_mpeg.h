@@ -72,7 +72,7 @@ in an easy to use wrapper.
 Lower-level APIs for accessing the demuxer, video decoder and audio decoder, 
 as well as providing different data sources are also available.
 
-Interfaces are written in an object orientet style, meaning you create object 
+Interfaces are written in an object oriented style, meaning you create object 
 instances via various different constructor functions (plm_*create()),
 do some work on them and later dispose them via plm_*destroy().
 
@@ -807,7 +807,7 @@ plm_samples_t *plm_audio_decode(plm_audio_t *self);
 // -----------------------------------------------------------------------------
 // plm (high-level interface) implementation
 
-typedef struct plm_t {
+struct plm_t {
 	plm_demux_t *demux;
 	double time;
 	int has_ended;
@@ -831,7 +831,7 @@ typedef struct plm_t {
 
 	plm_audio_decode_callback audio_decode_callback;
 	void *audio_decode_callback_user_data;
-} plm_t;
+};
 
 int plm_init_decoders(plm_t *self);
 void plm_handle_end(plm_t *self);
@@ -1316,7 +1316,7 @@ enum plm_buffer_mode {
 	PLM_BUFFER_MODE_APPEND
 };
 
-typedef struct plm_buffer_t {
+struct plm_buffer_t {
 	size_t bit_index;
 	size_t capacity;
 	size_t length;
@@ -1330,7 +1330,7 @@ typedef struct plm_buffer_t {
 	void *load_callback_user_data;
 	uint8_t *bytes;
 	enum plm_buffer_mode mode;
-} plm_buffer_t;
+};
 
 typedef struct {
 	int16_t index;
@@ -1547,11 +1547,11 @@ int plm_buffer_has(plm_buffer_t *self, size_t count) {
 
 	if (self->load_callback) {
 		self->load_callback(self, self->load_callback_user_data);
-	}
-
-	if (((self->length << 3) - self->bit_index) >= count) {
-		return TRUE;
-	}
+		
+		if (((self->length << 3) - self->bit_index) >= count) {
+			return TRUE;
+		}
+	}	
 	
 	if (self->total_size != 0 && self->length == self->total_size) {
 		self->has_ended = TRUE;
@@ -1643,17 +1643,14 @@ int plm_buffer_has_start_code(plm_buffer_t *self, int code) {
 	return current;
 }
 
-int plm_buffer_no_start_code(plm_buffer_t *self) {
-	if (!plm_buffer_has(self, (5 << 3))) {
+int plm_buffer_peek_non_zero(plm_buffer_t *self, int bit_count) {
+	if (!plm_buffer_has(self, bit_count)) {
 		return FALSE;
 	}
 
-	size_t byte_index = ((self->bit_index + 7) >> 3);
-	return !(
-		self->bytes[byte_index] == 0x00 &&
-		self->bytes[byte_index + 1] == 0x00 &&
-		self->bytes[byte_index + 2] == 0x01
-	);
+	int val = plm_buffer_read(self, bit_count);
+	self->bit_index -= bit_count;
+	return val != 0;
 }
 
 int16_t plm_buffer_read_vlc(plm_buffer_t *self, const plm_vlc_t *table) {
@@ -1677,7 +1674,7 @@ static const int PLM_START_PACK = 0xBA;
 static const int PLM_START_END = 0xB9;
 static const int PLM_START_SYSTEM = 0xBB;
 
-typedef struct plm_demux_t {
+struct plm_demux_t {
 	plm_buffer_t *buffer;
 	int destroy_buffer_when_done;
 	double system_clock_ref;
@@ -1696,7 +1693,7 @@ typedef struct plm_demux_t {
 	int num_video_streams;
 	plm_packet_t current_packet;
 	plm_packet_t next_packet;
-} plm_demux_t;
+};
 
 
 void plm_demux_buffer_seek(plm_demux_t *self, size_t pos);
@@ -2547,7 +2544,7 @@ typedef struct {
 	int v;
 } plm_video_motion_t;
 
-typedef struct plm_video_t {
+struct plm_video_t {
 	double framerate;
 	double time;
 	int frames_decoded;
@@ -2598,7 +2595,7 @@ typedef struct plm_video_t {
 
 	int has_reference_frame;
 	int assume_no_b_frames;
-} plm_video_t;
+};
 
 static inline uint8_t plm_clamp(int n) {
 	if (n > 255) {
@@ -2618,9 +2615,9 @@ void plm_video_decode_macroblock(plm_video_t *self);
 void plm_video_decode_motion_vectors(plm_video_t *self);
 int plm_video_decode_motion_vector(plm_video_t *self, int r_size, int motion);
 void plm_video_predict_macroblock(plm_video_t *self);
-void plm_video_copy_macroblock(plm_video_t *self, int motion_h, int motion_v, plm_frame_t *d);
-void plm_video_interpolate_macroblock(plm_video_t *self, int motion_h, int motion_v, plm_frame_t *d);
-void plm_video_process_macroblock(plm_video_t *self, uint8_t *d, uint8_t *s, int mh, int mb, int bs, int interp);
+void plm_video_copy_macroblock(plm_video_t *self, plm_frame_t *s, int motion_h, int motion_v);
+void plm_video_interpolate_macroblock(plm_video_t *self, plm_frame_t *s, int motion_h, int motion_v);
+void plm_video_process_macroblock(plm_video_t *self, uint8_t *s, uint8_t *d, int mh, int mb, int bs, int interp);
 void plm_video_decode_block(plm_video_t *self, int block);
 void plm_video_idct(int *block);
 
@@ -2735,6 +2732,7 @@ plm_frame_t *plm_video_decode(plm_video_t *self) {
 		) {
 			return NULL;
 		}
+		plm_buffer_discard_read_bytes(self->buffer);
 		
 		plm_video_decode_picture(self);
 
@@ -2909,19 +2907,22 @@ void plm_video_decode_picture(plm_video_t *self) {
 	}
 
 
-	// Find the first slice; this skips extension and user data
+	// Find first slice start code; skip extension and user data
 	do {
 		self->start_code = plm_buffer_next_start_code(self->buffer);
-	} while (!PLM_START_IS_SLICE(self->start_code));
+	} while (
+		self->start_code == PLM_START_EXTENSION || 
+		self->start_code == PLM_START_USER_DATA
+	);
 
 	// Decode all slices
-	do {
+	while (PLM_START_IS_SLICE(self->start_code)) {
 		plm_video_decode_slice(self, self->start_code & 0x000000FF);
-		if (self->macroblock_address == self->mb_size - 1) {
+		if (self->macroblock_address >= self->mb_size - 2) {
 			break;
 		}
 		self->start_code = plm_buffer_next_start_code(self->buffer);
-	} while (PLM_START_IS_SLICE(self->start_code));
+	}
 
 	// If this is a reference picture rotate the prediction pointers
 	if (
@@ -2955,12 +2956,12 @@ void plm_video_decode_slice(plm_video_t *self, int slice) {
 		plm_video_decode_macroblock(self);
 	} while (
 		self->macroblock_address < self->mb_size - 1 &&
-		plm_buffer_no_start_code(self->buffer)
+		plm_buffer_peek_non_zero(self->buffer, 23)
 	);
 }
 
 void plm_video_decode_macroblock(plm_video_t *self) {
-	// Decode self->macroblock_address_increment
+	// Decode increment
 	int increment = 0;
 	int t = plm_buffer_read_vlc(self->buffer, PLM_VIDEO_MACROBLOCK_ADDRESS_INCREMENT);
 
@@ -2977,8 +2978,8 @@ void plm_video_decode_macroblock(plm_video_t *self) {
 
 	// Process any skipped macroblocks
 	if (self->slice_begin) {
-		// The first self->macroblock_address_increment of each slice is relative
-		// to beginning of the preverious row, not the preverious macroblock
+		// The first increment of each slice is relative to beginning of the
+		// previous row, not the previous macroblock
 		self->slice_begin = FALSE;
 		self->macroblock_address += increment;
 	}
@@ -3098,7 +3099,7 @@ int plm_video_decode_motion_vector(plm_video_t *self, int r_size, int motion) {
 	}
 
 	motion += d;
-	if (motion >(fscale << 4) - 1) {
+	if (motion > (fscale << 4) - 1) {
 		motion -= fscale << 5;
 	}
 	else if (motion < ((-fscale) << 4)) {
@@ -3127,29 +3128,29 @@ void plm_video_predict_macroblock(plm_video_t *self) {
 		}
 
 		if (self->motion_forward.is_set) {
-			plm_video_copy_macroblock(self, fw_h, fw_v, &self->frame_forward);
+			plm_video_copy_macroblock(self, &self->frame_forward, fw_h, fw_v);
 			if (self->motion_backward.is_set) {
-				plm_video_interpolate_macroblock(self, bw_h, bw_v, &self->frame_backward);
+				plm_video_interpolate_macroblock(self, &self->frame_backward, bw_h, bw_v);
 			}
 		}
 		else {
-			plm_video_copy_macroblock(self, bw_h, bw_v, &self->frame_backward);
+			plm_video_copy_macroblock(self, &self->frame_backward, bw_h, bw_v);
 		}
 	}
 	else {
-		plm_video_copy_macroblock(self, fw_h, fw_v, &self->frame_forward);
+		plm_video_copy_macroblock(self, &self->frame_forward, fw_h, fw_v);
 	}
 }
 
-void plm_video_copy_macroblock(plm_video_t *self, int motion_h, int motion_v, plm_frame_t *d) {
-	plm_frame_t *s = &self->frame_current;
+void plm_video_copy_macroblock(plm_video_t *self, plm_frame_t *s, int motion_h, int motion_v) {
+	plm_frame_t *d = &self->frame_current;
 	plm_video_process_macroblock(self, s->y.data, d->y.data, motion_h, motion_v, 16, FALSE);
 	plm_video_process_macroblock(self, s->cr.data, d->cr.data, motion_h / 2, motion_v / 2, 8, FALSE);
 	plm_video_process_macroblock(self, s->cb.data, d->cb.data, motion_h / 2, motion_v / 2, 8, FALSE);
 }
 
-void plm_video_interpolate_macroblock(plm_video_t *self, int motion_h, int motion_v, plm_frame_t *d) {
-	plm_frame_t *s = &self->frame_current;
+void plm_video_interpolate_macroblock(plm_video_t *self, plm_frame_t *s, int motion_h, int motion_v) {
+	plm_frame_t *d = &self->frame_current;
 	plm_video_process_macroblock(self, s->y.data, d->y.data, motion_h, motion_v, 16, TRUE);
 	plm_video_process_macroblock(self, s->cr.data, d->cr.data, motion_h / 2, motion_v / 2, 8, TRUE);
 	plm_video_process_macroblock(self, s->cb.data, d->cb.data, motion_h / 2, motion_v / 2, 8, TRUE);
@@ -3168,7 +3169,7 @@ void plm_video_interpolate_macroblock(plm_video_t *self, int motion_h, int motio
 	}} while(FALSE)
 
 void plm_video_process_macroblock(
-	plm_video_t *self, uint8_t *d, uint8_t *s,
+	plm_video_t *self, uint8_t *s, uint8_t *d,
 	int motion_h, int motion_v, int block_size, int interpolate
 ) {
 	int dw = self->mb_width * block_size;
@@ -3646,7 +3647,7 @@ static const uint8_t PLM_AUDIO_QUANT_LUT_STEP_3[3][32] = {
 };
 
 // Quantizer lookup, step 4: table row, allocation[] value -> quant table index
-static const uint8_t PLM_AUDIO_QUANT_LUT_STEP4[6][16] = {
+static const uint8_t PLM_AUDIO_QUANT_LUT_STEP_4[6][16] = {
 	{ 0, 1, 2, 17 },
 	{ 0, 1, 2,  3, 4, 5, 6, 17 },
 	{ 0, 1, 2,  3, 4, 5, 6,  7,  8,  9, 10, 11, 12, 13, 14, 17 },
@@ -3681,7 +3682,7 @@ static const plm_quantizer_spec_t PLM_AUDIO_QUANT_TAB[] = {
 	{ 65535, 0, 16 }   // 17
 };
 
-typedef struct plm_audio_t {
+struct plm_audio_t {
 	double time;
 	int samples_decoded;
 	int samplerate_index;
@@ -3706,14 +3707,14 @@ typedef struct plm_audio_t {
 	float D[1024];
 	float V[2][1024];
 	float U[32];
-} plm_audio_t;
+};
 
 int plm_audio_find_frame_sync(plm_audio_t *self);
 int plm_audio_decode_header(plm_audio_t *self);
 void plm_audio_decode_frame(plm_audio_t *self);
 const plm_quantizer_spec_t *plm_audio_read_allocation(plm_audio_t *self, int sb, int tab3);
 void plm_audio_read_samples(plm_audio_t *self, int ch, int sb, int part); 
-void plm_audio_matrix_transform(int s[32][3], int ss, float *d, int dp);
+void plm_audio_idct36(int s[32][3], int ss, float *d, int dp);
 
 plm_audio_t *plm_audio_create_with_buffer(plm_buffer_t *buffer, int destroy_when_done) {
 	plm_audio_t *self = (plm_audio_t *)malloc(sizeof(plm_audio_t));
@@ -3830,7 +3831,7 @@ int plm_audio_decode_header(plm_audio_t *self) {
 
 	// Attempt to resync if no syncword was found. This sucks balls. The MP2 
 	// stream contains a syncword just before every frame (11 bits set to 1).
-	// However, this syncword is not guaranteed to not occur elswhere in the
+	// However, this syncword is not guaranteed to not occur elsewhere in the
 	// stream. So, if we have to resync, we also have to check if the header 
 	// (samplerate, bitrate) differs from the one we had before. This all
 	// may still lead to garbage data being decoded :/
@@ -3891,7 +3892,7 @@ int plm_audio_decode_header(plm_audio_t *self) {
 	}
 
 	// Discard the last 4 bits of the header and the CRC value, if present
-	plm_buffer_skip(self->buffer, 4);
+	plm_buffer_skip(self->buffer, 4); // copyright(1), original(1), emphasis(2)
 	if (hasCRC) {
 		plm_buffer_skip(self->buffer, 16);
 	}
@@ -4011,7 +4012,7 @@ void plm_audio_decode_frame(plm_audio_t *self) {
 				self->v_pos = (self->v_pos - 64) & 1023;
 
 				for (int ch = 0; ch < 2; ch++) {
-					plm_audio_matrix_transform(self->sample[ch], p, self->V[ch], self->v_pos);
+					plm_audio_idct36(self->sample[ch], p, self->V[ch], self->v_pos);
 
 					// Build U, windowing, calculate output
 					memset(self->U, 0, sizeof(self->U));
@@ -4064,7 +4065,7 @@ void plm_audio_decode_frame(plm_audio_t *self) {
 
 const plm_quantizer_spec_t *plm_audio_read_allocation(plm_audio_t *self, int sb, int tab3) {
 	int tab4 = PLM_AUDIO_QUANT_LUT_STEP_3[tab3][sb];
-	int qtab = PLM_AUDIO_QUANT_LUT_STEP4[tab4 & 15][plm_buffer_read(self->buffer, tab4 >> 4)];
+	int qtab = PLM_AUDIO_QUANT_LUT_STEP_4[tab4 & 15][plm_buffer_read(self->buffer, tab4 >> 4)];
 	return qtab ? (&PLM_AUDIO_QUANT_TAB[qtab - 1]) : 0;
 }
 
@@ -4120,7 +4121,7 @@ void plm_audio_read_samples(plm_audio_t *self, int ch, int sb, int part) {
 	sample[2] = (val * (sf >> 12) + ((val * (sf & 4095) + 2048) >> 12)) >> 12;
 }
 
-void plm_audio_matrix_transform(int s[32][3], int ss, float *d, int dp) {
+void plm_audio_idct36(int s[32][3], int ss, float *d, int dp) {
 	float t01, t02, t03, t04, t05, t06, t07, t08, t09, t10, t11, t12,
 		t13, t14, t15, t16, t17, t18, t19, t20, t21, t22, t23, t24,
 		t25, t26, t27, t28, t29, t30, t31, t32, t33;

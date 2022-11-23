@@ -50,19 +50,25 @@ struct Encoder {
 
 struct Reader {
     std::vector<unsigned char> mRGB;
-	plm_video_t * mVideo{nullptr};
+	plm_t * mPLM{nullptr};
     plm_frame_t * mFrame{nullptr};
     bool mPaused{false};
 
+	static void VideoCallback (plm_t * plm, plm_frame_t * frame, void * user)
+	{
+		static_cast<Reader *>(user)->mFrame = frame;
+	}
+
     Reader (const char * filename)
     {
-        plm_buffer_t * buffer = plm_buffer_create_with_filename(filename);
+        mPLM = plm_create_with_filename(filename);
 
-        if (buffer)
+        if (mPLM)
         {
-			mVideo = plm_video_create_with_buffer(buffer, 1);
+			plm_set_audio_enabled(mPLM, 0);
+			plm_set_video_decode_callback(mPLM, VideoCallback, this);
 
-            int w = plm_video_get_width(mVideo), h = plm_video_get_height(mVideo);
+            int w = plm_get_width(mPLM), h = plm_get_height(mPLM);
 
             mRGB.resize(size_t(w * h * 3));
         }
@@ -70,43 +76,34 @@ struct Reader {
 
     ~Reader ()
     {
-        if (mVideo) plm_video_destroy(mVideo);
+        if (mPLM) plm_destroy(mPLM);
     }
 };
 
 static unsigned int MPEG_GetW (void * context)
 {
-    plm_video_t * video = static_cast<Reader *>(context)->mVideo;
-
-	return video ? plm_video_get_width(video) : 0U;
+    return plm_get_width(static_cast<Reader *>(context)->mPLM);
 }
 
 static unsigned int MPEG_GetH (void * context)
 {
-	plm_video_t * video = static_cast<Reader *>(context)->mVideo;
-
-	return video ? plm_video_get_height(video) : 0U;
+    return plm_get_height(static_cast<Reader *>(context)->mPLM);
 }
 
 static const void * MPEG_GetData (void * context)
 {
     Reader * reader = static_cast<Reader *>(context);
 
-	if (reader && reader->mVideo)
-    {
-        if (reader->mFrame)
-        {
-			int w = plm_video_get_width(reader->mVideo);
+	if (reader->mFrame)
+	{
+		int w = plm_get_width(reader->mPLM);
 
-            plm_frame_to_rgb(reader->mFrame, reader->mRGB.data(), w * 3);
+		plm_frame_to_rgb(reader->mFrame, reader->mRGB.data(), w * 3);
 
-            reader->mFrame = nullptr;
-        }
+		reader->mFrame = nullptr;
+	}
 
-        return reader->mRGB.data();
-    }
-
-    else return nullptr;
+	return reader->mRGB.data();
 }
 
 static void MPEG_Cleanup (void * context)
@@ -153,18 +150,7 @@ static int Step (lua_State * L)
 {
 	Reader * player = static_cast<Reader *>(CoronaExternalGetUserData(L, 1));
 
-	if (!player->mPaused)
-	{
-		lua_Number target_time = plm_video_get_time(player->mVideo) + lua_tonumber(L, 2);
-
-		while (plm_video_get_time(player->mVideo) < target_time)
-		{
-			player->mFrame = plm_video_decode(player->mVideo);
-
-			if (!player->mFrame) break;
-		}
-
-	}
+	if (!player->mPaused && !plm_has_ended(player->mPLM)) plm_decode(player->mPLM, lua_tonumber(L, 2));
 
 	return 0;
 }
@@ -234,7 +220,7 @@ CORONA_EXPORT int luaopen_plugin_mpeg (lua_State* L)
 
 		Reader * reader = new Reader{filename};
 
-		if (!reader->mVideo)
+		if (!reader->mPLM)
 		{
 			delete reader;
 
