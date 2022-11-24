@@ -285,7 +285,7 @@
 					Support/Corona/Simulator/Plugins/plugin/lib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/Native/Corona/shared/include/Corona ${SRCROOT}/Native/Corona/shared/include/lua ${SRCROOT}/Native/Corona/ios/include/Corona ../shared/include";
+				USER_HEADER_SEARCH_PATHS = "/Applications/Native/Corona/shared/include/Corona /Applications/Native/Corona/shared/include/lua ../shared/include";
 			};
 			name = Debug;
 		};
@@ -308,7 +308,7 @@
 				);
 				"LIBRARY_SEARCH_PATHS[arch=*]" = "\"~/Library/Application Support/Corona/Simulator/Plugins/plugin/lib\"";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/Native/Corona/shared/include/Corona ${SRCROOT}/Native/Corona/shared/include/lua ${SRCROOT}/Native/Corona/ios/include/Corona ../shared/include";
+				USER_HEADER_SEARCH_PATHS = "/Applications/Native/Corona/shared/include/Corona /Applications/Native/Corona/shared/include/lua ../shared/include";
 			};
 			name = Release;
 		};
