@@ -213,12 +213,7 @@ CORONA_EXPORT int luaopen_plugin_canvasity (lua_State* L)
 						}, {
 							NO_ARGS(begin_path)
 						}, {
-							"bezier_curve_to", [](lua_State * L)
-							{
-								Get(L).bezier_curve_to(GET_FIVE_FLOATS(2), FLOAT(6));
-								
-								return 0;
-							}
+							SIX_FLOATS(bezier_curve_to)
 						}, {
 							NO_ARGS(clip)
 						}, {
@@ -389,7 +384,7 @@ CORONA_EXPORT int luaopen_plugin_canvasity (lua_State* L)
 							"set_font", [](lua_State * L)
 							{
 								ByteReader bytes{L, 2};
-								
+
 								lua_pushboolean(L, Get(L).set_font(static_cast<const unsigned char *>(bytes.mBytes), int(bytes.mCount), FLOAT(3))); // canvas, font, size, ok
 
 								return 1;
