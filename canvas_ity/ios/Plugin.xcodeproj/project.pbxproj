@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AA8C1A1A287A4AA1000D0253 /* plugin.wfc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8C1A18287A4AA1000D0253 /* plugin.wfc.cpp */; };
+		AA2C6B112931C3410093B0BE /* plugin.canvas_ity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA2C6B102931C3410093B0BE /* plugin.canvas_ity.cpp */; };
 		CE0FB71420A26CCE00B5DAED /* ByteReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0FB71220A26CCE00B5DAED /* ByteReader.cpp */; };
 		CE0FB72620A26CE300B5DAED /* Memory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0FB71620A26CE200B5DAED /* Memory.cpp */; };
 		CE0FB72720A26CE300B5DAED /* Thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CE0FB71820A26CE200B5DAED /* Thread.cpp */; };
@@ -31,9 +31,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		A4E253B6166D6FB300DCDC2C /* libplugin_wfc.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libplugin_wfc.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		AA8C1A18287A4AA1000D0253 /* plugin.wfc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = plugin.wfc.cpp; path = ../shared/plugin.wfc.cpp; sourceTree = "<group>"; };
-		AA8C1A19287A4AA1000D0253 /* wfc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wfc.h; path = ../shared/wfc.h; sourceTree = "<group>"; };
+		A4E253B6166D6FB300DCDC2C /* libplugin_canvasity.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libplugin_canvasity.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA2C6B0F2931C3410093B0BE /* canvas_ity.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = canvas_ity.hpp; path = ../shared/canvas_ity.hpp; sourceTree = "<group>"; };
+		AA2C6B102931C3410093B0BE /* plugin.canvas_ity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = plugin.canvas_ity.cpp; path = ../shared/plugin.canvas_ity.cpp; sourceTree = "<group>"; };
 		CE0FB71220A26CCE00B5DAED /* ByteReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ByteReader.cpp; path = ../../ByteReader/ByteReader.cpp; sourceTree = "<group>"; };
 		CE0FB71320A26CCE00B5DAED /* ByteReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ByteReader.h; path = ../../ByteReader/ByteReader.h; sourceTree = "<group>"; };
 		CE0FB71620A26CE200B5DAED /* Memory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Memory.cpp; path = ../../solar2d_native_utils/utils/Memory.cpp; sourceTree = "<group>"; };
@@ -76,8 +76,8 @@
 		A484110E15114F700074BD57 = {
 			isa = PBXGroup;
 			children = (
-				AA8C1A18287A4AA1000D0253 /* plugin.wfc.cpp */,
-				AA8C1A19287A4AA1000D0253 /* wfc.h */,
+				AA2C6B0F2931C3410093B0BE /* canvas_ity.hpp */,
+				AA2C6B102931C3410093B0BE /* plugin.canvas_ity.cpp */,
 				CE0FB71520A26CD100B5DAED /* solar2d_native_utils */,
 				CE0FB71120A26CA300B5DAED /* ByteReader */,
 				A447B609165D72A6009EA762 /* Source */,
@@ -88,7 +88,7 @@
 		A484111A15114F700074BD57 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A4E253B6166D6FB300DCDC2C /* libplugin_wfc.a */,
+				A4E253B6166D6FB300DCDC2C /* libplugin_canvasity.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -129,9 +129,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A4E253B5166D6FB300DCDC2C /* plugin_wfc */ = {
+		A4E253B5166D6FB300DCDC2C /* plugin_canvasity */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A4E253BF166D6FB300DCDC2C /* Build configuration list for PBXNativeTarget "plugin_wfc" */;
+			buildConfigurationList = A4E253BF166D6FB300DCDC2C /* Build configuration list for PBXNativeTarget "plugin_canvasity" */;
 			buildPhases = (
 				A4E253B2166D6FB300DCDC2C /* Sources */,
 				A4E253B3166D6FB300DCDC2C /* Frameworks */,
@@ -141,9 +141,9 @@
 			);
 			dependencies = (
 			);
-			name = plugin_wfc;
+			name = plugin_canvasity;
 			productName = plugin_library;
-			productReference = A4E253B6166D6FB300DCDC2C /* libplugin_wfc.a */;
+			productReference = A4E253B6166D6FB300DCDC2C /* libplugin_canvasity.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -167,7 +167,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A4E253B5166D6FB300DCDC2C /* plugin_wfc */,
+				A4E253B5166D6FB300DCDC2C /* plugin_canvasity */,
 			);
 		};
 /* End PBXProject section */
@@ -182,8 +182,8 @@
 				CE0FB71420A26CCE00B5DAED /* ByteReader.cpp in Sources */,
 				CE0FB72720A26CE300B5DAED /* Thread.cpp in Sources */,
 				CE0FB72820A26CE300B5DAED /* SIMD.cpp in Sources */,
-				AA8C1A1A287A4AA1000D0253 /* plugin.wfc.cpp in Sources */,
 				CE0FB72920A26CE300B5DAED /* LuaEx.cpp in Sources */,
+				AA2C6B112931C3410093B0BE /* plugin.canvas_ity.cpp in Sources */,
 				CE0FB72B20A26CE300B5DAED /* Path.cpp in Sources */,
 				CE0FB72A20A26CE300B5DAED /* Blob.cpp in Sources */,
 			);
@@ -348,7 +348,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A4E253BF166D6FB300DCDC2C /* Build configuration list for PBXNativeTarget "plugin_wfc" */ = {
+		A4E253BF166D6FB300DCDC2C /* Build configuration list for PBXNativeTarget "plugin_canvasity" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A4E253C0166D6FB300DCDC2C /* Debug */,

@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A40A8FE61BD973A8001D2038"
-               BuildableName = "Corona_plugin_wfc.framework"
-               BlueprintName = "Corona_plugin_wfc.framework"
+               BuildableName = "Corona_plugin_canvasity.framework"
+               BlueprintName = "Corona_plugin_canvasity.framework"
                ReferencedContainer = "container:Plugin.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -51,8 +51,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A40A8FE61BD973A8001D2038"
-            BuildableName = "Corona_plugin_wfc.framework"
-            BlueprintName = "Corona_plugin_wfc.framework"
+            BuildableName = "Corona_plugin_canvasity.framework"
+            BlueprintName = "Corona_plugin_canvasity.framework"
             ReferencedContainer = "container:Plugin.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

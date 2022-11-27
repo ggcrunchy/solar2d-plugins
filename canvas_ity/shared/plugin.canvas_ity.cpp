@@ -22,6 +22,7 @@
 */
 
 #include "CoronaLua.h"
+#include "CoronaGraphics.h"
 #include "ByteReader.h"
 #include "utils/Blob.h"
 #include "utils/LuaEx.h"
@@ -40,9 +41,93 @@
 //
 //
 
+static int sTextureRefs;
+
+//
+//
+//
+
+struct CanvasAndTexture;
+
+struct Texture {
+	Texture (CanvasAndTexture * owner, lua_State * L) : mOwner{owner}, mL{L}
+	{
+	}
+	
+	CanvasAndTexture * mOwner;
+	std::vector<unsigned char> mData;
+	lua_State * mL;
+};
+
+//
+//
+//
+
+struct CanvasAndTexture {
+	CanvasAndTexture (int w, int h) : mCanvas{w, h}, mW{w}, mH{h}
+	{
+	}
+
+	canvas_ity::canvas mCanvas;
+	Texture * mTexture{nullptr};
+	int mW, mH;
+};
+
+//
+//
+//
+
+static unsigned int Texture_GetW (void * context)
+{
+	return static_cast<Texture *>(context)->mOwner->mW;
+}
+
+static unsigned int Texture_GetH (void * context)
+{
+	return static_cast<Texture *>(context)->mOwner->mH;
+}
+
+static const void * Texture_GetData (void * context)
+{
+	Texture * tex = static_cast<Texture *>(context);
+
+	if (tex->mData.empty()) tex->mData.resize(tex->mOwner->mW * tex->mOwner->mH * 4);
+	
+	return tex->mData.data();
+}
+
+static CoronaExternalBitmapFormat Texture_Format (void * context)
+{
+	return CoronaExternalBitmapFormat::kExternalBitmapFormat_RGBA;
+}
+
+static void Texture_Dispose (void * context)
+{
+	Texture * tex = static_cast<Texture *>(context);
+	
+	tex->mOwner->mTexture = nullptr;
+
+	lua_getref(tex->mL, sTextureRefs); // ..., refs
+	lua_pushlightuserdata(tex->mL, tex); // ..., refs, tex_ptr
+	lua_pushnil(tex->mL); // ..., refs, tex_ptr, nil
+	lua_rawset(tex->mL, -3); // ..., refs = { ..., [tex_ptr] = nil }
+	lua_pop(tex->mL, 1); // ...
+	
+	delete tex;
+}
+
+//
+//
+//
+
+static CanvasAndTexture * GetCanvasAndTexture (lua_State * L)
+{
+	return (CanvasAndTexture *)luaL_checkudata(L, 1, CANVAS_ITY_METATABLE_NAME);
+}
+
 static canvas_ity::canvas & Get (lua_State * L)
 {
-    return *(canvas_ity::canvas *)luaL_checkudata(L, 1, CANVAS_ITY_METATABLE_NAME);
+	return GetCanvasAndTexture(L)->mCanvas;
 }
 
 //
@@ -191,7 +276,7 @@ CORONA_EXPORT int luaopen_plugin_canvasity (lua_State* L)
             {
                 int w = luaL_checkint(L, 1), h = luaL_checkint(L, 2);
 
-                LuaXS::NewTyped<canvas_ity::canvas>(L, w, h); // w, h, canvas
+                LuaXS::NewTyped<CanvasAndTexture>(L, w, h); // w, h, canvas
                 LuaXS::AttachMethods(L, CANVAS_ITY_METATABLE_NAME, [](lua_State * L) {
                     luaL_Reg funcs[] = {
 						{
@@ -239,8 +324,6 @@ CORONA_EXPORT int luaopen_plugin_canvasity (lua_State* L)
 						}, {
 							"fill_text", [](lua_State * L)
 							{
-								if (lua_isnil(L, 2)) return 0;
-								
 								Get(L).fill_text(lua_tostring(L, 2), FLOAT(3), FLOAT(4), (float)luaL_optnumber(L, 5, 1.0e30));
 
 								return 0;
@@ -250,29 +333,108 @@ CORONA_EXPORT int luaopen_plugin_canvasity (lua_State* L)
                         }, {
                             "get_image_data", [](lua_State * L)
                             {
-								bool is_blob = BlobXS::IsBlob(L, 2);
-								int warg = is_blob ? 3 : 2, w = luaL_checkint(L, warg), h = luaL_checkint(L, warg + 1), stride = luaL_checkint(L, warg + 2);
+								bool is_blob = BlobXS::IsBlob(L, 2), has_output = is_blob || lua_istable(L, 2);
+								int warg = (has_output || lua_isnil(L, 2)) ? 3 : 2, w = luaL_checkint(L, warg), h = luaL_checkint(L, warg + 1), stride = luaL_checkint(L, warg + 2);
+								
+								//
+								//
+								//
 								
 								std::vector<unsigned char> image;
-								unsigned char * data;
+								unsigned char * data = nullptr;
 								
 								if (is_blob && BlobXS::GetSize(L, 2) >= stride * h) data = BlobXS::GetData(L, 2);
 								
-								else
+								else if (!lua_isnil(L, 2))
 								{
-									image.resize(stride * w);
+									image.resize(stride * h);
 									
 									data = image.data();
 								}
 								
-								Get(L).get_image_data(data, w, h, stride, luaL_checkint(L, warg + 3), luaL_checkint(L, warg + 4));
+								//
+								//
+								//
 								
-								lua_pushboolean(L, image.empty()); // canvas[, blob], w, h, stride, x, y, blob_ok
+								int x = luaL_checkint(L, warg + 3), y = luaL_checkint(L, warg + 4);
 								
-								if (!image.empty()) lua_pushlstring(L, reinterpret_cast<char *>(image.data()), image.size()); // canvas[, blob], w, h, stride, x, y, blob_ok[, data]
+								Get(L).get_image_data(data, w, h, stride, x, y);
 								
-								return image.empty() ? 1 : 2;
+								//
+								//
+								//
+								
+								if (lua_istable(L, 2))
+								{
+									lua_getfield(L, 2, "offset"); // canvas, t, w, h, stride, x, y, offset?
+									
+									int offset = static_cast<int>(luaL_optinteger(L, -1, 0));
+									
+									for (int row = 0, first = 0; row < h; ++row, first += stride)
+									{
+										for (int pos = first, i = 0; i < w * 4; ++i)
+										{
+											lua_pushinteger(L, data[pos++]); // canvas, t, w, h, stride, x, y, offset?, byte
+											lua_rawseti(L, 2, pos + offset); // canvas, t = { ..., [pos] = byte, ... }, w, h, stride, x, y, offset?
+										}
+									}
+								}
+								
+								//
+								//
+								//
+								
+								bool output_ok = image.empty() || lua_istable(L, 2);
+								
+								lua_pushboolean(L, output_ok); // canvas[, blob], w, h, stride, x, y, blob_ok
+								
+								if (!output_ok) lua_pushlstring(L, reinterpret_cast<char *>(image.data()), image.size()); // canvas[, blob], w, h, stride, x, y, blob_ok[, data]
+								
+								return output_ok ? 1 : 2;
                             }
+						}, {
+							"get_texture", [](lua_State * L)
+							{
+								CanvasAndTexture * cat = GetCanvasAndTexture(L);
+								
+								if (!cat->mTexture)
+								{
+									CoronaExternalTextureCallbacks callbacks = {};
+
+									callbacks.size = sizeof(CoronaExternalTextureCallbacks);
+									callbacks.getFormat = Texture_Format;
+									callbacks.getHeight = Texture_GetH;
+									callbacks.getWidth = Texture_GetW;
+									callbacks.onFinalize = Texture_Dispose;
+									callbacks.onRequestBitmap = Texture_GetData;
+
+									Texture * tex = new Texture{cat, L};
+									
+									if (CoronaExternalPushTexture(L, &callbacks, &cat->mCanvas)) // canvas[, texture]
+									{
+										lua_getref(L, sTextureRefs); // canvas, texture, refs
+										lua_pushlightuserdata(L, lua_touserdata(L, -2)); // canvas, texture, refs, texture_ptr
+										lua_pushvalue(L, 1); // canvas, texture, refs, texture_ptr, canvas
+										lua_rawset(L, -3); // canvas, texture, refs; refs[texture_ptr] = canvas
+										lua_pop(L, 1); // canvas, texture
+									}
+									
+									else
+									{
+										lua_pushnil(L); // canvas, nil
+										
+										delete tex;
+									}
+								}
+								
+								else
+								{
+									lua_pushlightuserdata(L, cat->mTexture); // canvas, texture_ptr
+									lua_rawget(L, LUA_REGISTRYINDEX); // canvas, texture
+								}
+								
+								return 1;
+							}
 						}, {
 							"is_point_in_path", [](lua_State * L)
 							{
@@ -353,13 +515,12 @@ CORONA_EXPORT int luaopen_plugin_canvasity (lua_State* L)
 								ByteReader bytes{L, 2};
 								int w = luaL_checkint(L, 3), h = luaL_checkint(L, 4), stride = luaL_checkint(L, 5);
 								
-								if (bytes.mCount < stride * h) return 0;
+								//if (bytes.mCount < stride * h) return 0;
+									// ^^^ TODO: more rigorous
 								
 								Get(L).put_image_data(static_cast<const unsigned char *>(bytes.mBytes), w, h, stride, luaL_checkint(L, 6), luaL_checkint(L, 7));
 
 								return 0;
-								
-                                return 0;
                             }
 						}, {
 							FOUR_FLOATS(quadratic_curve_to)
@@ -401,18 +562,24 @@ CORONA_EXPORT int luaopen_plugin_canvasity (lua_State* L)
 						}, {
 							"set_line_dash", [](lua_State * L)
 							{
-								std::vector<float> segments;
 								
-								luaL_checktype(L, 2, LUA_TTABLE);
-								
-								for (size_t i = 1, n = lua_objlen(L, 2); i <= n; ++i, lua_pop(L, 1))
+								if (!lua_isnoneornil(L, 2))
 								{
-									lua_rawgeti(L, 2, int(i)); // canvas, segments, len
+									std::vector<float> segments;
 									
-									segments.push_back(FLOAT(-1));
+									luaL_checktype(L, 2, LUA_TTABLE);
+									
+									for (size_t i = 1, n = lua_objlen(L, 2); i <= n; ++i, lua_pop(L, 1))
+									{
+										lua_rawgeti(L, 2, int(i)); // canvas, segments, len
+										
+										segments.push_back(FLOAT(-1));
+									}
+									
+									Get(L).set_line_dash(segments.data(), int(segments.size()));
 								}
 								
-								Get(L).set_line_dash(segments.data(), int(segments.size()));
+								else Get(L).set_line_dash(nullptr, 0);
 								
 								return 0;
 							}
@@ -451,10 +618,8 @@ CORONA_EXPORT int luaopen_plugin_canvasity (lua_State* L)
 						}, {
 							FOUR_FLOATS(stroke_rectangle)
 						}, {
-							"strokeText", [](lua_State * L)
+							"stroke_text", [](lua_State * L)
 							{
-								if (lua_isnil(L, 2)) return 0;
-								
 								Get(L).stroke_text(lua_tostring(L, 2), FLOAT(3), FLOAT(4), (float)luaL_optnumber(L, 5, 1.0e30));
 
 								return 0;
@@ -602,5 +767,17 @@ CORONA_EXPORT int luaopen_plugin_canvasity (lua_State* L)
 		return 0;
 	});
 
+	//
+	//
+	//
+	
+	lua_newtable(L); // canvas_ity, texture_refs
+	
+	sTextureRefs = lua_ref(L, 1); // canvas_ity; ref = texture_refs
+	
+	//
+	//
+	//
+	
 	return 1;
 }
