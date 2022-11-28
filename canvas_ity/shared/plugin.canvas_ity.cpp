@@ -49,13 +49,12 @@ static int sTextureRefs;
 
 struct CanvasAndTexture;
 
-struct Texture {
+struct Texture : std::vector<unsigned char> {
 	Texture (CanvasAndTexture * owner, lua_State * L) : mOwner{owner}, mL{L}
 	{
 	}
 	
 	CanvasAndTexture * mOwner;
-	std::vector<unsigned char> mData;
 	lua_State * mL;
 };
 
@@ -90,10 +89,39 @@ static unsigned int Texture_GetH (void * context)
 static const void * Texture_GetData (void * context)
 {
 	Texture * tex = static_cast<Texture *>(context);
-
-	if (tex->mData.empty()) tex->mData.resize(tex->mOwner->mW * tex->mOwner->mH * 4);
+	CanvasAndTexture * owner = tex->mOwner;
+	int stride = owner->mW * 4, len = owner->mW * owner->mH;
 	
-	return tex->mData.data();
+	if (tex->empty()) tex->resize(len * 4);
+
+	owner->mCanvas.get_image_data(tex->data(), owner->mW, owner->mH, stride, 0, 0);
+
+	uint32_t * pixel = reinterpret_cast<uint32_t *>(tex->data());
+	
+	// FastPremult() from https://arxiv.org/pdf/2202.02864v1.pdf
+	for (int i = 0; i < len; ++i, ++pixel)
+	{
+		uint32_t color = *pixel;
+		uint32_t alfa = color >> 24;
+		uint32_t rb, ga;
+
+		color |= 0xff000000;
+
+		rb = color & 0x00ff00ff;
+		rb *= alfa;
+		rb += 0x00800080;
+		rb += (rb >> 8) & 0x00ff00ff;
+		rb &= 0xff00ff00;
+		ga = (color >> 8) & 0x00ff00ff;
+		ga *= alfa;
+		ga += 0x00800080;
+		ga += (ga >> 8) & 0x00ff00ff;
+		ga &= 0xff00ff00;
+
+		*pixel = ga | (rb >> 8);
+	}
+	
+	return tex->data();
 }
 
 static CoronaExternalBitmapFormat Texture_Format (void * context)
@@ -410,7 +438,7 @@ CORONA_EXPORT int luaopen_plugin_canvasity (lua_State* L)
 
 									Texture * tex = new Texture{cat, L};
 									
-									if (CoronaExternalPushTexture(L, &callbacks, &cat->mCanvas)) // canvas[, texture]
+									if (CoronaExternalPushTexture(L, &callbacks, tex)) // canvas[, texture]
 									{
 										lua_getref(L, sTextureRefs); // canvas, texture, refs
 										lua_pushlightuserdata(L, lua_touserdata(L, -2)); // canvas, texture, refs, texture_ptr
@@ -526,6 +554,8 @@ CORONA_EXPORT int luaopen_plugin_canvasity (lua_State* L)
 							FOUR_FLOATS(quadratic_curve_to)
 						}, {
 							FOUR_FLOATS(rectangle)
+						}, {
+							NO_ARGS(reset_bitmap)
 						}, {
                             NO_ARGS(restore)
 						}, {

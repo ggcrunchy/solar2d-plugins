@@ -1147,6 +1147,10 @@ public:
     ///
     void restore();
 
+	// STEVE CHANGE
+	void reset_bitmap();
+	// /STEVE CHANGE
+	
 private:
     int size_x;
     int size_y;
@@ -3463,6 +3467,13 @@ void canvas::restore()
     state->saves = 0;
     delete state;
 }
+
+// STEVE CHANGE
+void canvas::reset_bitmap()
+{
+	memset( bitmap, 0, size_x * size_y * sizeof( rgba ) );
+}
+// /STEVE CHANGE
 
 }
 
