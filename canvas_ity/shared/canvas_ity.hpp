@@ -1149,6 +1149,9 @@ public:
 
 	// STEVE CHANGE
 	void reset_bitmap();
+
+    int get_size_x () const { return size_x; }
+    int get_size_y () const { return size_y; }
 	// /STEVE CHANGE
 	
 private:

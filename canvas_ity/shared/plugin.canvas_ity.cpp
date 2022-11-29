@@ -47,14 +47,15 @@ static int sTextureRefs;
 //
 //
 
-struct CanvasAndTexture;
+struct Texture {
+	using Vector = std::vector<unsigned char>;
 
-struct Texture : std::vector<unsigned char> {
-	Texture (CanvasAndTexture * owner, lua_State * L) : mOwner{owner}, mL{L}
+	Texture (Vector & output, canvas_ity::canvas & owner, lua_State * L) : mOutput{output}, mOwner{owner}, mL{L}
 	{
 	}
 	
-	CanvasAndTexture * mOwner;
+	Vector & mOutput;
+	canvas_ity::canvas & mOwner;
 	lua_State * mL;
 };
 
@@ -62,15 +63,10 @@ struct Texture : std::vector<unsigned char> {
 //
 //
 
-struct CanvasAndTexture {
-	CanvasAndTexture (int w, int h) : mCanvas{w, h}, mW{w}, mH{h}
-	{
-	}
-
-	canvas_ity::canvas mCanvas;
-	Texture * mTexture{nullptr};
-	int mW, mH;
-};
+static canvas_ity::canvas & Get (lua_State * L)
+{
+	return *(canvas_ity::canvas *)luaL_checkudata(L, 1, CANVAS_ITY_METATABLE_NAME);
+}
 
 //
 //
@@ -78,28 +74,28 @@ struct CanvasAndTexture {
 
 static unsigned int Texture_GetW (void * context)
 {
-	return static_cast<Texture *>(context)->mOwner->mW;
+	return static_cast<Texture *>(context)->mOwner.get_size_x();
 }
 
 static unsigned int Texture_GetH (void * context)
 {
-	return static_cast<Texture *>(context)->mOwner->mH;
+	return static_cast<Texture *>(context)->mOwner.get_size_y();
 }
 
 static const void * Texture_GetData (void * context)
 {
 	Texture * tex = static_cast<Texture *>(context);
-	CanvasAndTexture * owner = tex->mOwner;
-	int stride = owner->mW * 4, len = owner->mW * owner->mH;
-	
-	if (tex->empty()) tex->resize(len * 4);
+	canvas_ity::canvas & owner = tex->mOwner;
+	int stride = owner.get_size_x() * 4, size = stride * owner.get_size_y();
 
-	owner->mCanvas.get_image_data(tex->data(), owner->mW, owner->mH, stride, 0, 0);
+	if (tex->mOutput.size() < size) tex->mOutput.resize(size);
 
-	uint32_t * pixel = reinterpret_cast<uint32_t *>(tex->data());
+	owner.get_image_data(tex->mOutput.data(), owner.get_size_x(), owner.get_size_y(), stride, 0, 0);
+
+	uint32_t * pixel = reinterpret_cast<uint32_t *>(tex->mOutput.data());
 	
 	// FastPremult() from https://arxiv.org/pdf/2202.02864v1.pdf
-	for (int i = 0; i < len; ++i, ++pixel)
+	for (int i = 0, len = i < owner.get_size_x() * owner.get_size_y(); i < len; ++i, ++pixel)
 	{
 		uint32_t color = *pixel;
 		uint32_t alfa = color >> 24;
@@ -121,7 +117,7 @@ static const void * Texture_GetData (void * context)
 		*pixel = ga | (rb >> 8);
 	}
 	
-	return tex->data();
+	return tex->mOutput.data();
 }
 
 static CoronaExternalBitmapFormat Texture_Format (void * context)
@@ -132,14 +128,21 @@ static CoronaExternalBitmapFormat Texture_Format (void * context)
 static void Texture_Dispose (void * context)
 {
 	Texture * tex = static_cast<Texture *>(context);
-	
-	tex->mOwner->mTexture = nullptr;
 
 	lua_getref(tex->mL, sTextureRefs); // ..., refs
-	lua_pushlightuserdata(tex->mL, tex); // ..., refs, tex_ptr
-	lua_pushnil(tex->mL); // ..., refs, tex_ptr, nil
-	lua_rawset(tex->mL, -3); // ..., refs = { ..., [tex_ptr] = nil }
-	lua_pop(tex->mL, 1); // ...
+
+	for (lua_pushnil(tex->mL); lua_next(tex->mL, -2); lua_pop(tex->mL, 1))
+	{
+		if (lua_touserdata(tex->mL, -2) == &tex->mOwner)
+		{
+			lua_pop(tex->mL, 1); // ..., refs, canvas
+			lua_pushnil(tex->mL); // ..., refs, canvas, nil
+			lua_rawset(tex->mL, -3); // ..., refs = { ..., [canvas] = nil }
+			lua_pop(tex->mL, 1); // ...
+
+			break;
+		}
+	}
 	
 	delete tex;
 }
@@ -148,14 +151,39 @@ static void Texture_Dispose (void * context)
 //
 //
 
-static CanvasAndTexture * GetCanvasAndTexture (lua_State * L)
+static int GetTexture (lua_State * L)
 {
-	return (CanvasAndTexture *)luaL_checkudata(L, 1, CANVAS_ITY_METATABLE_NAME);
-}
+	lua_getref(L, sTextureRefs); // canvas, refs
+	lua_pushvalue(L, 1); // canvas, refs, canvas
+	lua_rawget(L, -2); // canvas, refs, texture?
+				
+	if (lua_isnil(L, -1))
+	{
+		CoronaExternalTextureCallbacks callbacks = {};
 
-static canvas_ity::canvas & Get (lua_State * L)
-{
-	return GetCanvasAndTexture(L)->mCanvas;
+		callbacks.size = sizeof(CoronaExternalTextureCallbacks);
+		callbacks.getFormat = Texture_Format;
+		callbacks.getHeight = Texture_GetH;
+		callbacks.getWidth = Texture_GetW;
+		callbacks.onFinalize = Texture_Dispose;
+		callbacks.onRequestBitmap = Texture_GetData;
+
+		canvas_ity::canvas & canvas = Get(L);
+		Texture * tex = new Texture{*LuaXS::UD<Texture::Vector>(L, lua_upvalueindex(1)), canvas, L};
+
+		if (CoronaExternalPushTexture(L, &callbacks, tex)) // canvas, refs, nil[, texture]
+		{
+			lua_pushvalue(L, -1); // canvas, refs, nil, texture, texture
+			lua_insert(L, -3); // canvas, refs, texture, nil, texture
+			lua_pushvalue(L, 1); // canvas, refs, texture, nil, texture, canvas
+			lua_replace(L, -3); // canvas, refs, texture, canvas, texture
+			lua_rawset(L, -4); // canvas, refs, texture; refs[canvas] = texture
+		}
+									
+		else delete tex; // n.b. nil already on top
+	}
+					
+	return 1;
 }
 
 //
@@ -304,7 +332,7 @@ CORONA_EXPORT int luaopen_plugin_canvasity (lua_State* L)
             {
                 int w = luaL_checkint(L, 1), h = luaL_checkint(L, 2);
 
-                LuaXS::NewTyped<CanvasAndTexture>(L, w, h); // w, h, canvas
+                LuaXS::NewTyped<canvas_ity::canvas>(L, w, h); // w, h, canvas
                 LuaXS::AttachMethods(L, CANVAS_ITY_METATABLE_NAME, [](lua_State * L) {
                     luaL_Reg funcs[] = {
 						{
@@ -420,49 +448,6 @@ CORONA_EXPORT int luaopen_plugin_canvasity (lua_State* L)
 								
 								return output_ok ? 1 : 2;
                             }
-						}, {
-							"get_texture", [](lua_State * L)
-							{
-								CanvasAndTexture * cat = GetCanvasAndTexture(L);
-								
-								if (!cat->mTexture)
-								{
-									CoronaExternalTextureCallbacks callbacks = {};
-
-									callbacks.size = sizeof(CoronaExternalTextureCallbacks);
-									callbacks.getFormat = Texture_Format;
-									callbacks.getHeight = Texture_GetH;
-									callbacks.getWidth = Texture_GetW;
-									callbacks.onFinalize = Texture_Dispose;
-									callbacks.onRequestBitmap = Texture_GetData;
-
-									Texture * tex = new Texture{cat, L};
-									
-									if (CoronaExternalPushTexture(L, &callbacks, tex)) // canvas[, texture]
-									{
-										lua_getref(L, sTextureRefs); // canvas, texture, refs
-										lua_pushlightuserdata(L, lua_touserdata(L, -2)); // canvas, texture, refs, texture_ptr
-										lua_pushvalue(L, 1); // canvas, texture, refs, texture_ptr, canvas
-										lua_rawset(L, -3); // canvas, texture, refs; refs[texture_ptr] = canvas
-										lua_pop(L, 1); // canvas, texture
-									}
-									
-									else
-									{
-										lua_pushnil(L); // canvas, nil
-										
-										delete tex;
-									}
-								}
-								
-								else
-								{
-									lua_pushlightuserdata(L, cat->mTexture); // canvas, texture_ptr
-									lua_rawget(L, LUA_REGISTRYINDEX); // canvas, texture
-								}
-								
-								return 1;
-							}
 						}, {
 							"is_point_in_path", [](lua_State * L)
 							{
@@ -663,7 +648,145 @@ CORONA_EXPORT int luaopen_plugin_canvasity (lua_State* L)
                     };
 
                     luaL_register(L, nullptr, funcs);
+
+					//
+					//
+					//
+
+					LuaXS::NewTyped<Texture::Vector>(L); // mt, texture_data
+					LuaXS::AttachGC(L, LuaXS::TypedGC<Texture::Vector>);
+
+					lua_pushcclosure(L, GetTexture, 1); // mt, GetTexture
+					lua_setfield(L, -2, "get_texture"); // mt = { ..., get_texture = GetTexture }
+
+					//
+					//
+					//
+
+					LuaXS::AttachProperties(L, [](lua_State * L) {
+						if (LUA_TSTRING != lua_type(L, 2)) return 0;
+									
+						#define CASE(NAME) case canvas_ity::NAME: lua_pushliteral(L, #NAME); return 1
+									
+						const char * what = lua_tostring(L, 2);
+		
+						//
+						//
+						//
+									
+						if (strcmp(what, "global_composite_operation") == 0)
+						{
+							switch (Get(L).global_composite_operation)
+							{
+								CASE(source_atop);
+								CASE(source_copy);
+								CASE(source_in);
+								CASE(source_out);
+								CASE(source_over);
+								CASE(destination_atop);
+								CASE(destination_in);
+								CASE(destination_out);
+								CASE(destination_over);
+								CASE(exclusive_or);
+								CASE(lighter);
+							default:
+								return luaL_error(L, "Invalid global composite operation");
+							}
+						}
+									
+						//
+						//
+						//
+									
+						else if (strcmp(what, "line_cap") == 0)
+						{
+							switch (Get(L).line_cap)
+							{
+								CASE(butt);
+								CASE(square);
+								CASE(circle);
+							default:
+								return luaL_error(L, "Invalid line cap");
+							}
+						}
+									
+						//
+						//
+						//
+									
+						else if (strcmp(what, "line_join") == 0)
+						{
+							switch (Get(L).line_join)
+							{
+								CASE(miter);
+								CASE(bevel);
+								CASE(rounded);
+							default:
+								return luaL_error(L, "Invalid line join");
+							}
+						}
+									
+						//
+						//
+						//
+									
+						else if (strcmp(what, "text_align") == 0)
+						{
+							switch (Get(L).text_align)
+							{
+								CASE(leftward);
+								CASE(rightward);
+								CASE(center);
+							default:
+								return luaL_error(L, "Invalid text align");
+							}
+						}
+									
+						//
+						//
+						//
+									
+						else if (strcmp(what, "text_baseline") == 0)
+						{
+							switch (Get(L).text_baseline)
+							{
+								CASE(alphabetic);
+								CASE(top);
+								CASE(middle);
+								CASE(bottom);
+								CASE(hanging);
+							default:
+								return luaL_error(L, "Invalid text baseline");
+							}
+						}
+									
+						//
+						//
+						//
+									
+						else
+						{
+							float * member = GetMember(L, what);
+			
+							if (member)
+							{
+								lua_pushnumber(L, *member); // canvas, what, value
+					
+								return 1;
+							}
+						}
+
+						//
+						//
+						//
+									
+						return 0;
+					});
                 });
+
+				//
+				//
+				//
 
                 return 1;
             }
@@ -672,130 +795,6 @@ CORONA_EXPORT int luaopen_plugin_canvasity (lua_State* L)
     };
 
     luaL_register(L, nullptr, funcs);
-
-    //
-    //
-    //
-
-	LuaXS::AttachProperties(L, [](lua_State * L) {
-		if (LUA_TSTRING != lua_type(L, 2)) return 0;
-									
-		#define CASE(NAME) case canvas_ity::NAME: lua_pushliteral(L, #NAME); return 1
-									
-		const char * what = lua_tostring(L, 2);
-		
-		//
-		//
-		//
-									
-		if (strcmp(what, "global_composite_operation") == 0)
-		{
-			switch (Get(L).global_composite_operation)
-			{
-				CASE(source_atop);
-				CASE(source_copy);
-				CASE(source_in);
-				CASE(source_out);
-				CASE(source_over);
-				CASE(destination_atop);
-				CASE(destination_in);
-				CASE(destination_out);
-				CASE(destination_over);
-				CASE(exclusive_or);
-				CASE(lighter);
-			default:
-				return luaL_error(L, "Invalid global composite operation");
-			}
-		}
-									
-		//
-		//
-		//
-									
-		else if (strcmp(what, "line_cap") == 0)
-		{
-			switch (Get(L).line_cap)
-			{
-				CASE(butt);
-				CASE(square);
-				CASE(circle);
-			default:
-				return luaL_error(L, "Invalid line cap");
-			}
-		}
-									
-		//
-		//
-		//
-									
-		else if (strcmp(what, "line_join") == 0)
-		{
-			switch (Get(L).line_join)
-			{
-				CASE(miter);
-				CASE(bevel);
-				CASE(rounded);
-			default:
-				return luaL_error(L, "Invalid line join");
-			}
-		}
-									
-		//
-		//
-		//
-									
-		else if (strcmp(what, "text_align") == 0)
-		{
-			switch (Get(L).text_align)
-			{
-				CASE(leftward);
-				CASE(rightward);
-				CASE(center);
-			default:
-				return luaL_error(L, "Invalid text align");
-			}
-		}
-									
-		//
-		//
-		//
-									
-		else if (strcmp(what, "text_baseline") == 0)
-		{
-			switch (Get(L).text_baseline)
-			{
-				CASE(alphabetic);
-				CASE(top);
-				CASE(middle);
-				CASE(bottom);
-				CASE(hanging);
-			default:
-				return luaL_error(L, "Invalid text baseline");
-			}
-		}
-									
-		//
-		//
-		//
-									
-		else
-		{
-			float * member = GetMember(L, what);
-			
-			if (member)
-			{
-				lua_pushnumber(L, *member); // canvas, what, value
-					
-				return 1;
-			}
-		}
-
-		//
-		//
-		//
-									
-		return 0;
-	});
 
 	//
 	//
