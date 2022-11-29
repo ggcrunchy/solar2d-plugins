@@ -95,7 +95,7 @@ static const void * Texture_GetData (void * context)
 	uint32_t * pixel = reinterpret_cast<uint32_t *>(tex->mOutput.data());
 	
 	// FastPremult() from https://arxiv.org/pdf/2202.02864v1.pdf
-	for (int i = 0, len = i < owner.get_size_x() * owner.get_size_y(); i < len; ++i, ++pixel)
+	for (int i = 0, len = owner.get_size_x() * owner.get_size_y(); i < len; ++i, ++pixel)
 	{
 		uint32_t color = *pixel;
 		uint32_t alfa = color >> 24;
