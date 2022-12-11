@@ -116,16 +116,16 @@ HCUSTOMMODULE RecordList::LoadLibLua (LPCSTR filename, void * ud)
 	lua_State * L = static_cast<lua_State *>(list->mContext);
 
 	lua_pushvalue(L, 2); // dll_name*, callback, store, ..., callback
-	lua_pushvalue(L, 1); // dll_name*, callback, store, ..., callback, dll_name*
+	lua_pushstring(L, filename); // dll_name*, callback, store, ..., callback, filename
 	lua_call(L, 1, 3); // dll_name*, callback, store, ..., data?, size?, offset?
 
 	const void * data = lua_tostring(L, -3);
-	int size = luaL_optinteger(L, -2, lua_objlen(L, -3)), offset = luaL_optinteger(L, -1, 0);
+	int offset = luaL_optinteger(L, -1, 0), size = luaL_optinteger(L, -2, lua_objlen(L, -3) - offset);
 
 	luaL_argcheck(L, !data || size > 0, -2, "Non-positive size");
 	luaL_argcheck(L, offset >= 0, -1, "Negative offset");
-	luaL_argcheck(L, size + offset <= lua_objlen(L, -3), -3, "size + offset exceeds data range");
-	lua_pop(L, data ? 3 : 2); // dll_name*, callback, store, ...[, data]
+	luaL_argcheck(L, size_t(size + offset) <= lua_objlen(L, -3), -3, "size + offset exceeds data range");
+	lua_pop(L, data ? 2 : 3); // dll_name*, callback, store, ...[, data]
 
 	if (data)
 	{
@@ -246,12 +246,12 @@ HCUSTOMMODULE RecordList::LoadDLL (const char * filename, lua_State * L, const c
 		lua_call(L, 1, 3); // dll_name*, callback, store, ..., data?, size?, offset?
 
 		const void * data = lua_tostring(L, -3);
-		int size = luaL_optinteger(L, -2, lua_objlen(L, -3)), offset = luaL_optinteger(L, -1, 0);
+		int offset = luaL_optinteger(L, -1, 0), size = luaL_optinteger(L, -2, lua_objlen(L, -3) - offset);
 
 		luaL_argcheck(L, !data || size > 0, -2, "Non-positive size");
 		luaL_argcheck(L, offset >= 0, -1, "Negative offset");
-		luaL_argcheck(L, size + offset <= lua_objlen(L, -3), -3, "size + offset exceeds data range");
-		lua_pop(L, data ? 3 : 2); // dll_name*, callback, store, ...[, data]
+		luaL_argcheck(L, size_t(size + offset) <= lua_objlen(L, -3), -3, "size + offset exceeds data range");
+		lua_pop(L, data ? 2 : 3); // dll_name*, callback, store, ...[, data]
 
 		if (data)
 		{
@@ -271,7 +271,7 @@ HCUSTOMMODULE RecordList::LoadDLL (const char * filename, lua_State * L, const c
 	//
 	//
 	//
-	
+
 	mContext = nullptr;
 
 	if (result) (*this)[filename] = result;
