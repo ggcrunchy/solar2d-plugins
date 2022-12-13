@@ -112,8 +112,6 @@ del %SIMULATOR_DIR%\catalog.json</Command>
     <ClCompile Include="..\shared\custom_object_data.cpp" />
     <ClCompile Include="..\shared\dll_loader.cpp" />
     <ClCompile Include="..\shared\marshal.c" />
-    <ClCompile Include="..\shared\MemoryModule.c" />
-    <ClCompile Include="..\shared\miniz.c" />
     <ClCompile Include="..\shared\plugin.soloud.cpp" />
     <ClCompile Include="..\shared\src\audiosource\ay\chipplayer.cpp" />
     <ClCompile Include="..\shared\src\audiosource\ay\sndbuffer.cpp" />
@@ -228,8 +226,6 @@ del %SIMULATOR_DIR%\catalog.json</Command>
     <ClInclude Include="..\shared\include\soloud_wavstream.h" />
     <ClInclude Include="..\shared\include\zx7decompress.h" />
     <ClInclude Include="..\shared\marshal.h" />
-    <ClInclude Include="..\shared\MemoryModule.h" />
-    <ClInclude Include="..\shared\miniz.h" />
     <ClInclude Include="..\shared\src\audiosource\ay\chipplayer.h" />
     <ClInclude Include="..\shared\src\audiosource\ay\sndbuffer.h" />
     <ClInclude Include="..\shared\src\audiosource\ay\sndchip.h" />

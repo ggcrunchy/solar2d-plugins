@@ -27,290 +27,36 @@
 
 #include "common.h"
 #include "dll_loader.h"
-#include <map>
-
-extern "C" {
-	#include "MemoryModule.h"
-	#include "miniz.h"
-}
 
 //
 //
 //
 
-// This is largely adapted from https://github.com/py2exe/py2exe/blob/master/source/MyLoadLibrary.c
+static lua_State * sLuaState;
 
-struct Record {
-	Record () {}
-	Record (HCUSTOMMODULE mod) : mModule{mod}
-	{
-	}
-
-	HCUSTOMMODULE mModule;
-	int mRefcount{1};
-
-	static void Add (const char * name, HCUSTOMMODULE mod);
-	static Record * Find (const char * name, HCUSTOMMODULE mod);
-
-	bool Removed ();
-};
-
-std::map<std::string, Record> sRecords;
-
-struct Loader {
-	std::map<std::string, HCUSTOMMODULE> mArchives;
-	lua_State * mL;
-	int mPathForFileRef{LUA_REFNIL};
-
-	bool ResolveZip (mz_zip_archive & zip, const char * archive);
-
-	static void FreeLib (HCUSTOMMODULE mod, void * ud);
-	static FARPROC GetProc (HCUSTOMMODULE mod, LPCSTR name, void * ud);
-	static HCUSTOMMODULE LoadLib (LPCSTR filename, void * ud);
-};
+static int sOpenmptRef;
 
 //
 //
 //
 
-void Record::Add (const char * name, HCUSTOMMODULE mod)
+void * GetProcFromDLL (const char * name)
 {
-	sRecords[name] = Record{mod};
-}
+	if (LUA_REFNIL == sOpenmptRef) return nullptr;
 
-//
-//
-//
+	lua_getref(sLuaState, sOpenmptRef); // ..., Openmpt
+	lua_getfield(sLuaState, -1, "GetProc"); // ..., Openmpt, Openmpt:GetProc
+	lua_insert(sLuaState, -2); // Openmpt:GetProc, Openmpt
+	lua_pushstring(sLuaState, name); // ..., Openmpt:GetProc, Openmpt, name
+	lua_call(sLuaState, 2, 1); // ..., proc?
 
-Record * Record::Find (const char * name, HCUSTOMMODULE mod)
-{
-	if (name)
-	{
-		auto iter = sRecords.find(name);
+	void * proc = nullptr;
 
-		if (iter != sRecords.end()) return &iter->second;
-	}
+	if (!lua_isnil(sLuaState, -1)) proc = *LuaXS::UD<void *>(sLuaState, -1);
 
-	if (mod)
-	{
-		for (auto iter = sRecords.begin(); iter != sRecords.end(); ++iter)
-		{
-			if (mod == iter->second.mModule) return &iter->second;
-		}
-	}
+	lua_pop(sLuaState, 1); // ...
 
-	return nullptr;
-}
-
-//
-//
-//
-
-bool Record::Removed ()
-{
-	if (0 == --mRefcount)
-	{
-		for (auto iter = sRecords.begin(); iter != sRecords.end(); ++iter)
-		{
-			if (&iter->second == this)
-			{
-				sRecords.erase(iter);
-
-				return true;
-			}
-		}
-	}
-
-	return false;
-}
-
-//
-//
-//
-
-void Loader::FreeLib (HCUSTOMMODULE mod, void *)
-{
-	Record * record = Record::Find(nullptr, mod);
-
-	if (!record)
-	{
-		SetLastError(0);
-
-		::FreeLibrary(HMODULE(mod));
-	}
-
-	else if (record->Removed()) MemoryFreeLibrary(mod);
-}
-
-//
-//
-//
-
-FARPROC Loader::GetProc (HCUSTOMMODULE mod, LPCSTR name, void *)
-{
-	Record * record = Record::Find(nullptr, mod);
-
-	if (record) return MemoryGetProcAddress(record->mModule, name);
-
-	else
-	{
-		SetLastError(0);
-
-		return ::GetProcAddress(HMODULE(mod), name);
-	}
-}
-
-//
-//
-//
-
-HCUSTOMMODULE Loader::LoadLib (LPCSTR filename, void * ud)
-{
-	size_t size;
-	
-	mz_zip_archive * zip = static_cast<mz_zip_archive *>(ud);
-	void * bytes = mz_zip_reader_extract_file_to_heap(zip, filename, &size, 0);
-
-	if (bytes)
-	{
-		HCUSTOMMODULE mod = MemoryLoadLibraryEx(
-			bytes, size,
-			MemoryDefaultAlloc, MemoryDefaultFree,
-			Loader::LoadLib, Loader::GetProc, Loader::FreeLib,
-			zip
-		);
-
-		if (mod) Record::Add(filename, mod);
-		else CORONA_LOG_WARNING("Failed to load dependency '%s'", filename);
-
-		mz_free(bytes);
-
-		return mod;
-	}
-
-	return LoadLibraryA(filename);
-}
-
-//
-//
-//
-
-bool Loader::ResolveZip (mz_zip_archive & zip, const char * archive)
-{
-	lua_getref(mL, mPathForFileRef); // ..., system.pathForFile
-	lua_pushstring(mL, archive); // ..., system.pathForFile, archive
-	lua_call(mL, 1, 1); // ..., file?
-
-	bool ok = !lua_isnil(mL, -1) && mz_zip_reader_init_file(&zip, lua_tostring(mL, -1), 0);
-
-	lua_pop(mL, 1); // ...
-
-	return ok;
-}
-
-//
-//
-//
-
-static bool CheckLoaded (const Loader * loader)
-{
-	if (!loader) CORONA_LOG_WARNING("No loader installed");
-	else if (LUA_REFNIL == loader->mPathForFileRef) CORONA_LOG_WARNING("No `system.pathForFile()` available");
-	else return true;
-
-	return false;
-}
-
-//
-//
-//
-
-static Loader * sLoader;
-
-//
-//
-//
-
-CORONA_EXTERN_C void * LoadDLL (const char * filename, const char * archive)
-{
-	if (!CheckLoaded(sLoader)) return nullptr;
-
-	//
-	//
-	//
-
-	auto iter = sLoader->mArchives.find(archive);
-
-	if (iter != sLoader->mArchives.end())
-	{
-		Record * record = Record::Find(filename, nullptr);
-
-		if (!record || record->mModule != iter->second)
-		{
-			CORONA_LOG_WARNING("Inconsistency with loaded archive '%s' and primary file '%s'", archive, filename);
-
-			return nullptr;
-		}
-
-		return iter->second;
-	}
-	
-	//
-	//
-	//
-
-	mz_zip_archive zip = {};
-	void * result = nullptr;
-
-	if (sLoader->ResolveZip(zip, archive))
-	{
-		size_t size;
-		void * bytes = mz_zip_reader_extract_file_to_heap(&zip, filename, &size, 0);
-
-		if (bytes)
-		{
-			HCUSTOMMODULE mod = MemoryLoadLibraryEx(
-				bytes, size,
-				MemoryDefaultAlloc, MemoryDefaultFree,
-				Loader::LoadLib, Loader::GetProc, Loader::FreeLib,
-				&zip
-			);
-
-			if (mod)
-			{
-				Record::Add(filename, mod);
-
-				sLoader->mArchives[archive] = mod;
-
-				result = mod;
-			}
-
-			mz_free(bytes);
-		}
-
-		else CORONA_LOG_WARNING("Unable to find or load '%s' (archive '%s')", filename, archive);
-
-		mz_zip_reader_end(&zip);
-	}
-
-	//
-	//
-	//
-
-	if (!result) result = LoadLibraryA(filename);
-
-	return result;
-}
-
-//
-//
-//
-
-CORONA_EXTERN_C void * GetProcFromDLL (void * dll, const char * procname)
-{
-	if (!CheckLoaded(sLoader)) return nullptr;
-
-	return Loader::GetProc(dll, procname, nullptr);
+	return proc;
 }
 
 //
@@ -321,37 +67,18 @@ void AddLoader (lua_State * L)
 {
 	int top = lua_gettop(L);
 
-	sLoader = LuaXS::NewTyped<Loader>(L); // ..., loader
-
-	sLoader->mL = L;
-
-	LuaXS::AttachGC(L, MT_NAME(Loader), LuaXS::TypedGC<Loader>);
-
-	AddToStore(L);
-
-	//
-	//
-	//
-
-	lua_getglobal(L, "system"); // ..., loader, system
-
-	if (lua_istable(L, -1))
+	if (TryToAddPlugin(L, "plugin_MemoryLoader")) // soloud, ..., MemoryLoader?
 	{
-		lua_getfield(L, -1, "pathForFile"); // ..., loader, system, system.pathForFile
+		lua_getfield(L, -1, "Mount"); // soloud, ..., MemoryLoader, MemoryLoader.Mount
+		lua_pushliteral(L, "libopenmpt.zip"); // soloud, ..., MemoryLoader, MemoryLoader.Mount, "libopenmpt.zip"
+		lua_call(L, 1, 0); // soloud, ..., MemoryLoader
+		lua_getfield(L, -1, "LoadLibrary"); // ..., MemoryLoader, MemoryLoader.LoadLibrary
+		lua_pushliteral(L, "libopenmpt"); // ..., MemoryLoader, MemoryLoader.LoadLibrary, "libopenmpt"
+		lua_call(L, 1, 1); // ..., MemoryLoader, Openmpt?
 
-		if (lua_isfunction(L, -1)) sLoader->mPathForFileRef = lua_ref(L, 1); // ..., loader, system; ref = system.pathForFile
-		else CORONA_LOG_WARNING("Unable to find `system.pathForFile()`, or not a function");
+		sLuaState = L;
+		sOpenmptRef = lua_ref(L, 1); // soloud, ...; ref = Openmpt
 	}
 
-	//
-	//
-	//
-
-	lua_settop(L, top); // ...
-
-	//
-	//
-	//
-
-	sRecords.clear();
+	lua_settop(L, top); // soloud
 }

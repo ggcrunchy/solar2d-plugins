@@ -431,6 +431,31 @@ void AddBasics (lua_State * L)
 //
 //
 
+bool TryToAddPlugin (lua_State * L, const char * name)
+{
+	lua_getglobal(L, "package"); // ..., package
+
+	if (!lua_istable(L, -1)) CORONA_LOG_WARNING("Unable to find `package`, or not a table");
+	else
+	{
+		lua_getfield(L, -1, "loaded"); // ..., package, package.loaded
+
+		if (!lua_istable(L, -1)) CORONA_LOG_WARNING("Unable to find `package.loaded`, or not a table");
+		else
+		{
+			lua_getfield(L, -1, name); // ..., package, package.loaded, plugin?
+
+			return lua_istable(L, -1);
+		}
+	}
+
+	return false;
+}
+
+//
+//
+//
+
 CORONA_EXPORT int luaopen_plugin_soloud (lua_State * L)
 {
 	lua_newtable(L); // soloud

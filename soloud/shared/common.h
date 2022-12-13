@@ -147,7 +147,9 @@ void RemoveFromStore (lua_State * L, void * object = nullptr);
 //
 //
 //
+
 void AddBasics (lua_State * L);
+bool TryToAddPlugin (lua_State * L, const char * name);
 
 //
 //

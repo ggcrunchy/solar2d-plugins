@@ -43,68 +43,6 @@
 //
 //
 
-#if 0 // def _WIN32
-	typedef void * (*dll_openmpt_module_create_from_memory)(const void * filedata, size_t filesize, void *logfunc, void * user, void * ctls);
-	typedef void (*dll_openmpt_module_destroy)(void * mod);
-	typedef int (*dll_openmpt_module_read_float_stereo)(void * mod, int samplerate, size_t count, float * left, float * right);
-	typedef void (*dll_openmpt_module_set_repeat_count)(void* mod, int repeat_count);
-
-	static HMODULE openDll ()
-	{
-		HMODULE res = /*LoadLibraryA*/(HMODULE)LoadDLL("libopenmpt.dll", "libopenmpt.zip");
-		return res;
-	}
-
-	static void* getDllProc (HMODULE aDllHandle, const char * aProcName)
-	{
-		return (void *)/*GetProcAddress*/GetProcFromDLL(aDllHandle, (LPCSTR)aProcName);
-	}
-#endif
-
-static int load_dll()
-{
-#if 0 // def _WIN32
-	HMODULE dll = nullptr;
-#else
-	void * dll = nullptr;
-#endif
-    /*
-	if (d_openmpt_module_create_from_memory != NULL)
-	{
-		return 1;
-	}
-
-	dll = openDll();
-
-	if (dll)
-	{
-		d_openmpt_module_create_from_memory = (dll_openmpt_module_create_from_memory)getDllProc(dll, "openmpt_module_create_from_memory");
-		d_openmpt_module_set_repeat_count = (dll_openmpt_module_set_repeat_count)getDllProc(dll, "openmpt_module_set_repeat_count");
-
-
-
-		if (d_openmpt_module_create_from_memory &&
-			d_openmpt_module_set_repeat_count)
-		{
-			return 1;
-		}
-	}
-	d_openmpt_module_create_from_memory = NULL;*/
-	return 0;
-}
-/*
-void *openmpt_module_create_from_memory(const void * filedata, size_t filesize, void *logfunc, void * user, void * ctls)
-{
-	if (load_dll())
-		return d_openmpt_module_create_from_memory(filedata, filesize, logfunc, user, ctls);
-	return 0;
-}
-*/
-
-//
-//
-//
-
 static HCUSTOMMODULE * GetCustomModule (lua_State * L)
 {
     return LuaXS::CheckUD<HCUSTOMMODULE>(L, 1, MEMORY_LOADER_LIB_NAME);
@@ -116,7 +54,7 @@ static HCUSTOMMODULE * GetCustomModule (lua_State * L)
 
 template<int kListIndex> void AddLib (lua_State * L, HCUSTOMMODULE mod)
 {
-    *(HCUSTOMMODULE *)lua_newuserdata(L, sizeof(HCUSTOMMODULE)) = mod; // filename, zip_name / callback, zpath / store, lib
+    *LuaXS::NewTyped<HCUSTOMMODULE>(L) = mod; // filename, zip_name / callback, zpath / store, lib
 
     LuaXS::AttachMethods(L, MEMORY_LOADER_LIB_NAME, [](lua_State * L) {
         luaL_Reg funcs[] = {
@@ -176,7 +114,7 @@ template<int kListIndex> void AddLib (lua_State * L, HCUSTOMMODULE mod)
             return 1;
         }, 2); // ..., mt, procs_to_lib, GetProc; GetProc.upvalues = { procs_to_lib, list }
         lua_pushvalue(L, -1); // ..., mt, procs_to_lib, GetProc, GetProc
-        lua_setfield(L, -3, "GetProc"); // ..., mt = { __gc, GetProc = GetProc }, procs_to_lib, GetProc
+        lua_setfield(L, -4, "GetProc"); // ..., mt = { __gc, GetProc = GetProc }, procs_to_lib, GetProc
 
         //
         //
@@ -289,7 +227,7 @@ CORONA_EXPORT int luaopen_plugin_MemoryLoader (lua_State* L)
             for (size_t i = 1; !mod && i <= len; ++i, lua_pop(L, 2))
             {
                 lua_rawgeti(L, lua_upvalueindex(2), int(i)); // dll_name*, zip_name / callback
-                                
+        
                 if (!lua_isfunction(L, -1))
                 {
                     lua_pushvalue(L, lua_upvalueindex(1)); // dll_name*, zip_name, system.pathForFile

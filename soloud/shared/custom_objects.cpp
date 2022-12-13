@@ -72,31 +72,6 @@ void DecodeObject (lua_State * L, const char * encoded, size_t len)
 //
 //
 
-static bool FindLuaproc (lua_State * L)
-{
-	lua_getglobal(L, "package"); // ..., package
-
-	if (!lua_istable(L, -1)) CORONA_LOG_WARNING("Unable to find `package`, or not a table");
-	else
-	{
-		lua_getfield(L, -1, "loaded"); // ..., package, package.loaded
-
-		if (!lua_istable(L, -1)) CORONA_LOG_WARNING("Unable to find `package.loaded`, or not a table");
-		else
-		{
-			lua_getfield(L, -1, "plugin_luaproc"); // ..., package, package.loaded, luaproc?
-
-			return lua_istable(L, -1);
-		}
-	}
-
-	return false;
-}
-
-//
-//
-//
-
 const char * EncodeObject (lua_State * L, size_t & len)
 {
 	lua_pushcfunction(L, mar_encode); // ..., object, mar_encode
@@ -109,7 +84,7 @@ const char * EncodeObject (lua_State * L, size_t & len)
 
 	int top = lua_gettop(L);
 
-	if (FindLuaproc(L)) // ..., mar_encode, object, constants, package, package.loaded, luaproc?
+	if (TryToAddPlugin(L, "plugin_luaproc")) // ..., mar_encode, object, constants, package, package.loaded, luaproc?
 	{
 		lua_rawseti(L, -4, 2); // ..., mar_encode, object, constants = { soloud, luaproc }, package, package.loaded
 		lua_getfield(L, -2, "plugin_MemoryBlob"); // ..., mar_encode, object, constants = { soloud, luaproc }, package, package.loaded, MemoryBlob
@@ -155,7 +130,7 @@ static void ImportLibs (lua_State * to, lua_State * from)
 {
 	int top = lua_gettop(from);
 
-	if (FindLuaproc(from)) // ..., package, package.loaded, luaproc?
+	if (TryToAddPlugin(from, "plugin_luaproc")) // ..., package, package.loaded, luaproc?
 	{
 		const char * names[] = { "get_integer", "get_number", "update_integer", "update_number", nullptr };
 

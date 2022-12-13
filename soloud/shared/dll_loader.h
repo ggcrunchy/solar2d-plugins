@@ -30,8 +30,8 @@
 //
 
 #ifdef _WIN32
-	CORONA_EXTERN_C void * LoadDLL (const char * filename, const char * archive);
-	CORONA_EXTERN_C void * GetProcFromDLL (void * dll, const char * procname);
+	CORONA_EXTERN_C void * GetProcFromDLL (const char * name);
+
 	void AddLoader (struct lua_State * L);
 #else
 	void AddLoader (struct lua_State * L) {}

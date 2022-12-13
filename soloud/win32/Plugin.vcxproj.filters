@@ -345,19 +345,13 @@
     <ClCompile Include="..\shared\custom_objects.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\shared\dll_loader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\shared\miniz.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\shared\MemoryModule.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\shared\custom_filter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\shared\custom_filter_instance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\dll_loader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -537,12 +531,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\dll_loader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\shared\miniz.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\shared\MemoryModule.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
