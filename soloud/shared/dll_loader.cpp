@@ -32,6 +32,52 @@
 //
 //
 
+static void AddOpenmpt (lua_State * L, int & ref)
+{
+	int top = lua_gettop(L);
+
+	if (TryToAddPlugin(L, "plugin_MemoryLoader")) // ..., MemoryLoader?
+	{
+		lua_getfield(L, -1, "Mount"); // ..., MemoryLoader, MemoryLoader.Mount
+		lua_pushliteral(L, "libopenmpt.zip"); // ..., MemoryLoader, MemoryLoader.Mount, "libopenmpt.zip"
+		lua_call(L, 1, 0); // ..., MemoryLoader
+		lua_getfield(L, -1, "LoadLibrary"); // ..., MemoryLoader, MemoryLoader.LoadLibrary
+		lua_pushliteral(L, "libopenmpt"); // ..., MemoryLoader, MemoryLoader.LoadLibrary, "libopenmpt"
+		lua_call(L, 1, 1); // ..., MemoryLoader, Openmpt?
+
+		ref = lua_ref(L, 1); // ...; ref = Openmpt
+	}
+
+	lua_settop(L, top); // ...
+}
+
+//
+//
+//
+
+static void * AuxGetProcFromDLL (lua_State * L, int openmpt, const char * name)
+{
+	if (LUA_REFNIL == openmpt) return nullptr;
+
+	lua_getref(L, openmpt); // ..., Openmpt
+	lua_getfield(L, -1, "GetProc"); // ..., Openmpt, Openmpt:GetProc
+	lua_insert(L, -2); // Openmpt:GetProc, Openmpt
+	lua_pushstring(L, name); // ..., Openmpt:GetProc, Openmpt, name
+	lua_call(L, 2, 1); // ..., proc?
+
+	void * proc = nullptr;
+
+	if (!lua_isnil(L, -1)) proc = *LuaXS::UD<void *>(L, -1);
+
+	lua_pop(L, 1); // ...
+
+	return proc;
+}
+
+//
+//
+//
+
 static lua_State * sLuaState;
 
 static int sOpenmptRef;
@@ -42,21 +88,9 @@ static int sOpenmptRef;
 
 void * GetProcFromDLL (const char * name)
 {
-	if (LUA_REFNIL == sOpenmptRef) return nullptr;
+	if (LUA_NOREF == sOpenmptRef) AddOpenmpt(sLuaState, sOpenmptRef);
 
-	lua_getref(sLuaState, sOpenmptRef); // ..., Openmpt
-	lua_getfield(sLuaState, -1, "GetProc"); // ..., Openmpt, Openmpt:GetProc
-	lua_insert(sLuaState, -2); // Openmpt:GetProc, Openmpt
-	lua_pushstring(sLuaState, name); // ..., Openmpt:GetProc, Openmpt, name
-	lua_call(sLuaState, 2, 1); // ..., proc?
-
-	void * proc = nullptr;
-
-	if (!lua_isnil(sLuaState, -1)) proc = *LuaXS::UD<void *>(sLuaState, -1);
-
-	lua_pop(sLuaState, 1); // ...
-
-	return proc;
+	return AuxGetProcFromDLL(sLuaState, sOpenmptRef, name);
 }
 
 //
@@ -65,20 +99,6 @@ void * GetProcFromDLL (const char * name)
 
 void AddLoader (lua_State * L)
 {
-	int top = lua_gettop(L);
-
-	if (TryToAddPlugin(L, "plugin_MemoryLoader")) // soloud, ..., MemoryLoader?
-	{
-		lua_getfield(L, -1, "Mount"); // soloud, ..., MemoryLoader, MemoryLoader.Mount
-		lua_pushliteral(L, "libopenmpt.zip"); // soloud, ..., MemoryLoader, MemoryLoader.Mount, "libopenmpt.zip"
-		lua_call(L, 1, 0); // soloud, ..., MemoryLoader
-		lua_getfield(L, -1, "LoadLibrary"); // ..., MemoryLoader, MemoryLoader.LoadLibrary
-		lua_pushliteral(L, "libopenmpt"); // ..., MemoryLoader, MemoryLoader.LoadLibrary, "libopenmpt"
-		lua_call(L, 1, 1); // ..., MemoryLoader, Openmpt?
-
-		sLuaState = L;
-		sOpenmptRef = lua_ref(L, 1); // soloud, ...; ref = Openmpt
-	}
-
-	lua_settop(L, top); // soloud
+	sLuaState = L;
+	sOpenmptRef = LUA_NOREF;
 }
