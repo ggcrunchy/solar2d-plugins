@@ -35,7 +35,7 @@ include $(PREBUILT_SHARED_LIBRARY)
 # -----------------------------------------------------------------------------
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := libplugin.customobjects2
+LOCAL_MODULE := libplugin.customobjects1
 
 LOCAL_C_INCLUDES := \
 	$(SRC_DIR)

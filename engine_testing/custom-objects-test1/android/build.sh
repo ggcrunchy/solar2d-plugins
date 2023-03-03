@@ -6,7 +6,7 @@ set -o errexit
 
 path=`dirname $0`
 
-TARGET_NAME=customobjects2
+TARGET_NAME=customobjects1
 CONFIG=Release
 DEVICE_TYPE=all
 BUILD_TYPE=clean
