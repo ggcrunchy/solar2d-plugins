@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="..\shared\plugin.customobjects.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(CORONA_ROOT)/Corona/shared/include/Corona;$(CORONA_ROOT)/Corona/shared/include/lua;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(AdditionalIncludeDirectories);$(_ZVcpkgCurrentInstalledDir)include;$(CORONA_ROOT)/Corona/shared/include/Corona;$(CORONA_ROOT)/Corona/shared/include/lua;</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -49,7 +50,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(Configuration)\</OutDir>
-    <TargetName>plugin_streamlines</TargetName>
+    <TargetName>customobjects1</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -60,22 +61,33 @@
     <PreBuildEvent />
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>CoronaEnterprise\Corona\shared\include;CoronaEnterprise\Corona\shared\include\Corona;CoronaEnterprise\Corona\shared\include\lua;..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(CORONA_ROOT)/Corona/shared/include/Corona;$(CORONA_ROOT)/Corona/shared/include/lua;%(AdditionalIncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>CoronaEnterprise\Corona\win\lib\*.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(CORONA_ROOT)\Corona\win\lib\*.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <PostBuildEvent />
+    <PostBuildEvent>
+      <Command>set PLUGIN_DIR=$(appdata)\Solar2DPlugins\com.xibalbastudios\plugin.$(TargetName)\win32-sim
+setlocal enableextensions
+mkdir %PLUGIN_DIR%
+set FILENAME=plugin_$(TargetName).dll
+set FULL_NAME=%PLUGIN_DIR%\%FILENAME%
+copy "$(OutDir)$(TargetName).dll" "%FULL_NAME%"
+del "%PLUGIN_DIR%\data.tgz"
+tar -czf "%PLUGIN_DIR%\data.tgz" -C "%PLUGIN_DIR%" %FILENAME%
+del "%FULL_NAME%"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <PreBuildEvent />
