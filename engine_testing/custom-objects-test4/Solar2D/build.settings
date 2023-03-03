@@ -1,3 +1,11 @@
+local URL = "https://github.com/ggcrunchy/solar2d-plugins/raw/master/DevSnapshots/plugin.customobjects4/%s/data.tgz"
+
+local Platforms = {}
+
+for _, name in ipairs{ "win32-sim" } do
+  Platforms[name] = { url = URL:format(name) }
+end
+
 settings =
 {
 	android =
@@ -12,7 +20,7 @@ settings =
 
 	plugins = {
     ["plugin.AssetReader"] = { publisherId = "com.xibalbastudios" },
-		["plugin.customobjects4"] = { publisherId = "com.xibalbastudios" }
+		["plugin.customobjects4"] = { publisherId = "com.xibalbastudios", supportedPlatforms = Platforms }
 	},
 
 	excludeFiles =
