@@ -18,7 +18,7 @@ then
 	CMD="cmd //c "
 else
     ANDROID_NDK="$HOME/Library/Android/sdk/ndk/18.1.5063045"
-    LIBS_SRC_DIR="$HOME/Library/Application Support/Corona/Native/Corona/android/lib/gradle/Corona.aar"
+    LIBS_SRC_DIR=/Applications/Native/Corona/android/lib/gradle/Corona.aar
 	CMD="arch -x86_64 /bin/bash -c" # https://github.com/android/ndk/issues/1410
 fi
 

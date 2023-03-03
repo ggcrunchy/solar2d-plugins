@@ -3,7 +3,7 @@
 path=`dirname $0`
 
 OUTPUT_DIR=$1
-TARGET_NAME=plugin_customobjects1
+TARGET_NAME=plugin_customobjects3
 OUTPUT_SUFFIX=a
 CONFIG=Release
 
@@ -55,3 +55,6 @@ lipo -create "$path"/build/$CONFIG-iphoneos/lib$TARGET_NAME.$OUTPUT_SUFFIX "$pat
 checkError
 
 echo "$OUTPUT_DIR"/lib$TARGET_NAME.$OUTPUT_SUFFIX
+
+tar -czvf data.tgz metadata.lua libplugin_customobjects3.a
+echo $path/data.tgz.

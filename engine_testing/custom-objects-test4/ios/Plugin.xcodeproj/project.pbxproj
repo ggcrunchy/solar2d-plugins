@@ -242,7 +242,7 @@
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/Native/Corona/shared/include/Corona ${SRCROOT}/Native/Corona/shared/include/lua ${SRCROOT}/Native/Corona/ios/include/Corona";
+				USER_HEADER_SEARCH_PATHS = "/Applications/Native/Corona/shared/include/Corona /Applications/Native/Corona/shared/include/lua /Applications/Native/Corona/ios/include/Corona";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -257,6 +257,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				DSTROOT = /tmp/plugin_library.dst;
 				ENABLE_BITCODE = NO;
+				EXCLUDED_ARCHS = arm64;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"BR_NAMESPACE_PREFIX=BR_MSQUARES",
@@ -281,6 +282,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				DSTROOT = /tmp/plugin_library.dst;
 				ENABLE_BITCODE = NO;
+				EXCLUDED_ARCHS = arm64;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -292,7 +294,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/Native/Corona/shared/include/Corona ${SRCROOT}/Native/Corona/shared/include/lua ${SRCROOT}/Native/Corona/ios/include/Corona";
+				USER_HEADER_SEARCH_PATHS = "/Applications/Native/Corona/shared/include/Corona /Applications/Native/Corona/shared/include/lua /Applications/Native/Corona/ios/include/Corona";
 			};
 			name = Release;
 		};

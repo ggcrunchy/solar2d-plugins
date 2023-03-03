@@ -8,8 +8,7 @@ LOCAL_PATH := $(call my-dir)
 ifeq ($(OS),Windows_NT)
 	CORONA_ROOT := C:\PROGRA~2\CORONA~1\Corona\Native
 else
-	CORONA := /Applications/Corona-3649
-	CORONA_ROOT := $(CORONA)/Native
+	CORONA_ROOT := /Applications/Native
 endif
 
 LUA_API_DIR := $(CORONA_ROOT)/Corona/shared/include/lua
@@ -36,7 +35,7 @@ include $(PREBUILT_SHARED_LIBRARY)
 # -----------------------------------------------------------------------------
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := libplugin.customobjects1
+LOCAL_MODULE := libplugin.customobjects2
 
 LOCAL_C_INCLUDES := \
 	$(SRC_DIR)

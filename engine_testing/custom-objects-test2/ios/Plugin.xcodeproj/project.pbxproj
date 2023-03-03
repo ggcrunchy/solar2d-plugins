@@ -23,7 +23,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		A4E253B6166D6FB300DCDC2C /* libplugin_customobjects1.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libplugin_customobjects1.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A4E253B6166D6FB300DCDC2C /* libplugin_customobjects2.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libplugin_customobjects2.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA2ED77727062C3200CEE021 /* libplayer.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libplayer.a; path = "../../../../../../Applications/Corona-3649/Native/Corona/ios/lib/libplayer.a"; sourceTree = "<group>"; };
 		AAFC5B8226F91BB600A112DC /* plugin.customobjects.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = plugin.customobjects.cpp; path = ../shared/plugin.customobjects.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -59,7 +59,7 @@
 		A484111A15114F700074BD57 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A4E253B6166D6FB300DCDC2C /* libplugin_customobjects1.a */,
+				A4E253B6166D6FB300DCDC2C /* libplugin_customobjects2.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -75,9 +75,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A4E253B5166D6FB300DCDC2C /* plugin_customobjects1 */ = {
+		A4E253B5166D6FB300DCDC2C /* plugin_customobjects2 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A4E253BF166D6FB300DCDC2C /* Build configuration list for PBXNativeTarget "plugin_customobjects1" */;
+			buildConfigurationList = A4E253BF166D6FB300DCDC2C /* Build configuration list for PBXNativeTarget "plugin_customobjects2" */;
 			buildPhases = (
 				A4E253B2166D6FB300DCDC2C /* Sources */,
 				A4E253B3166D6FB300DCDC2C /* Frameworks */,
@@ -87,9 +87,9 @@
 			);
 			dependencies = (
 			);
-			name = plugin_customobjects1;
+			name = plugin_customobjects2;
 			productName = plugin_library;
-			productReference = A4E253B6166D6FB300DCDC2C /* libplugin_customobjects1.a */;
+			productReference = A4E253B6166D6FB300DCDC2C /* libplugin_customobjects2.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -113,7 +113,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A4E253B5166D6FB300DCDC2C /* plugin_customobjects1 */,
+				A4E253B5166D6FB300DCDC2C /* plugin_customobjects2 */,
 			);
 		};
 /* End PBXProject section */
@@ -233,6 +233,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				DSTROOT = /tmp/plugin_library.dst;
 				ENABLE_BITCODE = NO;
+				EXCLUDED_ARCHS = arm64;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"BR_NAMESPACE_PREFIX=BR_MSQUARES",
@@ -257,6 +258,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				DSTROOT = /tmp/plugin_library.dst;
 				ENABLE_BITCODE = NO;
+				EXCLUDED_ARCHS = arm64;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -268,7 +270,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/Native/Corona/shared/include/Corona ${SRCROOT}/Native/Corona/shared/include/lua ${SRCROOT}/Native/Corona/ios/include/Corona";
+				USER_HEADER_SEARCH_PATHS = "/Applications/Native/Corona/shared/include/Corona /Applications/Native/Corona/shared/include/lua /Applications/Native/Corona/ios/include/Corona";
 			};
 			name = Release;
 		};
@@ -284,7 +286,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A4E253BF166D6FB300DCDC2C /* Build configuration list for PBXNativeTarget "plugin_customobjects1" */ = {
+		A4E253BF166D6FB300DCDC2C /* Build configuration list for PBXNativeTarget "plugin_customobjects2" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A4E253C0166D6FB300DCDC2C /* Debug */,

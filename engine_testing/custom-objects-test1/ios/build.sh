@@ -55,3 +55,6 @@ lipo -create "$path"/build/$CONFIG-iphoneos/lib$TARGET_NAME.$OUTPUT_SUFFIX "$pat
 checkError
 
 echo "$OUTPUT_DIR"/lib$TARGET_NAME.$OUTPUT_SUFFIX
+
+tar -czvf data.tgz metadata.lua libplugin_customobjects1.a
+echo $path/data.tgz.
