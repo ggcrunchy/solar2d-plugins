@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AA34210929B45A0A00154333 /* instancing_shared.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA34210529B45A0A00154333 /* instancing_shared.cpp */; };
+		AA34210A29B45A0A00154333 /* instancing_unshared.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA34210629B45A0A00154333 /* instancing_unshared.cpp */; };
+		AA34210B29B45A0A00154333 /* instancing_basic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA34210729B45A0A00154333 /* instancing_basic.cpp */; };
 		AAFC5B8326F91BB700A112DC /* plugin.customobjects.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAFC5B8226F91BB600A112DC /* plugin.customobjects.cpp */; };
 /* End PBXBuildFile section */
 
@@ -25,6 +28,10 @@
 /* Begin PBXFileReference section */
 		A4E253B6166D6FB300DCDC2C /* libplugin_customobjects3.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libplugin_customobjects3.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA2ED77727062C3200CEE021 /* libplayer.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libplayer.a; path = "../../../../../../Applications/Corona-3649/Native/Corona/ios/lib/libplayer.a"; sourceTree = "<group>"; };
+		AA34210529B45A0A00154333 /* instancing_shared.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = instancing_shared.cpp; path = ../shared/instancing_shared.cpp; sourceTree = "<group>"; };
+		AA34210629B45A0A00154333 /* instancing_unshared.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = instancing_unshared.cpp; path = ../shared/instancing_unshared.cpp; sourceTree = "<group>"; };
+		AA34210729B45A0A00154333 /* instancing_basic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = instancing_basic.cpp; path = ../shared/instancing_basic.cpp; sourceTree = "<group>"; };
+		AA34210829B45A0A00154333 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = common.h; path = ../shared/common.h; sourceTree = "<group>"; };
 		AAFC5B8226F91BB600A112DC /* plugin.customobjects.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = plugin.customobjects.cpp; path = ../shared/plugin.customobjects.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -43,6 +50,10 @@
 			isa = PBXGroup;
 			children = (
 				AAFC5B8226F91BB600A112DC /* plugin.customobjects.cpp */,
+				AA34210829B45A0A00154333 /* common.h */,
+				AA34210729B45A0A00154333 /* instancing_basic.cpp */,
+				AA34210529B45A0A00154333 /* instancing_shared.cpp */,
+				AA34210629B45A0A00154333 /* instancing_unshared.cpp */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -123,7 +134,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA34210B29B45A0A00154333 /* instancing_basic.cpp in Sources */,
+				AA34210929B45A0A00154333 /* instancing_shared.cpp in Sources */,
 				AAFC5B8326F91BB700A112DC /* plugin.customobjects.cpp in Sources */,
+				AA34210A29B45A0A00154333 /* instancing_unshared.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
