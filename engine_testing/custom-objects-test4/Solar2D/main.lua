@@ -23,6 +23,8 @@
 -- [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
 --
 
+display.setDefault("isShaderCompilerVerbose", true)
+
 local co4 = require("plugin.customobjects4")
 local camera = require("camera")
 local obj_parser = require("obj_parser")

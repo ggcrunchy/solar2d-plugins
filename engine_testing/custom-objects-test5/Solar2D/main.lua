@@ -64,7 +64,7 @@ end
 display.setDefault("enableDepth", true)
 --display.setDrawMode("wireframe")
 
--- Get instanacing support.
+-- Get instancing support.
 local instancing = system.getInfo("instancingSupport")
 
 if instancing then
