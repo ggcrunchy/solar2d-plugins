@@ -2,7 +2,7 @@ local URL = "https://github.com/ggcrunchy/solar2d-plugins/raw/master/DevSnapshot
 
 local Platforms = {}
 
-for _, name in ipairs{ "win32-sim", "mac-sim", "android" } do
+for _, name in ipairs{ "win32-sim", "mac-sim", "android", "iphone", "iphone-sim" } do
   Platforms[name] = { url = URL:format(name) }
 end
 
