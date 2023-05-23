@@ -117,6 +117,67 @@ RegisterRendererLogic( lua_State * L, SharedDepthStateData * sharedData )
     };
     
     CoronaRendererRegisterStateBlock( L, &depth_state, &sharedData->blockID );
+	
+	GLboolean test, write_mask, cull_face;
+	GLfloat depth_clear, depth_range[2];
+	GLint depth_func, cull_face_mode;
+
+	glGetBooleanv(GL_DEPTH_TEST, &test);
+	glGetBooleanv(GL_DEPTH_WRITEMASK, &write_mask);
+	glGetBooleanv(GL_CULL_FACE, &cull_face);
+	glGetFloatv(GL_DEPTH_CLEAR_VALUE, &depth_clear);
+	glGetFloatv(GL_DEPTH_RANGE, depth_range);
+	glGetIntegerv(GL_DEPTH_FUNC, &depth_func);
+	glGetIntegerv(GL_CULL_FACE_MODE, &cull_face_mode);
+
+	lua_pushboolean( L, !!test );
+	lua_setglobal( L, "DEPTH_TEST" );
+	lua_pushboolean( L, !!write_mask );
+	lua_setglobal( L, "DEPTH_WRITEMASK" );
+	lua_pushboolean( L, !!cull_face );
+	lua_setglobal( L, "CULL_FACE" );
+	lua_pushnumber( L, depth_clear );
+	lua_setglobal( L, "DEPTH_CLEAR_VALUE" );
+	lua_pushnumber( L, depth_range[0] );
+	lua_setglobal( L, "DEPTH_RANGE0" );
+	lua_pushnumber( L, depth_range[1] );
+	lua_setglobal( L, "DEPTH_RANGE1" );
+
+	const char * cf_modes[] = { "FRONT", "BACK", "FRONT_AND_BACK", nullptr };
+	int modes[] = { GL_FRONT, GL_BACK, GL_FRONT_AND_BACK };
+	
+	for (int i = 0; cf_modes[i]; ++i)
+	{
+		if (modes[i] == cull_face_mode)
+		{
+			lua_pushstring( L, cf_modes[i] );
+			lua_setglobal( L, "CULL_FACE_MODE" );
+			
+			break;
+		}
+	}
+	
+	const char * d_funcs[] = { "NEVER", "LESS", "EQUAL", "LEQUAL", "GREATER", "NOTEQUAL", "GEQUAL", "ALWAYS", nullptr };
+	int funcs[] = { GL_NEVER, GL_LESS, GL_EQUAL, GL_LEQUAL, GL_GREATER, GL_NOTEQUAL, GL_GEQUAL, GL_ALWAYS };
+	
+	for (int i = 0; d_funcs[i]; ++i)
+	{
+		if (funcs[i] == depth_func)
+		{
+			lua_pushstring( L, d_funcs[i] );
+			lua_setglobal( L, "DEPTH_FUNC" );
+			
+			break;
+		}
+	}	
+/*
+	GL_DEPTH_CLEAR_VALUE - 1 (float))
+	GL_DEPTH_FUNC - value (GL_LESS)
+	GL_DEPTH_RANGE - 0, 1 (float
+	GL_DEPTH_TEST - boolean (false)
+	GL_DEPTH_WRITEMASK - boolean (true)
+	GL_CULL_FACE - boolean (false)
+	GL_CULL_FACE_MODE - value, GL_FRONT,GL_BACK,GL_FRONT_AND_BACK (back)*/
 }
 
 static CoronaObjectDrawParams
