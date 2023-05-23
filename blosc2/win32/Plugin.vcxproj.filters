@@ -1,0 +1,405 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\shared\plugin.blosc2.cpp" />
+    <ClCompile Include="..\shared\blosc\b2nd.c">
+      <Filter>blosc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\blosc\b2nd_utils.c">
+      <Filter>blosc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\blosc\bitshuffle-avx2.c">
+      <Filter>blosc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\blosc\bitshuffle-generic.c">
+      <Filter>blosc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\blosc\bitshuffle-sse2.c">
+      <Filter>blosc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\blosc\blosc2.c">
+      <Filter>blosc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\blosc\blosc2-stdio.c">
+      <Filter>blosc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\blosc\blosclz.c">
+      <Filter>blosc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\blosc\delta.c">
+      <Filter>blosc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\blosc\directories.c">
+      <Filter>blosc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\blosc\fastcopy.c">
+      <Filter>blosc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\blosc\frame.c">
+      <Filter>blosc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\blosc\schunk.c">
+      <Filter>blosc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\blosc\sframe.c">
+      <Filter>blosc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\blosc\shuffle.c">
+      <Filter>blosc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\blosc\shuffle-avx2.c">
+      <Filter>blosc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\blosc\shuffle-generic.c">
+      <Filter>blosc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\blosc\shuffle-sse2.c">
+      <Filter>blosc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\blosc\stune.c">
+      <Filter>blosc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\blosc\timestamp.c">
+      <Filter>blosc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\blosc\trunc-prec.c">
+      <Filter>blosc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\internal-complibs\lz4-1.9.4\lz4.c">
+      <Filter>internal-complibs\lz4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\internal-complibs\lz4-1.9.4\lz4hc.c">
+      <Filter>internal-complibs\lz4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\common\debug.c">
+      <Filter>internal-complibs\zstd\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\common\entropy_common.c">
+      <Filter>internal-complibs\zstd\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\common\error_private.c">
+      <Filter>internal-complibs\zstd\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\common\fse_decompress.c">
+      <Filter>internal-complibs\zstd\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\common\pool.c">
+      <Filter>internal-complibs\zstd\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\common\threading.c">
+      <Filter>internal-complibs\zstd\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\common\xxhash.c">
+      <Filter>internal-complibs\zstd\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\common\zstd_common.c">
+      <Filter>internal-complibs\zstd\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\compress\fse_compress.c">
+      <Filter>internal-complibs\zstd\compress</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\compress\hist.c">
+      <Filter>internal-complibs\zstd\compress</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\compress\huf_compress.c">
+      <Filter>internal-complibs\zstd\compress</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_compress.c">
+      <Filter>internal-complibs\zstd\compress</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_compress_literals.c">
+      <Filter>internal-complibs\zstd\compress</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_compress_sequences.c">
+      <Filter>internal-complibs\zstd\compress</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_compress_superblock.c">
+      <Filter>internal-complibs\zstd\compress</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_double_fast.c">
+      <Filter>internal-complibs\zstd\compress</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_fast.c">
+      <Filter>internal-complibs\zstd\compress</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_lazy.c">
+      <Filter>internal-complibs\zstd\compress</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_ldm.c">
+      <Filter>internal-complibs\zstd\compress</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_opt.c">
+      <Filter>internal-complibs\zstd\compress</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstdmt_compress.c">
+      <Filter>internal-complibs\zstd\compress</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\decompress\huf_decompress.c">
+      <Filter>internal-complibs\zstd\decompress</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\decompress\zstd_ddict.c">
+      <Filter>internal-complibs\zstd\decompress</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\decompress\zstd_decompress.c">
+      <Filter>internal-complibs\zstd\decompress</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\decompress\zstd_decompress_block.c">
+      <Filter>internal-complibs\zstd\decompress</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\dictBuilder\cover.c">
+      <Filter>internal-complibs\zstd\dictBuilder</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\dictBuilder\divsufsort.c">
+      <Filter>internal-complibs\zstd\dictBuilder</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\dictBuilder\fastcover.c">
+      <Filter>internal-complibs\zstd\dictBuilder</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\dictBuilder\zdict.c">
+      <Filter>internal-complibs\zstd\dictBuilder</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\plugins\plugin_utils.c">
+      <Filter>plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\add_context.cpp" />
+    <ClCompile Include="..\shared\add_cparams.cpp" />
+    <ClCompile Include="..\shared\add_dparams.cpp" />
+    <ClCompile Include="..\shared\add_array.cpp" />
+    <ClCompile Include="..\shared\add_frame.cpp" />
+    <ClCompile Include="..\shared\add_metalayer.cpp" />
+    <ClCompile Include="..\shared\add_schunk.cpp" />
+    <ClCompile Include="..\shared\add_core.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="blosc2">
+      <UniqueIdentifier>{f01209d9-4270-44f5-864c-4484f29dc937}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="blosc">
+      <UniqueIdentifier>{c29a17a9-321e-4094-8678-920ccc33e56b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="internal-complibs">
+      <UniqueIdentifier>{90e0c0de-13b5-48c9-a4c7-4514c5192833}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="internal-complibs\lz4">
+      <UniqueIdentifier>{fcfc8c08-9f41-45c7-a32f-19e469033cf4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="internal-complibs\zstd">
+      <UniqueIdentifier>{27d64a01-b26b-485a-af25-1766f0b99678}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="internal-complibs\zstd\common">
+      <UniqueIdentifier>{39f783d7-9470-465b-96b5-073bea8f28cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="internal-complibs\zstd\compress">
+      <UniqueIdentifier>{35ac8acc-48f6-4856-9392-02d2eec6c087}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="internal-complibs\zstd\decompress">
+      <UniqueIdentifier>{068fb289-ca5a-4eb8-a132-9b52a034beb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="internal-complibs\zstd\dictBuilder">
+      <UniqueIdentifier>{f9c52777-578a-4019-a29a-73a363c88852}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="plugins">
+      <UniqueIdentifier>{a09ae3a1-b389-42d7-a6af-87ec76ffebc1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\shared\blosc\b2nd_utils.h">
+      <Filter>blosc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\blosc\bitshuffle-avx2.h">
+      <Filter>blosc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\blosc\bitshuffle-generic.h">
+      <Filter>blosc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\blosc\bitshuffle-sse2.h">
+      <Filter>blosc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\blosc\blosclz.h">
+      <Filter>blosc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\blosc\blosc-private.h">
+      <Filter>blosc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\blosc\config.h">
+      <Filter>blosc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\blosc\context.h">
+      <Filter>blosc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\blosc\delta.h">
+      <Filter>blosc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\blosc\fastcopy.h">
+      <Filter>blosc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\blosc\frame.h">
+      <Filter>blosc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\blosc\sframe.h">
+      <Filter>blosc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\blosc\shuffle.h">
+      <Filter>blosc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\blosc\shuffle-avx2.h">
+      <Filter>blosc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\blosc\shuffle-generic.h">
+      <Filter>blosc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\blosc\shuffle-sse2.h">
+      <Filter>blosc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\blosc\stune.h">
+      <Filter>blosc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\blosc\trunc-prec.h">
+      <Filter>blosc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\blosc2\blosc2-common.h">
+      <Filter>blosc2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\blosc2\blosc2-export.h">
+      <Filter>blosc2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\blosc2\blosc2-stdio.h">
+      <Filter>blosc2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\blosc2\codecs-registry.h">
+      <Filter>blosc2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\blosc2\filters-registry.h">
+      <Filter>blosc2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\lz4-1.9.4\lz4.h">
+      <Filter>internal-complibs\lz4</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\lz4-1.9.4\lz4hc.h">
+      <Filter>internal-complibs\lz4</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\zdict.h">
+      <Filter>internal-complibs\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\zstd.h">
+      <Filter>internal-complibs\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\zstd_errors.h">
+      <Filter>internal-complibs\zstd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\common\allocations.h">
+      <Filter>internal-complibs\zstd\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\common\bits.h">
+      <Filter>internal-complibs\zstd\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\common\bitstream.h">
+      <Filter>internal-complibs\zstd\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\common\compiler.h">
+      <Filter>internal-complibs\zstd\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\common\cpu.h">
+      <Filter>internal-complibs\zstd\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\common\debug.h">
+      <Filter>internal-complibs\zstd\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\common\error_private.h">
+      <Filter>internal-complibs\zstd\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\common\fse.h">
+      <Filter>internal-complibs\zstd\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\common\huf.h">
+      <Filter>internal-complibs\zstd\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\common\mem.h">
+      <Filter>internal-complibs\zstd\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\common\pool.h">
+      <Filter>internal-complibs\zstd\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\common\portability_macros.h">
+      <Filter>internal-complibs\zstd\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\common\threading.h">
+      <Filter>internal-complibs\zstd\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\common\xxhash.h">
+      <Filter>internal-complibs\zstd\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\common\zstd_deps.h">
+      <Filter>internal-complibs\zstd\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\common\zstd_internal.h">
+      <Filter>internal-complibs\zstd\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\common\zstd_trace.h">
+      <Filter>internal-complibs\zstd\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\compress\clevels.h">
+      <Filter>internal-complibs\zstd\compress</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\compress\hist.h">
+      <Filter>internal-complibs\zstd\compress</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_compress_internal.h">
+      <Filter>internal-complibs\zstd\compress</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_compress_literals.h">
+      <Filter>internal-complibs\zstd\compress</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_compress_sequences.h">
+      <Filter>internal-complibs\zstd\compress</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_compress_superblock.h">
+      <Filter>internal-complibs\zstd\compress</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_cwksp.h">
+      <Filter>internal-complibs\zstd\compress</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_double_fast.h">
+      <Filter>internal-complibs\zstd\compress</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_fast.h">
+      <Filter>internal-complibs\zstd\compress</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_lazy.h">
+      <Filter>internal-complibs\zstd\compress</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_ldm.h">
+      <Filter>internal-complibs\zstd\compress</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_ldm_geartab.h">
+      <Filter>internal-complibs\zstd\compress</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_opt.h">
+      <Filter>internal-complibs\zstd\compress</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstdmt_compress.h">
+      <Filter>internal-complibs\zstd\compress</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\decompress\zstd_ddict.h">
+      <Filter>internal-complibs\zstd\decompress</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\decompress\zstd_decompress_block.h">
+      <Filter>internal-complibs\zstd\decompress</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\decompress\zstd_decompress_internal.h">
+      <Filter>internal-complibs\zstd\decompress</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\dictBuilder\cover.h">
+      <Filter>internal-complibs\zstd\dictBuilder</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\dictBuilder\divsufsort.h">
+      <Filter>internal-complibs\zstd\dictBuilder</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\plugins\plugin_utils.h">
+      <Filter>plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\b2nd.h" />
+    <ClInclude Include="..\shared\blosc2.h" />
+    <ClInclude Include="..\shared\common.h" />
+  </ItemGroup>
+</Project>

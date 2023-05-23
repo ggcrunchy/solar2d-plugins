@@ -15,6 +15,9 @@ struct stbtt_fontinfo * GetFontInfo (lua_State * L, int arg = 1);
 int Codepoint (lua_State * L, int arg);
 
 //
-MemoryXS::LuaMemory * truetype_GetMemory (void);
+
+void * Alloc (size_t size, void * context);
+void Free (void * data, void * context, bool leave_on_stack = false);
+void Push (lua_State * L, void * ptr, bool bAsUserdata);
 
 #endif

@@ -205,7 +205,7 @@ local scene = SSGE.NewScene(camera)
 --
 --
 
-local what = "cerberus"
+local what = "statue"
 local f = open(system.pathForFile(("scenes/%s/%s_config.txt"):format(what, what)))
 
 local lights = {}

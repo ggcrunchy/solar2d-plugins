@@ -38,7 +38,7 @@ if system.getInfo("platform") == "android" and system.getInfo("environment") == 
     if not dir or dir == system.ResourceDirectory then
       if name:sub(-4) ~= ".jpg" and name:sub(-4) ~= ".png" then
         local contents = AssetReader.Read(name)
-        
+
         if not contents then
           return nil
         end
@@ -47,7 +47,7 @@ if system.getInfo("platform") == "android" and system.getInfo("environment") == 
         name = pathForFile(name, dir)
         
         local file = io.open(name, "w")
-        
+
         if file then -- this seems a little saner than trying to rewrite the bits in glue / obj_parser
           file:write(contents)
           file:close()

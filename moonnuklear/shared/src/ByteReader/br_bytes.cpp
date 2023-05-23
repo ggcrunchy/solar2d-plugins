@@ -24,9 +24,23 @@
 #include "CoronaLua.h"
 #include "ByteReader.h"
 
-CORONA_EXTERN_C {
-	#include "ByteReader/br_bytes.h"
-}
+//
+//
+//
+
+#define NEW_VERSION
+
+//
+//
+//
+
+#ifdef NEW_VERSION
+	#include "CoronaMemory.h"
+#else
+	CORONA_EXTERN_C {
+		#include "ByteReader/br_bytes.h"
+	}
+#endif
 
 //
 //
@@ -38,6 +52,31 @@ CORONA_EXTERN_C void * BytesNew (lua_State * L, size_t size)
 
 	if (luaL_newmetatable(L, "moonnuklear.bytes")) // ..., bytes, bytes_mt
 	{
+	#ifdef NEW_VERSION
+		CoronaMemoryInterfaceInfo info = {};
+
+		info.callbacks.getReadableBytes = [](CoronaMemoryWorkspace * ws)
+		{
+			return ws->vars[0].cp;
+		};
+
+		info.callbacks.getByteCount = [](CoronaMemoryWorkspace * ws)
+		{
+			return ws->vars[1].size;
+		};
+
+		info.getObject = [](lua_State * L, int arg, CoronaMemoryWorkspace * ws)
+		{
+			ws->vars[0].cp = lua_touserdata( L, arg );
+			ws->vars[1].size = lua_objlen( L, arg );
+
+			return 1;
+		};
+
+		CoronaMemoryCreateInterface(L, &info); // ..., bytes, bytes_mt, memory_proxy
+
+		lua_setfield(L, -2, "__memory"); // ..., bytes, bytes_mt; bytes_mt.__memory = memory_proxy
+	#else
 		ByteReaderFunc * func = ByteReader::Register(L); // ..., bytes, bytes_mt
 
 		func->mGetBytes = [](lua_State * L, ByteReader & reader, int arg, void *)
@@ -51,6 +90,7 @@ CORONA_EXTERN_C void * BytesNew (lua_State * L, size_t size)
 
 		lua_pushlightuserdata(L, func); // ..., bytes, bytes_mt, reader
 		lua_setfield(L, -2, "__bytes"); // ..., bytes, bytes_mt = { ..., __bytes = reader }
+	#endif
 	}
 
 	lua_setmetatable(L, -2); // ..., bytes; bytes.metatable = bytes_mt

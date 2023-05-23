@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\shared\add_core.cpp" />
+    <ClCompile Include="..\shared\add_array.cpp" />
+    <ClCompile Include="..\shared\blosc\b2nd.c" />
+    <ClCompile Include="..\shared\blosc\b2nd_utils.c" />
+    <ClCompile Include="..\shared\blosc\bitshuffle-avx2.c" />
+    <ClCompile Include="..\shared\blosc\bitshuffle-generic.c" />
+    <ClCompile Include="..\shared\blosc\bitshuffle-sse2.c" />
+    <ClCompile Include="..\shared\blosc\blosc2-stdio.c" />
+    <ClCompile Include="..\shared\blosc\blosc2.c" />
+    <ClCompile Include="..\shared\blosc\blosclz.c" />
+    <ClCompile Include="..\shared\blosc\delta.c" />
+    <ClCompile Include="..\shared\blosc\directories.c" />
+    <ClCompile Include="..\shared\blosc\fastcopy.c" />
+    <ClCompile Include="..\shared\blosc\frame.c" />
+    <ClCompile Include="..\shared\blosc\schunk.c" />
+    <ClCompile Include="..\shared\blosc\sframe.c" />
+    <ClCompile Include="..\shared\blosc\shuffle-avx2.c" />
+    <ClCompile Include="..\shared\blosc\shuffle-generic.c" />
+    <ClCompile Include="..\shared\blosc\shuffle-sse2.c" />
+    <ClCompile Include="..\shared\blosc\shuffle.c" />
+    <ClCompile Include="..\shared\blosc\stune.c" />
+    <ClCompile Include="..\shared\blosc\timestamp.c" />
+    <ClCompile Include="..\shared\blosc\trunc-prec.c" />
+    <ClCompile Include="..\shared\add_context.cpp" />
+    <ClCompile Include="..\shared\add_cparams.cpp" />
+    <ClCompile Include="..\shared\add_dparams.cpp" />
+    <ClCompile Include="..\shared\add_frame.cpp" />
+    <ClCompile Include="..\shared\internal-complibs\lz4-1.9.4\lz4.c" />
+    <ClCompile Include="..\shared\internal-complibs\lz4-1.9.4\lz4hc.c" />
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\common\debug.c" />
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\common\entropy_common.c" />
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\common\error_private.c" />
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\common\fse_decompress.c" />
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\common\pool.c" />
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\common\threading.c" />
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\common\xxhash.c" />
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\common\zstd_common.c" />
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\compress\fse_compress.c" />
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\compress\hist.c" />
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\compress\huf_compress.c" />
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstdmt_compress.c" />
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_compress.c" />
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_compress_literals.c" />
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_compress_sequences.c" />
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_compress_superblock.c" />
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_double_fast.c" />
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_fast.c" />
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_lazy.c" />
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_ldm.c" />
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_opt.c" />
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\decompress\huf_decompress.c" />
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\decompress\zstd_ddict.c" />
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\decompress\zstd_decompress.c" />
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\decompress\zstd_decompress_block.c" />
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\dictBuilder\cover.c" />
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\dictBuilder\divsufsort.c" />
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\dictBuilder\fastcover.c" />
+    <ClCompile Include="..\shared\internal-complibs\zstd-1.5.5\dictBuilder\zdict.c" />
+    <ClCompile Include="..\shared\add_metalayer.cpp" />
+    <ClCompile Include="..\shared\plugin.blosc2.cpp" />
+    <ClCompile Include="..\shared\plugins\plugin_utils.c" />
+    <ClCompile Include="..\shared\add_schunk.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\shared\b2nd.h" />
+    <ClInclude Include="..\shared\blosc2.h" />
+    <ClInclude Include="..\shared\blosc2\blosc2-common.h" />
+    <ClInclude Include="..\shared\blosc2\blosc2-export.h" />
+    <ClInclude Include="..\shared\blosc2\blosc2-stdio.h" />
+    <ClInclude Include="..\shared\blosc2\codecs-registry.h" />
+    <ClInclude Include="..\shared\blosc2\filters-registry.h" />
+    <ClInclude Include="..\shared\blosc\b2nd_utils.h" />
+    <ClInclude Include="..\shared\blosc\bitshuffle-avx2.h" />
+    <ClInclude Include="..\shared\blosc\bitshuffle-generic.h" />
+    <ClInclude Include="..\shared\blosc\bitshuffle-sse2.h" />
+    <ClInclude Include="..\shared\blosc\blosc-private.h" />
+    <ClInclude Include="..\shared\blosc\blosclz.h" />
+    <ClInclude Include="..\shared\blosc\config.h" />
+    <ClInclude Include="..\shared\blosc\context.h" />
+    <ClInclude Include="..\shared\blosc\delta.h" />
+    <ClInclude Include="..\shared\blosc\fastcopy.h" />
+    <ClInclude Include="..\shared\blosc\frame.h" />
+    <ClInclude Include="..\shared\blosc\sframe.h" />
+    <ClInclude Include="..\shared\blosc\shuffle-avx2.h" />
+    <ClInclude Include="..\shared\blosc\shuffle-generic.h" />
+    <ClInclude Include="..\shared\blosc\shuffle-sse2.h" />
+    <ClInclude Include="..\shared\blosc\shuffle.h" />
+    <ClInclude Include="..\shared\blosc\stune.h" />
+    <ClInclude Include="..\shared\blosc\trunc-prec.h" />
+    <ClInclude Include="..\shared\common.h" />
+    <ClInclude Include="..\shared\internal-complibs\lz4-1.9.4\lz4.h" />
+    <ClInclude Include="..\shared\internal-complibs\lz4-1.9.4\lz4hc.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\common\allocations.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\common\bits.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\common\bitstream.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\common\compiler.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\common\cpu.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\common\debug.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\common\error_private.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\common\fse.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\common\huf.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\common\mem.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\common\pool.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\common\portability_macros.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\common\threading.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\common\xxhash.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\common\zstd_deps.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\common\zstd_internal.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\common\zstd_trace.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\compress\clevels.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\compress\hist.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstdmt_compress.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_compress_internal.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_compress_literals.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_compress_sequences.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_compress_superblock.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_cwksp.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_double_fast.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_fast.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_lazy.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_ldm.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_ldm_geartab.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\compress\zstd_opt.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\decompress\zstd_ddict.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\decompress\zstd_decompress_block.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\decompress\zstd_decompress_internal.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\dictBuilder\cover.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\dictBuilder\divsufsort.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\zdict.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\zstd.h" />
+    <ClInclude Include="..\shared\internal-complibs\zstd-1.5.5\zstd_errors.h" />
+    <ClInclude Include="..\shared\plugins\plugin_utils.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{79F0CACC-457B-4A25-BC54-81277688C361}</ProjectGuid>
+    <RootNamespace>Plugin</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>7.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v141_xp</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v141_xp</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>12.0.30501.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(Configuration)\</OutDir>
+    <TargetName>wfc</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(Configuration)\</OutDir>
+    <TargetName>blosc2</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <PreBuildEvent />
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(CORONA_ROOT)/Corona\shared\include;$(CORONA_ROOT)/Corona\shared\include\lua;../shared/include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(CORONA_ROOT)/Corona\win\lib\*.lib;libs/win32/*.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <PostBuildEvent />
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <PreBuildEvent />
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(CORONA_ROOT)/Corona/shared/include/Corona;$(CORONA_ROOT)/Corona/shared/include/lua;%(AdditionalIncludeDirectories);$(SolutionDir)../../ByteReader;$(SolutionDir)../../solar2d_native_utils;$(SolutionDir)../shared;$(SolutionDir)../shared/blosc;$(SolutionDir)../shared/internal-complibs/lz4-1.9.4;$(SolutionDir)../shared/internal-complibs/zstd-1.5.5;$(SolutionDir)../../pthreads</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_TIMESPEC_DEFINED;WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);LUA_BUILD_AS_DLL;LUA_LIB;_CRT_SECURE_NO_WARNINGS;SHUFFLE_SSE2_ENABLED</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(CORONA_ROOT)\Corona\win\lib\*.lib;%(AdditionalDependencies);$(Configuration)\solar2d_native_utils.lib;$(SolutionDir)../shared/internal-complibs/zlibstatic.lib</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+      <DelayLoadDLLs>
+      </DelayLoadDLLs>
+    </Link>
+    <PostBuildEvent />
+    <PostBuildEvent>
+      <Command>set PLUGIN_DIR=$(appdata)\Solar2DPlugins\com.xibalbastudios\plugin.$(TargetName)\win32-sim
+setlocal enableextensions
+mkdir %PLUGIN_DIR%
+set FILENAME=plugin_$(TargetName).dll
+set FULL_NAME=%PLUGIN_DIR%\%FILENAME%
+copy "$(OutDir)$(TargetName).dll" "%FULL_NAME%"
+del "%PLUGIN_DIR%\data.tgz"
+tar -czf "%PLUGIN_DIR%\data.tgz" -C "%PLUGIN_DIR%" %FILENAME%
+del "%FULL_NAME%"
+set SIMULATOR_DIR="$(appdata)\Corona Labs\Corona Simulator\Plugins"
+del %SIMULATOR_DIR%\catalog.json</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

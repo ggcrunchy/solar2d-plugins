@@ -10,7 +10,9 @@ settings =
 {
 	android =
 	{
-	--        versionCode = "3"
+		applicationChildElements = {
+			[[<meta-data android:name="wantsDepthBuffer" android:value="true" />]]
+		}
 	},
 
 	orientation =

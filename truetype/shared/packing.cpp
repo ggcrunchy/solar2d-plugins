@@ -301,8 +301,6 @@ static inline stbtt_pack_context * GetPackingWithMemory (lua_State * L)
 
 	lua_getfenv(L, 1);
 
-	truetype_GetMemory()->PrepMemory();
-
 	return packing;
 }
 
@@ -327,8 +325,8 @@ int NewPacking (lua_State * L)
 
 	lua_newtable(L);// w, h[, stride, padding], packing, memory
 	lua_setfenv(L, -2);	// w, h[, stride, padding], packing
-
-	if (stbtt_PackBegin(&packing->mContext, &packing->mPixels[0], w, h, stride, padding, nullptr))
+// ^^ TODO: do we need this any more? (or GetPackingWithMemory())
+	if (stbtt_PackBegin(&packing->mContext, &packing->mPixels[0], w, h, stride, padding, L))
 	{
 		LuaXS::AttachMethods(L, "truetype.packing", [](lua_State * L)
 		{

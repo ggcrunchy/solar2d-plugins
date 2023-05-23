@@ -52,7 +52,7 @@ local map_cmds = glue.index{
 local function parse(file, handlers)
 	readlines(file, function(s, check)
 		handlers.check_function(check)
-		local cmd, s = s:match'^%s*(%S+) +(.*)'
+		local cmd, s = s:match'^%s*(%S+) +([^\r]*)'
 		cmd = cmd and cmd:lower()
 		if not cmd or cmd == '#' then
 			--comment or empty line

@@ -47,23 +47,16 @@ struct FontInfo {
 //
 static FontInfo * GetFont (lua_State * L, int arg = 1)
 {
-	return arg == 1 ? LuaXS::UD<FontInfo>(L, 1) : LuaXS::CheckUD<FontInfo>(L, arg, "truetype.fontinfo");
+	FontInfo * font = arg == 1 ? LuaXS::UD<FontInfo>(L, 1) : LuaXS::CheckUD<FontInfo>(L, arg, "truetype.fontinfo");
+
+	font->mInfo.userdata = L;
+
+	return font;
 }
 
 stbtt_fontinfo * GetFontInfo (lua_State * L, int arg)
 {
 	return &GetFont(L, arg)->mInfo;
-}
-
-static FontInfo * GetFontWithMemory (lua_State * L)
-{
-	FontInfo * font = GetFont(L);
-
-	lua_getfenv(L, 1);
-
-	truetype_GetMemory()->PrepMemory();
-
-	return font;
 }
 
 static float Scale (lua_State * L, int arg)
@@ -113,7 +106,7 @@ struct VertexCount {
 
 static int NewShape (lua_State * L, stbtt_vertex * vertices, int n)
 {
-	truetype_GetMemory()->Emit(vertices);	// ..., verts
+	Free(vertices, L, true); // ..., verts
 
 	lua_newtable(L);// ..., verts, t
 	lua_setfenv(L, -2);	// ..., verts
@@ -160,9 +153,6 @@ static int NewShape (lua_State * L, stbtt_vertex * vertices, int n)
 				"Rasterize", [](lua_State * L)
 				{
 					lua_settop(L, 10);	// verts, w, h, xscale, yscale, xshift, yshift, xoff, yoff, opts
-					lua_getfenv(L, 1);	// verts, w, h, xscale, yscale, xshift, yshift, xoff, yoff, opts, memory
-
-					truetype_GetMemory()->PrepMemory();
 
 					stbtt__bitmap result = { 0 };
 
@@ -179,11 +169,11 @@ static int NewShape (lua_State * L, stbtt_vertex * vertices, int n)
 
 					BlobXS::State blob{L, 10, "blob"};
 
-					result.pixels = blob.PointToData(L, x, y, result.w, result.h, result.stride);	// verts, w, h, xscale, yscale, xshift, yshift, xoff, yoff, opts, memory, pixels
+					result.pixels = blob.PointToData(L, x, y, result.w, result.h, result.stride);	// verts, w, h, xscale, yscale, xshift, yshift, xoff, yoff, opts, pixels
 
-					stbtt_Rasterize(&result, flatness, LuaXS::UD<stbtt_vertex>(L, 1), n, Scale(L, 2), Scale(L, 3), Shift(L, 4), Shift(L, 5), luaL_checkint(L, 6), luaL_checkint(L, 7), invert, nullptr);
+					stbtt_Rasterize(&result, flatness, LuaXS::UD<stbtt_vertex>(L, 1), n, Scale(L, 2), Scale(L, 3), Shift(L, 4), Shift(L, 5), luaL_checkint(L, 6), luaL_checkint(L, 7), invert, L);
 	
-					return blob.PushData(L, result.pixels, TRUETYPE_BYTES, bAsUserdata);// verts, w, h, xscale, yscale, xshift, yshift, xoff, yoff, opts, memory, pixels[, str]
+					return blob.PushData(L, result.pixels, TRUETYPE_BYTES, bAsUserdata);// verts, w, h, xscale, yscale, xshift, yshift, xoff, yoff, opts, pixels[, str]
 				}
 			},
 			{ nullptr, nullptr }
@@ -225,9 +215,9 @@ template<typename F, typename ... Args> int FontBoxCond (lua_State * L, F func, 
 
 template<typename F, typename ... Args> int FontMake (lua_State * L, F func, Args && ... args)
 {
-	lua_settop(L, sizeof...(args) + 7);	// font, blob, w, h, xscale, yscale, ..., opts
+	lua_settop(L, sizeof...(args) + 7); // font, blob, w, h, xscale, yscale, ..., opts
 
-	FontInfo * font = GetFontWithMemory(L);	// font, blob, w, h, xscale, yscale, ..., opts, memory
+	FontInfo * font = GetFont(L); // font, blob, w, h, xscale, yscale, ..., opts
 	int x = 0, y = 0, stride = 0, w = Dim(L, 3), h = Dim(L, 4);
 
 	BlobXS::State blob{L, 2};
@@ -240,43 +230,43 @@ template<typename F, typename ... Args> int FontMake (lua_State * L, F func, Arg
 							
 	if (out) FontFunc(func, font, out, w, h, stride, Scale(L, 4), Scale(L, 5), std::forward<Args>(args)...);
 
-	return LuaXS::PushArgAndReturn(L, out != nullptr);	// font, blob, w, h, xscale, yscale, ..., opts, memory, ok
+	return LuaXS::PushArgAndReturn(L, out != nullptr); // font, blob, w, h, xscale, yscale, ..., opts, ok
 }
 
 template<typename F, typename ... Args> int FontPush (lua_State * L, F func, Args && ... args)
 {
-	lua_settop(L, sizeof...(args) + 2);	// font, ..., how
-	lua_pushliteral(L, "as_bytes");	// font, ..., how, "as_bytes"
+	lua_settop(L, sizeof...(args) + 2); // font, ..., how
+	lua_pushliteral(L, "as_bytes"); // font, ..., how, "as_bytes"
 
-	FontInfo * font = GetFontWithMemory(L);	// font, ..., how, "as_bytes", memory
+	FontInfo * font = GetFont(L); // font, ..., how, "as_bytes"
 
 	int i1, i2, i3, i4;
 	
 	unsigned char * out = FontFunc(func, font, Scale(L, 2), Scale(L, 3), std::forward<Args>(args)..., &i1, &i2, &i3, &i4);
 
-	if (!out) return LuaXS::PushArgAndReturn(L, LuaXS::Nil{});	// font, ..., how, "as_bytes", memory, nil
+	if (!out) return LuaXS::PushArgAndReturn(L, LuaXS::Nil{}); // font, ..., how, "as_bytes", nil
 
-	truetype_GetMemory()->Push(out, TRUETYPE_BYTES, lua_equal(L, -3, -2) != 0);	// font, ..., how, "as_bytes", memory, bitmap
+	Push(L, out, lua_equal(L, -3, -2) != 0); // font, ..., how, "as_bytes", bitmap
 
-	return 1 + LuaXS::PushMultipleArgsAndReturn(L, i1, i2, i3, i4);	// font, ..., how, "as_bytes", memory, bitmap, w, h, xoff, yoff
+	return 1 + LuaXS::PushMultipleArgsAndReturn(L, i1, i2, i3, i4); // font, ..., how, "as_bytes", bitmap, w, h, xoff, yoff
 }
 
 template<typename F, typename ... Args> int FontPush1 (lua_State * L, F func, Args && ... args) // one-scale variant
 {
-	lua_settop(L, sizeof...(args) + 2);	// font, ..., how
-	lua_pushliteral(L, "as_bytes");	// font, ..., how, "as_bytes"
+	lua_settop(L, sizeof...(args) + 2); // font, ..., how
+	lua_pushliteral(L, "as_bytes"); // font, ..., how, "as_bytes"
 
-	FontInfo * font = GetFontWithMemory(L);	// font, ..., how, "as_bytes", memory
+	FontInfo * font = GetFont(L); // font, ..., how, "as_bytes"
 
 	int i1, i2, i3, i4;
 	
 	unsigned char * out = FontFunc(func, font, Scale(L, 2), std::forward<Args>(args)..., &i1, &i2, &i3, &i4);
 
-	if (!out) return LuaXS::PushArgAndReturn(L, LuaXS::Nil{});	// font, ..., how, "as_bytes", memory, nil
+	if (!out) return LuaXS::PushArgAndReturn(L, LuaXS::Nil{}); // font, ..., how, "as_bytes", nil
 
-	truetype_GetMemory()->Push(out, TRUETYPE_BYTES, lua_equal(L, -3, -2) != 0);	// font, ..., how, "as_bytes", memory, bitmap
+	Push(L, out, lua_equal(L, -3, -2) != 0); // font, ..., how, "as_bytes", bitmap
 
-	return 1 + LuaXS::PushMultipleArgsAndReturn(L, i1, i2, i3, i4);	// font, ..., how, "as_bytes", memory, bitmap, w, h, xoff, yoff
+	return 1 + LuaXS::PushMultipleArgsAndReturn(L, i1, i2, i3, i4); // font, ..., how, "as_bytes", bitmap, w, h, xoff, yoff
 }
 
 //
@@ -289,20 +279,24 @@ int NewFont (lua_State * L)
 	int offset = luaL_optint(L, 2, 0);
 	size_t extra = lua_isstring(L, 1) ? 0U : bytes.mCount;
 	FontInfo * font = LuaXS::NewSizeTyped<FontInfo>(L, sizeof(stbtt_fontinfo) + extra);	// bytes[, offset], font
-	const unsigned char * data = extra ? reinterpret_cast<const unsigned char *>(&font[1]) : reinterpret_cast<const unsigned char *>(lua_tostring(L, 1));
+	const unsigned char * data;
 
-	lua_newtable(L);// bytes[, offset], font, memory
+	if (extra)
+	{
+		memcpy(&font[1], bytes.mBytes, bytes.mCount);
 
-	if (extra) memcpy(const_cast<unsigned char *>(data), bytes.mBytes, bytes.mCount);
+		data = reinterpret_cast<const unsigned char *>(&font[1]);
+	}
 
 	else
 	{
-		lua_newuserdata(L, 0U);	// bytes[, offset], font, memory, key (n.b. avoid rare but feasible string clashes)
-		lua_pushvalue(L, 1);// bytes[, offset], font, memory, key, bytes
-		lua_rawset(L, -3);	// bytes[, offset], font, memory = { [key] = bytes }
-	}
+		lua_createtable(L, 0, 1); // bytes[, offset], font, env
+		lua_pushvalue(L, 1);// bytes[, offset], font, env, bytes
+		lua_setfield(L, -2, "data"); // bytes[, offset], font, env = { data = bytes }
+		lua_setfenv(L, -2); // bytes[, offset], font; font.env = env
 
-	lua_setfenv(L, -2);	// bytes[, offset], font
+		data = reinterpret_cast<const unsigned char *>(lua_tostring(L, 1));
+	}
 
 	if (!stbtt_InitFont(&font->mInfo, data, offset)) return LuaXS::PushArgAndReturn(L, LuaXS::Nil{}); // bytes[, offset], font, nil
 
@@ -362,11 +356,11 @@ int NewFont (lua_State * L)
 				"GetCodepointShape", [](lua_State * L)
 				{
 					stbtt_vertex * vertices;
-					int n = FontFunc(stbtt_GetCodepointShape, GetFontWithMemory(L), Codepoint(L, 2), &vertices);
-						
-					if (!n) return LuaXS::PushArgAndReturn(L, LuaXS::Nil{});// font, codepoint, memory, nil
+					int n = FontFunc(stbtt_GetCodepointShape, GetFont(L), Codepoint(L, 2), &vertices);
 
-					return NewShape(L, vertices, n);	// font, codepoint, memory, shape
+					if (!n) return LuaXS::PushArgAndReturn(L, LuaXS::Nil{});// font, codepoint, nil
+
+					return NewShape(L, vertices, n);	// font, codepoint, shape
 				}
 			}, {
 				"GetCodepointSVG", [](lua_State * L)
@@ -568,13 +562,13 @@ int NewFont (lua_State * L)
 			}, {
 				"GetGlyphShape", [](lua_State * L)
 				{
-					auto font = GetFontWithMemory(L);	// font, glyph, memory
+					auto font = GetFont(L); // font, glyph
 					stbtt_vertex * vertices;
 					int n = FontFunc(stbtt_GetGlyphShape, font, font->GlyphIndex(L, 2), &vertices);
 						
-					if (!n) return LuaXS::PushArgAndReturn(L, LuaXS::Nil{});// font, gi, memory, nil
+					if (!n) return LuaXS::PushArgAndReturn(L, LuaXS::Nil{});// font, gi, nil
 
-					return NewShape(L, vertices, n);// font, gi, memory, shape
+					return NewShape(L, vertices, n);// font, gi, shape
 				}
 			}, {
 				"GetGlyphSVG", [](lua_State * L)

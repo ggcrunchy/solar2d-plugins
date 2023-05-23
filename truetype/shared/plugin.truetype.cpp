@@ -24,22 +24,95 @@
 #include "truetype.h"
 #include "ByteReader.h"
 #include "utils/LuaEx.h"
-#include "utils/Memory.h"
 #include "utils/Path.h"
-#include "utils/Thread.h"
-
-ThreadXS::TLS<MemoryXS::LuaMemory *> tls_truetypeMM;
 
 //
-#define STBTT_assert(cond) if (!(cond)) tls_truetypeMM->FailAssert(#cond)
-#define STBTT_malloc(x, u) ((void)(u), tls_truetypeMM->Malloc(x))
-#define STBTT_free(x, u)   ((void)(u), tls_truetypeMM->Free(x))
+//
+//
+
+#define TRUETYPE_STORE "xs.truetype.store"
+
+//
+//
+//
+
+static lua_State * GetStateAndStore (void * context)
+{
+    lua_State * L = static_cast<lua_State *>(context);
+
+    lua_pushliteral(L, TRUETYPE_STORE); // ..., key
+    lua_rawget(L, LUA_REGISTRYINDEX); // ..., store
+
+    return L;
+}
+
+//
+//
+//
+
+void * Alloc (size_t size, void * context)
+{
+    lua_State * L = GetStateAndStore(context); // ..., store
+    void * data = lua_newuserdata(L, size); // ..., store, data
+
+    lua_pushlightuserdata(L, data); // ..., store, data, data_ptr
+    lua_insert(L, -2); // ..., store, data_ptr, data
+    lua_rawset(L, -3); // ..., store = { ..., [data_ptr] = data }
+    lua_pop(L, 1); // ...
+
+    return data;
+}
+
+void Free (void * data, void * context, bool leave_on_stack)
+{
+    lua_State * L = GetStateAndStore(context); // ..., store
+
+    if (leave_on_stack)
+    {
+        lua_pushlightuserdata(L, data); // ..., store, data_ptr
+        lua_rawget(L, -2); // ..., store, data?
+        lua_insert(L, -2); // ..., data?, store
+    }
+
+    lua_pushlightuserdata(L, data); // ...[, data?], store, data_ptr
+    lua_pushnil(L); // ...[, data?], store, data_ptr, nil
+    lua_rawset(L, -3); // ...[, data?], store
+    lua_pop(L, 1); // ...[, data?]
+}
+
+void Push (lua_State * L, void * ptr, bool bAsUserdata)
+{
+    Free(ptr, L, true); // ..., data
+
+	if (bAsUserdata)
+	{
+		ByteXS::AddBytesMetatable(L, TRUETYPE_BYTES);
+	}
+
+	else
+	{
+		lua_pushlstring(L, static_cast<const char *>(ptr), lua_objlen(L, -1)); // ..., data, bytes
+        lua_remove(L, -2); // ..., bytes
+	}
+}
+
+//
+//
+//
+
+// TODO: consider just doing a mutex-backed list with thread::id / Lua state combo and __gc cleanup
+// #define STBTT_assert(cond) if (!(cond)) luaL_error(tls_L, #cond)
+#define STBTT_malloc(x, u) Alloc(x, u)
+#define STBTT_free(x, u) Free(x, u)
 #define STB_RECT_PACK_IMPLEMENTATION
 #define STB_TRUETYPE_IMPLEMENTATION
 
 #include "stb_rect_pack.h"
 #include "stb_truetype.h"
 
+//
+//
+//
 
 static int GetOffset (lua_State * L, const ByteReader & reader)
 {
@@ -73,19 +146,11 @@ static luaL_Reg truetype_funcs[] = {
 //
 //
 
-MemoryXS::LuaMemory * truetype_GetMemory (void)
-{
-	return tls_truetypeMM;
-}
-
-//
-//
-//
-
 CORONA_EXPORT int luaopen_plugin_truetype (lua_State * L)
 {
-	tls_truetypeMM = MemoryXS::LuaMemory::New(L);
-
+    lua_pushliteral(L, TRUETYPE_STORE); // key
+    lua_newtable(L); // key, store
+    lua_rawset(L, LUA_REGISTRYINDEX); // registry = { ..., [key] = store }
 	lua_newtable(L); // truetype
 	luaL_register(L, nullptr, truetype_funcs);
 
