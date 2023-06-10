@@ -74,25 +74,29 @@ CORONA_EXPORT int luaopen_plugin_customobjects1 (lua_State * L)
                     // Customize draw method:
                     CoronaObjectDrawParams drawParams = {};
 
-                    drawParams.before = []( const CoronaDisplayObject * object, void * userData, const CoronaRenderer * rendererHandle )
+                    drawParams.before = []( const CoronaDisplayObject * object, void * userData, const CoronaRenderer * renderer )
                     {
+                        const CoronaDisplayObject * child = reinterpret_cast< const CoronaDisplayObject * >( CoronaObjectGetAvailableSlot() );
                         const CoronaGroupObject * groupObject = reinterpret_cast< const CoronaGroupObject * >( object );
-                        ScopeMessagePayload payload = { rendererHandle, sScopeDrawSessionID };
-
+                        ScopeMessagePayload payload = { renderer, sScopeDrawSessionID };
+                        
                         for (int i = 0, n = CoronaGroupObjectGetNumChildren( groupObject ); i < n; ++i)
                         {
-                            CoronaObjectSendMessage( CoronaGroupObjectGetChild( groupObject, i ), "willDraw", &payload, sizeof( ScopeMessagePayload ) );
+                            CoronaGroupObjectGetChild( groupObject, i, child );
+                            CoronaObjectSendMessage( child, "willDraw", &payload, sizeof( ScopeMessagePayload ) );
                         }
                     };
 
-                    drawParams.after = []( const CoronaDisplayObject * object, void * userData, const CoronaRenderer * rendererHandle )
+                    drawParams.after = []( const CoronaDisplayObject * object, void * userData, const CoronaRenderer * renderer )
                     {
+                        const CoronaDisplayObject * child = reinterpret_cast< const CoronaDisplayObject * >( CoronaObjectGetAvailableSlot() );
                         const CoronaGroupObject * groupObject = reinterpret_cast< const CoronaGroupObject * >( object );
-                        ScopeMessagePayload payload = { rendererHandle, sScopeDrawSessionID++ };
-
+                        ScopeMessagePayload payload = { renderer, sScopeDrawSessionID };
+                        
                         for (int i = CoronaGroupObjectGetNumChildren( groupObject ); i; --i)
                         {
-                            CoronaObjectSendMessage( CoronaGroupObjectGetChild( groupObject, i - 1 ), "didDraw", &payload, sizeof( ScopeMessagePayload ) );
+                            CoronaGroupObjectGetChild( groupObject, i - 1, child );
+                            CoronaObjectSendMessage( child, "willDraw", &payload, sizeof( ScopeMessagePayload ) );
                         }
                     };
                     
@@ -135,7 +139,7 @@ CORONA_EXPORT int luaopen_plugin_customobjects1 (lua_State * L)
                     CoronaObjectDrawParams drawParams = {};
 
                     drawParams.ignoreOriginal = true;
-                    drawParams.after = []( const CoronaDisplayObject * object, void * userData, const CoronaRenderer * rendererHandle )
+                    drawParams.after = []( const CoronaDisplayObject *, void * userData, const CoronaRenderer * )
                     {
                         PrintObjectState * state = static_cast< PrintObjectState * >( userData );
                         

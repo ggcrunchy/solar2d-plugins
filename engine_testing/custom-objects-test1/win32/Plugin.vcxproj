@@ -86,7 +86,9 @@ set FULL_NAME=%PLUGIN_DIR%\%FILENAME%
 copy "$(OutDir)$(TargetName).dll" "%FULL_NAME%"
 del "%PLUGIN_DIR%\data.tgz"
 tar -czf "%PLUGIN_DIR%\data.tgz" -C "%PLUGIN_DIR%" %FILENAME%
-del "%FULL_NAME%"</Command>
+del "%FULL_NAME%"
+set SIMULATOR_DIR="$(appdata)\Corona Labs\Corona Simulator\Plugins"
+del %SIMULATOR_DIR%\catalog.json</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

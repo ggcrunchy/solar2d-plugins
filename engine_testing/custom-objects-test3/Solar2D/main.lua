@@ -23,7 +23,7 @@
 -- [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
 --
 
-local Mode = "unshared"
+local Mode = "basic"
 
 if Mode == "basic" then
   require("basic_instancing")

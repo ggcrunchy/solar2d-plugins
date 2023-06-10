@@ -47,14 +47,16 @@ struct TimestampEntry {
 
 struct SharedInstancingData {
     SharedInstancingData * next{NULL};
-    lua_State * luaState{NULL};
     std::vector<TimestampEntry> stamps;
     SharedMemoryResource * resource{NULL};
     unsigned long offset{0};
     int mod{-1};
+    int ref{LUA_NOREF};
     bool initialized{false};
     bool updated{false};
 };
+
+static std::vector<int> sCleanupList;
 
 struct UploadData {
     SharedMemoryResource * buffer;
@@ -129,14 +131,13 @@ void AddShared( lua_State * L)
                         SharedInstancingData * sharedInstanceData = GetSharedData( userData );
                         SharedMemoryResource * buffer = (SharedMemoryResource *)luaL_checkudata( L, valueIndex, SHARED_BUFFER_MT_NAME );
 
-                        sharedInstanceData->luaState = L; // needed when detaching; assumed to be stable
-
                         if (sharedInstanceData->resource != buffer)
                         {
-                            lua_pushlightuserdata( L, userData ); // ..., buffer, ..., key
-                            lua_pushvalue( L, valueIndex ); // ..., buffer, ..., key, buffer
-                            lua_rawset( L, LUA_REGISTRYINDEX ); // ..., buffer, ...; registry = { ..., [key] = buffer }
+                            if (sharedInstanceData->ref != LUA_NOREF) sCleanupList.push_back( sharedInstanceData->ref );
+
+                            lua_pushvalue( L, valueIndex ); // ..., buffer, ..., buffer
                             
+                            sharedInstanceData->ref = lua_ref( L, 1 ); // ..., buffer, ...; ref = buffer = { ..., [key] = buffer }
                             sharedInstanceData->resource = buffer;
 
                             // new buffer, so no variant is in sync
@@ -278,12 +279,7 @@ void AddShared( lua_State * L)
                     
                     sharedInstanceData->stamps.~TimestampVector();
                     
-                    if (sharedInstanceData->resource)
-                    {
-                        lua_pushlightuserdata( sharedInstanceData->luaState, userData ); // ..., key
-                        lua_pushnil( sharedInstanceData->luaState ); // ..., key, nil
-                        lua_rawset( sharedInstanceData->luaState, LUA_REGISTRYINDEX ); // ...; registry = { ..., [key] = nil }
-                    }
+                    if (sharedInstanceData->resource) sCleanupList.push_back( sharedInstanceData->ref );
                 };
 
                 lua_pushboolean( L, CoronaShaderRegisterEffectDataType( L, "sharedBuffers", &callbacks ) ); // ..., ok?
@@ -301,9 +297,9 @@ void AddShared( lua_State * L)
                     lua_setfield( L, -2, "_constants" ); // mt; mt.__constants = constants
                     
                     // #1: how many vectors Solar says we can expect in the vertex kernel.
-                    // This sample just assume the kernel our u_Vectors array claims them
-                    // all and any update fill them all. This brute-force approach might
-                    // not be suitable in production!
+                    // This sample just assumes our u_Vectors array claims them all and any
+                    // update fills them all. This brute-force approach might not be suitable
+                    // in production!
                     lua_getglobal( L, "system" ); // mt, system
                     lua_getfield( L, -1, "getInfo" ); // mt, system, getInfo
                     lua_remove( L, -2 ); // mt, getInfo
@@ -428,6 +424,19 @@ void AddShared( lua_State * L)
                     };
                     
                     luaL_register( L, NULL, methods );
+
+                    lua_getglobal( L, "Runtime" ); // mt, Runtime
+                    lua_getfield( L, -1, "addEventListener" ); // mt, Runtime, Runtime:addEventListener
+                    lua_insert( L, -2 ); // mt, Runtime:addEventListener, Runtime
+                    lua_pushliteral( L, "lateUpdate" ); // mt, Runtime:addEventListener, Runtime, "lateUpdate"
+                    lua_pushcfunction( L, [](lua_State * L) {
+                        for ( int ref : sCleanupList ) lua_unref( L, ref );
+
+                        sCleanupList.clear();
+
+                        return 0;
+                    }); // mt, Runtime:addEventListener, Runtime, "lateUpdate", Cleanup
+                    lua_call( L, 3, 0 ); // mt
                 }
                 
                 // Make the new buffer.

@@ -47,16 +47,16 @@ graphics.defineEffect{
 
 	dataType = "sharedBuffers",
 	vertexData = {
-    { index = 0, name = "index", default = 0 }
-  },
+		{ index = 0, name = "index", default = 0 }
+	},
 
 	vertex = ([[
 		#define NUM_SLOTS %i
-    #define NUM_POINTS %i
+		#define NUM_POINTS %i
 	
-    uniform P_UV vec4 u_Vectors[NUM_SLOTS * 2 + NUM_POINTS];
+		uniform P_UV vec4 u_Vectors[NUM_SLOTS * 2 + NUM_POINTS];
   
-    #define GetUniformVector( INDEX ) u_Vectors[ int( INDEX ) ]
+		#define GetUniformVector( INDEX ) u_Vectors[ int( INDEX ) ]
   
 		P_POSITION vec2 VertexKernel (P_POSITION vec2 pos)
 		{
@@ -65,7 +65,7 @@ graphics.defineEffect{
 			// Precalculated coefficients (t^3, t^2, t, 1) and derivatives, mapped
 			// by Hermite "geometry matrix" (just the constant coefficients of
 			// the point and tangent equations), at t = xpos / N
-      P_UV float xpos = floor(CoronaTexCoord.x * float(NUM_SLOTS - 1) + .5);
+			P_UV float xpos = floor(CoronaTexCoord.x * float(NUM_SLOTS - 1) + .5);
 			P_POSITION vec4 cpos = GetUniformVector(xpos);
 			P_POSITION vec4 ctan = GetUniformVector(xpos + float(NUM_SLOTS));
 
@@ -124,10 +124,10 @@ for col = 1, Cols do
 		local lrx, lry = urx, lly
 
 		AddPoint(ulx, uly)
-    AddPoint(urx, ury)
-    AddPoint(llx, lly)
-	  AddPoint(llx, lly)
-    AddPoint(urx, ury)
+		AddPoint(urx, ury)
+		AddPoint(llx, lly)
+		AddPoint(llx, lly)
+		AddPoint(urx, ury)
 		AddPoint(lrx, lry)
 	end
 end
@@ -146,23 +146,23 @@ back:addEventListener("touch", function(event)
 		if num_points < MaxInstances + 3 then
 			local x, y = event.x, event.y
 
-      num_points = num_points + 1
+			num_points = num_points + 1
 
-      -- Once we have three points we can find their Catmull-Rom point / tangent and
-      -- repurpose that as one of the Hermite point / tangent pairs in the uniforms.
+			-- Once we have three points we can find their Catmull-Rom point / tangent and
+			-- repurpose that as one of the Hermite point / tangent pairs in the uniforms.
 			if num_points >= 3 then
 				buffer:setVector(OffsetToGeometry + num_points - 2, x2, y2, x - x1, y - y1)
 
-        -- After the second (and up) such pair we can actually sculpt a segment.
-        if num_points >= 4 then
-          local poly = display.newMesh{ vertices = Lattice }
-          
-          poly:translate(50, 50) -- make it "visible"
+				-- After the second (and up) such pair we can actually sculpt a segment.
+				if num_points >= 4 then
+				  local poly = display.newMesh{ vertices = Lattice }
+				  
+				  poly:translate(50, 50) -- make it "visible"
 
-          poly.fill.effect = "generator.custom.uv"
-          poly.fill.effect.buffer = buffer
-          poly.fill.effect.index = num_points - 4
-        end
+				  poly.fill.effect = "generator.custom.uv"
+				  poly.fill.effect.buffer = buffer
+				  poly.fill.effect.index = num_points - 4
+				end
 			end
 
 			x1, y1, x2, y2 = x2, y2, x, y

@@ -91,9 +91,9 @@ graphics.defineEffect{
 	vertex = ([[
 		#define NUM_SLOTS %i
 	
-    uniform P_UV vec4 u_Vectors[NUM_SLOTS * 2 + 8]; // cf. plugin
-  
-    #define GetUniformVector( INDEX ) u_Vectors[ int( INDEX ) ]
+		uniform P_UV vec4 u_Vectors[NUM_SLOTS * 2 + 8]; // cf. plugin
+	  
+		#define GetUniformVector( INDEX ) u_Vectors[ int( INDEX ) ]
   
 		P_POSITION vec2 VertexKernel (P_POSITION vec2 pos)
 		{
@@ -102,7 +102,7 @@ graphics.defineEffect{
 			// Precalculated coefficients (t^3, t^2, t, 1) and derivatives, mapped
 			// by Hermite "geometry matrix" (just the constant coefficients of
 			// the point and tangent equations), at t = xpos / N
-      P_UV float xpos = floor(CoronaTexCoord.x * float(NUM_SLOTS - 1) + .5);
+			P_UV float xpos = floor(CoronaTexCoord.x * float(NUM_SLOTS - 1) + .5);
 			P_POSITION vec4 cpos = GetUniformVector(xpos);
 			P_POSITION vec4 ctan = GetUniformVector(xpos + float(NUM_SLOTS));
 
@@ -161,10 +161,10 @@ for col = 1, Cols do
 		local lrx, lry = urx, lly
 
 		AddPoint(ulx, uly)
-    AddPoint(urx, ury)
-    AddPoint(llx, lly)
-	  AddPoint(llx, lly)
-    AddPoint(urx, ury)
+		AddPoint(urx, ury)
+		AddPoint(llx, lly)
+		AddPoint(llx, lly)
+		AddPoint(urx, ury)
 		AddPoint(lrx, lry)
 	end
 end
@@ -189,10 +189,10 @@ back:addEventListener("touch", function(event)
 		if num_points < MaxInstances + 3 then
 			local x, y = event.x, event.y
 
-      num_points = num_points + 1
+			num_points = num_points + 1
 
-      -- Once we have three points we can find their Catmull-Rom point / tangent and
-      -- repurpose that as one of the Hermite point / tangent pairs in the uniforms.
+			-- Once we have three points we can find their Catmull-Rom point / tangent and
+			-- repurpose that as one of the Hermite point / tangent pairs in the uniforms.
 			if num_points >= 3 then
 				buffer:appendVector(x2, y2, x - x1, y - y1)
 			end

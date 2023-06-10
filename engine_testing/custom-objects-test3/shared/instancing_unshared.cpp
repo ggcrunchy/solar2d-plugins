@@ -41,7 +41,6 @@ struct UnsharedMemoryResource {
 
 struct UnsharedInstancingData {
     UnsharedInstancingData * next{NULL};
-    lua_State * luaState{NULL};
     UnsharedMemoryResource * resource{NULL};
     float * dataOffset{NULL};
     CoronaGeometryMappingLayout layout;
@@ -49,9 +48,12 @@ struct UnsharedInstancingData {
     unsigned long uploadCommand{0};
     unsigned long uploadResourceBlock{0};
     unsigned long resetShaderBoundBlock{0};
+    int ref{LUA_NOREF};
     bool initialized{false};
     bool shaderBound{false};
 };
+
+static std::vector<int> sCleanupList;
 
 struct DataAndOffset {
     UnsharedInstancingData * data;
@@ -218,6 +220,19 @@ CreateUnsharedBuffer( lua_State * L, unsigned long * uploadCommandID, unsigned l
         };
         
         luaL_register( L, NULL, methods );
+
+        lua_getglobal( L, "Runtime" ); // mt, Runtime
+        lua_getfield( L, -1, "addEventListener" ); // mt, Runtime, Runtime:addEventListener
+        lua_insert( L, -2 ); // mt, Runtime:addEventListener, Runtime
+        lua_pushliteral( L, "lateUpdate" ); // mt, Runtime:addEventListener, Runtime, "lateUpdate"
+        lua_pushcfunction( L, [](lua_State * L) {
+            for ( int ref : sCleanupList ) lua_unref( L, ref );
+
+            sCleanupList.clear();
+
+            return 0;
+        }); // mt, Runtime:addEventListener, Runtime, "lateUpdate", Cleanup
+        lua_call( L, 3, 0 ); // mt
     }
     
     // Make the new buffer.
@@ -279,16 +294,11 @@ void AddUnshared( lua_State * L)
                         {
                             CreateUnsharedBuffer( L, &unsharedInstanceData->uploadCommand, &unsharedInstanceData->uploadResourceBlock, &unsharedInstanceData->resetShaderBoundBlock ); // ..., buffer
                             
-                            unsharedInstanceData->luaState = L; // needed when detaching; assumed to be stable
                             unsharedInstanceData->resource = (UnsharedMemoryResource *)luaL_checkudata( L, -1, UNSHARED_BUFFER_MT_NAME );
-                            
-                            lua_pushlightuserdata( L, userData ); // ..., buffer, key
-                            lua_insert( L, -2 ); // ..., key, buffer
-                            lua_rawset( L, LUA_REGISTRYINDEX ); // ...; registry = { ..., [key] = buffer }
+                            unsharedInstanceData->ref = lua_ref( L, 1 ); // ...; ref = buffer
                         }
                         
-                        lua_pushlightuserdata( L, userData ); // key
-                        lua_rawget( L, LUA_REGISTRYINDEX ); // resource?
+                        lua_rawgeti( L, LUA_REGISTRYINDEX, unsharedInstanceData->ref ); // resource?
                         
                         return 1;
                     }
@@ -373,12 +383,7 @@ void AddUnshared( lua_State * L)
                 {
                     UnsharedInstancingData * unsharedInstanceData = GetUnsharedData( userData );
                     
-                    if (unsharedInstanceData->resource)
-                    {
-                        lua_pushlightuserdata( unsharedInstanceData->luaState, userData ); // ..., key
-                        lua_pushnil( unsharedInstanceData->luaState ); // ..., key, nil
-                        lua_rawset( unsharedInstanceData->luaState, LUA_REGISTRYINDEX ); // ...; registry = { ..., [key] = nil }
-                    }
+                    if (unsharedInstanceData->resource) sCleanupList.push_back( unsharedInstanceData->ref );
                 };
 
                 lua_pushboolean( L, CoronaShaderRegisterEffectDataType( L, "unsharedBuffers", &callbacks ) ); // ..., ok?

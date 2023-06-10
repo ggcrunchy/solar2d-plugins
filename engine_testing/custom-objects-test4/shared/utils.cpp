@@ -38,23 +38,27 @@ ScopeGroupObject( lua_State * L )
 
         drawParams.before = []( const CoronaDisplayObject * object, void * userData, const CoronaRenderer * renderer )
         {
+            const CoronaDisplayObject * child = reinterpret_cast< const CoronaDisplayObject * >( CoronaObjectGetAvailableSlot() );
             const CoronaGroupObject * groupObject = reinterpret_cast< const CoronaGroupObject * >( object );
             ScopeMessagePayload payload = { renderer, sScopeDrawSessionID };
 
             for (int i = 0, n = CoronaGroupObjectGetNumChildren( groupObject ); i < n; ++i)
             {
-                CoronaObjectSendMessage( CoronaGroupObjectGetChild( groupObject, i ), "willDraw", &payload, sizeof( ScopeMessagePayload ) );
+                CoronaGroupObjectGetChild( groupObject, i, child );
+                CoronaObjectSendMessage( child, "willDraw", &payload, sizeof( ScopeMessagePayload ) );
             }
         };
 
         drawParams.after = []( const CoronaDisplayObject * object, void * userData, const CoronaRenderer * renderer )
         {
+            const CoronaDisplayObject * child = reinterpret_cast< const CoronaDisplayObject * >( CoronaObjectGetAvailableSlot() );
             const CoronaGroupObject * groupObject = reinterpret_cast< const CoronaGroupObject * >( object );
             ScopeMessagePayload payload = { renderer, sScopeDrawSessionID++ };
 
             for (int i = CoronaGroupObjectGetNumChildren( groupObject ); i; --i)
             {
-                CoronaObjectSendMessage( CoronaGroupObjectGetChild( groupObject, i - 1 ), "didDraw", &payload, sizeof( ScopeMessagePayload ) );
+                CoronaGroupObjectGetChild( groupObject, i - 1, child );
+                CoronaObjectSendMessage( child, "didDraw", &payload, sizeof( ScopeMessagePayload ) );
             }
         };
         
