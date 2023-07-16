@@ -23,32 +23,34 @@
 
 #include "common.h"
 
+static void WriteInstanceValue ( void * dest, const void * context, const CoronaGeometryMappingLayout * layout, unsigned int, unsigned int n )
+{
+    unsigned char * out = static_cast< unsigned char * >( dest );
+
+    for ( unsigned int i = 0; i < n; ++i )
+    {
+        memcpy( out, context, sizeof( float ) );
+
+        out += layout->stride;
+    }
+}
+
+static float sInstance;
+
+bool AddInstanceWriter( const CoronaRenderer * renderer, const char * name )
+{
+    return CoronaGeometrySetComponentWriter( renderer, name, WriteInstanceValue, &sInstance, false ) != 0;
+}
+
 void MultiDraw( const CoronaShader * shader, const CoronaRenderer * renderer, const CoronaRenderData * renderData, BasicInstancingData * instancingData )
 {
-    CoronaShaderRawDraw( shader, renderData, renderer ); // first / only instance (could also leave original intact)
+    if (!instancingData->name) return;
 
-    // now do any others
-    if (instancingData->out && instancingData->count > 1U)
+    for (int i = 0; i < instancingData->count; ++i)
     {
-        CoronaGeometryMappingLayout srcLayout;
-
-        srcLayout.count = 1U;
-        srcLayout.offset = 0U;
-        srcLayout.stride = 0U;
-        srcLayout.type = kAttributeType_Float;
-        srcLayout.size = sizeof( float );
-
-        for (size_t i = 1; i < instancingData->count; ++i)
-        {
-            const float instance = float( i );
+        sInstance = float( i );
   
-            CoronaGeometryCopyData( instancingData->out, &instancingData->dstLayout, &instance, &srcLayout ); // update instance index
-            CoronaShaderRawDraw( shader, renderData, renderer ); // instance #2 and up
-        }
-
-        const float zero = 0.f;
-
-        CoronaGeometryCopyData( instancingData->out, &instancingData->dstLayout, &zero, &srcLayout ); // restore instance index to 0
+        CoronaShaderRawDraw( shader, renderData, renderer );
     }
 }
 

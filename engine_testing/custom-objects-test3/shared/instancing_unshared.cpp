@@ -344,6 +344,8 @@ void AddUnshared( lua_State * L)
                     }
                     
                     // Set up and draw any loads.
+                    if ( !AddInstanceWriter( renderer, unsharedInstanceData->instances.name ) ) return;
+
                     unsharedInstanceData->dataOffset = buffer->payload.data() + buffer->bakedVectorsCount * 4;
                     
                     size_t instancesCount = vectorCount - 1;
@@ -366,7 +368,7 @@ void AddUnshared( lua_State * L)
                 {
                     UnsharedInstancingData * unsharedInstanceData = GetUnsharedData( userData );
 
-                    unsharedInstanceData->instances.out = NULL;
+                    unsharedInstanceData->instances.name/*out*/ = NULL;
 
                     CoronaEffectDetail detail;
                         
@@ -374,7 +376,7 @@ void AddUnshared( lua_State * L)
                     {
                         if (strcmp( detail.name, "supportsInstancing" ) == 0)
                         {
-                            unsharedInstanceData->instances.out = CoronaGeometryGetMappingFromRenderData( renderData, detail.value, &unsharedInstanceData->instances.dstLayout );
+                            unsharedInstanceData->instances.name = detail.value;
                         }
                     }
                 };

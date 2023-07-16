@@ -29,11 +29,11 @@
 #include <cstring>
 
 struct BasicInstancingData {
-    CoronaGeometryMappingLayout dstLayout;
-    void * out;
+    const char * name;
     int count;
 };
 
+bool AddInstanceWriter( const CoronaRenderer * renderer, const char * name );
 void MultiDraw( const CoronaShader * shader, const CoronaRenderer * renderer, const CoronaRenderData * renderData, BasicInstancingData * instancingData );
 
 void AddBasic( lua_State * L );

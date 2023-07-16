@@ -98,6 +98,8 @@ DrawParams()
     {
         BasicInstancingData * _this = static_cast< BasicInstancingData * >( userData );
         
+        if ( !AddInstanceWriter( renderer, _this->name ) ) return;
+
         MultiDraw( shader, renderer, renderData, _this );
     };
 
@@ -109,7 +111,7 @@ Prepare( const CoronaShader * shader, void * userData, const CoronaRenderData * 
 {
     BasicInstancingData * _this = static_cast< BasicInstancingData * >( userData );
 
-    _this->out = NULL;
+    _this->name = NULL;
 
     CoronaEffectDetail detail;
         
@@ -117,7 +119,7 @@ Prepare( const CoronaShader * shader, void * userData, const CoronaRenderData * 
     {
         if (strcmp( detail.name, "supportsInstancing" ) == 0)
         {
-            _this->out = CoronaGeometryGetMappingFromRenderData( renderData, detail.value, &_this->dstLayout );
+            _this->name = detail.value;
         }
     }
 }
