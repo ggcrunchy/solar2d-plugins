@@ -1,0 +1,127 @@
+--- Corona binding for **tiny file dialogs**, which provides various dialogs on desktop platforms.
+--
+-- To use the plugin, add the following in `build.settings`:
+--
+--    plugins = {
+--     ["plugin.tinyfiledialogs"] = { publisherId = "com.xibalbastudios" }
+--    }
+-- 
+-- A sample may be found [here](https://github.com/ggcrunchy/corona-plugin-docs/tree/master/tinyfiledialogs_sample).
+--
+-- ==============================
+--
+-- **Adapted from the original project:**
+--
+-- tinyfiledialogs.h v2.9.3 [July 12, 2017] zlib licence
+--
+-- Copyright (c) 2014 - 2017 Guillaume Vareille [http://ysengrin.com](http://ysengrin.com)
+--
+-- [http://tinyfiledialogs.sourceforge.net](http://tinyfiledialogs.sourceforge.net)
+--
+-- [git://git.code.sf.net/p/tinyfiledialogs/code](git://git.code.sf.net/p/tinyfiledialogs/code)
+--		 ______________________________________________
+--		|                                              |
+--		|     email: tinyfiledialogs@ysengrin.com      |
+--		|______________________________________________|
+
+--
+-- Permission is hereby granted, free of charge, to any person obtaining
+-- a copy of this software and associated documentation files (the
+-- "Software"), to deal in the Software without restriction, including
+-- without limitation the rights to use, copy, modify, merge, publish,
+-- distribute, sublicense, and/or sell copies of the Software, and to
+-- permit persons to whom the Software is furnished to do so, subject to
+-- the following conditions:
+--
+-- The above copyright notice and this permission notice shall be
+-- included in all copies or substantial portions of the Software.
+--
+-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+-- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+-- MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+-- IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+-- CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+-- TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+-- SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+--
+-- [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
+--
+
+--- Create a dialog for choosing colors.
+-- @function M.colorChooser
+-- @ptable opts Dialog options, which include:
+--
+--   * **title**: Optional title, e.g. `"Choose a color"`.
+--   * **out_rgb**: If present, a table whose **r**, **g**, and **b** values will be populated on success. These will
+-- describe the same color as the hex string, but as numbers in the 0-1 range.
+--   * **rgb**: If present, a table whose **r**, **g**, and **b** values must be numbers from 0 to 1, used as the
+-- initial color. This may be the same table as **out\_rgb**.
+-- @treturn[1] string A hex string such as `"#FF0000"`.
+-- @return[2] **false**, if the user cancelled.
+
+--- Create a dialog for text input.
+--
+-- In Corona [native.newTextField](https://docs.coronalabs.com/api/library/native/newTextField.html) will be more idiomatic,
+-- but this is provided for completeness.
+-- @function M.inputBox
+-- @ptable opts Dialog options, which include:
+--
+--   * **title**: Optional title, e.g. `"Messages are great..."`.
+--   * **message**: Optional message, e.g. `"...aren't they?"`.
+--   * **default_input**: If this is **false**, the text will be hidden, password-style. Otherwise, this may be a string
+-- providing some initial text.
+-- @treturn[1] string Input text.
+-- @return[2] **false**, if the user cancelled.
+
+
+--- Create a message dialog.
+--
+-- In Corona [native.showAlert](https://docs.coronalabs.com/api/library/native/showAlert.html) will be more idiomatic, but
+-- this is provided for completeness.
+-- @function M.messageBox
+-- @ptable opts Dialog options, which include:
+--
+--   * **title**: Optional title, e.g. `"Enter some text"`.
+--   * **message**: Optional message, e.g. `"Text is great"`.
+--   * **dialog_type**: One of **"ok"** (the default), **"okcancel"**, and **"yesno"**, determining the type of message box.
+--   * **icon_type**: One of **"info"** (the default), **"warning"**, **"error"**, and **"question"**, determining the icon shown.
+--   * **default_okyes**: If this is true, the **OK** or **Yes** option will be the default, rather than **Cancel** or **No**. This is
+-- irrelevant if **dialog\_type** was **"ok"**.
+-- @treturn boolean Was the **OK** or **Yes** option chosen?
+
+--- Create a dialog for choosing files to open.
+-- @function M.openFileDialog
+-- @ptable opts Dialog options, which include:
+--
+--   * **title**: Optional title, e.g. `"Choose SFX"`.
+--   * **default\_path\_and\_file**: Optional path where dialog should start, e.g. `system.pathForFile("MySFXFolder")`; this may
+-- more specifically refer to a file, which will be initially selected, such as `system.pathForFile("MySFXFolder/Hit.mp3")`.
+--   * **filter\_patterns**: If absent, all files in the folder will be available for selection. Otherwise, this may be either
+-- a single string such as `"\*.mp3"` or an array of them, e.g. `{ "\*.mp3", "\*.wav" }`.
+--   * **filter\_description**: Optional string used as a friendly replacement for any filter patterns, e.g. `"Sound Effects"`.
+--   * **allow\_multiple\_selects**: If true, multiple files may be returned.
+-- @treturn[1] {string...} A list of file names.
+-- @treturn[2] string A single file name.
+-- @return[3] **false**, if the user cancelled.
+
+--- Create a dialog for choosing files to save.
+-- @function M.saveFileDialog
+-- @ptable opts Dialog options, which include:
+--
+--   * **title**: Optional title, e.g. `"Choose image"`.
+--   * **default\_path\_and\_file**: Optional path where dialog should start looking, e.g. `system.pathForFile("MyImageFolder")`;
+-- this may more specifically refer to a file, which will be initially selected, such as `system.pathForFile("MyImageFolder/Fire.png")`.
+--   * **filter\_patterns**: If absent, all files in the folder will be available for selection. Otherwise, this may be either
+-- a single string such as `"\*.png"` or an array of them, e.g. `{ "\*.png", "\*.jpg" }`.
+--   * **filter\_description**: Optional string used as a friendly replacement for any filter patterns, e.g. `"Images"`.
+-- @treturn[1] string File name.
+-- @return[2] **false**, if the user cancelled.
+
+--- Create a dialog for choosing a folder.
+-- @function M.selectFolderDialog
+-- @ptable opts Dialog options, which include:
+--
+--   * **title**: Optional title, e.g. `"Choose image"`.
+--   * **default\_path**: Optional path where dialog should start looking, e.g. `system.pathForFile("MyImageFolder")`. (N.B. Buggy?)
+-- @treturn[1] string Folder name.
+-- @return[2] **false**, if the user cancelled.

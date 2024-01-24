@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\shared\plugin.wamr.cpp" />
+    <ClCompile Include="..\shared\source\m3_api_libc.c">
+      <Filter>wasm3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\source\m3_api_meta_wasi.c">
+      <Filter>wasm3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\source\m3_api_tracer.c">
+      <Filter>wasm3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\source\m3_api_uvwasi.c">
+      <Filter>wasm3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\source\m3_api_wasi.c">
+      <Filter>wasm3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\source\m3_bind.c">
+      <Filter>wasm3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\source\m3_code.c">
+      <Filter>wasm3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\source\m3_compile.c">
+      <Filter>wasm3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\source\m3_core.c">
+      <Filter>wasm3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\source\m3_env.c">
+      <Filter>wasm3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\source\m3_exec.c">
+      <Filter>wasm3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\source\m3_function.c">
+      <Filter>wasm3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\source\m3_info.c">
+      <Filter>wasm3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\source\m3_module.c">
+      <Filter>wasm3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\source\m3_parse.c">
+      <Filter>wasm3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\PairedJSAndWASM.cpp" />
+    <ClCompile Include="..\shared\utils.cpp" />
+    <ClCompile Include="..\shared\wasm.c" />
+    <ClCompile Include="..\shared\jsutils.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="wamr">
+      <UniqueIdentifier>{5b02c530-966f-431e-9b69-240cf6e2dd72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="wasm3">
+      <UniqueIdentifier>{bec1d0ff-cf93-4a2a-abe4-18d993b1e917}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\shared\common.h" />
+    <ClInclude Include="..\shared\WebAssemblyPolyfillJS.cpp" />
+    <ClInclude Include="..\shared\utils.h" />
+    <ClInclude Include="..\shared\jsutils.h" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,233 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\shared\jsutils.cpp" />
+    <ClCompile Include="..\shared\PairedJSAndWASM.cpp" />
+    <ClCompile Include="..\shared\plugin.wamr.cpp" />
+    <ClCompile Include="..\shared\source\m3_api_libc.c" />
+    <ClCompile Include="..\shared\source\m3_api_meta_wasi.c" />
+    <ClCompile Include="..\shared\source\m3_api_tracer.c" />
+    <ClCompile Include="..\shared\source\m3_api_uvwasi.c" />
+    <ClCompile Include="..\shared\source\m3_api_wasi.c" />
+    <ClCompile Include="..\shared\source\m3_bind.c" />
+    <ClCompile Include="..\shared\source\m3_code.c" />
+    <ClCompile Include="..\shared\source\m3_compile.c" />
+    <ClCompile Include="..\shared\source\m3_core.c" />
+    <ClCompile Include="..\shared\source\m3_env.c" />
+    <ClCompile Include="..\shared\source\m3_exec.c" />
+    <ClCompile Include="..\shared\source\m3_function.c" />
+    <ClCompile Include="..\shared\source\m3_info.c" />
+    <ClCompile Include="..\shared\source\m3_module.c" />
+    <ClCompile Include="..\shared\source\m3_parse.c" />
+    <ClCompile Include="..\shared\utils.cpp" />
+    <ClCompile Include="..\shared\wasm.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\shared\common.h" />
+    <ClInclude Include="..\shared\jsutils.h" />
+    <ClInclude Include="..\shared\utils.h" />
+    <ClInclude Include="..\shared\WebAssemblyPolyfillJS.cpp" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{79F0CACC-457B-4A25-BC54-81277688C361}</ProjectGuid>
+    <RootNamespace>Plugin</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>7.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v141_xp</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v141_xp</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>12.0.30501.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(Configuration)\</OutDir>
+    <TargetName>wamr</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <TargetName>wamr</TargetName>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(Configuration)\</OutDir>
+    <TargetName>wasmthing</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <TargetName>wamr</TargetName>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <PreBuildEvent />
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(CORONA_ROOT)/Corona\shared\include\Corona;$(CORONA_ROOT)/Corona\shared\include\lua;$(ProjectDir)..\shared\uv_a\include;$(ProjectDir)..\shared\uvwasi_a\include;$(ProjectDir)..\shared\wamr\shared\platform\windows;$(ProjectDir)..\shared\wamr\shared\platform\include;$(ProjectDir)..\shared\wamr\shared\platform\common\libc-util;$(ProjectDir)..\shared\wamr\shared\utils;$(ProjectDir)..\shared</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>d_m3HasWASI;WIN32;_DEBUG;_WINDOWS;_USRDLL;COMPILING_WASM_RUNTIME_API=1;WASM_ENABLE_INTERP=1;WASM_ENABLE_AOT=1;WASM_ENABLE_LIBC_BUILTIN=1;WASM_ENABLE_LIBC_WASI=1;WASM_ENABLE_UVWASI=1;WASM_ENABLE_LIB_PTHREAD=1;WASM_ENABLE_THREAD_MGR=1;BUILD_TARGET_X86_32;WASM_ENABLE_FAST_INTERP=1;WASM_ENABLE_MULTI_MODULE=1;WASM_ENABLE_BULK_MEMORY=1;WASM_ENABLE_SHARED_MEMORY=1;WASM_ENABLE_MINI_LOADER=0;WASM_DISABLE_HW_BOUND_CHECK=0;WASM_DISABLE_STACK_HW_BOUND_CHECK=0;WASM_DISABLE_WAKEUP_BLOCKING_OP=0;WASM_ENABLE_SIMD=1;WASM_GLOBAL_HEAP_SIZE=10485760;WASM_ENABLE_MODULE_INST_CONTEXT=1;BH_PLATFORM_WINDOWS;HAVE_STRUCT_TIMESPEC;_WINSOCK_DEPRECATED_NO_WARNINGS;BH_MALLOC=wasm_runtime_malloc;BH_FREE=wasm_runtime_free;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(CORONA_ROOT)/Corona\win\lib\*.lib;libs/win32/*.lib;$(ProjectDir)..\wasmer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <PostBuildEvent />
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <PreBuildEvent />
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(CORONA_ROOT)/Corona\shared\include\Corona;$(CORONA_ROOT)/Corona\shared\include\lua;$(ProjectDir)..\shared\uv_a\include;$(ProjectDir)..\shared\uvwasi_a\include;$(ProjectDir)..\shared\wamr\shared\platform\windows;$(ProjectDir)..\shared\wamr\shared\platform\include;$(ProjectDir)..\shared\wamr\shared\platform\common\libc-util;$(ProjectDir)..\shared\wamr\shared\utils</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;COMPILING_WASM_RUNTIME_API=1;WASM_ENABLE_INTERP=1;WASM_ENABLE_AOT=1;WASM_ENABLE_LIBC_BUILTIN=1;WASM_ENABLE_LIBC_WASI=1;WASM_ENABLE_UVWASI=1;WASM_ENABLE_LIB_PTHREAD=1;WASM_ENABLE_THREAD_MGR=1;BUILD_TARGET_X86_32;WASM_ENABLE_FAST_INTERP=1;WASM_ENABLE_MULTI_MODULE=1;WASM_ENABLE_BULK_MEMORY=1;WASM_ENABLE_SHARED_MEMORY=1;WASM_ENABLE_MINI_LOADER=0;WASM_DISABLE_HW_BOUND_CHECK=0;WASM_DISABLE_STACK_HW_BOUND_CHECK=0;WASM_DISABLE_WAKEUP_BLOCKING_OP=0;WASM_ENABLE_SIMD=1;WASM_GLOBAL_HEAP_SIZE=10485760;WASM_ENABLE_MODULE_INST_CONTEXT=1;BH_PLATFORM_WINDOWS;HAVE_STRUCT_TIMESPEC;_WINSOCK_DEPRECATED_NO_WARNINGS;BH_MALLOC=wasm_runtime_malloc;BH_FREE=wasm_runtime_free;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(CORONA_ROOT)/Corona\win\lib\*.lib;libs/win32/*.lib;$(ProjectDir)..\wasmer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+    <PostBuildEvent />
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <PreBuildEvent />
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(CORONA_ROOT)/Corona/shared/include/Corona;$(CORONA_ROOT)/Corona/shared/include/lua;%(AdditionalIncludeDirectories);$(ProjectDir)../shared;$(ProjectDir)..\shared\source</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>d_m3HasWASI;ZSTD_NO_INLINE;WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);LUA_BUILD_AS_DLL;LUA_LIB;_CRT_SECURE_NO_WARNINGS;__HAVE_OGG;COMPILING_WASM_RUNTIME_API=1;WASM_ENABLE_INTERP=1;WASM_ENABLE_AOT=1;WASM_ENABLE_LIBC_BUILTIN=1;WASM_ENABLE_LIBC_WASI=1;WASM_ENABLE_UVWASI=1;WASM_ENABLE_LIB_PTHREAD=1;WASM_ENABLE_THREAD_MGR=1;BUILD_TARGET_X86_32;WASM_ENABLE_FAST_INTERP=1;WASM_ENABLE_MULTI_MODULE=1;WASM_ENABLE_BULK_MEMORY=1;WASM_ENABLE_SHARED_MEMORY=1;WASM_ENABLE_MINI_LOADER=0;WASM_DISABLE_HW_BOUND_CHECK=0;WASM_DISABLE_STACK_HW_BOUND_CHECK=0;WASM_DISABLE_WAKEUP_BLOCKING_OP=0;WASM_ENABLE_SIMD=1;WASM_GLOBAL_HEAP_SIZE=10485760;WASM_ENABLE_MODULE_INST_CONTEXT=1;BH_PLATFORM_WINDOWS;HAVE_STRUCT_TIMESPEC;_WINSOCK_DEPRECATED_NO_WARNINGS;BH_MALLOC=wasm_runtime_malloc;BH_FREE=wasm_runtime_free</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(CORONA_ROOT)\Corona\win\lib\*.lib;%(AdditionalDependencies);qjs.lib</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+      <DelayLoadDLLs>
+      </DelayLoadDLLs>
+      <LinkTimeCodeGeneration>UseFastLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+    </Link>
+    <PostBuildEvent />
+    <PostBuildEvent>
+      <Command>set PLUGIN_DIR=$(appdata)\Solar2DPlugins\com.xibalbastudios\plugin.$(TargetName)\win32-sim
+setlocal enableextensions
+mkdir %PLUGIN_DIR%
+set FILENAME=plugin_$(TargetName).dll
+set FULL_NAME=%PLUGIN_DIR%\%FILENAME%
+copy "$(OutDir)$(TargetName).dll" "%FULL_NAME%"
+del "%PLUGIN_DIR%\data.tgz"
+tar -czf "%PLUGIN_DIR%\data.tgz" -C "%PLUGIN_DIR%" %FILENAME%
+del "%FULL_NAME%"
+set SIMULATOR_DIR="$(appdata)\Corona Labs\Corona Simulator\Plugins"
+del %SIMULATOR_DIR%\catalog.json</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <PreBuildEvent />
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(CORONA_ROOT)/Corona/shared/include/Corona;$(CORONA_ROOT)/Corona/shared/include/lua;%(AdditionalIncludeDirectories);$(ProjectDir)../shared</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);LUA_BUILD_AS_DLL;LUA_LIB;_CRT_SECURE_NO_WARNINGS;__HAVE_OGG;COMPILING_WASM_RUNTIME_API=1;WASM_ENABLE_INTERP=1;WASM_ENABLE_AOT=1;WASM_ENABLE_LIBC_BUILTIN=1;WASM_ENABLE_LIBC_WASI=1;WASM_ENABLE_UVWASI=1;WASM_ENABLE_LIB_PTHREAD=1;WASM_ENABLE_THREAD_MGR=1;BUILD_TARGET_X86_32;WASM_ENABLE_FAST_INTERP=1;WASM_ENABLE_MULTI_MODULE=1;WASM_ENABLE_BULK_MEMORY=1;WASM_ENABLE_SHARED_MEMORY=1;WASM_ENABLE_MINI_LOADER=0;WASM_DISABLE_HW_BOUND_CHECK=0;WASM_DISABLE_STACK_HW_BOUND_CHECK=0;WASM_DISABLE_WAKEUP_BLOCKING_OP=0;WASM_ENABLE_SIMD=1;WASM_GLOBAL_HEAP_SIZE=10485760;WASM_ENABLE_MODULE_INST_CONTEXT=1;BH_PLATFORM_WINDOWS;HAVE_STRUCT_TIMESPEC;_WINSOCK_DEPRECATED_NO_WARNINGS;BH_MALLOC=wasm_runtime_malloc;BH_FREE=wasm_runtime_free</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(CORONA_ROOT)\Corona\win\lib\*.lib;wasmer.lib;%(AdditionalDependencies);</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <DelayLoadDLLs>
+      </DelayLoadDLLs>
+    </Link>
+    <PostBuildEvent />
+    <PostBuildEvent>
+      <Command>set PLUGIN_DIR=$(appdata)\Solar2DPlugins\com.xibalbastudios\plugin.$(TargetName)\win32-sim
+setlocal enableextensions
+mkdir %PLUGIN_DIR%
+set FILENAME=plugin_$(TargetName).dll
+set FULL_NAME=%PLUGIN_DIR%\%FILENAME%
+copy "$(OutDir)$(TargetName).dll" "%FULL_NAME%"
+del "%PLUGIN_DIR%\data.tgz"
+tar -czf "%PLUGIN_DIR%\data.tgz" -C "%PLUGIN_DIR%" %FILENAME%
+del "%FULL_NAME%"
+set SIMULATOR_DIR="$(appdata)\Corona Labs\Corona Simulator\Plugins"
+del %SIMULATOR_DIR%\catalog.json</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
