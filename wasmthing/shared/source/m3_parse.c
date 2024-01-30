@@ -35,7 +35,7 @@ _       (ReadLEB_u32 (& o_memory->maxPages, io_bytes, i_end));
     _catch: return result;
 }
 
-
+static const char Ts[] = "?iIfF";
 M3Result  ParseSection_Type  (IM3Module io_module, bytes_t i_bytes, cbytes_t i_end)
 {
     IM3FuncType ftype = NULL;

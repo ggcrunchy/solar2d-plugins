@@ -369,7 +369,7 @@ M3Result  ResizeMemory  (IM3Runtime io_runtime, u32 i_numPages)
     if (numPagesToAlloc <= memory->maxPages)
     {
         size_t numPageBytes = numPagesToAlloc * d_m3MemPageSize;
-printf("NUM = %u, MAX = %u\n", numPagesToAlloc, memory->maxPages);
+
 #if d_m3MaxLinearMemoryPages > 0
         _throwif("linear memory limitation exceeded", numPagesToAlloc > d_m3MaxLinearMemoryPages);
 #endif
@@ -464,9 +464,9 @@ M3Result  InitDataSegments  (M3Memory * io_memory, IM3Module io_module)
         i32 segmentOffset;
         bytes_t start = segment->initExpr;
 _       (EvaluateExpression (io_module, & segmentOffset, c_m3Type_i32, & start, segment->initExpr + segment->initExprSize));
-printf("SEG %u = %i, IES = %u\n", i, segmentOffset, segment->initExprSize);
+
         m3log (runtime, "loading data segment: %d; size: %d; offset: %d", i, segment->size, segmentOffset);
-printf("LENG %u, SIZE %u\n", io_memory->mallocated->length, segment->size);
+
         if (segmentOffset >= 0 && (size_t)(segmentOffset) + segment->size <= io_memory->mallocated->length)
         {
             u8 * dest = m3MemData (io_memory->mallocated) + segmentOffset;

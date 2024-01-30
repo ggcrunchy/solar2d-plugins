@@ -34,7 +34,7 @@ int GetIndexAfterLastSeparator (const char * filename, int len)
     #ifdef LUA_WIN
         if (strstr(&filename[i], LUA_DIRSEP))
         {
-            return i + sizeof(LUA_DIRSEP);
+            return i + sizeof(LUA_DIRSEP) - 1;
         } else
     #endif
         if (filename[i] == '/') return i + 1;
@@ -151,10 +151,10 @@ void RegisterWithLoadFile (lua_State * L, luaL_Reg closures[])
 
     for (int i = 0; closures[i].func; ++i)
     {
-        lua_pushvalue(L, -1); // ..., funcs, system, LoadFile, LoadFile
-        lua_pushcclosure(L, closures[i].func, 1); // ..., funcs, system, LoadFile, func
-        lua_setfield(L, -4, closures[i].name); // ..., funcs = { ..., [name] = func }, system, LoadFile
+        lua_pushvalue(L, -1); // ..., funcs, io, system, LoadFile, LoadFile
+        lua_pushcclosure(L, closures[i].func, 1); // ..., funcs, io, system, LoadFile, func
+        lua_setfield(L, -5, closures[i].name); // ..., funcs = { ..., [name] = func }, io, system, LoadFile
     }
 
-    lua_pop(L, 2); // ..., funcs
+    lua_pop(L, 3); // ..., funcs
 }

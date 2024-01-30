@@ -1688,7 +1688,7 @@ _           (EmitOp     (o, op));
             EmitSlotOffset  (o, slotTop);
         }
         else
-        {printf("!!! %s: %s\n",m3_GetFunctionName(function), GetFunctionImportModuleName (function));
+        {
             _throw (ErrorCompile (m3Err_functionImportMissing, o, "'%s.%s'", GetFunctionImportModuleName (function), m3_GetFunctionName (function)));
         }
     }

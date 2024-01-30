@@ -35,3 +35,15 @@ struct JSContext;
 
 int eval_buf(JSContext *ctx, const char *buf, int buf_len,
                     const char *filename, int eval_flags);
+
+//
+//
+//
+
+void js_std_add_helpers(JSContext *ctx);//, int argc, char **argv);
+
+//
+//
+//
+
+void js_std_dump_error(JSContext *ctx);

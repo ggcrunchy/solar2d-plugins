@@ -51,6 +51,7 @@
     <ClCompile Include="..\shared\utils.cpp" />
     <ClCompile Include="..\shared\wasm.c" />
     <ClCompile Include="..\shared\jsutils.cpp" />
+    <ClCompile Include="..\shared\WebAssemblyPolyfillJS.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="wamr">
@@ -62,7 +63,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\shared\common.h" />
-    <ClInclude Include="..\shared\WebAssemblyPolyfillJS.cpp" />
     <ClInclude Include="..\shared\utils.h" />
     <ClInclude Include="..\shared\jsutils.h" />
   </ItemGroup>

@@ -33,18 +33,11 @@
 #include "wasm3.h"
 #include "m3_env.h"
 
-#include <stddef.h>/*
-#include <stdint.h>
-#include <cstdio>
-#include <cstring>
-#include <fstream>
-*/
-
 //
 //
 //
 
-static const char * kWebAssemblyPolyfill;
+const char * GetWebAssemblyPolyfill (size_t * len);
 
 //
 //

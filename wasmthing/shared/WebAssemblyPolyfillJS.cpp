@@ -23,7 +23,7 @@
 * [ MIT license: http://www.opensource.org/licenses/mit-license.php ]
 */
 
-#pragma once
+#include "common.h"
 
 //
 //
@@ -33,17 +33,18 @@
     #define MULTILINE(...) #__VA_ARGS__ /* cf. https://stackoverflow.com/a/14293615 */
 #else
     #define MULTILINE(body) R"(body)"
-    // TODO: ^^ would preserve newlines, so should be better, but Intellisense makes it too annoying to use during dev
-    // however, the literal seems to resolve before the macro does
+    // TODO: ^^ literal seems to resolve before the macro does
+    // would preserve newlines, but Intellisense makes it too annoying to use during dev
 #endif
 
 //
 //
 //
 
-const char * kWebAssemblyPolyfill = MULTILINE(
+static const char kWebAssemblyPolyfill[] = MULTILINE(
     const { wasm } = globalThis.__bootstrap;
 
+    const kBuffer = Symbol('kBuffer');
     const kWasmModule = Symbol('kWasmModule');
     const kWasmModuleRef = Symbol('kWasmModuleRef');
     const kWasmExports = Symbol('kWasmExports');
@@ -148,10 +149,8 @@ const char * kWebAssemblyPolyfill = MULTILINE(
             return wasm.moduleExports(module[kWasmModule]);
         }
 
-        // eslint-disable-next-line no-unused-vars
         static imports(module) {
-            // TODO.
-            return {};
+            return wasm.moduleImports(module[kWasmModule]);
         }
     }
 
@@ -173,18 +172,18 @@ const char * kWebAssemblyPolyfill = MULTILINE(
             } else if (descriptor.shared) {
                 throw new TypeError('shared memories NYI');
             } else {
-                this.buffer = wasm.memoryBuffer;
+                this[kBuffer] = wasm.memoryBuffer;
             }
         }
 
-        function grow(delta) {
+        grow(delta) {
             if (typeof delta != 'number' || delta < 0) {
                 throw new TypeError('invalid delta');
             } else {
                 const oldPageCount = wasm.requestMemoryPages(delta);
 
-                if (!this.buffer.detached) {
-                    const _ = this.buffer.transfer();
+                if (!this[kBuffer].detached) {
+                    const _ = this[kBuffer].transfer();
                 }
 
                 return oldPageCount;
@@ -192,15 +191,16 @@ const char * kWebAssemblyPolyfill = MULTILINE(
         }
 
         get buffer() {
-            const old = this.buffer;
+            const old = this.abuf;
             if (old.detached) {
                 try {
-                    this.buffer = wasm.memoryBuffer;
+                    this[kBuffer] = wasm.memoryBuffer;
                 } catch (_) {
                     return old; // ??? (some docs seem to suggest this can fail gracefully?)
                 }
             }
-            return this.buffer;
+
+            return this[kBuffer];
         }
     }
 
@@ -222,6 +222,27 @@ const char * kWebAssemblyPolyfill = MULTILINE(
                 } else if (item.kind == 'memory') {
                     exports[item.name] = new Memory({});
                 }
+            }
+
+            const _imports = Module.imports(module);
+            const imports = Object.create(null);
+
+            for (const item of _imports)
+            {
+                const mod = importObject[item.module];
+                if (!mod) {
+                    throw new LinkError('Unmatched link module');
+                }
+
+                const jfunc = mod[item.name];
+                if (!jfunc) {
+                    throw new LinkError('No function to link');
+                }
+
+                if (item.kind === 'function') {
+                    instance.linkImport(item.module, item.name);
+                }
+                // TODO: others
             }
 
             this[kWasmInstance] = instance;
@@ -298,3 +319,14 @@ const char * kWebAssemblyPolyfill = MULTILINE(
         value: new WebAssembly()
     });
 );
+
+//
+//
+//
+
+const char * GetWebAssemblyPolyfill (size_t * len)
+{
+    *len = sizeof(kWebAssemblyPolyfill) - 1;
+
+    return kWebAssemblyPolyfill;
+}

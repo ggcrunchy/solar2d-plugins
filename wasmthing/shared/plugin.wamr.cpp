@@ -159,43 +159,6 @@ JSValue TJS_EvalModule(JSContext *ctx, const char *filename, bool is_main) {
         // passing functions around...
         // methods
 
-
-
-struct JSOnly {
-    JSContext * mContext;
-    JSRuntime * mRuntime;
-
-    JSOnly ();
-    ~JSOnly ();
-
-    // loop?
-};
-
-struct WASMOnly {
-    M3Runtime * mWASM;
-    M3Environment * mEnv;
-
-    WASMOnly ();
-    ~WASMOnly ();
-};
-
-struct WebAssemblyObject {
-    M3Runtime * mWASM; // ??
-    JSValue mBuffer;
-    bool mDirty;
-    bool mShared;
-
-    void Dirty (JSRuntime * runtime) // called by ResizeMemory() or .grow()
-    {
-        if (!mDirty)
-        {
-            if (!mShared) /* Detach */ ;
-
-            mDirty = true;
-        }
-    }
-};
-
 CORONA_EXPORT int luaopen_plugin_wasmthing (lua_State* L)
 {
     lua_newtable(L);

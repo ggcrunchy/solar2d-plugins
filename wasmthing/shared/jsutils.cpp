@@ -67,7 +67,7 @@ static void js_std_dump_error1(JSContext *ctx, JSValue exception_val)
 //
 //
 
-static void js_std_dump_error(JSContext *ctx)
+void js_std_dump_error(JSContext *ctx)
 {
     JSValue exception_val;
 
@@ -198,4 +198,65 @@ int eval_buf(JSContext *ctx, const char *buf, int buf_len,
     }
     JS_FreeValue(ctx, val);
     return ret;
+}
+
+//
+//
+//
+
+static JSValue js_print(JSContext *ctx, JSValue this_val,
+                        int argc, JSValue *argv)
+{
+    int i;
+    const char *str;
+    size_t len;
+
+    for(i = 0; i < argc; i++) {
+        if (i != 0)
+            putchar(' ');
+        str = JS_ToCStringLen(ctx, &len, argv[i]);
+        if (!str)
+            return JS_EXCEPTION;
+        fwrite(str, 1, len, stdout);
+        JS_FreeCString(ctx, str);
+    }
+    putchar('\n');
+    fflush(stdout);
+    return JS_UNDEFINED;
+}
+
+//
+//
+//
+
+void js_std_add_helpers(JSContext *ctx)//, int argc, char **argv)
+{
+    JSValue global_obj, console;//, args;
+    // int i;
+
+    /* XXX: should these global definitions be enumerable? */
+    global_obj = JS_GetGlobalObject(ctx);
+
+    console = JS_NewObject(ctx);
+    JS_SetPropertyStr(ctx, console, "log",
+                      JS_NewCFunction(ctx, js_print, "log", 1));
+    JS_SetPropertyStr(ctx, console, "error",
+                      JS_NewCFunction(ctx, js_print, "error", 1));
+    JS_SetPropertyStr(ctx, global_obj, "console", console);
+
+    /* same methods as the mozilla JS shell */
+    /* if (argc >= 0) {
+        args = JS_NewArray(ctx);
+        for(i = 0; i < argc; i++) {
+            JS_SetPropertyUint32(ctx, args, i, JS_NewString(ctx, argv[i]));
+        }
+        JS_SetPropertyStr(ctx, global_obj, "scriptArgs", args);
+    } */
+
+    JS_SetPropertyStr(ctx, global_obj, "print",
+                      JS_NewCFunction(ctx, js_print, "print", 1));
+    /* JS_SetPropertyStr(ctx, global_obj, "__loadScript",
+                      JS_NewCFunction(ctx, js_loadScript, "__loadScript", 1)); */
+
+    JS_FreeValue(ctx, global_obj);
 }
