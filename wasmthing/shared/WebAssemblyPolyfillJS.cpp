@@ -45,6 +45,7 @@ static const char kWebAssemblyPolyfill[] = MULTILINE(
     const { wasm } = globalThis.__bootstrap;
 
     const kBuffer = Symbol('kBuffer');
+    const kTableSize = Symbol('kTableSize');
     const kWasmModule = Symbol('kWasmModule');
     const kWasmModuleRef = Symbol('kWasmModuleRef');
     const kWasmExports = Symbol('kWasmExports');
@@ -53,6 +54,16 @@ static const char kWebAssemblyPolyfill[] = MULTILINE(
     const kWasiLinked = Symbol('kWasiLinked');
     const kWasiStarted = Symbol('kWasiStarted');
     const kWasiOptions = Symbol('kWasiOptions');
+
+    globalThis.crypto = {
+        getRandomValues(arr) {
+            var len = arr.length;
+            for (var i = 0; i < len; i++) {
+                arr[i] = Math.floor(Math.random() * 255 + 0.5);
+            }
+            return arr;
+        }
+    };
 
 
     class CompileError extends Error {
@@ -87,6 +98,20 @@ static const char kWebAssemblyPolyfill[] = MULTILINE(
                 return new RuntimeError(e.message);
             default:
                 return new TypeError(`Invalid WASM error: ${e.wasmError}`);
+        }
+    }
+
+    function callIndexedFunction(index, ...args) {
+        const instance = this;
+
+        try {
+            return instance.callIndexedFunction(index, ...args);
+        } catch (e) {
+            if (e.wasmError) {
+                throw getWasmError(e);
+            } else {
+                throw e;
+            }
         }
     }
 
@@ -191,7 +216,7 @@ static const char kWebAssemblyPolyfill[] = MULTILINE(
         }
 
         get buffer() {
-            const old = this.abuf;
+            const old = this[kBuffer];
             if (old.detached) {
                 try {
                     this[kBuffer] = wasm.memoryBuffer;
@@ -201,6 +226,16 @@ static const char kWebAssemblyPolyfill[] = MULTILINE(
             }
 
             return this[kBuffer];
+        }
+    }
+
+    class Table {
+        constructor(descriptor) {
+            this[kTableSize] = descriptor.initial;
+        }
+
+        get(index) {
+            return callIndexedFunction.bind(this[kWasmInstance], index);
         }
     }
 
@@ -219,8 +254,11 @@ static const char kWebAssemblyPolyfill[] = MULTILINE(
             for (const item of _exports) {
                 if (item.kind === 'function') {
                     exports[item.name] = callWasmFunction.bind(instance, item.name);
-                } else if (item.kind == 'memory') {
+                } else if (item.kind === 'memory') {
                     exports[item.name] = new Memory({});
+                } else if (item.kind === 'table') {
+                    exports[item.name] = new Table({ element: "anyfunc", initial: item.size });
+                    exports[item.name][kWasmInstance] = instance;
                 }
             }
 
@@ -240,7 +278,7 @@ static const char kWebAssemblyPolyfill[] = MULTILINE(
                 }
 
                 if (item.kind === 'function') {
-                    instance.linkImport(item.module, item.name);
+                    instance.linkImport(item.module, item.name, jfunc);
                 }
                 // TODO: others
             }

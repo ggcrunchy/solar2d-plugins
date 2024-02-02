@@ -15,7 +15,22 @@ M3Result  ParseType_Table  (IM3Module io_module, bytes_t i_bytes, cbytes_t i_end
 {
     M3Result result = m3Err_none;
 
-    return result;
+    u8 elemtype;
+    u8 flag;
+
+_   (ReadLEB_u7 (& elemtype, i_bytes, i_end));
+
+u32 n, m = 0;
+    // limits::=|0x00  n:u320x01  n:u32  m:u32⇒⇒{min n,max ϵ}{min n,max m}
+    // memtype::=lim:limits⇒lim
+    // tabletypeelemtype::=::=et:elemtype  lim:limits0x70⇒⇒lim etfuncref
+_   (ReadLEB_u7 (& flag, i_bytes, i_end));                   // really a u1
+_   (ReadLEB_u32 (& n, i_bytes, i_end));
+
+    if (flag)
+_       (ReadLEB_u32 (& m, i_bytes, i_end));
+
+    _catch: return result;
 }
 
 
@@ -35,7 +50,6 @@ _       (ReadLEB_u32 (& o_memory->maxPages, io_bytes, i_end));
     _catch: return result;
 }
 
-static const char Ts[] = "?iIfF";
 M3Result  ParseSection_Type  (IM3Module io_module, bytes_t i_bytes, cbytes_t i_end)
 {
     IM3FuncType ftype = NULL;
@@ -441,6 +455,21 @@ _       (ReadLEB_u32 (& segment->size, & i_bytes, i_end));
 }
 
 
+M3Result  ParseSection_Table  (M3Module * io_module, bytes_t i_bytes, cbytes_t i_end)
+{
+    M3Result result = m3Err_none;
+
+    u32 numTables;
+_   (ReadLEB_u32 (& numTables, & i_bytes, i_end));                             m3log (parse, "** Table [%d]", numTables);
+
+//    _throwif (m3Err_tooManyMemorySections, numMemories != 1);
+
+    ParseType_Table ( io_module, & i_bytes, i_end);
+
+    _catch: return result;
+}
+
+
 M3Result  ParseSection_Memory  (M3Module * io_module, bytes_t i_bytes, cbytes_t i_end)
 {
     M3Result result = m3Err_none;
@@ -572,7 +601,7 @@ M3Result  ParseModuleSection  (M3Module * o_module, u8 i_sectionType, bytes_t i_
         ParseSection_Type,      // 1
         ParseSection_Import,    // 2
         ParseSection_Function,  // 3
-        NULL,                   // 4: TODO Table
+        ParseSection_Table,     // 4: TODO Table
         ParseSection_Memory,    // 5
         ParseSection_Global,    // 6
         ParseSection_Export,    // 7

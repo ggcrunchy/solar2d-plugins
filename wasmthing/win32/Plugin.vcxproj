@@ -22,6 +22,11 @@
     <ClCompile Include="..\shared\jsutils.cpp" />
     <ClCompile Include="..\shared\PairedJSAndWASM.cpp" />
     <ClCompile Include="..\shared\plugin.wamr.cpp" />
+    <ClCompile Include="..\shared\quickjs\cutils.c" />
+    <ClCompile Include="..\shared\quickjs\libbf.c" />
+    <ClCompile Include="..\shared\quickjs\libregexp.c" />
+    <ClCompile Include="..\shared\quickjs\libunicode.c" />
+    <ClCompile Include="..\shared\quickjs\quickjs.c" />
     <ClCompile Include="..\shared\source\m3_api_libc.c" />
     <ClCompile Include="..\shared\source\m3_api_meta_wasi.c" />
     <ClCompile Include="..\shared\source\m3_api_tracer.c" />
@@ -44,6 +49,16 @@
   <ItemGroup>
     <ClInclude Include="..\shared\common.h" />
     <ClInclude Include="..\shared\jsutils.h" />
+    <ClInclude Include="..\shared\quickjs\cutils.h" />
+    <ClInclude Include="..\shared\quickjs\libbf.h" />
+    <ClInclude Include="..\shared\quickjs\libregexp-opcode.h" />
+    <ClInclude Include="..\shared\quickjs\libregexp.h" />
+    <ClInclude Include="..\shared\quickjs\libunicode-table.h" />
+    <ClInclude Include="..\shared\quickjs\libunicode.h" />
+    <ClInclude Include="..\shared\quickjs\list.h" />
+    <ClInclude Include="..\shared\quickjs\quickjs-atom.h" />
+    <ClInclude Include="..\shared\quickjs\quickjs-opcode.h" />
+    <ClInclude Include="..\shared\quickjs\quickjs.h" />
     <ClInclude Include="..\shared\utils.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -67,7 +82,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v141_xp</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -97,7 +112,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(Configuration)\</OutDir>
-    <TargetName>wamr</TargetName>
+    <TargetName>wasmthing</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetName>wamr</TargetName>
@@ -116,8 +131,8 @@
     <PreBuildEvent />
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(CORONA_ROOT)/Corona\shared\include\Corona;$(CORONA_ROOT)/Corona\shared\include\lua;$(ProjectDir)..\shared\uv_a\include;$(ProjectDir)..\shared\uvwasi_a\include;$(ProjectDir)..\shared\wamr\shared\platform\windows;$(ProjectDir)..\shared\wamr\shared\platform\include;$(ProjectDir)..\shared\wamr\shared\platform\common\libc-util;$(ProjectDir)..\shared\wamr\shared\utils;$(ProjectDir)..\shared</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>d_m3HasWASI;WIN32;_DEBUG;_WINDOWS;_USRDLL;COMPILING_WASM_RUNTIME_API=1;WASM_ENABLE_INTERP=1;WASM_ENABLE_AOT=1;WASM_ENABLE_LIBC_BUILTIN=1;WASM_ENABLE_LIBC_WASI=1;WASM_ENABLE_UVWASI=1;WASM_ENABLE_LIB_PTHREAD=1;WASM_ENABLE_THREAD_MGR=1;BUILD_TARGET_X86_32;WASM_ENABLE_FAST_INTERP=1;WASM_ENABLE_MULTI_MODULE=1;WASM_ENABLE_BULK_MEMORY=1;WASM_ENABLE_SHARED_MEMORY=1;WASM_ENABLE_MINI_LOADER=0;WASM_DISABLE_HW_BOUND_CHECK=0;WASM_DISABLE_STACK_HW_BOUND_CHECK=0;WASM_DISABLE_WAKEUP_BLOCKING_OP=0;WASM_ENABLE_SIMD=1;WASM_GLOBAL_HEAP_SIZE=10485760;WASM_ENABLE_MODULE_INST_CONTEXT=1;BH_PLATFORM_WINDOWS;HAVE_STRUCT_TIMESPEC;_WINSOCK_DEPRECATED_NO_WARNINGS;BH_MALLOC=wasm_runtime_malloc;BH_FREE=wasm_runtime_free;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(CORONA_ROOT)/Corona\shared\include\Corona;;$(CORONA_ROOT)/Corona/shared/include/lua;$(ProjectDir)../shared;$(ProjectDir)..\shared\source;$(ProjectDir)..\shared\quickjs</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;DUMP_LEAKS;d_m3HasWASI;WIN32;_DEBUG;_WINDOWS;_USRDLL;COMPILING_WASM_RUNTIME_API=1;WASM_ENABLE_INTERP=1;WASM_ENABLE_AOT=1;WASM_ENABLE_LIBC_BUILTIN=1;WASM_ENABLE_LIBC_WASI=1;WASM_ENABLE_UVWASI=1;WASM_ENABLE_LIB_PTHREAD=1;WASM_ENABLE_THREAD_MGR=1;BUILD_TARGET_X86_32;WASM_ENABLE_FAST_INTERP=1;WASM_ENABLE_MULTI_MODULE=1;WASM_ENABLE_BULK_MEMORY=1;WASM_ENABLE_SHARED_MEMORY=1;WASM_ENABLE_MINI_LOADER=0;WASM_DISABLE_HW_BOUND_CHECK=0;WASM_DISABLE_STACK_HW_BOUND_CHECK=0;WASM_DISABLE_WAKEUP_BLOCKING_OP=0;WASM_ENABLE_SIMD=1;WASM_GLOBAL_HEAP_SIZE=10485760;WASM_ENABLE_MODULE_INST_CONTEXT=1;BH_PLATFORM_WINDOWS;HAVE_STRUCT_TIMESPEC;_WINSOCK_DEPRECATED_NO_WARNINGS;BH_MALLOC=wasm_runtime_malloc;BH_FREE=wasm_runtime_free;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -126,7 +141,7 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>$(CORONA_ROOT)/Corona\win\lib\*.lib;libs/win32/*.lib;$(ProjectDir)..\wasmer.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(CORONA_ROOT)/Corona\win\lib\*.lib;libs/win32/*.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
@@ -157,8 +172,8 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>$(CORONA_ROOT)/Corona/shared/include/Corona;$(CORONA_ROOT)/Corona/shared/include/lua;%(AdditionalIncludeDirectories);$(ProjectDir)../shared;$(ProjectDir)..\shared\source</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>d_m3HasWASI;ZSTD_NO_INLINE;WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);LUA_BUILD_AS_DLL;LUA_LIB;_CRT_SECURE_NO_WARNINGS;__HAVE_OGG;COMPILING_WASM_RUNTIME_API=1;WASM_ENABLE_INTERP=1;WASM_ENABLE_AOT=1;WASM_ENABLE_LIBC_BUILTIN=1;WASM_ENABLE_LIBC_WASI=1;WASM_ENABLE_UVWASI=1;WASM_ENABLE_LIB_PTHREAD=1;WASM_ENABLE_THREAD_MGR=1;BUILD_TARGET_X86_32;WASM_ENABLE_FAST_INTERP=1;WASM_ENABLE_MULTI_MODULE=1;WASM_ENABLE_BULK_MEMORY=1;WASM_ENABLE_SHARED_MEMORY=1;WASM_ENABLE_MINI_LOADER=0;WASM_DISABLE_HW_BOUND_CHECK=0;WASM_DISABLE_STACK_HW_BOUND_CHECK=0;WASM_DISABLE_WAKEUP_BLOCKING_OP=0;WASM_ENABLE_SIMD=1;WASM_GLOBAL_HEAP_SIZE=10485760;WASM_ENABLE_MODULE_INST_CONTEXT=1;BH_PLATFORM_WINDOWS;HAVE_STRUCT_TIMESPEC;_WINSOCK_DEPRECATED_NO_WARNINGS;BH_MALLOC=wasm_runtime_malloc;BH_FREE=wasm_runtime_free</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(CORONA_ROOT)/Corona/shared/include/Corona;$(CORONA_ROOT)/Corona/shared/include/lua;%(AdditionalIncludeDirectories);$(ProjectDir)../shared;$(ProjectDir)..\shared\source;$(ProjectDir)..\shared\quickjs</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;d_m3HasWASI;WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);LUA_BUILD_AS_DLL;LUA_LIB;_CRT_SECURE_NO_WARNINGS;__HAVE_OGG;COMPILING_WASM_RUNTIME_API=1;WASM_ENABLE_INTERP=1;WASM_ENABLE_AOT=1;WASM_ENABLE_LIBC_BUILTIN=1;WASM_ENABLE_LIBC_WASI=1;WASM_ENABLE_UVWASI=1;WASM_ENABLE_LIB_PTHREAD=1;WASM_ENABLE_THREAD_MGR=1;BUILD_TARGET_X86_32;WASM_ENABLE_FAST_INTERP=1;WASM_ENABLE_MULTI_MODULE=1;WASM_ENABLE_BULK_MEMORY=1;WASM_ENABLE_SHARED_MEMORY=1;WASM_ENABLE_MINI_LOADER=0;WASM_DISABLE_HW_BOUND_CHECK=0;WASM_DISABLE_STACK_HW_BOUND_CHECK=0;WASM_DISABLE_WAKEUP_BLOCKING_OP=0;WASM_ENABLE_SIMD=1;WASM_GLOBAL_HEAP_SIZE=10485760;WASM_ENABLE_MODULE_INST_CONTEXT=1;BH_PLATFORM_WINDOWS;HAVE_STRUCT_TIMESPEC;_WINSOCK_DEPRECATED_NO_WARNINGS;BH_MALLOC=wasm_runtime_malloc;BH_FREE=wasm_runtime_free</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <WarningLevel>Level3</WarningLevel>
@@ -166,7 +181,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>$(CORONA_ROOT)\Corona\win\lib\*.lib;%(AdditionalDependencies);qjs.lib</AdditionalDependencies>
+      <AdditionalDependencies>$(CORONA_ROOT)\Corona\win\lib\*.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>

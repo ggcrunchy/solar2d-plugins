@@ -45,5 +45,12 @@ void js_std_add_helpers(JSContext *ctx);//, int argc, char **argv);
 //
 //
 //
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 void js_std_dump_error(JSContext *ctx);
+
+#ifdef __cplusplus
+}
+#endif

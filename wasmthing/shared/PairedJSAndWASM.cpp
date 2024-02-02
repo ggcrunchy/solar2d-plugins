@@ -309,25 +309,77 @@ JSValue f2 = JS_GetPropertyStr(jsw->mJSContext, p, "_openmpt_module_get_duration
         } else js_std_dump_error(jsw->mJSContext);
     }
     uint32_t size;
-    uint8_t * b = m3_GetMemory(jsw->mWASM.mRuntime, &size, 0);
-    CoronaLog("!!!bb %p", b);
+    uint8_t * bytes = m3_GetMemory(jsw->mWASM.mRuntime, &size, 0);
+    CoronaLog("!!!bb %p, %u", bytes, size);
     JSValue m = JS_GetPropertyStr(jsw->mJSContext, p, "_malloc");
-    CoronaLog("????m %i",  JS_IsUndefined(m));
+    CoronaLog("????m %i, %i",  JS_IsUndefined(m), JS_IsFunction(jsw->mJSContext, m));
     JSValue f = JS_GetPropertyStr(jsw->mJSContext, p, "_free");
-    CoronaLog("????f %i",  JS_IsUndefined(f));
-    if (!JS_IsUndefined(m) && !JS_IsUndefined(f))
-    {
-        JSValue memsize = JS_NewInt32(jsw->mJSContext, 28);
-        JSValue r = JS_Call(jsw->mJSContext, m, JS_UNDEFINED, 1, &memsize);
-        CoronaLog("!!!ff %i", JS_IsException(r));
-        if (!JS_IsException(r))
-        {CoronaLog("ffOOO");
-            int32_t res;
-            if (!JS_ToInt32(jsw->mJSContext, &res, r)) CoronaLog("R! %x", res);
-            else CoronaLog("QQQ");
-            CoronaLog("22");
+    CoronaLog("????f %i, %i",  JS_IsUndefined(f), JS_IsFunction(jsw->mJSContext, f));
+    JSValue cfm = JS_GetPropertyStr(jsw->mJSContext, p, "_openmpt_module_create_from_memory");
+    CoronaLog("????cfm %i, %i",  JS_IsUndefined(cfm), JS_IsFunction(jsw->mJSContext, cfm));
+    JSValue d = JS_GetPropertyStr(jsw->mJSContext, p, "_openmpt_module_destroy");
+    CoronaLog("????d %i, %i",  JS_IsUndefined(d), JS_IsFunction(jsw->mJSContext, d));
+    JSValue rfs = JS_GetPropertyStr(jsw->mJSContext, p, "_openmpt_module_read_float_stereo");
+    CoronaLog("????rfs %i, %i",  JS_IsUndefined(rfs), JS_IsFunction(jsw->mJSContext, rfs));
+    JSValue src = JS_GetPropertyStr(jsw->mJSContext, p, "_openmpt_module_set_repeat_count");
+    CoronaLog("????src %i, %i",  JS_IsUndefined(src), JS_IsFunction(jsw->mJSContext, src));
+
+    lua_pushliteral(L, "leaving_sanity.mod");
+                
+    LoadFile(L); // ...
+    
+    if (lua_isnil(L, -1)) return Error(L, "Unable to load mod");
+
+    const char * b = lua_tostring(L, -1);
+    size_t blen = lua_objlen(L, -1);
+
+    CoronaLog("??? %p, %u", b, blen);
+
+    JSValue memsize = JS_NewUint32(jsw->mJSContext, blen);
+    CoronaLog("!!!mmm %i", JS_IsException(memsize));
+    JSValue r = JS_Call(jsw->mJSContext, m, JS_UNDEFINED, 1, &memsize);
+    CoronaLog("!!!ff %i", JS_IsException(r));
+    if (!JS_IsException(r))
+    {CoronaLog("ffOOO");
+        int32_t res;
+        if (!JS_ToInt32(jsw->mJSContext, &res, r)) CoronaLog("R! %x", res);
+        else CoronaLog("QQQ");
+        CoronaLog("22, %p <- %p, %u", bytes + res, b, blen);
+
+        memcpy(bytes + res, b, blen);
+        CoronaLog("33");
+        // res -> to pointer
+            // load file contents into
+            // write file contents into...
+        // check "every so often"...
+            // read into left, right... (presumably allocated internally -> to pointer)
+        JS_DupValue(jsw->mJSContext, r); // ?
+        JS_DupValue(jsw->mJSContext, memsize); // ?
+        CoronaLog("4.4");
+        JSValue args1[] = { r, memsize, JS_NewInt32(jsw->mJSContext, 0), JS_NewInt32(jsw->mJSContext, 0), JS_NewInt32(jsw->mJSContext, 0) };
+        CoronaLog("4.5 %u", _countof(args1));
+        JSValue r3 = JS_Call(jsw->mJSContext, cfm, JS_UNDEFINED, _countof(args1), args1);
+        CoronaLog("44");
+        if (!JS_IsException(r3))
+        {
+            CoronaLog("yay!");
+
+            // sample data...
+            
+            JSValue r4 = JS_Call(jsw->mJSContext, d, JS_UNDEFINED, 1, &r3);
+            if (!JS_IsException(r4)) CoronaLog("yay2");
+            else js_std_dump_error(jsw->mJSContext);
         } else js_std_dump_error(jsw->mJSContext);
-    }
+
+
+        JSValue r2=JS_Call(jsw->mJSContext, f, JS_UNDEFINED, 1, &r);
+        if (!JS_IsException(r2))
+        {
+            CoronaLog("ffff!!!!");
+        } else js_std_dump_error(jsw->mJSContext);
+    } else js_std_dump_error(jsw->mJSContext);
+
+         lua_pop(L, 1);
     /*
 		d_openmpt_module_create_from_memory = (dll_openmpt_module_create_from_memory)getDllProc(dll, "openmpt_module_create_from_memory");
             openmpt_module * 	openmpt_module_create_from_memory (const void *filedata, size_t filesize, openmpt_log_func logfunc, void *loguser, const openmpt_module_initial_ctl *ctls)

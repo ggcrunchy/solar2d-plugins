@@ -52,6 +52,21 @@
     <ClCompile Include="..\shared\wasm.c" />
     <ClCompile Include="..\shared\jsutils.cpp" />
     <ClCompile Include="..\shared\WebAssemblyPolyfillJS.cpp" />
+    <ClCompile Include="..\shared\quickjs\cutils.c">
+      <Filter>quickjs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\quickjs\libbf.c">
+      <Filter>quickjs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\quickjs\libregexp.c">
+      <Filter>quickjs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\quickjs\libunicode.c">
+      <Filter>quickjs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\quickjs\quickjs.c">
+      <Filter>quickjs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="wamr">
@@ -60,10 +75,43 @@
     <Filter Include="wasm3">
       <UniqueIdentifier>{bec1d0ff-cf93-4a2a-abe4-18d993b1e917}</UniqueIdentifier>
     </Filter>
+    <Filter Include="quickjs">
+      <UniqueIdentifier>{dd65444b-ecd0-41e1-a29d-c1a098d0cd62}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\shared\common.h" />
     <ClInclude Include="..\shared\utils.h" />
     <ClInclude Include="..\shared\jsutils.h" />
+    <ClInclude Include="..\shared\quickjs\cutils.h">
+      <Filter>quickjs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\quickjs\libbf.h">
+      <Filter>quickjs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\quickjs\libregexp.h">
+      <Filter>quickjs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\quickjs\libregexp-opcode.h">
+      <Filter>quickjs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\quickjs\libunicode.h">
+      <Filter>quickjs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\quickjs\libunicode-table.h">
+      <Filter>quickjs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\quickjs\quickjs.h">
+      <Filter>quickjs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\quickjs\quickjs-atom.h">
+      <Filter>quickjs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\quickjs\quickjs-opcode.h">
+      <Filter>quickjs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\quickjs\list.h">
+      <Filter>quickjs</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
