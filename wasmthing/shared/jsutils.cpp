@@ -38,10 +38,10 @@ static void js_dump_obj(JSContext *ctx, FILE *f, JSValue val)
 
     str = JS_ToCString(ctx, val);
     if (str) {
-        fprintf(f, "%s\n", str);
+        CoronaLog(str);//fprintf(f, "%s\n", str);
         JS_FreeCString(ctx, str);
     } else {
-        fprintf(f, "[exception]\n");
+        CoronaLog("[exception]");//fprintf(f, "[exception]\n");
     }
 }
 
@@ -204,24 +204,74 @@ int eval_buf(JSContext *ctx, const char *buf, int buf_len,
 //
 //
 
+#define BUFFER_SIZE 16384
+
+//
+//
+//
+
+static void log (char *out, int &index)
+{
+    out[index] = '\0';
+
+    if (index) CoronaLog(out);
+
+    index = 0;
+}
+
+//
+//
+//
+
+static void write (const char *s, size_t n, size_t len, char *out, int &index)
+{
+    assert(n == 1);
+    assert(index < BUFFER_SIZE);
+
+    if (index + len > BUFFER_SIZE) log(out, index);
+
+    memcpy(&out[index], s, len);
+
+    index += len;
+}
+
+//
+//
+//
+
+static void put (const char c, char *out, int &index)
+{
+    assert(index < BUFFER_SIZE);
+
+    if (index + 1 == BUFFER_SIZE) log(out, index);
+
+    out[index++] = c;
+}
+
+//
+//
+//
+
 static JSValue js_print(JSContext *ctx, JSValue this_val,
                         int argc, JSValue *argv)
 {
-    int i;
+    int i, index = 0;
     const char *str;
+    char out[BUFFER_SIZE];
     size_t len;
 
     for(i = 0; i < argc; i++) {
         if (i != 0)
-            putchar(' ');
+            put(' ', out, index);//putchar(' ');
         str = JS_ToCStringLen(ctx, &len, argv[i]);
         if (!str)
             return JS_EXCEPTION;
-        fwrite(str, 1, len, stdout);
+        write(str, 1, len, out, index);//fwrite(str, 1, len, stdout);
         JS_FreeCString(ctx, str);
     }
-    putchar('\n');
-    fflush(stdout);
+    put('\n', out, index);//putchar('\n');
+    log(out, index);
+    //fflush(stdout);
     return JS_UNDEFINED;
 }
 

@@ -173,7 +173,7 @@
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>$(CORONA_ROOT)/Corona/shared/include/Corona;$(CORONA_ROOT)/Corona/shared/include/lua;%(AdditionalIncludeDirectories);$(ProjectDir)../shared;$(ProjectDir)..\shared\source;$(ProjectDir)..\shared\quickjs</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;d_m3HasWASI;WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);LUA_BUILD_AS_DLL;LUA_LIB;_CRT_SECURE_NO_WARNINGS;__HAVE_OGG;COMPILING_WASM_RUNTIME_API=1;WASM_ENABLE_INTERP=1;WASM_ENABLE_AOT=1;WASM_ENABLE_LIBC_BUILTIN=1;WASM_ENABLE_LIBC_WASI=1;WASM_ENABLE_UVWASI=1;WASM_ENABLE_LIB_PTHREAD=1;WASM_ENABLE_THREAD_MGR=1;BUILD_TARGET_X86_32;WASM_ENABLE_FAST_INTERP=1;WASM_ENABLE_MULTI_MODULE=1;WASM_ENABLE_BULK_MEMORY=1;WASM_ENABLE_SHARED_MEMORY=1;WASM_ENABLE_MINI_LOADER=0;WASM_DISABLE_HW_BOUND_CHECK=0;WASM_DISABLE_STACK_HW_BOUND_CHECK=0;WASM_DISABLE_WAKEUP_BLOCKING_OP=0;WASM_ENABLE_SIMD=1;WASM_GLOBAL_HEAP_SIZE=10485760;WASM_ENABLE_MODULE_INST_CONTEXT=1;BH_PLATFORM_WINDOWS;HAVE_STRUCT_TIMESPEC;_WINSOCK_DEPRECATED_NO_WARNINGS;BH_MALLOC=wasm_runtime_malloc;BH_FREE=wasm_runtime_free</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;DUMP_LEAKS;d_m3HasWASI;WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);LUA_BUILD_AS_DLL;LUA_LIB;_CRT_SECURE_NO_WARNINGS;__HAVE_OGG;COMPILING_WASM_RUNTIME_API=1;WASM_ENABLE_INTERP=1;WASM_ENABLE_AOT=1;WASM_ENABLE_LIBC_BUILTIN=1;WASM_ENABLE_LIBC_WASI=1;WASM_ENABLE_UVWASI=1;WASM_ENABLE_LIB_PTHREAD=1;WASM_ENABLE_THREAD_MGR=1;BUILD_TARGET_X86_32;WASM_ENABLE_FAST_INTERP=1;WASM_ENABLE_MULTI_MODULE=1;WASM_ENABLE_BULK_MEMORY=1;WASM_ENABLE_SHARED_MEMORY=1;WASM_ENABLE_MINI_LOADER=0;WASM_DISABLE_HW_BOUND_CHECK=0;WASM_DISABLE_STACK_HW_BOUND_CHECK=0;WASM_DISABLE_WAKEUP_BLOCKING_OP=0;WASM_ENABLE_SIMD=1;WASM_GLOBAL_HEAP_SIZE=10485760;WASM_ENABLE_MODULE_INST_CONTEXT=1;BH_PLATFORM_WINDOWS;HAVE_STRUCT_TIMESPEC;_WINSOCK_DEPRECATED_NO_WARNINGS;BH_MALLOC=wasm_runtime_malloc;BH_FREE=wasm_runtime_free</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <WarningLevel>Level3</WarningLevel>
@@ -181,7 +181,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>$(CORONA_ROOT)\Corona\win\lib\*.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(CORONA_ROOT)\Corona\win\lib\*.lib;%(AdditionalDependencies);D:\Repos\corona\external\openal-soft-1.12.854\win32\OpenAL32.lib</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>

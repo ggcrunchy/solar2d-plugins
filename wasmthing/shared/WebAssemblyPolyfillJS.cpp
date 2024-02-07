@@ -55,6 +55,7 @@ static const char kWebAssemblyPolyfill[] = MULTILINE(
     const kWasiStarted = Symbol('kWasiStarted');
     const kWasiOptions = Symbol('kWasiOptions');
 
+    // Emscripten wants this... n.b. NOT cryptographic 
     globalThis.crypto = {
         getRandomValues(arr) {
             var len = arr.length;
@@ -64,7 +65,6 @@ static const char kWebAssemblyPolyfill[] = MULTILINE(
             return arr;
         }
     };
-
 
     class CompileError extends Error {
         constructor(...args) {

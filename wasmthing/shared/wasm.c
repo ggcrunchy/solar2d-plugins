@@ -93,9 +93,18 @@ static void tjs_wasm_instance_finalizer(JSRuntime *rt, JSValue val) {
     }
 }
 
+static void tjs_wasm_instance_mark(JSRuntime *rt, JSValueConst val, JS_MarkFunc *mark_func) {
+    TJSWasmInstance *i = JS_GetOpaque(val, tjs_wasm_instance_class_id);
+    if (i) {
+        for (size_t j = 0; j < i->fsize; j++)
+            JS_MarkValue(rt, i->funcs[j], mark_func);
+    }
+}
+
 static JSClassDef tjs_wasm_instance_class = {
     "Instance",
     .finalizer = tjs_wasm_instance_finalizer,
+    .gc_mark = tjs_wasm_instance_mark
 };
 
 static JSValue tjs_new_wasm_module(JSContext *ctx) {
@@ -234,12 +243,14 @@ static JSValue tjs_wasm_callfunction(JSContext *ctx, JSValueConst this_val, int 
 
     if (ret_count == 1) {
         return tjs__wasm_result(ctx, m3_GetRetType(func, 0), valptrs[0]);
-    } else {
+    } else if (ret_count > 1) {
         JSValue rets = JS_NewArray(ctx);
         for (int i = 0; i < ret_count; i++) {
             JS_SetPropertyUint32(ctx, rets, i, tjs__wasm_result(ctx, m3_GetRetType(func, i), valptrs[i]));
         }
         return rets;
+    } else {
+        return JS_UNDEFINED;
     }
 }
 
@@ -247,7 +258,7 @@ static JSValue tjs_wasm_callindexedfunction(JSContext *ctx, JSValueConst this_va
     TJSWasmInstance *i = tjs_wasm_instance_get(ctx, this_val);
     if (!i)
         return JS_EXCEPTION;
-    
+
     uint32_t index;
     if (JS_ToUint32(ctx, &index, argv[0]))
         return JS_EXCEPTION;
@@ -296,12 +307,14 @@ static JSValue tjs_wasm_callindexedfunction(JSContext *ctx, JSValueConst this_va
 
     if (ret_count == 1) {
         return tjs__wasm_result(ctx, m3_GetRetType(func, 0), valptrs[0]);
-    } else {
+    } else if (ret_count > 0) {
         JSValue rets = JS_NewArray(ctx);
         for (int i = 0; i < ret_count; i++) {
             JS_SetPropertyUint32(ctx, rets, i, tjs__wasm_result(ctx, m3_GetRetType(func, i), valptrs[i]));
         }
         return rets;
+    } else {
+        return JS_UNDEFINED;
     }
 }
 
@@ -357,8 +370,8 @@ static JSValue tjs_wasm_buildinstance(JSContext *ctx, JSValueConst this_val, int
 static m3ApiRawFunction(CallJSFunc)
 {
     TJSWasmInstance *i = (TJSWasmInstance *)runtime->userdata;
-
     u16 nargs = m3_GetArgCount(_ctx->function), nrets = m3_GetRetCount(_ctx->function);
+
     if (nargs > TJS__WASM_MAX_ARGS) {
         m3ApiTrap("Too many arguments!");
     } else if (nrets >= 2) {
@@ -457,10 +470,16 @@ static JSValue tjs_wasm_linkimport(JSContext *ctx, JSValueConst this_val, int ar
 
         i->funcs = js_realloc(ctx, i->funcs, i->fmaxsize * sizeof(JSValue));
     } 
+
     JS_DupValue(i->context, argv[2]);
+
     i->funcs[i->fsize++] = argv[2];
 
-    M3Result r = m3_LinkRawFunctionEx(i->module, JS_ToCString(ctx, argv[0]), JS_ToCString(ctx, argv[1]), NULL, &CallJSFunc, (void *)(i->fsize - 1));
+    const char *mod = JS_ToCString(ctx, argv[0]), *func = JS_ToCString(ctx, argv[1]);
+    M3Result r = m3_LinkRawFunctionEx(i->module, mod, func, NULL, &CallJSFunc, (void *)(i->fsize - 1));
+
+    JS_FreeCString(ctx, mod);
+    JS_FreeCString(ctx, func);
 
     if (r != m3Err_none) {
         // TODO: Report error
@@ -520,7 +539,7 @@ static JSValue tjs_wasm_moduleimports(JSContext *ctx, JSValueConst this_val, int
     JSValue imports = JS_NewArray(ctx);
     if (JS_IsException(imports))
         return imports;
-    
+
     if (m->module->numFuncImports > 0) {
         for (size_t i = 0, j = 0; i < m->module->numFunctions; ++i) {
             IM3Function f = &m->module->functions[i];

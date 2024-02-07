@@ -28,6 +28,17 @@
 //
 //
 
+static JSValue sP;
+
+const uint32_t kSize = 65536;
+
+static const char * sB;
+static size_t sBlen;
+
+//
+//
+//
+
 struct JsWasm {
     JSRuntime * mJSRuntime;
     JSContext * mJSContext;
@@ -37,6 +48,7 @@ struct JsWasm {
     JSValue mMalloc;
     JSValue mFree;
 */
+
     //
     //
     //
@@ -46,7 +58,6 @@ struct JsWasm {
         if (mJSRuntime) JS_RunGC(mJSRuntime);
 
         // TODO: jobs stuff?
-
         if (mJSContext) JS_FreeContext(mJSContext);
         if (mJSRuntime) JS_FreeRuntime(mJSRuntime);
 
@@ -102,11 +113,11 @@ struct JsWasm {
     void AddModuleStub (JSValue global_obj, const char * name, size_t name_len, const uint8_t * wasm_bytes, size_t wasm_len)
     {
         JSAtom lib_atom = JS_NewAtomLen(mJSContext, name, name_len);
-        JSValue stub = JS_NewObject(mJSContext);
+        JSValue stub = JS_NewObjectProto(mJSContext, JS_NULL);
         JSValue wasmBinary = JS_NewArrayBufferCopy(mJSContext, wasm_bytes, wasm_len);
 
-        JS_SetPropertyStr(mJSContext, stub, "wasmBinary", wasmBinary);
-        JS_SetProperty(mJSContext, global_obj, lib_atom, stub);
+        JS_DefinePropertyValueStr(mJSContext, stub, "wasmBinary", wasmBinary, JS_PROP_C_W_E);
+        JS_DefinePropertyValue(mJSContext, global_obj, lib_atom, stub, JS_PROP_C_W_E);
         JS_FreeAtom(mJSContext, lib_atom);
     }
 
@@ -116,6 +127,26 @@ struct JsWasm {
 
     static void Methods (lua_State * L)
     {
+
+        static bool sOK;
+        static JSValue r, memsize, r2, r3, m, f, cfm, d, rs, src;
+        static uint8_t * pp;
+        static int32_t rres;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         luaL_Reg funcs[] = {
             {
                 "__call", [](lua_State * L)
@@ -131,6 +162,55 @@ struct JsWasm {
                 {
                     JsWasm * jsw = Get<JsWasm>(L);
 
+                    if (r3)
+                    {
+                                JSValue r4 = JS_Call(jsw->mJSContext, d, JS_UNDEFINED, 1, &r3);
+            if (!JS_IsException(r4)) ;
+            else js_std_dump_error(jsw->mJSContext);
+            if (JS_VALUE_HAS_REF_COUNT(r4)) {
+        JSRefCountHeader *p = (JSRefCountHeader *)JS_VALUE_GET_PTR(r4);
+    }
+                        JS_FreeValue(jsw->mJSContext, r4);
+                            
+                    }
+            
+                    if (r2)
+                    {
+            JSValue r5=JS_Call(jsw->mJSContext, f, JS_UNDEFINED, 1, &r2);
+            if (!JS_IsException(r5)) ;
+            else js_std_dump_error(jsw->mJSContext);
+            if (JS_VALUE_HAS_REF_COUNT(r5)) {
+        JSRefCountHeader *p = (JSRefCountHeader *)JS_VALUE_GET_PTR(r5);
+    }
+                        JS_FreeValue(jsw->mJSContext, r5);
+
+                    }
+
+                    if (r)
+                    {
+        JSValue r3=JS_Call(jsw->mJSContext, f, JS_UNDEFINED, 1, &r);
+        if (!JS_IsException(r3))
+        {
+        } else js_std_dump_error(jsw->mJSContext);
+            if (JS_VALUE_HAS_REF_COUNT(r3)) {
+        JSRefCountHeader *p = (JSRefCountHeader *)JS_VALUE_GET_PTR(r3);
+    }
+                        JS_FreeValue(jsw->mJSContext, r3);
+                    }
+
+                    r = r2 = r3 = 0;
+          
+    JS_FreeValue(jsw->mJSContext, f);
+    JS_FreeValue(jsw->mJSContext, m);
+    JS_FreeValue(jsw->mJSContext, cfm);
+    JS_FreeValue(jsw->mJSContext, d);
+    JS_FreeValue(jsw->mJSContext, rs);
+    JS_FreeValue(jsw->mJSContext, src);
+                    /*
+                    lua_getglobal(L, "audio");
+                    lua_getfield(L, -1, "endStuff");
+                    lua_call(L, 0, 0);*/
+
                     jsw->Destroy();
 
                     return 0;
@@ -141,6 +221,91 @@ struct JsWasm {
                     // TODO: update jobs
 
                     return 0;
+                }
+            }, {
+
+                "_START_", [](lua_State * L)
+                {
+                    JsWasm * jsw = Get<JsWasm>(L);
+                    JSValue p = sP;
+    uint32_t size;
+    uint8_t * bytes = m3_GetMemory(jsw->mWASM.mRuntime, &size, 0);
+
+    m = JS_GetPropertyStr(jsw->mJSContext, p, "_malloc");
+    f = JS_GetPropertyStr(jsw->mJSContext, p, "_free");
+    cfm = JS_GetPropertyStr(jsw->mJSContext, p, "_openmpt_module_create_from_memory");
+    d = JS_GetPropertyStr(jsw->mJSContext, p, "_openmpt_module_destroy");
+    rs = JS_GetPropertyStr(jsw->mJSContext, p, "_openmpt_module_read_interleaved_stereo");
+    src = JS_GetPropertyStr(jsw->mJSContext, p, "_openmpt_module_set_repeat_count");
+
+    memsize = JS_NewUint32(jsw->mJSContext, sBlen);
+    r = JS_Call(jsw->mJSContext, m, JS_UNDEFINED, 1, &memsize);
+
+    if (!JS_IsException(r))
+    {
+        int32_t res;
+        if (!JS_ToInt32(jsw->mJSContext, &res, r)) ;
+        else ;
+
+        memcpy(bytes + res, sB, sBlen);
+
+        JSValue args1[] = { r, memsize, JS_NewInt32(jsw->mJSContext, 0), JS_NewInt32(jsw->mJSContext, 0), JS_NewInt32(jsw->mJSContext, 0) };
+
+        r3 = JS_Call(jsw->mJSContext, cfm, JS_UNDEFINED, _countof(args1), args1);
+
+        if (!JS_IsException(r3))
+        {
+
+            JSValue memsize2 = JS_NewUint32(jsw->mJSContext, kSize);
+            r2 = JS_Call(jsw->mJSContext, m, JS_UNDEFINED, 1, &memsize2);
+                    
+            if (!JS_ToInt32(jsw->mJSContext, &rres, r2)) ;
+            else ;
+
+            pp = bytes + rres;
+        } else js_std_dump_error(jsw->mJSContext);
+
+
+    } else js_std_dump_error(jsw->mJSContext);
+
+
+
+
+
+
+
+
+
+
+
+
+                    return 0;
+                }
+            }, {
+                "_GETDATA_", [](lua_State * L)
+                {
+                    JsWasm * jsw = Get<JsWasm>(L);
+
+                JS_DupValue(jsw->mJSContext, r3); // just an integer, so not needed?
+
+                const uint32_t kNumSamples = kSize / sizeof(int16_t);
+                const uint32_t kFramesPerChannel = kNumSamples / 2;
+
+                JSValue rsargs[] = { r3, JS_NewUint32(jsw->mJSContext, 44100), JS_NewUint32(jsw->mJSContext, kFramesPerChannel), r2 };//, JS_NewUint32(jsw->mJSContext, rres + kHalf) };
+            //    (mModfile, (int)floor(mSamplerate), samples, aBuffer + outofs, aBuffer + outofs + aBufferSize);
+		    //	if (res == 0)
+                int32_t res;
+                JSValue r6 = JS_Call(jsw->mJSContext, rs, JS_UNDEFINED, _countof(rsargs), rsargs);
+                if (JS_IsException(r6)) js_std_dump_error(jsw->mJSContext);
+                else if (!JS_ToInt32(jsw->mJSContext, &res, r6)) ;//CoronaLog("R3! %x", res);
+                else CoronaLog("QQQ");
+
+
+                    lua_pushlightuserdata(L, pp);
+                    lua_pushinteger(L, res);
+
+
+                    return 2;
                 }
             },
             { nullptr, nullptr }
@@ -258,71 +423,27 @@ int LoadJSWasmPair (lua_State * L)
     jsw->AddBoostrap(global_obj);
     jsw->AddModuleStub(global_obj, js_file + after_seps, size_t(ext_index), Ptr<uint8_t>(wasm_bytes), wasm_len);
 
-#if 0                 
-    jsw->mWASMRuntime = m3_NewRuntime(jsw->mWASMEnv, 512 * 1024, nullptr/*&stuff*/);
-        // stuff includes JSRuntime...
+    // will pick up stub:
+    eval_buf(jsw->mJSContext, js_bytes, js_len, js_file + after_seps, JS_EVAL_TYPE_GLOBAL);
 
-    if (!jsw->mWASMRuntime) return Error(L, "Failed to create WASM runtime");
-#endif
-
-    eval_buf(jsw->mJSContext, js_bytes, js_len, js_file + after_seps, JS_EVAL_TYPE_MODULE);
-#if 0
-        // after this, in theory, we can do calls, but might need _malloc, etc.
-        JSAtom lib_atom = JS_NewAtomLen(jsw->mJSContext, js_file + after_seps, size_t(ext_index));
-    JSValue p = JS_GetProperty(jsw->mJSContext, global_obj, lib_atom);
- CoronaLog("??? %i, %i", JS_VALUE_GET_TAG(p), JS_IsUndefined(p));
- JSValue f = JS_GetPropertyStr(jsw->mJSContext, p, "_malloc");
- CoronaLog("??? %i, %i", JS_VALUE_GET_TAG(f), JS_IsUndefined(f));
-JSValue f2 = JS_GetPropertyStr(jsw->mJSContext, p, "_openmpt_module_get_duration_seconds");
- CoronaLog("??? %i, %i", JS_VALUE_GET_TAG(f2), JS_IsUndefined(f2));
-
-    JS_FreeValue(jsw->mJSContext, p);
-#else
-
-
-        /* execute the pending jobs */
-        for(;;) {
-                JSContext *ctx1;
-                int err = JS_ExecutePendingJob(jsw->mJSRuntime, &ctx1);
-            if (err <= 0) {
-                if (err < 0) {
-                    js_std_dump_error(ctx1);
-                }
-                break;
+    /* execute the pending jobs */
+    for(;;) {
+            JSContext *ctx1;
+            int err = JS_ExecutePendingJob(jsw->mJSRuntime, &ctx1);
+        if (err <= 0) {
+            if (err < 0) {
+                js_std_dump_error(ctx1);
             }
+            break;
         }
+    }
 
     JSAtom lib_atom = JS_NewAtomLen(jsw->mJSContext, js_file + after_seps, size_t(ext_index));
-    JSValue p = JS_GetProperty(jsw->mJSContext, global_obj, lib_atom);
-    JSValue f2 = JS_GetPropertyStr(jsw->mJSContext, p, "_openmpt_get_library_version");
-    CoronaLog("???? %i",  JS_IsUndefined(f2));
-    if (!JS_IsUndefined(f2))
-    {
-        JSValue r = JS_Call(jsw->mJSContext, f2, JS_UNDEFINED, 0, nullptr);
-        CoronaLog("!!! %i", JS_IsException(r));
-        if (!JS_IsException(r))
-        {CoronaLog("OOO");
-            int32_t res;
-            if (!JS_ToInt32(jsw->mJSContext, &res, r)) CoronaLog("R! %x", res);
-            else CoronaLog("QQQ");
-            CoronaLog("22");
-        } else js_std_dump_error(jsw->mJSContext);
-    }
+    sP = JS_GetProperty(jsw->mJSContext, global_obj, lib_atom);
+
+    JS_FreeAtom(jsw->mJSContext, lib_atom);
     uint32_t size;
     uint8_t * bytes = m3_GetMemory(jsw->mWASM.mRuntime, &size, 0);
-    CoronaLog("!!!bb %p, %u", bytes, size);
-    JSValue m = JS_GetPropertyStr(jsw->mJSContext, p, "_malloc");
-    CoronaLog("????m %i, %i",  JS_IsUndefined(m), JS_IsFunction(jsw->mJSContext, m));
-    JSValue f = JS_GetPropertyStr(jsw->mJSContext, p, "_free");
-    CoronaLog("????f %i, %i",  JS_IsUndefined(f), JS_IsFunction(jsw->mJSContext, f));
-    JSValue cfm = JS_GetPropertyStr(jsw->mJSContext, p, "_openmpt_module_create_from_memory");
-    CoronaLog("????cfm %i, %i",  JS_IsUndefined(cfm), JS_IsFunction(jsw->mJSContext, cfm));
-    JSValue d = JS_GetPropertyStr(jsw->mJSContext, p, "_openmpt_module_destroy");
-    CoronaLog("????d %i, %i",  JS_IsUndefined(d), JS_IsFunction(jsw->mJSContext, d));
-    JSValue rfs = JS_GetPropertyStr(jsw->mJSContext, p, "_openmpt_module_read_float_stereo");
-    CoronaLog("????rfs %i, %i",  JS_IsUndefined(rfs), JS_IsFunction(jsw->mJSContext, rfs));
-    JSValue src = JS_GetPropertyStr(jsw->mJSContext, p, "_openmpt_module_set_repeat_count");
-    CoronaLog("????src %i, %i",  JS_IsUndefined(src), JS_IsFunction(jsw->mJSContext, src));
 
     lua_pushliteral(L, "leaving_sanity.mod");
                 
@@ -330,78 +451,14 @@ JSValue f2 = JS_GetPropertyStr(jsw->mJSContext, p, "_openmpt_module_get_duration
     
     if (lua_isnil(L, -1)) return Error(L, "Unable to load mod");
 
-    const char * b = lua_tostring(L, -1);
-    size_t blen = lua_objlen(L, -1);
-
-    CoronaLog("??? %p, %u", b, blen);
-
-    JSValue memsize = JS_NewUint32(jsw->mJSContext, blen);
-    CoronaLog("!!!mmm %i", JS_IsException(memsize));
-    JSValue r = JS_Call(jsw->mJSContext, m, JS_UNDEFINED, 1, &memsize);
-    CoronaLog("!!!ff %i", JS_IsException(r));
-    if (!JS_IsException(r))
-    {CoronaLog("ffOOO");
-        int32_t res;
-        if (!JS_ToInt32(jsw->mJSContext, &res, r)) CoronaLog("R! %x", res);
-        else CoronaLog("QQQ");
-        CoronaLog("22, %p <- %p, %u", bytes + res, b, blen);
-
-        memcpy(bytes + res, b, blen);
-        CoronaLog("33");
-        // res -> to pointer
-            // load file contents into
-            // write file contents into...
-        // check "every so often"...
-            // read into left, right... (presumably allocated internally -> to pointer)
-        JS_DupValue(jsw->mJSContext, r); // ?
-        JS_DupValue(jsw->mJSContext, memsize); // ?
-        CoronaLog("4.4");
-        JSValue args1[] = { r, memsize, JS_NewInt32(jsw->mJSContext, 0), JS_NewInt32(jsw->mJSContext, 0), JS_NewInt32(jsw->mJSContext, 0) };
-        CoronaLog("4.5 %u", _countof(args1));
-        JSValue r3 = JS_Call(jsw->mJSContext, cfm, JS_UNDEFINED, _countof(args1), args1);
-        CoronaLog("44");
-        if (!JS_IsException(r3))
-        {
-            CoronaLog("yay!");
-
-            // sample data...
-            
-            JSValue r4 = JS_Call(jsw->mJSContext, d, JS_UNDEFINED, 1, &r3);
-            if (!JS_IsException(r4)) CoronaLog("yay2");
-            else js_std_dump_error(jsw->mJSContext);
-        } else js_std_dump_error(jsw->mJSContext);
+    sB = lua_tostring(L, -1);
+    sBlen = lua_objlen(L, -1);
 
 
-        JSValue r2=JS_Call(jsw->mJSContext, f, JS_UNDEFINED, 1, &r);
-        if (!JS_IsException(r2))
-        {
-            CoronaLog("ffff!!!!");
-        } else js_std_dump_error(jsw->mJSContext);
-    } else js_std_dump_error(jsw->mJSContext);
 
-         lua_pop(L, 1);
-    /*
-		d_openmpt_module_create_from_memory = (dll_openmpt_module_create_from_memory)getDllProc(dll, "openmpt_module_create_from_memory");
-            openmpt_module * 	openmpt_module_create_from_memory (const void *filedata, size_t filesize, openmpt_log_func logfunc, void *loguser, const openmpt_module_initial_ctl *ctls)
 
-            		mModfile = openmpt_module_create_from_memory((const void*)mParent->mData, mParent->mDataLen, NULL, NULL, NULL);		
-		openmpt_module_set_repeat_count(mModfile, -1);
+    lua_ref(L, 1);//lua_pop(L, 1);
 
-		d_openmpt_module_destroy = (dll_openmpt_module_destroy)getDllProc(dll, "openmpt_module_destroy");
-            void 	openmpt_module_destroy (openmpt_module *mod)
-		d_openmpt_module_read_float_stereo = (dll_openmpt_module_read_float_stereo)getDllProc(dll, "openmpt_module_read_float_stereo");
-            size_t 	openmpt_module_read_float_stereo (openmpt_module *mod, int32_t samplerate, size_t count, float *left, float *right)
-
-            			int res = openmpt_module_read_float_stereo(mModfile, (int)floor(mSamplerate), samples, aBuffer + outofs, aBuffer + outofs + aBufferSize);
-			if (res == 0)
-			{
-				mPlaying = 0;
-				return outofs;
-			}
-		d_openmpt_module_set_repeat_count
-            int 	openmpt_module_set_repeat_count (openmpt_module *mod, int32_t repeat_count)
-    */
-#endif
     JS_FreeValue(jsw->mJSContext, global_obj);
 
     return 1;
