@@ -44,8 +44,11 @@
 static const char kWebAssemblyPolyfill[] = MULTILINE(
     const { wasm } = globalThis.__bootstrap;
 
+    const kArray = Symbol('kArray');
     const kBuffer = Symbol('kBuffer');
+    const kMemory = Symbol('kMemory');
     const kTableSize = Symbol('kTableSize');
+    const kInternalMemory = Symbol('kInternalMemory');
     const kWasmModule = Symbol('kWasmModule');
     const kWasmModuleRef = Symbol('kWasmModuleRef');
     const kWasmExports = Symbol('kWasmExports');
@@ -181,23 +184,31 @@ static const char kWebAssemblyPolyfill[] = MULTILINE(
 
     class Memory {
         constructor(descriptor) {
-            // WASM3 probably already covers these; `shared` seems to
-            // need resize() which is not yet available in QuickJS.
-            /* if (!descriptor.initial) {
-                throw new TypeError('initial not specified');
-            } else if (descriptor.shared && !descriptor.maximum) {
+            if (!descriptor[kInternalMemory]) {
+                if (!descriptor.initial) {
+                    throw new TypeError('initial not specified');
+                } else if (descriptor.maximum && descriptor.maximum < descriptor.initial) {
+                    throw new RangeError('maximum is smaller than initial');
+                } else if (descriptor.initial > 65536) {
+                    throw new RangeError('initial exceeds 2^16');
+                }
+            }
+                
+            // TODO `shared` seems to need resize()
+            if (descriptor.shared && !descriptor.maximum) {
                 throw new TypeError('shared is true, yet maximum is not specified');
-            } else if (descriptor.maximum && descriptor.maximum < descriptor.initial) {
-                throw new RangeError('maximum is smaller than initial');
-            } else if (descriptor.initial > 65536) {
-                throw new RangeError('initial exceeds 2^16');
-            } */
+            }
+
             if (typeof descriptor != 'object') {
                 throw new TypeError('descriptor must be an object');
             } else if (descriptor.shared) {
                 throw new TypeError('shared memories NYI');
-            } else {
-                this[kBuffer] = wasm.memoryBuffer;
+            } else if (!descriptor[kInternalMemory]) {
+                const arr = new Uint8Array(descriptor.initial * 65536);
+
+                arr.fill(0);
+
+                this[kArray] = arr;
             }
         }
 
@@ -205,10 +216,27 @@ static const char kWebAssemblyPolyfill[] = MULTILINE(
             if (typeof delta != 'number' || delta < 0) {
                 throw new TypeError('invalid delta');
             } else {
-                const oldPageCount = wasm.requestMemoryPages(delta);
+                const arr = this[kArray];
+                var oldPageCount;
+
+                if (arr) {
+                    oldPageCount = arr.length / 65536;
+                } else {
+                    oldPageCount = wasm.requestMemoryPages(delta);
+                }
 
                 if (!this[kBuffer].detached) {
                     const _ = this[kBuffer].transfer();
+                }
+
+                if (arr && delta > 0) {
+                    const added = new Uint8Array(delta * 65536);
+
+                    added.fill(0);
+
+                    this[kArray] = [...arr].concat(added);
+
+                    wasm.bindMemory(this[kArray]);
                 }
 
                 return oldPageCount;
@@ -217,9 +245,13 @@ static const char kWebAssemblyPolyfill[] = MULTILINE(
 
         get buffer() {
             const old = this[kBuffer];
-            if (old.detached) {
+            if (!old || old.detached) {
                 try {
-                    this[kBuffer] = wasm.memoryBuffer;
+                    if (this[kArray]) {
+                        this[kBuffer] = wasm.arrayBackedBuffer(this[kArray]);
+                    } else {
+                        this[kBuffer] = wasm.memoryBuffer;
+                    }
                 } catch (_) {
                     return old; // ??? (some docs seem to suggest this can fail gracefully?)
                 }
@@ -242,6 +274,17 @@ static const char kWebAssemblyPolyfill[] = MULTILINE(
     class Instance {
         constructor(module, importObject = {}) {
             const instance = buildInstance(module[kWasmModule]);
+            const _imports = Module.imports(module);
+
+            Instance.visit(_imports, importObject, (item, jobj) => {
+                if (item.kind === 'memory') {
+                    wasm.bindMemory(jobj[kArray]);
+
+                    instance[kMemory] = jobj;
+                }
+            });
+
+            instance.loadModule();
 
             if (importObject.wasi_unstable) {
                 linkWasi(instance);
@@ -255,38 +298,48 @@ static const char kWebAssemblyPolyfill[] = MULTILINE(
                 if (item.kind === 'function') {
                     exports[item.name] = callWasmFunction.bind(instance, item.name);
                 } else if (item.kind === 'memory') {
-                    exports[item.name] = new Memory({});
+                    const descriptor = {};
+
+                    descriptor[kInternalMemory] = true;
+
+                    exports[item.name] = new Memory({ [kInternalMemory]: true });//descriptor);
                 } else if (item.kind === 'table') {
                     exports[item.name] = new Table({ element: "anyfunc", initial: item.size });
                     exports[item.name][kWasmInstance] = instance;
                 }
             }
 
-            const _imports = Module.imports(module);
-            const imports = Object.create(null);
-
-            for (const item of _imports)
-            {
-                const mod = importObject[item.module];
-                if (!mod) {
-                    throw new LinkError('Unmatched link module');
-                }
-
-                const jfunc = mod[item.name];
-                if (!jfunc) {
-                    throw new LinkError('No function to link');
-                }
-
+            Instance.visit(_imports, importObject, (item, jobj) => {
                 if (item.kind === 'function') {
-                    instance.linkImport(item.module, item.name, jfunc);
+                    instance.linkImport(item.module, item.name, jobj);
+                } else if (item.kind === 'global') {
+                    const _ = instance.setGlobal(item.name, jobj);
+                } else if (item.kind === 'table') {
+                    // TODO?
                 }
-                // TODO: others
-            }
+            });
 
             this[kWasmInstance] = instance;
             this[kWasmExports] = Object.freeze(exports);
             this[kWasmModuleRef] = module;
+
             globalThis.WebAssembly[kWasmInstances].push(this);
+        }
+
+        static visit(list, ref, func) {
+            for (const item of list) {
+                const mod = ref[item.module];
+                if (!mod) {
+                    throw new LinkError('Unmatched link module');
+                }
+
+                const jobj = mod[item.name];
+                if (!jobj) {
+                    throw new LinkError('No object to link');
+                }
+
+                func(item, jobj);
+            }
         }
 
         get exports() {
@@ -328,6 +381,7 @@ static const char kWebAssemblyPolyfill[] = MULTILINE(
     class WebAssembly {
         Module = Module;
         Instance = Instance;
+        Memory = Memory;
         CompileError = CompileError;
         LinkError = LinkError;
         RuntimeError = RuntimeError;

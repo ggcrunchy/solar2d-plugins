@@ -113,5 +113,56 @@
     <ClInclude Include="..\shared\quickjs\list.h">
       <Filter>quickjs</Filter>
     </ClInclude>
+    <ClInclude Include="..\shared\source\m3_api_libc.h">
+      <Filter>wasm3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\source\m3_api_tracer.h">
+      <Filter>wasm3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\source\m3_api_wasi.h">
+      <Filter>wasm3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\source\m3_bind.h">
+      <Filter>wasm3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\source\m3_code.h">
+      <Filter>wasm3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\source\m3_compile.h">
+      <Filter>wasm3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\source\m3_config.h">
+      <Filter>wasm3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\source\m3_core.h">
+      <Filter>wasm3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\source\m3_env.h">
+      <Filter>wasm3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\source\m3_exception.h">
+      <Filter>wasm3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\source\m3_exec.h">
+      <Filter>wasm3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\source\m3_exec_defs.h">
+      <Filter>wasm3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\source\m3_function.h">
+      <Filter>wasm3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\source\m3_info.h">
+      <Filter>wasm3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\source\m3_math_utils.h">
+      <Filter>wasm3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\source\wasm3.h">
+      <Filter>wasm3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\source\wasm3_defs.h">
+      <Filter>wasm3</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

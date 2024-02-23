@@ -59,6 +59,23 @@
     <ClInclude Include="..\shared\quickjs\quickjs-atom.h" />
     <ClInclude Include="..\shared\quickjs\quickjs-opcode.h" />
     <ClInclude Include="..\shared\quickjs\quickjs.h" />
+    <ClInclude Include="..\shared\source\m3_api_libc.h" />
+    <ClInclude Include="..\shared\source\m3_api_tracer.h" />
+    <ClInclude Include="..\shared\source\m3_api_wasi.h" />
+    <ClInclude Include="..\shared\source\m3_bind.h" />
+    <ClInclude Include="..\shared\source\m3_code.h" />
+    <ClInclude Include="..\shared\source\m3_compile.h" />
+    <ClInclude Include="..\shared\source\m3_config.h" />
+    <ClInclude Include="..\shared\source\m3_core.h" />
+    <ClInclude Include="..\shared\source\m3_env.h" />
+    <ClInclude Include="..\shared\source\m3_exception.h" />
+    <ClInclude Include="..\shared\source\m3_exec.h" />
+    <ClInclude Include="..\shared\source\m3_exec_defs.h" />
+    <ClInclude Include="..\shared\source\m3_function.h" />
+    <ClInclude Include="..\shared\source\m3_info.h" />
+    <ClInclude Include="..\shared\source\m3_math_utils.h" />
+    <ClInclude Include="..\shared\source\wasm3.h" />
+    <ClInclude Include="..\shared\source\wasm3_defs.h" />
     <ClInclude Include="..\shared\utils.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

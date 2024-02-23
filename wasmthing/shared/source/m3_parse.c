@@ -11,24 +11,24 @@
 #include "m3_info.h"
 
 
-M3Result  ParseType_Table  (IM3Module io_module, bytes_t i_bytes, cbytes_t i_end)
+M3Result  ParseType_Table  (IM3Module io_module, bytes_t * io_bytes, cbytes_t i_end)
 {
     M3Result result = m3Err_none;
 
     u8 elemtype;
     u8 flag;
 
-_   (ReadLEB_u7 (& elemtype, i_bytes, i_end));
+_   (ReadLEB_u7 (& elemtype, io_bytes, i_end));
 
 u32 n, m = 0;
     // limits::=|0x00  n:u320x01  n:u32  m:u32⇒⇒{min n,max ϵ}{min n,max m}
     // memtype::=lim:limits⇒lim
     // tabletypeelemtype::=::=et:elemtype  lim:limits0x70⇒⇒lim etfuncref
-_   (ReadLEB_u7 (& flag, i_bytes, i_end));                   // really a u1
-_   (ReadLEB_u32 (& n, i_bytes, i_end));
+_   (ReadLEB_u7 (& flag, io_bytes, i_end));                   // really a u1
+_   (ReadLEB_u32 (& n, io_bytes, i_end));
 
     if (flag)
-_       (ReadLEB_u32 (& m, i_bytes, i_end));
+_       (ReadLEB_u32 (& m, io_bytes, i_end));
 
     _catch: return result;
 }

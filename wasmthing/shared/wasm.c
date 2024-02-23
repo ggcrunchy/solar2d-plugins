@@ -48,13 +48,17 @@ typedef struct {
         uint8_t *bytes;
         size_t size;
     } data;
-    bool loaded;
+    //bool loaded;
 } TJSWasmModule;
+
+static bool IsLoaded(IM3Module module) {
+    return module->runtime;
+}
 
 static void tjs_wasm_module_finalizer(JSRuntime *rt, JSValue val) {
     TJSWasmModule *m = JS_GetOpaque(val, tjs_wasm_module_class_id);
     if (m) {
-        if (m->module && !m->loaded)
+        if (m->module && !IsLoaded(m->module))
             m3_FreeModule(m->module);
         js_free_rt(rt, m->data.bytes);
         js_free_rt(rt, m);
@@ -81,12 +85,15 @@ static void tjs_wasm_instance_finalizer(JSRuntime *rt, JSValue val) {
     TJSWasmInstance *i = JS_GetOpaque(val, tjs_wasm_instance_class_id);
     if (i) {
         if (i->module) {
+            if (i->module->memoryImported && i->runtime)
+                i->runtime->memory.mallocated = NULL;
             // Free the module, only if it wasn't previously loaded.
             /*if (!i->loaded)
                 m3_FreeModule(i->module);*/
         }
-        if (i->runtime)
+        if (i->runtime) {
             m3_FreeRuntime(i->runtime);
+        }
         if (i->funcs)
             js_free_rt(rt, i->funcs);
         js_free_rt(rt, i);
@@ -330,6 +337,123 @@ static JSValue tjs_wasm_linkwasi(JSContext *ctx, JSValueConst this_val, int argc
     return JS_UNDEFINED;
 }
 
+static JSValue tjs_wasm_loadmodule(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv) {
+    TJSWasmInstance *i = tjs_wasm_instance_get(ctx, this_val);
+    if (!i)
+        return JS_EXCEPTION;
+
+    if (!IsLoaded(i->module)) {
+        M3Result r = m3_LoadModule(i->runtime, i->module);
+        if (r) {
+            return tjs_throw_wasm_error(ctx, "LinkError", r);
+        }
+    }
+
+    return JS_UNDEFINED;
+}
+
+static JSValue tjs_wasm_setglobal(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv) {
+    TJSWasmInstance *i = tjs_wasm_instance_get(ctx, this_val);
+    if (!i)
+        return JS_EXCEPTION;
+
+    if (!IsLoaded(i->module)) {
+        // TODO: errror...
+        return JS_EXCEPTION;
+    }
+
+    const char *name = JS_ToCString(ctx, argv[0]);
+    if (!name) {
+        return JS_EXCEPTION;
+    }
+
+    IM3Global global = m3_FindGlobal(i->module, name);
+    JS_FreeCString(ctx, name);
+
+    if (!global) {
+        // errror
+        return JS_FALSE;
+    }
+
+    int ok;
+    switch (global->type) {
+        case c_m3Type_i32: {
+            ok = JS_ToInt32(i->context, &global->i32Value, argv[1]);
+            break;
+        }
+        case c_m3Type_i64: {
+            ok = JS_ToInt64(i->context, (int64_t*)global->i64Value, argv[1]);
+            break;
+        }
+        case c_m3Type_f32: {
+            double out;
+            ok = JS_ToFloat64(i->context, &out, argv[1]);
+            float cast = (float)out;
+            memcpy(&global->f32Value, &cast, sizeof(float));
+            break;
+        }
+        case c_m3Type_f64: {
+            ok = JS_ToFloat64(i->context, &global->f64Value, argv[1]);
+            break;
+        }
+        default:
+            break;
+            // ERR!
+    }
+
+    return JS_TRUE;
+}
+
+static JSValue tjs_wasm_bindmemory(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv) {
+    WASMPair * wp = JS_GetContextOpaque(ctx);
+/*    TJSWasmInstance *i = tjs_wasm_instance_get(ctx, this_val);
+    if (!i)
+        return JS_EXCEPTION;*/
+
+    size_t size;
+    uint8_t *buf = JS_GetUint8Array(ctx, &size, argv[0]);
+    if (!buf)
+        return JS_EXCEPTION;
+
+    // _throwif("memory not a multiple of page size", size % d_m3MemPageSize);
+
+    u32 numPagesToAlloc = size / d_m3MemPageSize; // validate?
+
+    M3Memory * memory = & wp->mRuntime->memory;
+
+    if (memory->maxPages == 0)
+        memory->maxPages = numPagesToAlloc;
+
+    if (numPagesToAlloc <= memory->maxPages)
+    {
+        size_t numPageBytes = numPagesToAlloc * d_m3MemPageSize;
+
+#if d_m3MaxLinearMemoryPages > 0
+        // _throwif("linear memory limitation exceeded", numPagesToAlloc > d_m3MaxLinearMemoryPages);
+#endif
+        // Limit the amount of memory that gets actually allocated
+        if (wp->mRuntime->memoryLimit) {
+            numPageBytes = M3_MIN (numPageBytes, wp->mRuntime->memoryLimit);
+        }
+        
+        void* newMem = buf;
+        // _throwifnull(newMem);
+
+        memory->mallocated = (M3MemoryHeader*)newMem;
+
+        memory->numPages = numPagesToAlloc;
+
+        memory->mallocated->length =  numPageBytes;
+        memory->mallocated->runtime = wp->mRuntime;
+        
+        memory->mallocated->maxStack = (m3slot_t *) wp->mRuntime->stack + wp->mRuntime->numStackSlots;
+        
+        return JS_TRUE;
+    }
+
+    return JS_FALSE;
+}
+
 static JSValue tjs_wasm_buildinstance(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv) {
     TJSWasmModule *m = tjs_wasm_module_get(ctx, argv[0]);
     if (!m)
@@ -355,14 +479,14 @@ static JSValue tjs_wasm_buildinstance(JSContext *ctx, JSValueConst this_val, int
         return JS_ThrowOutOfMemory(ctx);
     }
     wp->mRuntime = i->runtime;
-
+    /*
     M3Result r = m3_LoadModule(i->runtime, i->module);
     if (r) {
         JS_FreeValue(ctx, obj);
         return tjs_throw_wasm_error(ctx, "LinkError", r);
-    }
+    }*/
 
-    m/*i*/->loaded = true;
+    //i->loaded = true;
 
     return obj;
 }
@@ -540,8 +664,9 @@ static JSValue tjs_wasm_moduleimports(JSContext *ctx, JSValueConst this_val, int
     if (JS_IsException(imports))
         return imports;
 
+    uint32_t j = 0;
     if (m->module->numFuncImports > 0) {
-        for (size_t i = 0, j = 0; i < m->module->numFunctions; ++i) {
+        for (size_t i = 0; i < m->module->numFunctions; ++i) {
             IM3Function f = &m->module->functions[i];
             if (f->import.fieldUtf8 && f->import.moduleUtf8) {
                 JSValue item = JS_NewObjectProto(ctx, JS_NULL);
@@ -557,6 +682,25 @@ static JSValue tjs_wasm_moduleimports(JSContext *ctx, JSValueConst this_val, int
         }
     }
 
+    for (size_t i = 0; i < m->module->numGlobals; ++i) {
+        IM3Global g = &m->module->globals[i];
+        if (g->imported && g->import.moduleUtf8 && g->import.fieldUtf8) {
+            JSValue item = JS_NewObjectProto(ctx, JS_NULL);
+            JS_DefinePropertyValueStr(ctx, item, "module", JS_NewString(ctx, g->import.moduleUtf8), JS_PROP_C_W_E);
+            JS_DefinePropertyValueStr(ctx, item, "name", JS_NewString(ctx, g->import.fieldUtf8), JS_PROP_C_W_E);
+            JS_DefinePropertyValueStr(ctx, item, "kind", JS_NewString(ctx, "global"), JS_PROP_C_W_E);
+            JS_DefinePropertyValueUint32(ctx, imports, j, item, JS_PROP_C_W_E);
+            j++;
+        }
+    }
+
+    if (m->module->memoryImported && m->module->memoryImport.fieldUtf8 && m->module->memoryImport.moduleUtf8) {
+        JSValue item = JS_NewObjectProto(ctx, JS_NULL);
+        JS_DefinePropertyValueStr(ctx, item, "module", JS_NewString(ctx, m->module->memoryImport.moduleUtf8), JS_PROP_C_W_E);
+        JS_DefinePropertyValueStr(ctx, item, "name", JS_NewString(ctx, m->module->memoryImport.fieldUtf8), JS_PROP_C_W_E);
+        JS_DefinePropertyValueStr(ctx, item, "kind", JS_NewString(ctx, "memory"), JS_PROP_C_W_E);
+        JS_DefinePropertyValueUint32(ctx, imports, j, item, JS_PROP_C_W_E);
+    }
     // TODO: memory
 
     return imports;
@@ -609,6 +753,13 @@ static JSValue tjs_wasm_parsemodule(JSContext *ctx, JSValueConst this_val, int a
     return obj;
 }
 
+static JSValue tjs_wasm_arraybackedbuffer(JSContext *ctx, JSValueConst this_val, int argc, JSValueConst *argv) {
+    uint32_t size;
+    uint8_t *memory = JS_GetUint8Array(ctx, &size, argv[0]);
+
+    return JS_NewArrayBuffer(ctx, memory, size, NULL, NULL, 0);
+}
+
 static JSValue tjs_wasm_memorybuffer(JSContext *ctx, JSValueConst this_val) {
     uint32_t size;
     WASMPair * wp = JS_GetContextOpaque(ctx);
@@ -641,10 +792,12 @@ static JSValue tjs_wasm_requestmemorypages(JSContext *ctx, JSValueConst this_val
     }
 
 static const JSCFunctionListEntry tjs_wasm_funcs[] = {
+    TJS_CFUNC_DEF("bindMemory", 1, tjs_wasm_bindmemory),
     TJS_CFUNC_DEF("buildInstance", 1, tjs_wasm_buildinstance),
     TJS_CFUNC_DEF("moduleExports", 1, tjs_wasm_moduleexports),
     TJS_CFUNC_DEF("moduleImports", 1, tjs_wasm_moduleimports),
-    TJS_CFUNC_DEF("parseModule", 1, tjs_wasm_parsemodule),    
+    TJS_CFUNC_DEF("parseModule", 1, tjs_wasm_parsemodule),
+    TJS_CFUNC_DEF("arrayBackedBuffer", 1, tjs_wasm_arraybackedbuffer),    
     JS_CGETSET_DEF("memoryBuffer", tjs_wasm_memorybuffer, NULL),
     TJS_CFUNC_DEF("requestMemoryPages", 1, tjs_wasm_requestmemorypages),
 };
@@ -654,6 +807,8 @@ static const JSCFunctionListEntry tjs_wasm_instance_funcs[] = {
     TJS_CFUNC_DEF("callIndexedFunction", 1, tjs_wasm_callindexedfunction),
     TJS_CFUNC_DEF("linkImport", 3, tjs_wasm_linkimport),
     TJS_CFUNC_DEF("linkWasi", 0, tjs_wasm_linkwasi),
+    TJS_CFUNC_DEF("loadModule", 0, tjs_wasm_loadmodule),
+    TJS_CFUNC_DEF("setGlobal", 2, tjs_wasm_setglobal),
 };
 
 void tjs__mod_wasm_init(JSContext *ctx, JSValue ns) {
