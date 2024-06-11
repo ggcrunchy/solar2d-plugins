@@ -244,7 +244,7 @@ int emmy_class(lua_State *L)
 {
     ecs_world_t *w = ecs_lua_world(L);
 
-    ecs_entity_t type = /*luaL_checkinteger*/checkentity(L, 1); // STEVE CHANGE
+    ecs_entity_t type = checkentity(L, 1);
     bool b = false;
 
 /*    if(!lua_isnoneornil(L, 2))

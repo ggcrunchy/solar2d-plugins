@@ -4,7 +4,7 @@ int get_child_count(lua_State *L)
 {
     ecs_world_t *w = ecs_lua_world(L);
 
-    ecs_entity_t e = /*luaL_checkinteger*/checkentity(L, 1); // <- STEVE CHANGE
+    ecs_entity_t e = checkentity(L, 1);
 
     ecs_iter_t it = ecs_term_iter(w, &(ecs_term_t){ ecs_pair(EcsChildOf, e) });
 
@@ -24,11 +24,11 @@ int set_scope(lua_State *L)
 {
     ecs_world_t *w = ecs_lua_world(L);
 
-    ecs_entity_t scope = /*luaL_checkinteger*/checkentity(L, 1); // <- STEVE CHANGE
+    ecs_entity_t scope = checkentity(L, 1);
 
     ecs_entity_t prev = ecs_set_scope(w, scope);
 
-    /*lua_pushinteger*/push_entity(L, prev); // <- STEVE CHANGE
+    push_entity(L, prev);
 
     return 1;
 }
@@ -39,7 +39,7 @@ int get_scope(lua_State *L)
 
     ecs_entity_t e = ecs_get_scope(w);
 
-    /*lua_pushinteger*/push_entity(L, e); // <- STEVE CHANGE
+    push_entity(L, e);
 
     return 1;
 }

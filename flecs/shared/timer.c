@@ -5,12 +5,12 @@ int set_timeout(lua_State *L)
 {
     ecs_world_t *w = ecs_lua_world(L);
 
-    ecs_entity_t timer = /*luaL_checkinteger*/checkentity(L, 1); // <- STEVE CHANGE
+    ecs_entity_t timer = checkentity(L, 1);
     lua_Number timeout = luaL_checknumber(L, 2);
 
     ecs_entity_t e = ecs_set_timeout(w, timer, timeout);
 
-    /*lua_pushinteger*/push_entity(L, e); // <- STEVE CHANGE
+    push_entity(L, e);
 
     return 1;
 }
@@ -19,7 +19,7 @@ int get_timeout(lua_State *L)
 {
     ecs_world_t *w = ecs_lua_world(L);
 
-    ecs_entity_t timer = /*luaL_checkinteger*/checkentity(L, 1); // <- STEVE CHANGE
+    ecs_entity_t timer = checkentity(L, 1);
 
     lua_Number timeout = ecs_get_timeout(w, timer);
 
@@ -32,12 +32,12 @@ int set_interval(lua_State *L)
 {
     ecs_world_t *w = ecs_lua_world(L);
 
-    ecs_entity_t timer = /*luaL_checkinteger*/checkentity(L, 1); // <- STEVE CHANGE
+    ecs_entity_t timer = checkentity(L, 1);
     lua_Number interval = luaL_checknumber(L, 2);
 
     ecs_entity_t e = ecs_set_interval(w, timer, interval);
 
-    /*lua_pushinteger*/push_entity(L, e); // <- STEVE CHANGE
+    push_entity(L, e);
 
     return 1;
 }
@@ -46,7 +46,7 @@ int get_interval(lua_State *L)
 {
     ecs_world_t *w = ecs_lua_world(L);
 
-    ecs_entity_t timer = /*luaL_checkinteger*/checkentity(L, 1); // <- STEVE CHANGE
+    ecs_entity_t timer = checkentity(L, 1);
 
     lua_Number interval = ecs_get_interval(w, timer);
 
@@ -59,7 +59,7 @@ int start_timer(lua_State *L)
 {
     ecs_world_t *w = ecs_lua_world(L);
 
-    ecs_entity_t timer = /*luaL_checkinteger*/checkentity(L, 1); // <- STEVE CHANGE
+    ecs_entity_t timer = checkentity(L, 1);
 
     ecs_start_timer(w, timer);
 
@@ -70,7 +70,7 @@ int stop_timer(lua_State *L)
 {
     ecs_world_t *w = ecs_lua_world(L);
 
-    ecs_entity_t timer = /*luaL_checkinteger*/checkentity(L, 1); // <- STEVE CHANGE
+    ecs_entity_t timer = checkentity(L, 1);
 
     ecs_stop_timer(w, timer);
 
@@ -81,13 +81,13 @@ int set_rate_filter(lua_State *L)
 {
     ecs_world_t *w = ecs_lua_world(L);
 
-    ecs_entity_t filter = /*luaL_checkinteger*/checkentity(L, 1); // <- STEVE CHANGE
+    ecs_entity_t filter = checkentity(L, 1);
     lua_Integer rate = luaL_checkinteger(L, 2);
-    ecs_entity_t src = /*luaL_checkinteger*/checkentity(L, 3); // <- STEVE CHANGE
+    ecs_entity_t src = checkentity(L, 3);
 
     ecs_entity_t e = ecs_set_rate(w, filter, rate, src);
 
-    /*lua_pushinteger*/push_entity(L, e); // <- STEVE CHANGE
+    push_entity(L, e);
 
     return 1;
 }
@@ -96,8 +96,8 @@ int set_tick_source(lua_State *L)
 {
     ecs_world_t *w = ecs_lua_world(L);
 
-    ecs_entity_t system = /*luaL_checkinteger*/checkentity(L, 1); // <- STEVE CHANGE
-    ecs_entity_t source = /*luaL_checkinteger*/checkentity(L, 2); // <- STEVE CHANGE
+    ecs_entity_t system = checkentity(L, 1);
+    ecs_entity_t source = checkentity(L, 2);
 
     ecs_set_tick_source(w, system, source);
 

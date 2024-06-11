@@ -46,7 +46,7 @@ ecs_term_t checkterm(lua_State *L, const ecs_world_t *world, int arg)
     }
     else
     {
-        term.id = /*luaL_checkinteger*/checkentity(L, arg); // STEVE CHANGE
+        term.id = checkentity(L, arg);
     }
 
     if(ecs_term_finalize(world, &term)) luaL_argerror(L, arg, "invalid term");
@@ -116,7 +116,7 @@ int term_id(lua_State *L)
 
     ecs_entity_t e = ecs_field_id(it, col);
 
-    /*lua_pushinteger*/push_entity(L, e); // <- STEVE CHANGE
+    push_entity(L, e);
 
     return 1;
 }

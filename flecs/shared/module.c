@@ -42,9 +42,9 @@ static void export_handles(lua_State *L, int idx, ecs_world_t *w, ecs_entity_t e
             name = ecs_get_name(it.world, e);
             if(!name) continue;
 
-            /*lua_pushinteger*/push_entity(L, e); // STEVE CHANGE
+            push_entity(L, e);
 
-            type = lua_getfield_t(L, idx, name); // STEVE CHANGE
+            type = lua_getfield_t(L, idx, name);
 
             if(type != LUA_TNIL && type != LUA_TFUNCTION)
             {
@@ -88,7 +88,7 @@ int new_module(lua_State *L)
 
     if(func_idx == 3) export_handles(L, 2, w, e);
     
-    /*lua_pushinteger*/push_entity(L, e); // STEVE CHANGE
+    push_entity(L, e);
 
     return 1;
 }

@@ -22,7 +22,6 @@ int lua_absindex (lua_State * L, int arg)
     return arg;
 }
 
-
 int lua_rawgeti_t (lua_State * L, int arg, int i)
 {
     lua_rawgeti(L, arg, i);
@@ -142,7 +141,7 @@ ecs_lua_ctx *ecs_lua_get_context(lua_State *L, const ecs_world_t *world)
 
         if(type == LUA_TNIL) return NULL;
 
-        type = lua_rawgeti_t(L, -1, ECS_LUA_CONTEXT); // STEVE CHANGE
+        type = lua_rawgeti_t(L, -1, ECS_LUA_CONTEXT);
         ecs_assert(type == LUA_TUSERDATA, ECS_INTERNAL_ERROR, NULL);
 
         ctx = lua_touserdata(L, -1);
@@ -209,7 +208,7 @@ void register_collectible(lua_State *L, ecs_world_t *w, int idx)
     ecs_assert(type == LUA_TTABLE, ECS_INTERNAL_ERROR, NULL);
 
     /* registry[world].collect */
-    type = lua_rawgeti_t(L, -1, ECS_LUA_COLLECT); // STEVE CHANGE
+    type = lua_rawgeti_t(L, -1, ECS_LUA_COLLECT);
     ecs_assert(type == LUA_TTABLE, ECS_INTERNAL_ERROR, NULL);
 
     lua_type(L, idx);
@@ -226,7 +225,7 @@ int ecs_lua_ref(lua_State *L, ecs_world_t *world)
     int type = lua_rawgetp(L, LUA_REGISTRYINDEX, ecs_get_world(world));
     ecs_assert(type == LUA_TTABLE, ECS_INTERNAL_ERROR, NULL);
 
-    type = lua_rawgeti_t(L, -1, ECS_LUA_REGISTRY); // STEVE CHANGE
+    type = lua_rawgeti_t(L, -1, ECS_LUA_REGISTRY);
     ecs_assert(type == LUA_TTABLE, ECS_INTERNAL_ERROR, NULL);
 
     lua_pushvalue(L, -3);
@@ -242,10 +241,10 @@ int ecs_lua_rawgeti(lua_State *L, ecs_world_t *world, int ref)
     int type = lua_rawgetp(L, LUA_REGISTRYINDEX, ecs_get_world(world));
     ecs_assert(type == LUA_TTABLE, ECS_INTERNAL_ERROR, NULL);
 
-    type = lua_rawgeti_t(L, -1, ECS_LUA_REGISTRY); // STEVE CHANGE
+    type = lua_rawgeti_t(L, -1, ECS_LUA_REGISTRY);
     ecs_assert(type == LUA_TTABLE, ECS_INTERNAL_ERROR, NULL);
 
-    type = lua_rawgeti_t(L, -1, ref); // STEVE CHANGE
+    type = lua_rawgeti_t(L, -1, ref);
 
     lua_replace(L, -3);
 
@@ -261,7 +260,7 @@ void ecs_lua_unref(lua_State *L, ecs_world_t *world, int ref)
     int type = lua_rawgetp(L, LUA_REGISTRYINDEX, ecs_get_world(world));
     ecs_assert(type == LUA_TTABLE, ECS_INTERNAL_ERROR, NULL);
 
-    type = lua_rawgeti_t(L, -1, ECS_LUA_REGISTRY); // STEVE CHANGE
+    type = lua_rawgeti_t(L, -1, ECS_LUA_REGISTRY);
     ecs_assert(type == LUA_TTABLE, ECS_INTERNAL_ERROR, NULL);
 
     luaL_unref(L, -1, ref);
@@ -749,23 +748,23 @@ int luaopen_plugin_ecs(lua_State *L) // <- STEVE CHANGE
 
     luaL_setfuncs(L, ecs_lib, 1);
 
-#define XX(type) /*lua_pushinteger*/push_entity(L, ecs_id(Ecs##type)); lua_setfield(L, -2, #type); // STEVE CHANGE
+#define XX(type) push_entity(L, ecs_id(Ecs##type)); lua_setfield(L, -2, #type);
     ECS_LUA_TYPEIDS(XX)
 #undef XX
 
-#define XX(type) /*lua_pushinteger*/push_entity(L, ecs_id(ecs_##type##_t)); lua_setfield(L, -2, #type); // STEVE CHANGE
+#define XX(type) push_entity(L, ecs_id(ecs_##type##_t)); lua_setfield(L, -2, #type);
     ECS_LUA_PRIMITIVES(XX)
 #undef XX
 
-#define XX(const) /*lua_pushinteger*/push_entity(L, Ecs##const); lua_setfield(L, -2, #const); // STEVE CHANGE
+#define XX(const) push_entity(L, Ecs##const); lua_setfield(L, -2, #const);
     ECS_LUA_BUILTINS(XX)
 #undef XX
 
-#define XX(const) /*lua_pushinteger*/push_entity(L, Ecs##const); lua_setfield(L, -2, #const); // STEVE CHANGE
+#define XX(const) push_entity(L, Ecs##const); lua_setfield(L, -2, #const);
     ECS_LUA_ENUMS(XX)
 #undef XX
 
-#define XX(const) /*lua_pushinteger*/push_entity(L, ECS_##const); lua_setfield(L, -2, #const); // STEVE CHANGE
+#define XX(const) push_entity(L, ECS_##const); lua_setfield(L, -2, #const);
     ECS_LUA_MACROS(XX)
 #undef XX
 
@@ -773,7 +772,7 @@ int luaopen_plugin_ecs(lua_State *L) // <- STEVE CHANGE
     lua_pushinteger(L, ecs_id(ecs_meta_type_op_kind_t));
     lua_setfield(L, -2, "meta_type_op_kind_t");
 */
-    /*lua_pushinteger*/push_entity(L, ecs_lookup_fullpath(w, "flecs.meta.ecs_meta_type_op_t")); // STEVE CHANGE
+    push_entity(L, ecs_lookup_fullpath(w, "flecs.meta.ecs_meta_type_op_t"));
     lua_setfield(L, -2, "meta_type_op_t");
 
 

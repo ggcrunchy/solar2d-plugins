@@ -156,6 +156,11 @@ static inline ecs_entity_t checkentity(lua_State *L, int arg)
     return e;
 }
 
+// STEVE CHANGE
+#define pushid(L, id) push_entity(L, id)
+#define checkid(L, arg) checkentity(L, arg)
+// /STEVE CHANGE
+
 #ifdef NDEBUG
     #define ecs_lua_dbg(fmt, ...)
     #define ecs_lua_dbg_pad(depth)

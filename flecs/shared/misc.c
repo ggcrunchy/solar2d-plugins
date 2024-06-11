@@ -15,8 +15,8 @@ int check_filter_desc(lua_State *L, const ecs_world_t *world, ecs_filter_desc_t 
     ecs_term_t *terms = desc->terms;
 
     int fields = 0;
-    int terms_type = lua_getfield_t(L, arg, "terms"); // STEVE CHANGE
-    int expr_type = lua_getfield_t(L, arg, "expr"); // STEVE CHANGE
+    int terms_type = lua_getfield_t(L, arg, "terms");
+    int expr_type = lua_getfield_t(L, arg, "expr");
 
     if(terms_type != LUA_TNIL)
     {
@@ -28,7 +28,7 @@ int check_filter_desc(lua_State *L, const ecs_world_t *world, ecs_filter_desc_t 
         }
         else if(terms_type == LUA_TTABLE) /* terms: ecs_term_t|ecs_term_t[] */
         {
-            int type = lua_rawgeti_t(L, -2, 1); /* type(terms[1]) */ // STEVE CHANGE
+            int type = lua_rawgeti_t(L, -2, 1); /* type(terms[1]) */
             lua_pop(L, 1);
 
             if(type != LUA_TNIL) /* terms: ecs_term_t[] */
@@ -113,7 +113,7 @@ int sizeof_component(lua_State *L)
 {
     ecs_world_t *w = ecs_lua_world(L);
 
-    ecs_entity_t e = /*luaL_checkinteger*/checkentity(L, 1); // STEVE CHANGE
+    ecs_entity_t e = checkentity(L, 1);
 
     const EcsComponent *ptr = ecs_get(w, e, EcsComponent);
 
@@ -129,7 +129,7 @@ int is_primitive(lua_State *L)
 {
     ecs_world_t *w = ecs_lua_world(L);
 
-    ecs_entity_t e = /*luaL_checkinteger*/checkentity(L, 1); // STEVE CHANGE
+    ecs_entity_t e = checkentity(L, 1);
 
     luaL_argcheck(L, e != 0, 1, "expected non-zero entity");
 
@@ -161,7 +161,7 @@ int zero_init_component(lua_State *L)
 {
     ecs_world_t *w = ecs_lua_world(L);
 
-    ecs_entity_t component = /*luaL_checkinteger*/checkentity(L, 1); // STEVE CHANGE
+    ecs_entity_t component = checkentity(L, 1);
 
     ecs_type_hooks_t hooks =
     {

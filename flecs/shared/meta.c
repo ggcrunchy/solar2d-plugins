@@ -166,7 +166,7 @@ void serialize_primitive(
             lua_pushnumber(L, *(double*)base);
             break;
         case EcsEntity:
-            /*lua_pushinteger*/push_entity(L, *(ecs_entity_t*)base); // <- STEVE CHANGE
+            push_entity(L, *(ecs_entity_t*)base);
             break;
         case EcsIPtr: // STEVE CHANGE TODO in 64-bit
             lua_pushinteger(L, *(intptr_t*)base);
@@ -335,7 +335,7 @@ void serialize_type_op(
         lua_pushnumber(L, *(double*)ECS_OFFSET(base, op->offset));
         break;
     case EcsOpEntity:
-        /*lua_pushinteger*/push_entity(L, *(ecs_entity_t*)ECS_OFFSET(base, op->offset)); // STEVE CHANGE
+        push_entity(L, *(ecs_entity_t*)ECS_OFFSET(base, op->offset));
         break;
     case EcsOpIPtr: // STEVE CHANGE TODO in 64-bit
         lua_pushinteger(L, *(intptr_t*)ECS_OFFSET(base, op->offset));
@@ -476,7 +476,7 @@ void update_type(
                 if(depth > 1)
                 {
                     ecs_assert(op->name != NULL, ECS_INVALID_PARAMETER, NULL);
-                    int t = lua_getfield_t(L, -1, op->name); // <- STEVE CHANGE
+                    int t = lua_getfield_t(L, -1, op->name);
                     if(t != LUA_TTABLE)
                     {
                         lua_pop(L, 1);
@@ -686,10 +686,10 @@ static const EcsMetaTypeSerialized *get_serializer(lua_State *L, const ecs_world
     int ret = lua_rawgetp(L, LUA_REGISTRYINDEX, world);
     ecs_assert(ret == LUA_TTABLE, ECS_INTERNAL_ERROR, NULL);
 
-    ret = lua_rawgeti_t(L, -1, ECS_LUA_TYPES); // <- STEVE CHANGE
+    ret = lua_rawgeti_t(L, -1, ECS_LUA_TYPES);
     ecs_assert(ret == LUA_TTABLE, ECS_INTERNAL_ERROR, NULL);
 
-    ret = lua_rawgeti_t(L, -1, type); // <- STEVE CHANGE
+    ret = lua_rawgeti_t(L, -1, type);
 
     ecs_ref_t *ref;
 
@@ -772,7 +772,7 @@ static int entities__index(lua_State *L)
         return luaL_error(L, "invalid index (%I)", i, it->count);
     }
 
-    /*lua_pushinteger*/push_entity(L, it->entities[i-1]); // STEVE CHANGE
+    push_entity(L, it->entities[i-1]);
 
     return 1;
 }
@@ -812,13 +812,13 @@ static void push_iter_metadata(lua_State *L, ecs_iter_t *it)
     lua_pushinteger(L, it->count);
     lua_setfield(L, -2, "count");
 
-    /*lua_pushinteger*/push_entity(L, it->system); // <- STEVE CHANGE
+    push_entity(L, it->system);
     lua_setfield(L, -2, "system");
 
-    /*lua_pushinteger*/push_entity(L, it->event); // <- STEVE CHANGE
+    push_entity(L, it->event);
     lua_setfield(L, -2, "event");
 
-    /*lua_pushinteger*/push_entity(L, it->event_id); // <- STEVE CHANGE
+    push_entity(L, it->event_id);
     lua_setfield(L, -2, "event_id");
 
 //    lua_pushinteger(L, it->self);
@@ -910,10 +910,10 @@ static ecs_meta_cursor_t *ecs_lua_cursor(lua_State *L, const ecs_world_t *world,
     int ret = lua_rawgetp(L, LUA_REGISTRYINDEX, real_world);
     ecs_assert(ret == LUA_TTABLE, ECS_INTERNAL_ERROR, NULL);
 
-    ret = lua_rawgeti_t(L, -1, ECS_LUA_CURSORS); // <- STEVE CHANGE
+    ret = lua_rawgeti_t(L, -1, ECS_LUA_CURSORS);
     ecs_assert(ret == LUA_TTABLE, ECS_INTERNAL_ERROR, NULL);
 
-    ret = lua_rawgeti_t(L, -1, type); // <- STEVE CHANGE
+    ret = lua_rawgeti_t(L, -1, type);
 
     ecs_meta_cursor_t *cursor;
 
@@ -1037,7 +1037,7 @@ ecs_iter_t *ecs_lua_to_iter(lua_State *L, int idx)
     {
         if(it->next == ecs_query_next && ecs_field_is_readonly(it, i)) continue;
 
-        int type;/* = */lua_rawgeti(L, -1, i); type = lua_type(L, -1); // <- STEVE CHANGE /* columns[i] */
+        int type = lua_rawgeti_t(L, -1, i); /* columns[i] */
         bool is_owned = ecs_field_is_self(it, i);
 
         if(type == LUA_TNIL)
@@ -1096,7 +1096,7 @@ int meta_constants(lua_State *L)
 {
     ecs_world_t *w = ecs_lua_world(L);
 
-    ecs_entity_t type = /*luaL_checkinteger*/checkentity(L, 1); // <- STEVE CHANGE
+    ecs_entity_t type = checkentity(L, 1);
     const char *prefix = luaL_optstring(L, 3, NULL);
     const char *flags = luaL_optstring(L, 4, "");
 
@@ -1207,7 +1207,7 @@ skip_readback:
         update_type(each->it->real_world, &col->ser->ops, ptr, L, idx);
     }
 
-    /*lua_pushinteger*/push_entity(L, it->entities[i]); // STEVE CHANGE
+    push_entity(L, it->entities[i]);
 
     each->i++;
 

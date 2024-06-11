@@ -13,7 +13,7 @@ static ecs_world_t **world_buf(lua_State *L, const ecs_world_t *world)
     int ret = lua_rawgetp(L, LUA_REGISTRYINDEX, world);
     ecs_assert(ret == LUA_TTABLE, ECS_INTERNAL_ERROR, NULL);
 
-    ret = lua_rawgeti_t(L, -1, ECS_LUA_APIWORLD); // STEVE CHANGE
+    ret = lua_rawgeti_t(L, -1, ECS_LUA_APIWORLD);
     ecs_assert(ret == LUA_TUSERDATA, ECS_INTERNAL_ERROR, NULL);
 
     ecs_world_t **wbuf = lua_touserdata(L, -1);
@@ -122,7 +122,7 @@ static int check_events(lua_State *L, ecs_world_t *w, ecs_entity_t *events, int 
         int i;
         for(i=1; i <= len; i++)
         {
-            type = lua_rawgeti_t(L, arg, i); // STEVE CHANGE
+            type = lua_rawgeti_t(L, arg, i);
 
             if /*(type != LUA_TNUMBER)*/(!getentity(L, arg, &event)) return luaL_argerror(L, arg, "invalid event"); // STEVE CHANGE
 
@@ -184,7 +184,7 @@ static int new_callback(lua_State *L, ecs_world_t *w, enum EcsLuaCallbackType ty
     }
     else /* EcsLuaSystem */
     {
-        ecs_entity_t phase = /*luaL_checkinteger*/checkentity(L, 3); // STEVE CHANGE
+        ecs_entity_t phase = checkentity(L, 3);
 
         ecs_entity_desc_t edesc = {0};
         edesc.name = name;
@@ -212,7 +212,7 @@ static int new_callback(lua_State *L, ecs_world_t *w, enum EcsLuaCallbackType ty
     cb->param_ref = LUA_NOREF;
     cb->type = type;
 
-    /*lua_pushinteger*/push_entity(L, e); // STEVE CHANGE
+    push_entity(L, e);
 
     return 1;
 }
@@ -238,7 +238,7 @@ int run_system(lua_State *L)
 {
     ecs_world_t *w = ecs_lua_world(L);
 
-    ecs_entity_t system = /*luaL_checkinteger*/checkentity(L, 1); // STEVE CHANGE
+    ecs_entity_t system = checkentity(L, 1);
     lua_Number delta_time = luaL_checknumber(L, 2);
 
     ecs_lua_callback *sys = ecs_system_get_binding_ctx(w, system); // STEVE CHANGE
@@ -257,7 +257,7 @@ int run_system(lua_State *L)
         sys->param_ref = tmp;
     }
     
-    /*lua_pushinteger*/push_entity(L, ret); // STEVE CHANGE
+    push_entity(L, ret);
 
     return 1;
 }
@@ -266,7 +266,7 @@ int set_system_context(lua_State *L)
 {
     ecs_world_t *w = ecs_lua_world(L);
 
-    ecs_entity_t system = /*luaL_checkinteger*/checkentity(L, 1); // STEVE CHANGE
+    ecs_entity_t system = checkentity(L, 1);
     if(lua_gettop(L) < 2) lua_pushnil(L);
 
     ecs_lua_callback *sys = ecs_system_get_binding_ctx(w, system); // STEVE CHANGE

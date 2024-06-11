@@ -17,7 +17,7 @@ int new_pipeline(lua_State *L)
 
     ecs_entity_t pipeline_entity = ecs_pipeline_init(w, &desc);
 
-    /*lua_pushinteger*/push_entity(L, pipeline_entity); // STEVE CHANGE;
+    push_entity(L, pipeline_entity);
 
     return 1;
 }
@@ -26,7 +26,7 @@ int set_pipeline(lua_State *L)
 {
     ecs_world_t *w = ecs_lua_world(L);
 
-    ecs_entity_t pipeline = /*luaL_checkinteger*/checkentity(L, 1); // STEVE CHANGE
+    ecs_entity_t pipeline = checkentity(L, 1);
 
     ecs_set_pipeline(w, pipeline);
 
@@ -39,7 +39,7 @@ int get_pipeline(lua_State *L)
 
     ecs_entity_t pipeline = ecs_get_pipeline(w);
             
-    /*lua_pushinteger*/push_entity(L, pipeline); // STEVE CHANGE
+    push_entity(L, pipeline);
 
     return 1;
 }

@@ -19,7 +19,7 @@ int bulk_new(lua_State *L)
     }
     else if(args >= 2) /* bulk_new(component, count, [noreturn]) */
     {
-        id = /*luaL_checkinteger*/checkentity(L, 1); // STEVE CHANGE
+        id = checkid(L, 1);
 
         count = luaL_checkinteger(L, 2);
         noreturn = lua_toboolean(L, 3);
@@ -35,7 +35,7 @@ int bulk_new(lua_State *L)
     lua_Integer i;
     for(i=0; i < count; i++)
     {
-        /*lua_pushinteger*/push_entity(L, entities[i]); // STEVE CHANGE
+        push_entity(L, entities[i]);
         lua_rawseti(L, -2, i+1);
     }
 
