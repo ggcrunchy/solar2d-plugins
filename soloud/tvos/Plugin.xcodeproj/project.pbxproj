@@ -1013,7 +1013,7 @@
 				USER_HEADER_SEARCH_PATHS = (
 					/Applications/Native/Corona/shared/include/Corona,
 					/Applications/Native/Corona/shared/include/lua,
-					"${SRCROOT}/Native/Corona/ios/include/Corona",
+					/Applications/Native/Corona/ios/include/Corona,
 					"${SRCROOT}/../shared/include",
 					"${SRCROOT}/../../ByteReader",
 					"${SRCROOT}/../../solar2d_native_utils",
@@ -1186,9 +1186,9 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				USER_HEADER_SEARCH_PATHS = (
-					"${SRCROOT}/Native/Corona/tvos/frameworks/CoronaCards.framework/PrivateHeaders",
-					"${SRCROOT}/Native/Corona/shared/include/Corona",
-					"${SRCROOT}/Native/Corona/shared/include/lua",
+					/Applications/Native/Corona/tvos/frameworks/CoronaCards.framework/PrivateHeaders,
+					/Applications/Native/Corona/shared/include/Corona,
+					/Applications/Native/Corona/shared/include/lua,
 					"${SRCROOT}/../../ByteReader",
 					"${SRCROOT}/../../solar2d_native_utils",
 					"${SRCROOT}/../../math_libraries",

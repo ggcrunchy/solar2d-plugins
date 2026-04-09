@@ -17,8 +17,8 @@ then
 	LIBS_SRC_DIR="$CORONA_ROOT/Corona/android/lib/gradle/Corona.aar"
 	CMD="cmd //c "
 else
-    ANDROID_NDK="/Applications/android-ndk-r20"
-    LIBS_SRC_DIR="$HOME/Library/Application Support/Corona/Native/Corona/android/lib/gradle/Corona.aar"
+    ANDROID_NDK="$HOME/Library/Android/sdk/ndk/24.0.8215888"
+    LIBS_SRC_DIR="/Applications/Native/Corona/android/lib/gradle/Corona.aar"
 	CMD=
 fi
 #

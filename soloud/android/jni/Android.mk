@@ -100,6 +100,8 @@ LOCAL_CFLAGS := \
 
 LOCAL_LDLIBS := -llog -lOpenSLES
 
+LOCAL_LDFLAGS+="-Wl,-z,max-page-size=16384"
+
 LOCAL_SHARED_LIBRARIES := \
 	liblua libcorona
 

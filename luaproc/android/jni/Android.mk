@@ -65,6 +65,8 @@ endif
 LOCAL_CPPFLAGS += -std=c++11 -DWFMO
 LOCAL_CPP_FEATURES += exceptions
 
+LOCAL_LDFLAGS+="-Wl,-z,max-page-size=16384"
+
 # Arm vs Thumb.
 LOCAL_ARM_MODE := arm
 include $(BUILD_SHARED_LIBRARY)

@@ -73,6 +73,8 @@ LOCAL_WHOLE_STATIC_LIBRARIES += cpufeatures
 LOCAL_CFLAGS += -mfloat-abi=softfp -mfpu=neon -march=armv7 -mthumb
 LOCAL_CPPFLAGS += -std=c++11
 
+LOCAL_LDFLAGS+="-Wl,-z,max-page-size=16384"
+
 # Arm vs Thumb.
 LOCAL_ARM_MODE := arm
 LOCAL_ARM_NEON := true

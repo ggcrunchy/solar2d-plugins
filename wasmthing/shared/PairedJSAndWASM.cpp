@@ -533,8 +533,8 @@ struct JsWasm {
 
                     for (int i = 0; i < n; ++i)
                     {
-                        out[i * 2 + 0] = static_cast<int16_t>(finput[i] * 32767.);
-                        out[i * 2 + 1] = static_cast<int16_t>(finput[i + max_samples] * 32767.);
+						out[i * 2 + 0] = static_cast<int16_t>(finput[i] * 16383.);
+						out[i * 2 + 1] = static_cast<int16_t>(finput[i + max_samples] * 16383.);
                     }
 
                     lua_pushlightuserdata(L, out);

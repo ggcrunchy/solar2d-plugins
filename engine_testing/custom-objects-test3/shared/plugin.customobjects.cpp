@@ -31,7 +31,7 @@ static void WriteInstanceValue ( void * dest, const void * context, const Corona
     {
         memcpy( out, context, sizeof( float ) );
 
-        out += layout->stride;
+        out += layout->outStride;
     }
 }
 

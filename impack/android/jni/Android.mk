@@ -89,7 +89,7 @@ endif
 
 ifeq ($(TARGET_ARCH),arm)
 LOCAL_CFLAGS += -DENABLE_NE10_IMG_ROTATE_RGBA_NEON
-LOCAL_SRC_FILES += $(NE10_MODULES)/imgproc/NE10_rotate.neon.s
+#LOCAL_SRC_FILES += $(NE10_MODULES)/imgproc/NE10_rotate.neon.s
 endif
 
 LOCAL_CFLAGS := \
@@ -100,7 +100,7 @@ LOCAL_CFLAGS := \
 
 LOCAL_LDLIBS := -llog -lm -lGLESv2
 
-LOCAL_CFLAGS += -fno-integrated-as # -fopenmp
+#LOCAL_CFLAGS += -fno-integrated-as # -fopenmp
 #LOCAL_LDFLAGS += -fopenmp
 
 LOCAL_SHARED_LIBRARIES := \
@@ -123,6 +123,8 @@ LOCAL_WHOLE_STATIC_LIBRARIES += cpufeatures
 # LOCAL_CFLAGS += -mfloat-abi=softfp -mfpu=neon -march=armv7 -mthumb
 LOCAL_CPPFLAGS += -std=c++11
 LOCAL_CPP_FEATURES += exceptions
+
+LOCAL_LDFLAGS+="-Wl,-z,max-page-size=16384"
 
 # Arm vs Thumb.
 LOCAL_ARM_MODE := arm

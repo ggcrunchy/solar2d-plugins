@@ -329,11 +329,11 @@ static JSValue tjs_wasm_linkwasi(JSContext *ctx, JSValueConst this_val, int argc
     TJSWasmInstance *i = tjs_wasm_instance_get(ctx, this_val);
     if (!i)
         return JS_EXCEPTION;
-
+/*
     M3Result r = m3_LinkWASI(i->module);
     if (r)
         return tjs_throw_wasm_error(ctx, "LinkError", r);
-
+*/
     return JS_UNDEFINED;
 }
 

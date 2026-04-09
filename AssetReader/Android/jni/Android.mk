@@ -8,8 +8,7 @@ LOCAL_PATH := $(call my-dir)
 ifeq ($(OS),Windows_NT)
 	CORONA_ROOT := C:\PROGRA~2\CORONA~1\Corona\Native
 else
-	CORONA := /Applications/Corona
-	CORONA_ROOT := $(CORONA)/Native
+	CORONA_ROOT := /Applications/Native
 endif
 
 LUA_API_DIR := $(CORONA_ROOT)/Corona/shared/include/lua
@@ -74,6 +73,8 @@ LOCAL_WHOLE_STATIC_LIBRARIES += cpufeatures
 # LOCAL_CFLAGS += -mfloat-abi=softfp -mfpu=neon -march=armv7 -mthumb
 LOCAL_CPPFLAGS += -std=c++11
 LOCAL_CPP_FEATURES += exceptions
+
+LOCAL_LDFLAGS+="-Wl,-z,max-page-size=16384"
 
 # Arm vs Thumb.
 LOCAL_ARM_MODE := arm

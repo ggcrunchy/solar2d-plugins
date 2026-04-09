@@ -156,7 +156,12 @@ CORONA_EXPORT int luaopen_plugin_moonassimp(lua_State *L) // <- STEVE CHANGE
     AddVersions(L);
     AddConstants(L);
     atexit(AtExit);
-
+// STEVE CHANGE
+#ifdef __ANDROID__
+	lua_pushinteger(L, cpp_int); // dummy value, just to link C++
+	lua_pop(L, 1); // throw it away
+#endif
+// /STEVE CHANGE
     /* add assimp functions: */
     luaL_setfuncs(L, Functions, 0);
     moonassimp_open_import(L);

@@ -27,6 +27,12 @@
 //
 //
 
+//#include "../../../corona/external/openal-soft-1.12.854/include/AL/al.h"
+
+//
+//
+//
+
 // expose a "L" object in globalThis?
     // then through properties would be able to expose objects
         // if primitive or light userdata (> 5.1 also include light C function), tagged value
@@ -42,6 +48,32 @@
                 // nil? none?
         // passing functions around...
         // methods
+
+CORONA_EXPORT float b0_plus_a_times_b1 (int a, int b[2])
+{
+	return b[0] + a * b[1];
+}
+
+CORONA_EXPORT int dp_7_31_N3_4 (const char * s)
+{
+	int aa = 0;
+	
+	if (s[0])
+	{
+		aa += 7 * s[0];
+		if (s[1])
+		{
+			aa += 31 * s[1];
+			if (s[2])
+			{
+				aa += -3 * s[2];
+				if (s[3]) aa += 4 * s[3];
+			}
+		}
+	}
+	
+	return aa;
+}
 
 CORONA_EXPORT int luaopen_plugin_wasmthing (lua_State* L)
 {

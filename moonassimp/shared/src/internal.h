@@ -246,4 +246,6 @@ static int func(lua_State *L)               \
 
 #endif /* DEBUG */
 
+extern int cpp_int;
+
 #endif /* internalDEFINED */

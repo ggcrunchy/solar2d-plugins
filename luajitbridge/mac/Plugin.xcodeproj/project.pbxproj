@@ -1,0 +1,427 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 54;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		AAEAB8602F64B19B001954A5 /* plugin.luajitbridge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAEAB85F2F64B19B001954A5 /* plugin.luajitbridge.cpp */; };
+		AAEAB8672F651B5B001954A5 /* details_lj.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAEAB8652F651B5B001954A5 /* details_lj.cpp */; };
+		AAEAB8682F651B5B001954A5 /* details_lua.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAEAB8662F651B5B001954A5 /* details_lua.cpp */; };
+		AAEAB86E2F65F2C7001954A5 /* common.h in Headers */ = {isa = PBXBuildFile; fileRef = AAEAB86C2F65F2C7001954A5 /* common.h */; };
+		AAEAB8722F6880EC001954A5 /* incbin.h in Headers */ = {isa = PBXBuildFile; fileRef = AAEAB86F2F6880EC001954A5 /* incbin.h */; };
+		AAEAB8762F688424001954A5 /* bindata.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAEAB8752F688424001954A5 /* bindata.cpp */; };
+		AAEAB87C2F6B57E3001954A5 /* state_data.h in Headers */ = {isa = PBXBuildFile; fileRef = AAEAB87B2F6B57E3001954A5 /* state_data.h */; };
+		AAEAB87D2F6B57E3001954A5 /* functions.h in Headers */ = {isa = PBXBuildFile; fileRef = AAEAB8792F6B57E3001954A5 /* functions.h */; };
+		AAEAB87E2F6B57E3001954A5 /* interface.h in Headers */ = {isa = PBXBuildFile; fileRef = AAEAB87A2F6B57E3001954A5 /* interface.h */; };
+		AAEAB8802F6BBF12001954A5 /* state_data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAEAB87F2F6BBF12001954A5 /* state_data.cpp */; };
+		AAEAB8832F6D1A88001954A5 /* bridge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAEAB8822F6D1A88001954A5 /* bridge.cpp */; };
+		AAEAB8872F6DF2E9001954A5 /* trampoline.h in Headers */ = {isa = PBXBuildFile; fileRef = AAEAB8862F6DF2E9001954A5 /* trampoline.h */; };
+		AAEAB8982F77372C001954A5 /* libluajit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AAEAB8922F749306001954A5 /* libluajit.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		A491863C1641DDB800A39286 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.lua";
+			fileType = pattern.proxy;
+			inputFiles = (
+			);
+			isEditable = 1;
+			outputFiles = (
+				"$TARGET_TEMP_DIR/$(INPUT_FILE_BASE).c",
+			);
+			script = "CORONA_DIR=$SRCROOT/CoronaEnterprise/Corona\nCORONA_MAC_BIN_DIR=$CORONA_DIR/mac/bin\n\nif [ -e \"$CORONA_MAC_BIN_DIR/lua\" ]; then\n    LUA_DIR=$CORONA_MAC_BIN_DIR/lua\nelse\n    echo \"Could not find proper 32-bit lua build in: $CORONA_MAC_BIN_DIR/lua\"\n    exit 1\nfi\n\necho $CORONA_MAC_BIN_DIR/lua2c.sh $INPUT_FILE_PATH $TARGET_TEMP_DIR $CONFIGURATION\n\"$CORONA_MAC_BIN_DIR/lua2c.sh\" \"$INPUT_FILE_PATH\" \"$TARGET_TEMP_DIR\" \"$CONFIGURATION\" \"$CORONA_MAC_BIN_DIR\"";
+		};
+/* End PBXBuildRule section */
+
+/* Begin PBXFileReference section */
+		A49186401641DDB800A39286 /* luajitbridge.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = luajitbridge.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		AAEAB85F2F64B19B001954A5 /* plugin.luajitbridge.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = plugin.luajitbridge.cpp; path = ../shared/plugin.luajitbridge.cpp; sourceTree = SOURCE_ROOT; };
+		AAEAB8652F651B5B001954A5 /* details_lj.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = details_lj.cpp; path = ../shared/details_lj.cpp; sourceTree = SOURCE_ROOT; };
+		AAEAB8662F651B5B001954A5 /* details_lua.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = details_lua.cpp; path = ../shared/details_lua.cpp; sourceTree = SOURCE_ROOT; };
+		AAEAB86C2F65F2C7001954A5 /* common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = common.h; path = ../shared/common.h; sourceTree = SOURCE_ROOT; };
+		AAEAB86F2F6880EC001954A5 /* incbin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = incbin.h; path = ../shared/incbin.h; sourceTree = SOURCE_ROOT; };
+		AAEAB8752F688424001954A5 /* bindata.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = bindata.cpp; path = ../shared/bindata.cpp; sourceTree = SOURCE_ROOT; };
+		AAEAB8792F6B57E3001954A5 /* functions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = functions.h; path = ../shared/functions.h; sourceTree = SOURCE_ROOT; };
+		AAEAB87A2F6B57E3001954A5 /* interface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = interface.h; path = ../shared/interface.h; sourceTree = SOURCE_ROOT; };
+		AAEAB87B2F6B57E3001954A5 /* state_data.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = state_data.h; path = ../shared/state_data.h; sourceTree = SOURCE_ROOT; };
+		AAEAB87F2F6BBF12001954A5 /* state_data.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = state_data.cpp; path = ../shared/state_data.cpp; sourceTree = SOURCE_ROOT; };
+		AAEAB8812F6C8925001954A5 /* prelude.lua */ = {isa = PBXFileReference; lastKnownFileType = text; name = prelude.lua; path = ../shared/prelude.lua; sourceTree = SOURCE_ROOT; };
+		AAEAB8822F6D1A88001954A5 /* bridge.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = bridge.cpp; path = ../shared/bridge.cpp; sourceTree = SOURCE_ROOT; };
+		AAEAB8862F6DF2E9001954A5 /* trampoline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = trampoline.h; path = ../shared/trampoline.h; sourceTree = SOURCE_ROOT; };
+		AAEAB8922F749306001954A5 /* libluajit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libluajit.a; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A49186381641DDB800A39286 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AAEAB8982F77372C001954A5 /* libluajit.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A4151F3316879B8200B2B43A /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				AAEAB8812F6C8925001954A5 /* prelude.lua */,
+				AAEAB86F2F6880EC001954A5 /* incbin.h */,
+				AAEAB86C2F65F2C7001954A5 /* common.h */,
+				AAEAB8792F6B57E3001954A5 /* functions.h */,
+				AAEAB87A2F6B57E3001954A5 /* interface.h */,
+				AAEAB87B2F6B57E3001954A5 /* state_data.h */,
+				AAEAB8862F6DF2E9001954A5 /* trampoline.h */,
+				AAEAB8752F688424001954A5 /* bindata.cpp */,
+				AAEAB8822F6D1A88001954A5 /* bridge.cpp */,
+				AAEAB8652F651B5B001954A5 /* details_lj.cpp */,
+				AAEAB8662F651B5B001954A5 /* details_lua.cpp */,
+				AAEAB87F2F6BBF12001954A5 /* state_data.cpp */,
+				AAEAB85F2F64B19B001954A5 /* plugin.luajitbridge.cpp */,
+			);
+			name = Shared;
+			sourceTree = "<group>";
+		};
+		A482DA7815F9B7E70084DC42 = {
+			isa = PBXGroup;
+			children = (
+				A4151F3316879B8200B2B43A /* Shared */,
+				A482DA8615F9B7E70084DC42 /* Frameworks */,
+				A482DA8515F9B7E70084DC42 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A482DA8515F9B7E70084DC42 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A49186401641DDB800A39286 /* luajitbridge.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A482DA8615F9B7E70084DC42 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AAEAB8922F749306001954A5 /* libluajit.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		A491863A1641DDB800A39286 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AAEAB87C2F6B57E3001954A5 /* state_data.h in Headers */,
+				AAEAB87D2F6B57E3001954A5 /* functions.h in Headers */,
+				AAEAB87E2F6B57E3001954A5 /* interface.h in Headers */,
+				AAEAB8872F6DF2E9001954A5 /* trampoline.h in Headers */,
+				AAEAB86E2F65F2C7001954A5 /* common.h in Headers */,
+				AAEAB8722F6880EC001954A5 /* incbin.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		A49186331641DDB800A39286 /* luajitbridge */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "luajitbridge" */;
+			buildPhases = (
+				A49186341641DDB800A39286 /* Sources */,
+				A49186381641DDB800A39286 /* Frameworks */,
+				A491863A1641DDB800A39286 /* Headers */,
+				A445A9BA16AE072100A9A764 /* ShellScript */,
+			);
+			buildRules = (
+				A491863C1641DDB800A39286 /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = luajitbridge;
+			productName = ads;
+			productReference = A49186401641DDB800A39286 /* luajitbridge.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A482DA7A15F9B7E70084DC42 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 2600;
+			};
+			buildConfigurationList = A482DA7D15F9B7E70084DC42 /* Build configuration list for PBXProject "Plugin" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				English,
+				en,
+			);
+			mainGroup = A482DA7815F9B7E70084DC42;
+			productRefGroup = A482DA8515F9B7E70084DC42 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A49186331641DDB800A39286 /* luajitbridge */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A445A9BA16AE072100A9A764 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#\n# Checks exit value for error\n# \ncheckError() {\n    if [ $? -ne 0 ]\n    then\n        echo \"Exiting due to errors (above)\"\n        exit -1\n    fi\n}\n\nPLUGINS_DIR=~/Library/Application\\ Support/Corona/Simulator/Plugins/\n\n#mkdir -p $PLUGINS_DIR\ncheckError\n\n#cp -v $CONFIGURATION_BUILD_DIR/$FULL_PRODUCT_NAME $PLUGINS_DIR\ncheckError";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A49186341641DDB800A39286 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AAEAB8602F64B19B001954A5 /* plugin.luajitbridge.cpp in Sources */,
+				AAEAB8762F688424001954A5 /* bindata.cpp in Sources */,
+				AAEAB8672F651B5B001954A5 /* details_lj.cpp in Sources */,
+				AAEAB8682F651B5B001954A5 /* details_lua.cpp in Sources */,
+				AAEAB8832F6D1A88001954A5 /* bridge.cpp in Sources */,
+				AAEAB8802F6BBF12001954A5 /* state_data.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A482DA9715F9B7E70084DC42 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					CORONA_DEBUG,
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-undefined",
+					dynamic_lookup,
+				);
+				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				USER_HEADER_SEARCH_PATHS = (
+					"${SRCROOT}/CoronaEnterprise/Corona/shared/include/Corona",
+					"${SRCROOT}/CoronaEnterprise/Corona/shared/include/lua",
+					"${SRCROOT}/CoronaEnterprise/Corona/ios/include/Corona",
+				);
+			};
+			name = Debug;
+		};
+		A482DA9815F9B7E70084DC42 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				OTHER_LDFLAGS = (
+					"-undefined",
+					dynamic_lookup,
+				);
+				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				USER_HEADER_SEARCH_PATHS = (
+					"${SRCROOT}/CoronaEnterprise/Corona/shared/include/Corona",
+					"${SRCROOT}/CoronaEnterprise/Corona/shared/include/lua",
+					"${SRCROOT}/CoronaEnterprise/Corona/ios/include/Corona",
+				);
+			};
+			name = Release;
+		};
+		A491863E1641DDB800A39286 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GENERATE_PRELINK_OBJECT_FILE = NO;
+				INSTALL_PATH = "@rpath";
+				LD_EXPORT_SYMBOLS = YES;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(USER_LIBRARY_DIR)/Application",
+					Support/Corona/Simulator/Plugins/plugin/lib,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-undefined",
+					dynamic_lookup,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				USER_HEADER_SEARCH_PATHS = (
+					/Applications/Native/Corona/shared/include/Corona,
+					/Applications/Native/Corona/shared/include/lua,
+					"${SRCROOT}/../shared",
+				);
+			};
+			name = Debug;
+		};
+		A491863F1641DDB800A39286 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = "";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GENERATE_PRELINK_OBJECT_FILE = NO;
+				INSTALL_PATH = "@rpath";
+				LD_EXPORT_SYMBOLS = YES;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(USER_LIBRARY_DIR)/Application",
+					Support/Corona/Simulator/Plugins/plugin/lib,
+				);
+				"LIBRARY_SEARCH_PATHS[arch=*]" = (
+					"\"~/Library/Application Support/Corona/Simulator/Plugins/plugin/lib\"",
+					"${SRCROOT}",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-undefined",
+					dynamic_lookup,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				USER_HEADER_SEARCH_PATHS = (
+					/Applications/Native/Corona/shared/include/Corona,
+					/Applications/Native/Corona/shared/include/lua,
+					"${SRCROOT}/../shared",
+				);
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A482DA7D15F9B7E70084DC42 /* Build configuration list for PBXProject "Plugin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A482DA9715F9B7E70084DC42 /* Debug */,
+				A482DA9815F9B7E70084DC42 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "luajitbridge" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A491863E1641DDB800A39286 /* Debug */,
+				A491863F1641DDB800A39286 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A482DA7A15F9B7E70084DC42 /* Project object */;
+}

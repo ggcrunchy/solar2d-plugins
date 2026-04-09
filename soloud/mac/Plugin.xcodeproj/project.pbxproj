@@ -1011,7 +1011,7 @@
 				GENERATE_MASTER_OBJECT_FILE = NO;
 				INSTALL_PATH = "@rpath";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/Native/Corona/shared/include/Corona ${SRCROOT}/Native/Corona/shared/include/lua ${SRCROOT}/Native/Corona/ios/include/Corona ${SRCROOT}/../../ByteReader ${SRCROOT}/../../solar2d_native_utils ${SRCROOT}/../../math_libraries ${SRCROOT}/../shared/include";
+				USER_HEADER_SEARCH_PATHS = "/Applications/Native/Corona/shared/include/Corona /Applications/Native/Corona/shared/include/lua /Applications/Native/Corona/ios/include/Corona ${SRCROOT}/../../ByteReader ${SRCROOT}/../../solar2d_native_utils ${SRCROOT}/../../math_libraries ${SRCROOT}/../shared/include";
 			};
 			name = Debug;
 		};
@@ -1034,7 +1034,7 @@
 				GENERATE_MASTER_OBJECT_FILE = NO;
 				INSTALL_PATH = "@rpath";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/Native/Corona/shared/include/Corona ${SRCROOT}/Native/Corona/shared/include/lua ${SRCROOT}/Native/Corona/ios/include/Corona ${SRCROOT}/../../ByteReader ${SRCROOT}/../../solar2d_native_utils ${SRCROOT}/../../math_libraries ${SRCROOT}/../shared/include";
+				USER_HEADER_SEARCH_PATHS = "/Applications/Native/Corona/shared/include/Corona /Applications/Native/Corona/shared/include/lua /Applications/Native/Corona/ios/include/Corona ${SRCROOT}/../../ByteReader ${SRCROOT}/../../solar2d_native_utils ${SRCROOT}/../../math_libraries ${SRCROOT}/../shared/include";
 			};
 			name = Release;
 		};

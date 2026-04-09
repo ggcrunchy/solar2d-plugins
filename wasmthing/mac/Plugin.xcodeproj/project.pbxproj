@@ -7,8 +7,63 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AA87A281279B6AB900E57026 /* wfc.h in Headers */ = {isa = PBXBuildFile; fileRef = AA87A27F279B6AB900E57026 /* wfc.h */; };
-		AA87A282279B6AB900E57026 /* plugin.wfc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA87A280279B6AB900E57026 /* plugin.wfc.cpp */; };
+		AAA06B652B93D545008D55CF /* libregexp-opcode.h in Headers */ = {isa = PBXBuildFile; fileRef = AAA06B5B2B93D544008D55CF /* libregexp-opcode.h */; };
+		AAA06B662B93D545008D55CF /* libregexp.h in Headers */ = {isa = PBXBuildFile; fileRef = AAA06B5C2B93D545008D55CF /* libregexp.h */; };
+		AAA06B672B93D545008D55CF /* libunicode-table.h in Headers */ = {isa = PBXBuildFile; fileRef = AAA06B5D2B93D545008D55CF /* libunicode-table.h */; };
+		AAA06B682B93D545008D55CF /* quickjs-atom.h in Headers */ = {isa = PBXBuildFile; fileRef = AAA06B5E2B93D545008D55CF /* quickjs-atom.h */; };
+		AAA06B692B93D545008D55CF /* quickjs.h in Headers */ = {isa = PBXBuildFile; fileRef = AAA06B5F2B93D545008D55CF /* quickjs.h */; };
+		AAA06B6A2B93D545008D55CF /* libregexp.c in Sources */ = {isa = PBXBuildFile; fileRef = AAA06B602B93D545008D55CF /* libregexp.c */; };
+		AAA06B6B2B93D545008D55CF /* quickjs-opcode.h in Headers */ = {isa = PBXBuildFile; fileRef = AAA06B612B93D545008D55CF /* quickjs-opcode.h */; };
+		AAA06B6C2B93D545008D55CF /* quickjs.c in Sources */ = {isa = PBXBuildFile; fileRef = AAA06B622B93D545008D55CF /* quickjs.c */; };
+		AAA06B6D2B93D545008D55CF /* libunicode.c in Sources */ = {isa = PBXBuildFile; fileRef = AAA06B632B93D545008D55CF /* libunicode.c */; };
+		AAA06B6E2B93D545008D55CF /* libunicode.h in Headers */ = {isa = PBXBuildFile; fileRef = AAA06B642B93D545008D55CF /* libunicode.h */; };
+		AAA06B712B93D581008D55CF /* wasm.c in Sources */ = {isa = PBXBuildFile; fileRef = AAA06B6F2B93D581008D55CF /* wasm.c */; };
+		AAA06B722B93D581008D55CF /* WebAssemblyPolyfillJS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAA06B702B93D581008D55CF /* WebAssemblyPolyfillJS.cpp */; };
+		AAA06B942B93D5B3008D55CF /* m3_compile.c in Sources */ = {isa = PBXBuildFile; fileRef = AAA06B732B93D5B2008D55CF /* m3_compile.c */; };
+		AAA06B952B93D5B3008D55CF /* m3_module.c in Sources */ = {isa = PBXBuildFile; fileRef = AAA06B742B93D5B2008D55CF /* m3_module.c */; };
+		AAA06B962B93D5B3008D55CF /* m3_code.h in Headers */ = {isa = PBXBuildFile; fileRef = AAA06B752B93D5B2008D55CF /* m3_code.h */; };
+		AAA06B972B93D5B3008D55CF /* m3_config.h in Headers */ = {isa = PBXBuildFile; fileRef = AAA06B762B93D5B2008D55CF /* m3_config.h */; };
+		AAA06B982B93D5B3008D55CF /* m3_config_platforms.h in Headers */ = {isa = PBXBuildFile; fileRef = AAA06B772B93D5B2008D55CF /* m3_config_platforms.h */; };
+		AAA06B992B93D5B3008D55CF /* m3_function.c in Sources */ = {isa = PBXBuildFile; fileRef = AAA06B782B93D5B2008D55CF /* m3_function.c */; };
+		AAA06B9A2B93D5B3008D55CF /* m3_compile.h in Headers */ = {isa = PBXBuildFile; fileRef = AAA06B792B93D5B2008D55CF /* m3_compile.h */; };
+		AAA06B9B2B93D5B3008D55CF /* m3_info.h in Headers */ = {isa = PBXBuildFile; fileRef = AAA06B7A2B93D5B2008D55CF /* m3_info.h */; };
+		AAA06B9C2B93D5B3008D55CF /* m3_code.c in Sources */ = {isa = PBXBuildFile; fileRef = AAA06B7B2B93D5B2008D55CF /* m3_code.c */; };
+		AAA06B9D2B93D5B3008D55CF /* m3_api_wasi.c in Sources */ = {isa = PBXBuildFile; fileRef = AAA06B7C2B93D5B2008D55CF /* m3_api_wasi.c */; };
+		AAA06B9E2B93D5B3008D55CF /* m3_info.c in Sources */ = {isa = PBXBuildFile; fileRef = AAA06B7D2B93D5B2008D55CF /* m3_info.c */; };
+		AAA06B9F2B93D5B3008D55CF /* m3_exception.h in Headers */ = {isa = PBXBuildFile; fileRef = AAA06B7E2B93D5B2008D55CF /* m3_exception.h */; };
+		AAA06BA02B93D5B3008D55CF /* m3_exec.c in Sources */ = {isa = PBXBuildFile; fileRef = AAA06B7F2B93D5B2008D55CF /* m3_exec.c */; };
+		AAA06BA12B93D5B3008D55CF /* wasm3_defs.h in Headers */ = {isa = PBXBuildFile; fileRef = AAA06B802B93D5B2008D55CF /* wasm3_defs.h */; };
+		AAA06BA22B93D5B3008D55CF /* m3_api_meta_wasi.c in Sources */ = {isa = PBXBuildFile; fileRef = AAA06B812B93D5B2008D55CF /* m3_api_meta_wasi.c */; };
+		AAA06BA32B93D5B3008D55CF /* m3_bind.c in Sources */ = {isa = PBXBuildFile; fileRef = AAA06B822B93D5B2008D55CF /* m3_bind.c */; };
+		AAA06BA42B93D5B3008D55CF /* m3_api_libc.c in Sources */ = {isa = PBXBuildFile; fileRef = AAA06B832B93D5B2008D55CF /* m3_api_libc.c */; };
+		AAA06BA52B93D5B3008D55CF /* m3_exec.h in Headers */ = {isa = PBXBuildFile; fileRef = AAA06B842B93D5B2008D55CF /* m3_exec.h */; };
+		AAA06BA62B93D5B3008D55CF /* m3_core.h in Headers */ = {isa = PBXBuildFile; fileRef = AAA06B852B93D5B2008D55CF /* m3_core.h */; };
+		AAA06BA72B93D5B3008D55CF /* m3_api_tracer.c in Sources */ = {isa = PBXBuildFile; fileRef = AAA06B862B93D5B2008D55CF /* m3_api_tracer.c */; };
+		AAA06BA82B93D5B3008D55CF /* m3_env.c in Sources */ = {isa = PBXBuildFile; fileRef = AAA06B872B93D5B2008D55CF /* m3_env.c */; };
+		AAA06BA92B93D5B3008D55CF /* m3_env.h in Headers */ = {isa = PBXBuildFile; fileRef = AAA06B882B93D5B2008D55CF /* m3_env.h */; };
+		AAA06BAA2B93D5B3008D55CF /* m3_api_uvwasi.c in Sources */ = {isa = PBXBuildFile; fileRef = AAA06B892B93D5B2008D55CF /* m3_api_uvwasi.c */; };
+		AAA06BAB2B93D5B3008D55CF /* m3_exec_defs.h in Headers */ = {isa = PBXBuildFile; fileRef = AAA06B8A2B93D5B2008D55CF /* m3_exec_defs.h */; };
+		AAA06BAC2B93D5B3008D55CF /* m3_bind.h in Headers */ = {isa = PBXBuildFile; fileRef = AAA06B8B2B93D5B2008D55CF /* m3_bind.h */; };
+		AAA06BAD2B93D5B3008D55CF /* m3_math_utils.h in Headers */ = {isa = PBXBuildFile; fileRef = AAA06B8C2B93D5B2008D55CF /* m3_math_utils.h */; };
+		AAA06BAE2B93D5B3008D55CF /* wasm3.h in Headers */ = {isa = PBXBuildFile; fileRef = AAA06B8D2B93D5B2008D55CF /* wasm3.h */; };
+		AAA06BAF2B93D5B3008D55CF /* m3_core.c in Sources */ = {isa = PBXBuildFile; fileRef = AAA06B8E2B93D5B2008D55CF /* m3_core.c */; };
+		AAA06BB02B93D5B3008D55CF /* m3_api_wasi.h in Headers */ = {isa = PBXBuildFile; fileRef = AAA06B8F2B93D5B2008D55CF /* m3_api_wasi.h */; };
+		AAA06BB12B93D5B3008D55CF /* m3_parse.c in Sources */ = {isa = PBXBuildFile; fileRef = AAA06B902B93D5B3008D55CF /* m3_parse.c */; };
+		AAA06BB22B93D5B3008D55CF /* m3_function.h in Headers */ = {isa = PBXBuildFile; fileRef = AAA06B912B93D5B3008D55CF /* m3_function.h */; };
+		AAA06BB32B93D5B3008D55CF /* m3_api_tracer.h in Headers */ = {isa = PBXBuildFile; fileRef = AAA06B922B93D5B3008D55CF /* m3_api_tracer.h */; };
+		AAA06BB42B93D5B3008D55CF /* m3_api_libc.h in Headers */ = {isa = PBXBuildFile; fileRef = AAA06B932B93D5B3008D55CF /* m3_api_libc.h */; };
+		AAA06BBC2B93D5D2008D55CF /* PairedJSAndWASM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAA06BB52B93D5D2008D55CF /* PairedJSAndWASM.cpp */; };
+		AAA06BBD2B93D5D2008D55CF /* utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAA06BB62B93D5D2008D55CF /* utils.cpp */; };
+		AAA06BBE2B93D5D2008D55CF /* jsutils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAA06BB72B93D5D2008D55CF /* jsutils.cpp */; };
+		AAA06BBF2B93D5D2008D55CF /* common.h in Headers */ = {isa = PBXBuildFile; fileRef = AAA06BB82B93D5D2008D55CF /* common.h */; };
+		AAA06BC02B93D5D2008D55CF /* jsutils.h in Headers */ = {isa = PBXBuildFile; fileRef = AAA06BB92B93D5D2008D55CF /* jsutils.h */; };
+		AAA06BC12B93D5D2008D55CF /* utils.h in Headers */ = {isa = PBXBuildFile; fileRef = AAA06BBA2B93D5D2008D55CF /* utils.h */; };
+		AAA06BC22B93D5D2008D55CF /* plugin.wamr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AAA06BBB2B93D5D2008D55CF /* plugin.wamr.cpp */; };
+		AAA06C202B9D3924008D55CF /* libbf.c in Sources */ = {isa = PBXBuildFile; fileRef = AAA06C1B2B9D3924008D55CF /* libbf.c */; };
+		AAA06C212B9D3924008D55CF /* cutils.h in Headers */ = {isa = PBXBuildFile; fileRef = AAA06C1C2B9D3924008D55CF /* cutils.h */; };
+		AAA06C222B9D3924008D55CF /* libbf.h in Headers */ = {isa = PBXBuildFile; fileRef = AAA06C1D2B9D3924008D55CF /* libbf.h */; };
+		AAA06C232B9D3924008D55CF /* list.h in Headers */ = {isa = PBXBuildFile; fileRef = AAA06C1E2B9D3924008D55CF /* list.h */; };
+		AAA06C242B9D3924008D55CF /* cutils.c in Sources */ = {isa = PBXBuildFile; fileRef = AAA06C1F2B9D3924008D55CF /* cutils.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -28,11 +83,64 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXFileReference section */
-		A49186401641DDB800A39286 /* wfc.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = wfc.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
-		AA87A27F279B6AB900E57026 /* wfc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wfc.h; path = ../shared/wfc.h; sourceTree = "<group>"; };
-		AA87A280279B6AB900E57026 /* plugin.wfc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = plugin.wfc.cpp; path = ../shared/plugin.wfc.cpp; sourceTree = "<group>"; };
-		AA8C19D62878E8FF000D0253 /* ByteReader */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ByteReader; path = ../../ByteReader; sourceTree = "<group>"; };
-		AA8C19D72878E8FF000D0253 /* solar2d_native_utils */ = {isa = PBXFileReference; lastKnownFileType = folder; name = solar2d_native_utils; path = ../../solar2d_native_utils; sourceTree = "<group>"; };
+		A49186401641DDB800A39286 /* wasmthing.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = wasmthing.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		AAA06B5B2B93D544008D55CF /* libregexp-opcode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "libregexp-opcode.h"; path = "../shared/quickjs/libregexp-opcode.h"; sourceTree = "<group>"; };
+		AAA06B5C2B93D545008D55CF /* libregexp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = libregexp.h; path = ../shared/quickjs/libregexp.h; sourceTree = "<group>"; };
+		AAA06B5D2B93D545008D55CF /* libunicode-table.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "libunicode-table.h"; path = "../shared/quickjs/libunicode-table.h"; sourceTree = "<group>"; };
+		AAA06B5E2B93D545008D55CF /* quickjs-atom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "quickjs-atom.h"; path = "../shared/quickjs/quickjs-atom.h"; sourceTree = "<group>"; };
+		AAA06B5F2B93D545008D55CF /* quickjs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = quickjs.h; path = ../shared/quickjs/quickjs.h; sourceTree = "<group>"; };
+		AAA06B602B93D545008D55CF /* libregexp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = libregexp.c; path = ../shared/quickjs/libregexp.c; sourceTree = "<group>"; };
+		AAA06B612B93D545008D55CF /* quickjs-opcode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "quickjs-opcode.h"; path = "../shared/quickjs/quickjs-opcode.h"; sourceTree = "<group>"; };
+		AAA06B622B93D545008D55CF /* quickjs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = quickjs.c; path = ../shared/quickjs/quickjs.c; sourceTree = "<group>"; };
+		AAA06B632B93D545008D55CF /* libunicode.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = libunicode.c; path = ../shared/quickjs/libunicode.c; sourceTree = "<group>"; };
+		AAA06B642B93D545008D55CF /* libunicode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = libunicode.h; path = ../shared/quickjs/libunicode.h; sourceTree = "<group>"; };
+		AAA06B6F2B93D581008D55CF /* wasm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = wasm.c; path = ../shared/wasm.c; sourceTree = "<group>"; };
+		AAA06B702B93D581008D55CF /* WebAssemblyPolyfillJS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = WebAssemblyPolyfillJS.cpp; path = ../shared/WebAssemblyPolyfillJS.cpp; sourceTree = "<group>"; };
+		AAA06B732B93D5B2008D55CF /* m3_compile.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = m3_compile.c; path = ../shared/source/m3_compile.c; sourceTree = "<group>"; };
+		AAA06B742B93D5B2008D55CF /* m3_module.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = m3_module.c; path = ../shared/source/m3_module.c; sourceTree = "<group>"; };
+		AAA06B752B93D5B2008D55CF /* m3_code.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = m3_code.h; path = ../shared/source/m3_code.h; sourceTree = "<group>"; };
+		AAA06B762B93D5B2008D55CF /* m3_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = m3_config.h; path = ../shared/source/m3_config.h; sourceTree = "<group>"; };
+		AAA06B772B93D5B2008D55CF /* m3_config_platforms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = m3_config_platforms.h; path = ../shared/source/m3_config_platforms.h; sourceTree = "<group>"; };
+		AAA06B782B93D5B2008D55CF /* m3_function.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = m3_function.c; path = ../shared/source/m3_function.c; sourceTree = "<group>"; };
+		AAA06B792B93D5B2008D55CF /* m3_compile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = m3_compile.h; path = ../shared/source/m3_compile.h; sourceTree = "<group>"; };
+		AAA06B7A2B93D5B2008D55CF /* m3_info.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = m3_info.h; path = ../shared/source/m3_info.h; sourceTree = "<group>"; };
+		AAA06B7B2B93D5B2008D55CF /* m3_code.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = m3_code.c; path = ../shared/source/m3_code.c; sourceTree = "<group>"; };
+		AAA06B7C2B93D5B2008D55CF /* m3_api_wasi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = m3_api_wasi.c; path = ../shared/source/m3_api_wasi.c; sourceTree = "<group>"; };
+		AAA06B7D2B93D5B2008D55CF /* m3_info.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = m3_info.c; path = ../shared/source/m3_info.c; sourceTree = "<group>"; };
+		AAA06B7E2B93D5B2008D55CF /* m3_exception.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = m3_exception.h; path = ../shared/source/m3_exception.h; sourceTree = "<group>"; };
+		AAA06B7F2B93D5B2008D55CF /* m3_exec.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = m3_exec.c; path = ../shared/source/m3_exec.c; sourceTree = "<group>"; };
+		AAA06B802B93D5B2008D55CF /* wasm3_defs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wasm3_defs.h; path = ../shared/source/wasm3_defs.h; sourceTree = "<group>"; };
+		AAA06B812B93D5B2008D55CF /* m3_api_meta_wasi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = m3_api_meta_wasi.c; path = ../shared/source/m3_api_meta_wasi.c; sourceTree = "<group>"; };
+		AAA06B822B93D5B2008D55CF /* m3_bind.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = m3_bind.c; path = ../shared/source/m3_bind.c; sourceTree = "<group>"; };
+		AAA06B832B93D5B2008D55CF /* m3_api_libc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = m3_api_libc.c; path = ../shared/source/m3_api_libc.c; sourceTree = "<group>"; };
+		AAA06B842B93D5B2008D55CF /* m3_exec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = m3_exec.h; path = ../shared/source/m3_exec.h; sourceTree = "<group>"; };
+		AAA06B852B93D5B2008D55CF /* m3_core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = m3_core.h; path = ../shared/source/m3_core.h; sourceTree = "<group>"; };
+		AAA06B862B93D5B2008D55CF /* m3_api_tracer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = m3_api_tracer.c; path = ../shared/source/m3_api_tracer.c; sourceTree = "<group>"; };
+		AAA06B872B93D5B2008D55CF /* m3_env.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = m3_env.c; path = ../shared/source/m3_env.c; sourceTree = "<group>"; };
+		AAA06B882B93D5B2008D55CF /* m3_env.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = m3_env.h; path = ../shared/source/m3_env.h; sourceTree = "<group>"; };
+		AAA06B892B93D5B2008D55CF /* m3_api_uvwasi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = m3_api_uvwasi.c; path = ../shared/source/m3_api_uvwasi.c; sourceTree = "<group>"; };
+		AAA06B8A2B93D5B2008D55CF /* m3_exec_defs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = m3_exec_defs.h; path = ../shared/source/m3_exec_defs.h; sourceTree = "<group>"; };
+		AAA06B8B2B93D5B2008D55CF /* m3_bind.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = m3_bind.h; path = ../shared/source/m3_bind.h; sourceTree = "<group>"; };
+		AAA06B8C2B93D5B2008D55CF /* m3_math_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = m3_math_utils.h; path = ../shared/source/m3_math_utils.h; sourceTree = "<group>"; };
+		AAA06B8D2B93D5B2008D55CF /* wasm3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wasm3.h; path = ../shared/source/wasm3.h; sourceTree = "<group>"; };
+		AAA06B8E2B93D5B2008D55CF /* m3_core.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = m3_core.c; path = ../shared/source/m3_core.c; sourceTree = "<group>"; };
+		AAA06B8F2B93D5B2008D55CF /* m3_api_wasi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = m3_api_wasi.h; path = ../shared/source/m3_api_wasi.h; sourceTree = "<group>"; };
+		AAA06B902B93D5B3008D55CF /* m3_parse.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = m3_parse.c; path = ../shared/source/m3_parse.c; sourceTree = "<group>"; };
+		AAA06B912B93D5B3008D55CF /* m3_function.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = m3_function.h; path = ../shared/source/m3_function.h; sourceTree = "<group>"; };
+		AAA06B922B93D5B3008D55CF /* m3_api_tracer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = m3_api_tracer.h; path = ../shared/source/m3_api_tracer.h; sourceTree = "<group>"; };
+		AAA06B932B93D5B3008D55CF /* m3_api_libc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = m3_api_libc.h; path = ../shared/source/m3_api_libc.h; sourceTree = "<group>"; };
+		AAA06BB52B93D5D2008D55CF /* PairedJSAndWASM.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PairedJSAndWASM.cpp; path = ../shared/PairedJSAndWASM.cpp; sourceTree = "<group>"; };
+		AAA06BB62B93D5D2008D55CF /* utils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = utils.cpp; path = ../shared/utils.cpp; sourceTree = "<group>"; };
+		AAA06BB72B93D5D2008D55CF /* jsutils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jsutils.cpp; path = ../shared/jsutils.cpp; sourceTree = "<group>"; };
+		AAA06BB82B93D5D2008D55CF /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = common.h; path = ../shared/common.h; sourceTree = "<group>"; };
+		AAA06BB92B93D5D2008D55CF /* jsutils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = jsutils.h; path = ../shared/jsutils.h; sourceTree = "<group>"; };
+		AAA06BBA2B93D5D2008D55CF /* utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = utils.h; path = ../shared/utils.h; sourceTree = "<group>"; };
+		AAA06BBB2B93D5D2008D55CF /* plugin.wamr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = plugin.wamr.cpp; path = ../shared/plugin.wamr.cpp; sourceTree = "<group>"; };
+		AAA06C1B2B9D3924008D55CF /* libbf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = libbf.c; path = ../shared/quickjs/libbf.c; sourceTree = "<group>"; };
+		AAA06C1C2B9D3924008D55CF /* cutils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cutils.h; path = ../shared/quickjs/cutils.h; sourceTree = "<group>"; };
+		AAA06C1D2B9D3924008D55CF /* libbf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = libbf.h; path = ../shared/quickjs/libbf.h; sourceTree = "<group>"; };
+		AAA06C1E2B9D3924008D55CF /* list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = list.h; path = ../shared/quickjs/list.h; sourceTree = "<group>"; };
+		AAA06C1F2B9D3924008D55CF /* cutils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cutils.c; path = ../shared/quickjs/cutils.c; sourceTree = "<group>"; };
 		CE353A2D1D690309000D2E95 /* libvlc.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libvlc.dylib; path = "../../../../Library/Application Support/Corona/Simulator/Plugins/plugin/lib/libvlc.dylib"; sourceTree = "<group>"; };
 		CE353A2E1D690309000D2E95 /* libvlccore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libvlccore.dylib; path = "../../../../Library/Application Support/Corona/Simulator/Plugins/plugin/lib/libvlccore.dylib"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -51,10 +159,16 @@
 		A4151F3316879B8200B2B43A /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				AA8C19D62878E8FF000D0253 /* ByteReader */,
-				AA8C19D72878E8FF000D0253 /* solar2d_native_utils */,
-				AA87A280279B6AB900E57026 /* plugin.wfc.cpp */,
-				AA87A27F279B6AB900E57026 /* wfc.h */,
+				AAA06BB82B93D5D2008D55CF /* common.h */,
+				AAA06BB72B93D5D2008D55CF /* jsutils.cpp */,
+				AAA06BB92B93D5D2008D55CF /* jsutils.h */,
+				AAA06BB52B93D5D2008D55CF /* PairedJSAndWASM.cpp */,
+				AAA06BBB2B93D5D2008D55CF /* plugin.wamr.cpp */,
+				AAA06BB62B93D5D2008D55CF /* utils.cpp */,
+				AAA06BBA2B93D5D2008D55CF /* utils.h */,
+				AAA06B5A2B93D482008D55CF /* quickjs */,
+				AAA06B592B93D431008D55CF /* txiki */,
+				AAA06B582B93D41A008D55CF /* wasm3 */,
 			);
 			name = Shared;
 			sourceTree = "<group>";
@@ -71,7 +185,7 @@
 		A482DA8515F9B7E70084DC42 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A49186401641DDB800A39286 /* wfc.dylib */,
+				A49186401641DDB800A39286 /* wasmthing.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -85,6 +199,77 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		AAA06B582B93D41A008D55CF /* wasm3 */ = {
+			isa = PBXGroup;
+			children = (
+				AAA06B832B93D5B2008D55CF /* m3_api_libc.c */,
+				AAA06B932B93D5B3008D55CF /* m3_api_libc.h */,
+				AAA06B812B93D5B2008D55CF /* m3_api_meta_wasi.c */,
+				AAA06B862B93D5B2008D55CF /* m3_api_tracer.c */,
+				AAA06B922B93D5B3008D55CF /* m3_api_tracer.h */,
+				AAA06B892B93D5B2008D55CF /* m3_api_uvwasi.c */,
+				AAA06B7C2B93D5B2008D55CF /* m3_api_wasi.c */,
+				AAA06B8F2B93D5B2008D55CF /* m3_api_wasi.h */,
+				AAA06B822B93D5B2008D55CF /* m3_bind.c */,
+				AAA06B8B2B93D5B2008D55CF /* m3_bind.h */,
+				AAA06B7B2B93D5B2008D55CF /* m3_code.c */,
+				AAA06B752B93D5B2008D55CF /* m3_code.h */,
+				AAA06B732B93D5B2008D55CF /* m3_compile.c */,
+				AAA06B792B93D5B2008D55CF /* m3_compile.h */,
+				AAA06B772B93D5B2008D55CF /* m3_config_platforms.h */,
+				AAA06B762B93D5B2008D55CF /* m3_config.h */,
+				AAA06B8E2B93D5B2008D55CF /* m3_core.c */,
+				AAA06B852B93D5B2008D55CF /* m3_core.h */,
+				AAA06B872B93D5B2008D55CF /* m3_env.c */,
+				AAA06B882B93D5B2008D55CF /* m3_env.h */,
+				AAA06B7E2B93D5B2008D55CF /* m3_exception.h */,
+				AAA06B8A2B93D5B2008D55CF /* m3_exec_defs.h */,
+				AAA06B7F2B93D5B2008D55CF /* m3_exec.c */,
+				AAA06B842B93D5B2008D55CF /* m3_exec.h */,
+				AAA06B782B93D5B2008D55CF /* m3_function.c */,
+				AAA06B912B93D5B3008D55CF /* m3_function.h */,
+				AAA06B7D2B93D5B2008D55CF /* m3_info.c */,
+				AAA06B7A2B93D5B2008D55CF /* m3_info.h */,
+				AAA06B8C2B93D5B2008D55CF /* m3_math_utils.h */,
+				AAA06B742B93D5B2008D55CF /* m3_module.c */,
+				AAA06B902B93D5B3008D55CF /* m3_parse.c */,
+				AAA06B802B93D5B2008D55CF /* wasm3_defs.h */,
+				AAA06B8D2B93D5B2008D55CF /* wasm3.h */,
+			);
+			name = wasm3;
+			sourceTree = "<group>";
+		};
+		AAA06B592B93D431008D55CF /* txiki */ = {
+			isa = PBXGroup;
+			children = (
+				AAA06B6F2B93D581008D55CF /* wasm.c */,
+				AAA06B702B93D581008D55CF /* WebAssemblyPolyfillJS.cpp */,
+			);
+			name = txiki;
+			sourceTree = "<group>";
+		};
+		AAA06B5A2B93D482008D55CF /* quickjs */ = {
+			isa = PBXGroup;
+			children = (
+				AAA06C1F2B9D3924008D55CF /* cutils.c */,
+				AAA06C1C2B9D3924008D55CF /* cutils.h */,
+				AAA06C1B2B9D3924008D55CF /* libbf.c */,
+				AAA06C1D2B9D3924008D55CF /* libbf.h */,
+				AAA06C1E2B9D3924008D55CF /* list.h */,
+				AAA06B5B2B93D544008D55CF /* libregexp-opcode.h */,
+				AAA06B602B93D545008D55CF /* libregexp.c */,
+				AAA06B5C2B93D545008D55CF /* libregexp.h */,
+				AAA06B5D2B93D545008D55CF /* libunicode-table.h */,
+				AAA06B632B93D545008D55CF /* libunicode.c */,
+				AAA06B642B93D545008D55CF /* libunicode.h */,
+				AAA06B5E2B93D545008D55CF /* quickjs-atom.h */,
+				AAA06B612B93D545008D55CF /* quickjs-opcode.h */,
+				AAA06B622B93D545008D55CF /* quickjs.c */,
+				AAA06B5F2B93D545008D55CF /* quickjs.h */,
+			);
+			name = quickjs;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -92,16 +277,46 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA87A281279B6AB900E57026 /* wfc.h in Headers */,
+				AAA06B682B93D545008D55CF /* quickjs-atom.h in Headers */,
+				AAA06B962B93D5B3008D55CF /* m3_code.h in Headers */,
+				AAA06BC12B93D5D2008D55CF /* utils.h in Headers */,
+				AAA06BAD2B93D5B3008D55CF /* m3_math_utils.h in Headers */,
+				AAA06BA92B93D5B3008D55CF /* m3_env.h in Headers */,
+				AAA06B692B93D545008D55CF /* quickjs.h in Headers */,
+				AAA06BBF2B93D5D2008D55CF /* common.h in Headers */,
+				AAA06BC02B93D5D2008D55CF /* jsutils.h in Headers */,
+				AAA06C212B9D3924008D55CF /* cutils.h in Headers */,
+				AAA06B652B93D545008D55CF /* libregexp-opcode.h in Headers */,
+				AAA06BB32B93D5B3008D55CF /* m3_api_tracer.h in Headers */,
+				AAA06BA12B93D5B3008D55CF /* wasm3_defs.h in Headers */,
+				AAA06C222B9D3924008D55CF /* libbf.h in Headers */,
+				AAA06BB22B93D5B3008D55CF /* m3_function.h in Headers */,
+				AAA06BB02B93D5B3008D55CF /* m3_api_wasi.h in Headers */,
+				AAA06B6B2B93D545008D55CF /* quickjs-opcode.h in Headers */,
+				AAA06C232B9D3924008D55CF /* list.h in Headers */,
+				AAA06B672B93D545008D55CF /* libunicode-table.h in Headers */,
+				AAA06BA62B93D5B3008D55CF /* m3_core.h in Headers */,
+				AAA06B6E2B93D545008D55CF /* libunicode.h in Headers */,
+				AAA06B9A2B93D5B3008D55CF /* m3_compile.h in Headers */,
+				AAA06B972B93D5B3008D55CF /* m3_config.h in Headers */,
+				AAA06BB42B93D5B3008D55CF /* m3_api_libc.h in Headers */,
+				AAA06B662B93D545008D55CF /* libregexp.h in Headers */,
+				AAA06B9B2B93D5B3008D55CF /* m3_info.h in Headers */,
+				AAA06BAE2B93D5B3008D55CF /* wasm3.h in Headers */,
+				AAA06B9F2B93D5B3008D55CF /* m3_exception.h in Headers */,
+				AAA06BAB2B93D5B3008D55CF /* m3_exec_defs.h in Headers */,
+				AAA06BA52B93D5B3008D55CF /* m3_exec.h in Headers */,
+				AAA06B982B93D5B3008D55CF /* m3_config_platforms.h in Headers */,
+				AAA06BAC2B93D5B3008D55CF /* m3_bind.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		A49186331641DDB800A39286 /* wfc */ = {
+		A49186331641DDB800A39286 /* wasmthing */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "wfc" */;
+			buildConfigurationList = A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "wasmthing" */;
 			buildPhases = (
 				A49186341641DDB800A39286 /* Sources */,
 				A49186381641DDB800A39286 /* Frameworks */,
@@ -113,9 +328,9 @@
 			);
 			dependencies = (
 			);
-			name = wfc;
+			name = wasmthing;
 			productName = ads;
-			productReference = A49186401641DDB800A39286 /* wfc.dylib */;
+			productReference = A49186401641DDB800A39286 /* wasmthing.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 /* End PBXNativeTarget section */
@@ -139,7 +354,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A49186331641DDB800A39286 /* wfc */,
+				A49186331641DDB800A39286 /* wasmthing */,
 			);
 		};
 /* End PBXProject section */
@@ -166,7 +381,32 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA87A282279B6AB900E57026 /* plugin.wfc.cpp in Sources */,
+				AAA06B6D2B93D545008D55CF /* libunicode.c in Sources */,
+				AAA06B9E2B93D5B3008D55CF /* m3_info.c in Sources */,
+				AAA06C202B9D3924008D55CF /* libbf.c in Sources */,
+				AAA06B952B93D5B3008D55CF /* m3_module.c in Sources */,
+				AAA06B9D2B93D5B3008D55CF /* m3_api_wasi.c in Sources */,
+				AAA06BC22B93D5D2008D55CF /* plugin.wamr.cpp in Sources */,
+				AAA06BA32B93D5B3008D55CF /* m3_bind.c in Sources */,
+				AAA06B942B93D5B3008D55CF /* m3_compile.c in Sources */,
+				AAA06BA42B93D5B3008D55CF /* m3_api_libc.c in Sources */,
+				AAA06B992B93D5B3008D55CF /* m3_function.c in Sources */,
+				AAA06B722B93D581008D55CF /* WebAssemblyPolyfillJS.cpp in Sources */,
+				AAA06BB12B93D5B3008D55CF /* m3_parse.c in Sources */,
+				AAA06BA82B93D5B3008D55CF /* m3_env.c in Sources */,
+				AAA06BA72B93D5B3008D55CF /* m3_api_tracer.c in Sources */,
+				AAA06B6C2B93D545008D55CF /* quickjs.c in Sources */,
+				AAA06B6A2B93D545008D55CF /* libregexp.c in Sources */,
+				AAA06B9C2B93D5B3008D55CF /* m3_code.c in Sources */,
+				AAA06BBC2B93D5D2008D55CF /* PairedJSAndWASM.cpp in Sources */,
+				AAA06BA02B93D5B3008D55CF /* m3_exec.c in Sources */,
+				AAA06BBD2B93D5D2008D55CF /* utils.cpp in Sources */,
+				AAA06BA22B93D5B3008D55CF /* m3_api_meta_wasi.c in Sources */,
+				AAA06C242B9D3924008D55CF /* cutils.c in Sources */,
+				AAA06B712B93D581008D55CF /* wasm.c in Sources */,
+				AAA06BBE2B93D5D2008D55CF /* jsutils.cpp in Sources */,
+				AAA06BAA2B93D5B3008D55CF /* m3_api_uvwasi.c in Sources */,
+				AAA06BAF2B93D5B3008D55CF /* m3_core.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -324,7 +564,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "wfc" */ = {
+		A491863D1641DDB800A39286 /* Build configuration list for PBXNativeTarget "wasmthing" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A491863E1641DDB800A39286 /* Debug */,

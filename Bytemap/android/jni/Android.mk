@@ -72,6 +72,8 @@ ifeq ($(TARGET_ARCH),armeabi-v7a)
 # LOCAL_CFLAGS += -DHAVENEON=1
 endif
 
+LOCAL_LDFLAGS+="-Wl,-z,max-page-size=16384"
+
 # LOCAL_WHOLE_STATIC_LIBRARIES += cpufeatures
 # LOCAL_CFLAGS += -mfloat-abi=softfp -mfpu=neon -march=armv7 -mthumb
 LOCAL_CPPFLAGS += -std=c++11
